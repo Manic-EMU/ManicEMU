@@ -58,6 +58,7 @@ static manic_haptic_state_t hapticState = {0};
 /* TODO/FIXME - static globals */
 static uint32_t manic_buttons[MAX_USERS];
 static int16_t  manic_axes[MAX_USERS][MAX_MANIC_AXES];
+static uint32_t manic_last_reported_state[MAX_USERS];
 
 static bool manic_inited;
 #ifdef HAVE_COREMOTION
@@ -116,6 +117,12 @@ void manic_input_set_deinit(void) {
 #endif
     }
     manic_inited = false;
+}
+
+static void manic_post_trace(NSString *message) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ManicN64InputTraceNotification" object:nil userInfo:@{ @"message": message }];
+    });
 }
 
 void manic_input_button_event(unsigned port, unsigned button_id, bool pressed) {
@@ -233,6 +240,10 @@ void manic_input_button_event(unsigned port, unsigned button_id, bool pressed) {
                 break;
         }
     }
+
+    if (port < MAX_USERS) {
+        manic_post_trace([NSString stringWithFormat:@"JOY btn p%u id%u %@ 0x%04x", port, button_id, pressed ? @"on" : @"off", (unsigned)(manic_buttons[port] & 0xFFFF)]);
+    }
 }
 
 void manic_input_analog_event(unsigned port, unsigned stick_id, float x_value, float y_value) {
@@ -247,6 +258,10 @@ void manic_input_analog_event(unsigned port, unsigned stick_id, float x_value, f
             break;
         default:
             break;
+    }
+
+    if (port < MAX_USERS) {
+        manic_post_trace([NSString stringWithFormat:@"JOY axis p%u s%u %.2f %.2f", port, stick_id, x_value, y_value]);
     }
     
 }
@@ -463,33 +478,17 @@ static int16_t manic_gamecontroller_joypad_state(rarch_joypad_info_t *joypad_inf
                                                  const struct retro_keybind *binds,
                                                  unsigned port)
 {
-   unsigned i;
-   int16_t ret                          = 0;
    uint16_t port_idx                    = joypad_info->joy_idx;
 
-   if (port_idx < DEFAULT_MAX_PADS)
-   {
-      for (i = 0; i < RARCH_FIRST_CUSTOM_BIND; i++)
-      {
-         /* Auto-binds are per joypad, not per user. */
-         const uint64_t joykey  = (binds[i].joykey != NO_BTN)
-            ? binds[i].joykey  : joypad_info->auto_binds[i].joykey;
-         const uint32_t joyaxis = (binds[i].joyaxis != AXIS_NONE)
-            ? binds[i].joyaxis : joypad_info->auto_binds[i].joyaxis;
-         if (     (uint16_t)joykey != NO_BTN
-               && !GET_HAT_DIR(i)
-               && (i < 32)
-               && ((manic_buttons[port_idx] & (1 << i)) != 0)
-            )
-            ret |= ( 1 << i);
-         else if (joyaxis != AXIS_NONE &&
-               ((float)abs(manic_gamecontroller_joypad_axis(port_idx, joyaxis))
-                / 0x8000) > joypad_info->axis_threshold)
-            ret |= (1 << i);
-      }
+   if (port_idx >= DEFAULT_MAX_PADS)
+      return 0;
+
+   if (manic_last_reported_state[port_idx] != manic_buttons[port_idx]) {
+      manic_last_reported_state[port_idx] = manic_buttons[port_idx];
+      manic_post_trace([NSString stringWithFormat:@"JOY state p%u 0x%04x", port_idx, (unsigned)(manic_buttons[port_idx] & 0xFFFF)]);
    }
 
-   return ret;
+   return (int16_t)(manic_buttons[port_idx] & 0xFFFF);
 }
 
 static bool manic_gamecontroller_joypad_set_rumble(unsigned pad,

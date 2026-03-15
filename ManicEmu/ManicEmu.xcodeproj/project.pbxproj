@@ -734,6 +734,7 @@
 		57D029192E6C9C5200BF1F9D /* CheevosProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D029182E6C9C4000BF1F9D /* CheevosProgressView.swift */; };
 		57D0BC0A2E1AD2BE008C3049 /* N64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0BC092E1AD2BB008C3049 /* N64.swift */; };
 		57D0BC0F2E1AD35D008C3049 /* mupen64plus.next.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D0BC0D2E1AD31A008C3049 /* mupen64plus.next.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		57D0BC112E1AD3A1008C3049 /* mupen64plus.next.jit.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D0BC102E1AD3A0008C3049 /* mupen64plus.next.jit.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57D7CF362EA5DBA800F41540 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF332EA5DB9C00F41540 /* Trigger.swift */; };
 		57D7CF3F2EA7355900F41540 /* TriggerProListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF3E2EA7354500F41540 /* TriggerProListViewController.swift */; };
 		57D7CF462EA7357900F41540 /* TriggerProListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF432EA7357200F41540 /* TriggerProListView.swift */; };
@@ -919,6 +920,7 @@
 				5744C71D2E375F0F0088081A /* pokemini.libretro.framework in Embed Frameworks */,
 				5754D8C42E27A573001EA5ED /* mednafen.vb.libretro.framework in Embed Frameworks */,
 				57D0BC0F2E1AD35D008C3049 /* mupen64plus.next.libretro.framework in Embed Frameworks */,
+				57D0BC112E1AD3A1008C3049 /* mupen64plus.next.jit.libretro.framework in Embed Frameworks */,
 				57DCE8542E0F978B0079E3AA /* yabause.libretro.framework in Embed Frameworks */,
 				57DCE7A12E0C434C0079E3AA /* mednafen.saturn.libretro.framework in Embed Frameworks */,
 				57655C222DF6B970003E4A6E /* picodrive.libretro.framework in Embed Frameworks */,
@@ -1846,6 +1848,7 @@
 		57D029182E6C9C4000BF1F9D /* CheevosProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheevosProgressView.swift; sourceTree = "<group>"; };
 		57D0BC092E1AD2BB008C3049 /* N64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N64.swift; sourceTree = "<group>"; };
 		57D0BC0D2E1AD31A008C3049 /* mupen64plus.next.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mupen64plus.next.libretro.framework; path = ../Cores/mupen64plus.next.libretro.framework; sourceTree = SOURCE_ROOT; };
+		57D0BC102E1AD3A0008C3049 /* mupen64plus.next.jit.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mupen64plus.next.jit.libretro.framework; path = ../Cores/mupen64plus.next.jit.libretro.framework; sourceTree = SOURCE_ROOT; };
 		57D7CF332EA5DB9C00F41540 /* Trigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		57D7CF3E2EA7354500F41540 /* TriggerProListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerProListViewController.swift; sourceTree = "<group>"; };
 		57D7CF432EA7357200F41540 /* TriggerProListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerProListView.swift; sourceTree = "<group>"; };
@@ -4051,6 +4054,7 @@
 				5744C71B2E375EFF0088081A /* pokemini.libretro.framework */,
 				5754D8C22E27A562001EA5ED /* mednafen.vb.libretro.framework */,
 				57D0BC0D2E1AD31A008C3049 /* mupen64plus.next.libretro.framework */,
+				57D0BC102E1AD3A0008C3049 /* mupen64plus.next.jit.libretro.framework */,
 				57DCE8522E0F97780079E3AA /* yabause.libretro.framework */,
 				57DCE79D2E0C43310079E3AA /* mednafen.saturn.libretro.framework */,
 				57655C1E2DF6B94C003E4A6E /* picodrive.libretro.framework */,
@@ -4803,7 +4807,7 @@
 			);
 			mainGroup = A5A001E624555A5F006E0F0E;
 			packageReferences = (
-				576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R" */,
+				576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R.swift" */,
 				57DF84BD2D637A1A00AA0AAB /* XCRemoteSwiftPackageReference "DominantColors" */,
 				57F632CC2D7050B9007270E8 /* XCRemoteSwiftPackageReference "SMBClient" */,
 				57F632E12D714E46007270E8 /* XCRemoteSwiftPackageReference "WebDAVKitSwift" */,
@@ -4814,12 +4818,12 @@
 				5717445C2DA264FF007CCE25 /* XCRemoteSwiftPackageReference "zstd" */,
 				5717445F2DA2652F007CCE25 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 				571BB9382DA44D6B00830134 /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
-				570F59BA2DC91FC8007BFD92 /* XCLocalSwiftPackageReference "../ChromaColorPicker" */,
+				570F59BA2DC91FC8007BFD92 /* XCLocalSwiftPackageReference "ChromaColorPicker" */,
 				575A39CA2DCCFA6B00B28FC2 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				570A27FE2DCF03CF001249C6 /* XCRemoteSwiftPackageReference "PLzmaSDK" */,
 				57F0D8492DE2E7A600760F57 /* XCRemoteSwiftPackageReference "SwiftCloudDrive" */,
 				5706B0BC2DFDE4570066122E /* XCRemoteSwiftPackageReference "BlurUIKit" */,
-				5744C6602E34D6E10088081A /* XCLocalSwiftPackageReference "../KeyboardKit" */,
+				5744C6602E34D6E10088081A /* XCLocalSwiftPackageReference "KeyboardKit" */,
 			);
 			productRefGroup = A5A001F024555A5F006E0F0E /* Products */;
 			projectDirPath = "";
@@ -4885,13 +4889,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ManicEmu/Pods-ManicEmu-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ManicEmu/Pods-ManicEmu-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5673,7 +5673,7 @@
 /* Begin PBXTargetDependency section */
 		576DD4482E0FFAC900644424 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 576DD4472E0FFAC900644424 /* RswiftGenerateInternalResources */;
+			productRef = 576DD4472E0FFAC900644424 /* plugin:RswiftGenerateInternalResources */;
 		};
 		57BFBEB12DD489C700AABF98 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5822,7 +5822,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Cores/Citra/Dependencies/XCFrameworks",
-					/opt/homebrew/Cellar/boost/1.89.0/lib,
+					/opt/homebrew/Cellar/boost/1.90.0_1/lib,
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = staticlib;
@@ -5842,7 +5842,7 @@
 					/usr/local/include,
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include",
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include/vma",
-					/opt/homebrew/Cellar/boost/1.89.0/include,
+					/opt/homebrew/Cellar/boost/1.90.0_1/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Cores/Citra/Core/include";
@@ -5887,7 +5887,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Cores/Citra/Dependencies/XCFrameworks",
-					/opt/homebrew/Cellar/boost/1.89.0/lib,
+					/opt/homebrew/Cellar/boost/1.90.0_1/lib,
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = staticlib;
@@ -5907,7 +5907,7 @@
 					/usr/local/include,
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include",
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include/vma",
-					/opt/homebrew/Cellar/boost/1.89.0/include,
+					/opt/homebrew/Cellar/boost/1.90.0_1/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Cores/Citra/Core/include";
@@ -6245,7 +6245,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Cores/Citra/Dependencies/XCFrameworks",
-					/opt/homebrew/Cellar/boost/1.89.0/lib,
+					/opt/homebrew/Cellar/boost/1.90.0_1/lib,
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = staticlib;
@@ -6265,7 +6265,7 @@
 					/usr/local/include,
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include",
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include/vma",
-					/opt/homebrew/Cellar/boost/1.89.0/include,
+					/opt/homebrew/Cellar/boost/1.90.0_1/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Cores/Citra/Core/include";
@@ -6514,7 +6514,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Cores/Citra/Dependencies/XCFrameworks",
-					/opt/homebrew/Cellar/boost/1.89.0/lib,
+					/opt/homebrew/Cellar/boost/1.90.0_1/lib,
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = staticlib;
@@ -6534,7 +6534,7 @@
 					/usr/local/include,
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include",
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include/vma",
-					/opt/homebrew/Cellar/boost/1.89.0/include,
+					/opt/homebrew/Cellar/boost/1.90.0_1/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Cores/Citra/Core/include";
@@ -7253,7 +7253,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Cores/Citra/Dependencies/XCFrameworks",
-					/opt/homebrew/Cellar/boost/1.89.0/lib,
+					/opt/homebrew/Cellar/boost/1.90.0_1/lib,
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = staticlib;
@@ -7273,7 +7273,7 @@
 					/usr/local/include,
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include",
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include/vma",
-					/opt/homebrew/Cellar/boost/1.89.0/include,
+					/opt/homebrew/Cellar/boost/1.90.0_1/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Cores/Citra/Core/include";
@@ -7626,7 +7626,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Cores/Citra/Dependencies/XCFrameworks",
-					/opt/homebrew/Cellar/boost/1.89.0/lib,
+					/opt/homebrew/Cellar/boost/1.90.0_1/lib,
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MACH_O_TYPE = staticlib;
@@ -7646,7 +7646,7 @@
 					/usr/local/include,
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include",
 					"$(HOME)/VulkanSDK/1.4.309.0/macOS/include/vma",
-					/opt/homebrew/Cellar/boost/1.89.0/include,
+					/opt/homebrew/Cellar/boost/1.90.0_1/include,
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Cores/Citra/Core/include";
@@ -8315,11 +8315,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		570F59BA2DC91FC8007BFD92 /* XCLocalSwiftPackageReference "../ChromaColorPicker" */ = {
+		570F59BA2DC91FC8007BFD92 /* XCLocalSwiftPackageReference "ChromaColorPicker" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../ChromaColorPicker;
 		};
-		5744C6602E34D6E10088081A /* XCLocalSwiftPackageReference "../KeyboardKit" */ = {
+		5744C6602E34D6E10088081A /* XCLocalSwiftPackageReference "KeyboardKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../KeyboardKit;
 		};
@@ -8390,7 +8390,7 @@
 				minimumVersion = 2.8.7;
 			};
 		};
-		576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R" */ = {
+		576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mac-cain13/R.swift";
 			requirement = {
@@ -8516,12 +8516,12 @@
 		};
 		576060282D24E8BD00A98B0C /* RswiftLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R" */;
+			package = 576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R.swift" */;
 			productName = RswiftLibrary;
 		};
-		576DD4472E0FFAC900644424 /* RswiftGenerateInternalResources */ = {
+		576DD4472E0FFAC900644424 /* plugin:RswiftGenerateInternalResources */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R" */;
+			package = 576060272D24E8BD00A98B0C /* XCRemoteSwiftPackageReference "R.swift" */;
 			productName = "plugin:RswiftGenerateInternalResources";
 		};
 		57DA89122D82B0C20074052A /* SmartCodable */ = {

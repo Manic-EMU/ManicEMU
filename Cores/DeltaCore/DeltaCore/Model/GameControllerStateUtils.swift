@@ -56,10 +56,10 @@ internal class GameControllerStateUtils
     func activate(_ input: Input, value: Double)
     {
         precondition(input.type == .controller(gameController.inputType), "input.type must match self.gameController.inputType")
-        
+         
         // An input may be "activated" multiple times, such as by pressing different buttons that map to same input, or moving an analog stick.
         activatedInputs[SomeInput(input)] = value
-        
+
         for receiver in receivers
         {
             if let mappedInput = mappedInput(for: input, receiver: receiver)

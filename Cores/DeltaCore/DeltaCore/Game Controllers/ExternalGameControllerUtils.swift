@@ -111,11 +111,19 @@ public class ExternalGameControllerUtils: UIResponder
         
         super.init()
     }
+
+    private func existingMFiController(for controller: GCController) -> MFiGameController? {
+        linkedControllers.first { linkedController in
+            guard let mfiController = linkedController as? MFiGameController else { return false }
+            return mfiController.controller == controller
+        } as? MFiGameController
+    }
     
     public func startDetecting()
     {
         for controller in GCController.controllers()
         {
+            guard existingMFiController(for: controller) == nil else { continue }
             let externalController = MFiGameController(controller: controller)
             add(externalController)
         }
@@ -187,6 +195,16 @@ public class ExternalGameControllerUtils: UIResponder
     
     func add(_ controller: GameController)
     {
+        if let mfiController = controller as? MFiGameController,
+           existingMFiController(for: mfiController.controller) != nil {
+            return
+        }
+
+        if let keyboardController = controller as? KeyboardGameController,
+           linkedControllers.contains(where: { $0 is KeyboardGameController && $0 !== keyboardController }) {
+            return
+        }
+
         if autoPlayerIndexes
         {
             let playerIndex = nextEnablePlayerIndex
@@ -210,6 +228,7 @@ public class ExternalGameControllerUtils: UIResponder
     @objc func mfiGameControllerDidConnect(_ notification: Notification)
     {
         guard let controller = notification.object as? GCController else { return }
+        guard existingMFiController(for: controller) == nil else { return }
         
         let externalController = MFiGameController(controller: controller)
         externalController.deadZone = deadZone

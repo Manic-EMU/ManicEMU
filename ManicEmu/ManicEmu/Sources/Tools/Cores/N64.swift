@@ -10,6 +10,12 @@
 import ManicEmuCore
 import AVFoundation
 
+private let n64InputTraceNotification = Notification.Name("ManicN64InputTraceNotification")
+
+private func postN64InputTrace(_ message: String) {
+    NotificationCenter.default.post(name: n64InputTraceNotification, object: nil, userInfo: ["message": message])
+}
+
 extension GameType
 {
     static let n64 = GameType("public.aoshuang.game.n64")
@@ -106,12 +112,8 @@ class N64EmulatorBridge : NSObject, EmulatorBase {
     
     var saveUpdateHandler: (() -> Void)?
     
-    enum CStickDirection {
-        case up, down, left, right
-    }
-    
     private var thumbstickPosition: CGPoint = .zero
-    private var cStickPressDirection: CStickDirection? = nil
+    private var cStickPosition: CGPoint = .zero
     
     func start(withGameURL gameURL: URL) {}
     
@@ -125,24 +127,30 @@ class N64EmulatorBridge : NSObject, EmulatorBase {
     
     func activateInput(_ input: Int, value: Double, playerIndex: Int) {
         guard playerIndex >= 0 else { return }
+
         if input == N64GameInput.analogStickUp || input == N64GameInput.analogStickDown {
-            thumbstickPosition.y = input == N64GameInput.analogStickUp ? value : -value
+            thumbstickPosition.y = input == N64GameInput.analogStickUp ? -value : value
+            postN64InputTrace("N64 left y \(thumbstickPosition.y.roundedDouble(scale: 2)) p\(playerIndex)")
             LibretroCore.sharedInstance().moveStick(true, x: thumbstickPosition.x, y: thumbstickPosition.y, playerIndex: UInt32(playerIndex))
         } else if input == N64GameInput.analogStickLeft || input == N64GameInput.analogStickRight {
             thumbstickPosition.x = input == N64GameInput.analogStickRight ? value : -value
+            postN64InputTrace("N64 left x \(thumbstickPosition.x.roundedDouble(scale: 2)) p\(playerIndex)")
             LibretroCore.sharedInstance().moveStick(true, x: thumbstickPosition.x, y: thumbstickPosition.y, playerIndex: UInt32(playerIndex))
-        } else if handleCStickInput(input, value: value, playerIndex: playerIndex, press: true) {
+        } else if input == N64GameInput.cUp || input == N64GameInput.cDown {
+            cStickPosition = CGPoint(x: 0, y: input == N64GameInput.cUp ? -value : value)
+            postN64InputTrace("N64 c y \(cStickPosition.y.roundedDouble(scale: 2)) p\(playerIndex)")
+            LibretroCore.sharedInstance().moveStick(false, x: cStickPosition.x, y: cStickPosition.y, playerIndex: UInt32(playerIndex))
+        } else if input == N64GameInput.cLeft || input == N64GameInput.cRight {
+            cStickPosition = CGPoint(x: input == N64GameInput.cRight ? value : -value, y: 0)
+            postN64InputTrace("N64 c x \(cStickPosition.x.roundedDouble(scale: 2)) p\(playerIndex)")
+            LibretroCore.sharedInstance().moveStick(false, x: cStickPosition.x, y: cStickPosition.y, playerIndex: UInt32(playerIndex))
+        } else if let gameInput = N64GameInput(rawValue: input),
+                  let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
+            postN64InputTrace("N64 press \(gameInput.stringValue) -> \(libretroButton.rawValue) p\(playerIndex)")
 #if DEBUG
-Log.debug("\(String(describing: Self.self))点击了:cStick")
+            Log.debug("\(String(describing: Self.self))点击了:\(gameInput)")
 #endif
-        } else {
-            if let gameInput = N64GameInput(rawValue: input),
-                let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
-#if DEBUG
-Log.debug("\(String(describing: Self.self))点击了:\(gameInput)")
-#endif
-                LibretroCore.sharedInstance().press(libretroButton, playerIndex: UInt32(playerIndex))
-            }
+            LibretroCore.sharedInstance().press(libretroButton, playerIndex: UInt32(playerIndex))
         }
     }
     
@@ -163,50 +171,25 @@ Log.debug("\(String(describing: Self.self))点击了:\(gameInput)")
     func deactivateInput(_ input: Int, playerIndex: Int) {
         if input == N64GameInput.analogStickUp || input == N64GameInput.analogStickDown {
             thumbstickPosition.y = 0
+            postN64InputTrace("N64 left y 0 p\(playerIndex)")
             LibretroCore.sharedInstance().moveStick(true, x: thumbstickPosition.x, y: thumbstickPosition.y, playerIndex: UInt32(playerIndex))
         } else if input == N64GameInput.analogStickLeft || input == N64GameInput.analogStickRight {
             thumbstickPosition.x = 0
+            postN64InputTrace("N64 left x 0 p\(playerIndex)")
             LibretroCore.sharedInstance().moveStick(true, x: thumbstickPosition.x, y: thumbstickPosition.y, playerIndex: UInt32(playerIndex))
-        } else if handleCStickInput(input, value: 0, playerIndex: playerIndex, press: false) {
-            //释放了cstick
-        } else {
-            if let gameInput = N64GameInput(rawValue: input),
-                let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
-                LibretroCore.sharedInstance().release(libretroButton, playerIndex: UInt32(playerIndex))
-            }
+        } else if input == N64GameInput.cUp || input == N64GameInput.cDown {
+            cStickPosition.y = 0
+            postN64InputTrace("N64 c y 0 p\(playerIndex)")
+            LibretroCore.sharedInstance().moveStick(false, x: cStickPosition.x, y: cStickPosition.y, playerIndex: UInt32(playerIndex))
+        }  else if input == N64GameInput.cLeft || input == N64GameInput.cRight {
+            cStickPosition.x = 0
+            postN64InputTrace("N64 c x 0 p\(playerIndex)")
+            LibretroCore.sharedInstance().moveStick(false, x: cStickPosition.x, y: cStickPosition.y, playerIndex: UInt32(playerIndex))
+        } else if let gameInput = N64GameInput(rawValue: input),
+                  let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
+            postN64InputTrace("N64 release \(gameInput.stringValue) -> \(libretroButton.rawValue) p\(playerIndex)")
+            LibretroCore.sharedInstance().release(libretroButton, playerIndex: UInt32(playerIndex))
         }
-    }
-    
-    private func handleCStickInput(_ input: Int, value: Double, playerIndex: Int, press: Bool) -> Bool {
-        var position: CGPoint? = nil
-        if press {
-            if input == N64GameInput.cUp, value > 0.5 {
-                cStickPressDirection = .up
-                position = CGPoint(x: 0, y: 1)
-            } else if  input == N64GameInput.cDown, value > 0.5 {
-                cStickPressDirection = .down
-                position = CGPoint(x: 0, y: -1)
-            } else if input == N64GameInput.cLeft, value > 0.5 {
-                cStickPressDirection = .left
-                position = CGPoint(x: -1, y: 0)
-            } else if input == N64GameInput.cRight, value > 0.5 {
-                cStickPressDirection = .right
-                position = CGPoint(x: 1, y: 0)
-            }
-        } else {
-            if (input == N64GameInput.cUp && cStickPressDirection == .up) ||
-                (input == N64GameInput.cDown && cStickPressDirection == .down) ||
-                (input == N64GameInput.cLeft && cStickPressDirection == .left) ||
-                (input == N64GameInput.cRight && cStickPressDirection == .right) {
-                cStickPressDirection = nil
-                position = CGPoint(x: 0, y: 0)
-            }
-        }
-        if let position {
-            LibretroCore.sharedInstance().moveStick(false, x: position.x, y: position.y, playerIndex: UInt32(playerIndex))
-            return true
-        }
-        return false
     }
     
     func resetInputs() {}

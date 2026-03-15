@@ -116,6 +116,52 @@ extension StandardGameControllerInput: Input
 public extension StandardGameControllerInput
 {
     private static var inputMappings = [GameType: GameControllerInputMapping]()
+
+    private func fallbackInput(for gameType: GameType) -> Input? {
+        guard let deltaCore = ManicEmu.core(for: gameType) else { return nil }
+
+        let candidates: [String]
+
+        switch gameType.rawValue {
+        case "public.aoshuang.game.n64":
+            switch self {
+            case .menu: candidates = ["menu"]
+            case .up: candidates = ["up"]
+            case .down: candidates = ["down"]
+            case .left: candidates = ["left"]
+            case .right: candidates = ["right"]
+            case .leftThumbstickUp: candidates = ["analogStickUp"]
+            case .leftThumbstickDown: candidates = ["analogStickDown"]
+            case .leftThumbstickLeft: candidates = ["analogStickLeft"]
+            case .leftThumbstickRight: candidates = ["analogStickRight"]
+            case .rightThumbstickUp, .rightDpadUp: candidates = ["cUp"]
+            case .rightThumbstickDown, .rightDpadDown: candidates = ["cDown"]
+            case .rightThumbstickLeft, .rightDpadLeft: candidates = ["cLeft"]
+            case .rightThumbstickRight, .rightDpadRight: candidates = ["cRight"]
+            case .a: candidates = ["a"]
+            case .b: candidates = ["b"]
+            case .x: candidates = ["cLeft"]
+            case .y: candidates = ["cUp"]
+            case .start: candidates = ["start"]
+            case .l, .l1: candidates = ["l"]
+            case .l2: candidates = ["z"]
+            case .r, .r1: candidates = ["r"]
+            case .r2: candidates = ["cDown"]
+            default: candidates = [self.stringValue]
+            }
+
+        default:
+            candidates = [self.stringValue]
+        }
+
+        for candidate in candidates {
+            if let input = deltaCore.gameInputType.init(stringValue: candidate), input.type == .game(gameType) {
+                return input
+            }
+        }
+
+        return nil
+    }
     
     func input(for gameType: GameType) -> Input?
     {
@@ -129,8 +175,7 @@ public extension StandardGameControllerInput
             let deltaCore = ManicEmu.core(for: gameType),
             let fileURL = deltaCore.resourceBundle.url(forResource: deltaCore.name, withExtension: "keymapping")
         else {
-            
-            fatalError("Cannot find keymapping for game type \(gameType)")
+            return fallbackInput(for: gameType)
         }
         
         do
@@ -143,7 +188,7 @@ public extension StandardGameControllerInput
         }
         catch
         {
-            fatalError(String(describing: error))
+            return fallbackInput(for: gameType)
         }
     }
 }

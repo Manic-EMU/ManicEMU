@@ -8,6 +8,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import UIKit
+import GameController
 import ManicEmuCore
 import Schedule
 import Haptica
@@ -20,6 +21,86 @@ import AVFoundation
 import MetalKit
 #endif
 import Kingfisher
+
+private func mappedN64GameplayInput(from input: any Input) -> N64GameInput? {
+    if let gameInput = N64GameInput(stringValue: input.stringValue) {
+        return gameInput
+    }
+
+    switch input.stringValue {
+    case "a": return .a
+    case "b": return .b
+    case "up": return .up
+    case "down": return .down
+    case "left": return .left
+    case "right": return .right
+    case "l", "l1", "leftShoulder": return .l
+    case "r", "r1", "rightShoulder": return .r
+    case "z", "l2", "leftTrigger", "r2", "rightTrigger", "select", "y": return .z
+    case "start", "x": return .start
+    case "leftThumbstickUp": return .analogStickUp
+    case "leftThumbstickDown": return .analogStickDown
+    case "leftThumbstickLeft": return .analogStickLeft
+    case "leftThumbstickRight": return .analogStickRight
+    case "rightThumbstickUp", "rightDpadUp": return .cUp
+    case "rightThumbstickDown", "rightDpadDown": return .cDown
+    case "rightThumbstickLeft", "rightDpadLeft": return .cLeft
+    case "rightThumbstickRight", "rightDpadRight": return .cRight
+    default: return nil
+    }
+}
+
+private func makeMFiN64GameplayMapping() -> GameControllerInputMapping {
+    var inputMapping = GameControllerInputMapping(gameControllerInputType: .mfi)
+
+    inputMapping.set(N64GameInput.a, forControllerInput: MFiGameController.Input.a)
+    inputMapping.set(N64GameInput.b, forControllerInput: MFiGameController.Input.b)
+    inputMapping.set(N64GameInput.start, forControllerInput: MFiGameController.Input.start)
+    inputMapping.set(N64GameInput.start, forControllerInput: MFiGameController.Input.x)
+
+    inputMapping.set(N64GameInput.z, forControllerInput: MFiGameController.Input.y)
+    inputMapping.set(N64GameInput.z, forControllerInput: MFiGameController.Input.select)
+    inputMapping.set(N64GameInput.z, forControllerInput: MFiGameController.Input.leftTrigger)
+    inputMapping.set(N64GameInput.z, forControllerInput: MFiGameController.Input.rightTrigger)
+
+    inputMapping.set(N64GameInput.l, forControllerInput: MFiGameController.Input.leftShoulder)
+    inputMapping.set(N64GameInput.r, forControllerInput: MFiGameController.Input.rightShoulder)
+
+    inputMapping.set(N64GameInput.up, forControllerInput: MFiGameController.Input.up)
+    inputMapping.set(N64GameInput.down, forControllerInput: MFiGameController.Input.down)
+    inputMapping.set(N64GameInput.left, forControllerInput: MFiGameController.Input.left)
+    inputMapping.set(N64GameInput.right, forControllerInput: MFiGameController.Input.right)
+
+    inputMapping.set(N64GameInput.analogStickUp, forControllerInput: MFiGameController.Input.leftThumbstickUp)
+    inputMapping.set(N64GameInput.analogStickDown, forControllerInput: MFiGameController.Input.leftThumbstickDown)
+    inputMapping.set(N64GameInput.analogStickLeft, forControllerInput: MFiGameController.Input.leftThumbstickLeft)
+    inputMapping.set(N64GameInput.analogStickRight, forControllerInput: MFiGameController.Input.leftThumbstickRight)
+
+    inputMapping.set(N64GameInput.cUp, forControllerInput: MFiGameController.Input.rightThumbstickUp)
+    inputMapping.set(N64GameInput.cDown, forControllerInput: MFiGameController.Input.rightThumbstickDown)
+    inputMapping.set(N64GameInput.cLeft, forControllerInput: MFiGameController.Input.rightThumbstickLeft)
+    inputMapping.set(N64GameInput.cRight, forControllerInput: MFiGameController.Input.rightThumbstickRight)
+
+    return inputMapping
+}
+
+private final class N64DirectGameplayReceiver: NSObject, ControllerReceiverProtocol {
+    func gameController(_ gameController: any GameController, didActivate input: any Input, value: Double) {
+        guard let gameInput = mappedN64GameplayInput(from: input) else { return }
+
+        let playerIndex = gameController.playerIndex ?? PlayViewController.skinControllerPlayerIndex
+        NotificationCenter.default.post(name: Notification.Name("ManicN64InputTraceNotification"), object: nil, userInfo: ["message": String(format: "DIR on %@ v%.2f", gameInput.stringValue, value)])
+        N64EmulatorBridge.shared.activateInput(gameInput.rawValue, value: value, playerIndex: playerIndex)
+    }
+
+    func gameController(_ gameController: any GameController, didDeactivate input: any Input) {
+        guard let gameInput = mappedN64GameplayInput(from: input) else { return }
+
+        let playerIndex = gameController.playerIndex ?? PlayViewController.skinControllerPlayerIndex
+        NotificationCenter.default.post(name: Notification.Name("ManicN64InputTraceNotification"), object: nil, userInfo: ["message": "DIR off \(gameInput.stringValue)"])
+        N64EmulatorBridge.shared.deactivateInput(gameInput.rawValue, playerIndex: playerIndex)
+    }
+}
 
 //MARK: 主类
 class PlayViewController: GameViewController {
@@ -184,6 +265,9 @@ class PlayViewController: GameViewController {
         if let mameGameFileMissingNotification {
             NotificationCenter.default.removeObserver(mameGameFileMissingNotification)
         }
+        if let n64InputTraceNotification {
+            NotificationCenter.default.removeObserver(n64InputTraceNotification)
+        }
         if SyncManager.shared.hasDownloadTask {
             UIView.makeLoadingToast(message: R.string.localizable.loadingTitle())
         }
@@ -194,6 +278,11 @@ class PlayViewController: GameViewController {
     private var cheatCodeUpdateToken: Any? = nil
     private var settingsUpdateToken: Any? = nil
     private var triggerProUpdateToken: Any? = nil
+    private var n64InputTraceNotification: Any? = nil
+    private weak var n64InputTraceLabel: UILabel? = nil
+    private var n64InputTraceMessages: [String] = []
+    private var n64StatusLine = "PRDPv17 pending"
+    private let n64DirectGameplayReceiver = N64DirectGameplayReceiver()
     
     private var lastSaveDate: Date? = nil
     private var lastLoadDate: Date? = nil
@@ -340,13 +429,9 @@ class PlayViewController: GameViewController {
             self?.updateSkin()
         }
         gameControllerDidDisConnectNotification = NotificationCenter.default.addObserver(forName: .externalGameControllerDidDisconnect, object: nil, queue: .main) { [weak self] notification in
-            guard let self else { return }
             //手柄断开连接
-            if ExternalGameControllerUtils.shared.linkedControllers.count == 0 {
-                self.manicGame.forceFullSkin = false
-                self.updateSkin()
-                self.updateNDSCursor()
-            }
+            self?.updateExternalGameController()
+            self?.updateSkin()
         }
         keyboardDidConnectNotification = NotificationCenter.default.addObserver(forName: .externalKeyboardDidConnect, object: nil, queue: .main) { [weak self] notification in
             //键盘连接
@@ -355,10 +440,8 @@ class PlayViewController: GameViewController {
         }
         keyboardDidDisConnectNotification = NotificationCenter.default.addObserver(forName: .externalKeyboardDidDisconnect, object: nil, queue: .main) { [weak self] notification in
             //键盘断开连接
-            if ExternalGameControllerUtils.shared.linkedControllers.count == 0 {
-                self?.manicGame.forceFullSkin = false
-                self?.updateSkin()
-            }
+            self?.updateExternalGameController()
+            self?.updateSkin()
         }
         ///投屏监听
         sceneWillConnectNotification = NotificationCenter.default.addObserver(forName: UIScene.willConnectNotification, object: nil, queue: .main) { [weak self] notification in
@@ -691,6 +774,10 @@ class PlayViewController: GameViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if manicGame.isLibretroType {
+            autoPauses = false
+        }
         
         PlayViewController.currentPlayViewController = self
         
@@ -721,8 +808,13 @@ class PlayViewController: GameViewController {
         } else {
             loadConfig()
         }
+        // Re-apply controller presence after config load, since loadConfig may
+        // restore a persisted fullscreen skin preference.
+        updateExternalGameController()
         //更新皮肤
         updateSkin()
+        setupN64InputTraceIfNeeded()
+        setupN64DirectGameplayReceiverIfNeeded()
         //更新TriggerPro
         if !manicGame.safeMode {
             updateTriggerPro()
@@ -752,6 +844,8 @@ class PlayViewController: GameViewController {
                 self?.manicGame.safeMode = false
             })
         }
+
+        refreshN64RuntimeStatusIfNeeded(delay: 1)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -2064,33 +2158,170 @@ extension PlayViewController {
     }
     
     //更新外设控制器
+    private func isLiveMFiController(_ controller: MFiGameController, liveControllers: [GCController]) -> Bool {
+        return liveControllers.contains(where: { $0 == controller.controller })
+    }
+
+    private func hasConnectedMFiController() -> Bool {
+        let liveControllers = GCController.controllers()
+
+        return ExternalGameControllerUtils.shared.linkedControllers.contains { controller in
+            guard let mfiController = controller as? MFiGameController else { return false }
+            return isLiveMFiController(mfiController, liveControllers: liveControllers)
+        }
+    }
+
+    private func resolvedInputMapping(for controller: GameController, realm: Realm) -> GameControllerInputMappingBase? {
+        let defaultMapping = controller.defaultInputMapping as? GameControllerInputMapping
+
+        // For MFi controllers (e.g. Backbone), prefer the runtime default mapping.
+        // Persisted custom mappings have historically contained stale/partial entries
+        // that can black-hole all gameplay inputs.
+        if controller is MFiGameController {
+            return defaultMapping ?? controller.defaultInputMapping
+        }
+
+        guard let object = realm.objects(ControllerMapping.self).first(where: { $0.controllerName == controller.name && $0.gameType == manicGame.gameType && !$0.isDeleted }),
+              let customMapping = try? GameControllerInputMapping(mapping: object.mapping) else {
+            return defaultMapping ?? controller.defaultInputMapping
+        }
+
+        guard var mergedMapping = defaultMapping,
+              mergedMapping.gameControllerInputType == customMapping.gameControllerInputType else {
+            return customMapping
+        }
+
+        for (controllerInput, mappedInput) in customMapping.inputMappings {
+            mergedMapping.inputMappings[controllerInput] = mappedInput
+        }
+
+        return mergedMapping
+    }
+
     private func updateExternalGameController() {
-        if let manicEmuCore = self.manicEmuCore {
-            let realm = Database.realm
-            for controler in ExternalGameControllerUtils.shared.linkedControllers {
-                var mapping: GameControllerInputMapping? = nil
-                if let object = realm.objects(ControllerMapping.self).first(where: { $0.controllerName == controler.name && $0.gameType == manicGame.gameType && !$0.isDeleted }) {
-                    mapping = try? GameControllerInputMapping(mapping: object.mapping)
-                }
-                if let mapping {
-                    controler.addReceiver(self, inputMapping: mapping)
-                    controler.addReceiver(manicEmuCore, inputMapping: mapping)
-                } else {
-                    controler.addReceiver(self)
-                    controler.addReceiver(manicEmuCore)
-                }
-                if let mfi = controler as? MFiGameController, manicGame.isLibretroType, let playerIndex = mfi.playerIndex {
-                    if LibretroCore.sharedInstance().getSensorEnable(Int32(playerIndex)) {
-                        mfi.controller.motion?.sensorsActive = true
+        let realm = Database.realm
+        let liveControllers = GCController.controllers()
+        let hasMFiController = ExternalGameControllerUtils.shared.linkedControllers.contains { controller in
+            guard let mfiController = controller as? MFiGameController else { return false }
+            return isLiveMFiController(mfiController, liveControllers: liveControllers)
+        }
+
+        for controler in ExternalGameControllerUtils.shared.linkedControllers {
+            if let mfiController = controler as? MFiGameController,
+               !isLiveMFiController(mfiController, liveControllers: liveControllers) {
+                continue
+            }
+
+            if controler.playerIndex == nil {
+                controler.playerIndex = ExternalGameControllerUtils.shared.forceSetPlayerIndex ?? 0
+            }
+
+            if let mapping = resolvedInputMapping(for: controler, realm: realm) {
+                controler.addReceiver(self, inputMapping: mapping)
+                if manicGame.gameType == .n64 {
+                    if controler is MFiGameController {
+                        controler.addReceiver(n64DirectGameplayReceiver, inputMapping: makeMFiN64GameplayMapping())
                     } else {
-                        mfi.controller.motion?.sensorsActive = false
+                        controler.addReceiver(n64DirectGameplayReceiver, inputMapping: mapping)
                     }
                 }
+                manicEmuCore.map { controler.removeReceiver($0) }
+            } else {
+                controler.addReceiver(self)
+                if manicGame.gameType == .n64 {
+                    controler.addReceiver(n64DirectGameplayReceiver)
+                }
+                manicEmuCore.map { controler.removeReceiver($0) }
             }
-            if ExternalGameControllerUtils.shared.linkedControllers.count > 0 && Settings.defalut.fullScreenWhenConnectController {
-                self.manicGame.forceFullSkin = true
+
+            if let mfi = controler as? MFiGameController, manicGame.isLibretroType, let playerIndex = mfi.playerIndex {
+                if LibretroCore.sharedInstance().getSensorEnable(Int32(playerIndex)) {
+                    mfi.controller.motion?.sensorsActive = true
+                } else {
+                    mfi.controller.motion?.sensorsActive = false
+                }
             }
-            updateNDSCursor()
+        }
+
+        if hasMFiController && Settings.defalut.fullScreenWhenConnectController {
+            self.manicGame.forceFullSkin = true
+        } else if !hasMFiController {
+            self.manicGame.forceFullSkin = false
+        }
+
+        skinSwitchBindDatas["toggleControlls"] = manicGame.forceFullSkin
+        updateNDSCursor()
+    }
+
+    private func setupN64InputTraceIfNeeded() {
+        // Debug overlay disabled – was showing PRDPv17 status text on screen
+        return
+        guard manicGame.gameType == .n64, n64InputTraceLabel == nil else { return }
+
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .monospacedSystemFont(ofSize: 10, weight: .medium)
+        label.textColor = .white
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.72)
+        label.layer.cornerRadius = 8
+        label.layer.masksToBounds = true
+        label.isUserInteractionEnabled = false
+        label.text = n64StatusLine
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(8)
+            make.width.lessThanOrEqualTo(260)
+        }
+        n64InputTraceLabel = label
+
+        n64InputTraceNotification = NotificationCenter.default.addObserver(forName: Notification.Name("ManicN64InputTraceNotification"), object: nil, queue: .main) { [weak self] notification in
+            guard let self,
+                  let message = notification.userInfo?["message"] as? String else { return }
+
+            self.n64InputTraceMessages.append(message)
+            if self.n64InputTraceMessages.count > 8 {
+                self.n64InputTraceMessages.removeFirst(self.n64InputTraceMessages.count - 8)
+            }
+            self.renderN64StatusLabel()
+        }
+
+        refreshN64RuntimeStatusIfNeeded(delay: 0.5)
+    }
+
+    private func setupN64DirectGameplayReceiverIfNeeded() {
+        guard manicGame.gameType == .n64 else { return }
+        controllerView.addReceiver(n64DirectGameplayReceiver)
+    }
+
+    private func renderN64StatusLabel() {
+        guard let label = n64InputTraceLabel else { return }
+
+        if n64InputTraceMessages.isEmpty {
+            label.text = n64StatusLine
+        } else {
+            label.text = ([n64StatusLine] + n64InputTraceMessages).joined(separator: "\n")
+        }
+    }
+
+    private func refreshN64RuntimeStatusIfNeeded(delay: TimeInterval) {
+        guard manicGame.gameType == .n64 else { return }
+
+        DispatchQueue.main.asyncAfter(delay: delay) { [weak self] in
+            guard let self else { return }
+
+            let coreName = LibretroCore.Cores.Mupen64PlushNext.name
+            let requestedRdp = self.manicGame.isN64ParaLLEl ? "parallel" : "gliden64"
+            let requestedRsp = self.preferredN64RSPPlugin()
+            let appliedRdp = LibretroCore.sharedInstance().coreConfigValue(coreName, key: "mupen64plus-rdp-plugin") ?? "?"
+            let appliedRsp = LibretroCore.sharedInstance().coreConfigValue(coreName, key: "mupen64plus-rsp-plugin") ?? "?"
+            let appliedCpu = LibretroCore.sharedInstance().coreConfigValue(coreName, key: "mupen64plus-cpucore") ?? "?"
+            let videoDriver = LibretroCore.sharedInstance().libretroRuntimeVideoDriver() ?? (LibretroCore.sharedInstance().libretroConfigValue("video_driver") ?? "?")
+            let runtimeRdp = LibretroCore.sharedInstance().n64RuntimeRDPPlugin() ?? "?"
+            let runtimeRsp = LibretroCore.sharedInstance().n64RuntimeRSPPlugin() ?? "?"
+            let parallelStatus = LibretroCore.sharedInstance().n64ParallelStatus() ?? "-"
+            self.n64StatusLine = "PRDPv17 req:\(requestedRdp)/\(requestedRsp) cfg:\(appliedRdp)/\(appliedRsp) run:\(runtimeRdp)/\(runtimeRsp) cpu:\(appliedCpu) vid:\(videoDriver) par:\(parallelStatus)"
+            self.renderN64StatusLabel()
         }
     }
     
@@ -2272,9 +2503,7 @@ extension PlayViewController {
     //加载默认配置
     private func loadConfig() {
         //设置按钮隐藏
-        if let forceFullSkin = manicGame.getExtraBool(key: ExtraKey.forceFullSkin.rawValue), forceFullSkin {
-            manicGame.forceFullSkin = forceFullSkin
-        }
+        manicGame.forceFullSkin = manicGame.getExtraBool(key: ExtraKey.forceFullSkin.rawValue) ?? false
         
         //加载存档
         if let saveState = loadSaveState {
@@ -2478,9 +2707,7 @@ extension PlayViewController {
                     "vbam_palettes": manicGame.pallete.optionForVBAM], reload: false)
             }
         } else if manicGame.gameType == .n64 {
-            LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.Mupen64PlushNext.name, key: "mupen64plus-rdp-plugin", value: manicGame.isN64ParaLLEl ? "parallel" : "gliden64", reload: false)
-            updateN64Resolution(manicGame.resolution, reload: false)
-            LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.Mupen64PlushNext.name, key: "mupen64plus-pak1", value: manicGame.hasTransferPak ? "transfer" : "memory", reload: false)
+            applyN64CoreConfig(resolution: manicGame.resolution, pak: manicGame.hasTransferPak ? "transfer" : "memory", reload: false)
         } else if manicGame.gameType == .vb {
             LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.BeetleVB.name, key: "vb_color_mode", value: manicGame.pallete.paletteTitleForVB, reload: false)
         } else if manicGame.gameType == .pm {
@@ -2781,11 +3008,7 @@ extension PlayViewController {
                     "vbam_palettes": "black and white"], reload: false)
             }
         } else if manicGame.gameType == .n64 {
-            LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.Mupen64PlushNext.name, configs:
-                                                        ["mupen64plus-43screensize": "640x480",
-                                                         "mupen64plus-rdp-plugin": "gliden64",
-                                                         "mupen64plus-pak1": "memory"],
-                                                       reload: false)
+            applyN64CoreConfig(resolution: .one, pak: "memory", reload: false)
         } else if manicGame.gameType == .vb {
             LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.BeetleVB.name, key: "vb_color_mode", value: manicGame.pallete.paletteTitleForVB, reload: false)
         } else if manicGame.gameType == .pm {
@@ -2970,7 +3193,6 @@ extension PlayViewController {
     private func updateSkin() {
         
         func setPreferredSkin() {
-            showSkinButtons()
             isFullScreen = false
             var initGameType: GameType?
             var supportGameTypes: [GameType]?
@@ -3005,6 +3227,7 @@ extension PlayViewController {
                     controllerView.controllerSkin = controllerSkin
                 }
             }
+            showSkinButtons()
         }
         
 #if !targetEnvironment(simulator)
@@ -3713,8 +3936,6 @@ extension PlayViewController {
     }
     
     private func showSkinButtons() {
-        guard isFullScreen else { return }
-        
         for view in controllerView.contentView.subviews {
             if let buttonsDynamicEffectView = view as? ButtonsDynamicEffectView {
                 for dynamicEffectView in  buttonsDynamicEffectView.itemViews {
@@ -3773,6 +3994,38 @@ extension PlayViewController {
             }
             LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.Mupen64PlushNext.name, key: "mupen64plus-43screensize", value: option, reload: reload)
         }
+    }
+
+    private func preferredN64RSPPlugin() -> String {
+        return manicGame.isN64ParaLLEl ? "cxd4" : "hle"
+    }
+
+    private func applyN64CoreConfig(resolution: GameSetting.Resolution, pak: String, reload: Bool) {
+        let cpuCore = manicGame.jit ? "dynamic_recompiler" : "cached_interpreter"
+        let rdpPlugin = manicGame.isN64ParaLLEl ? "parallel" : "gliden64"
+        let rspPlugin = preferredN64RSPPlugin()
+
+        if manicGame.isN64ParaLLEl {
+            LibretroCore.sharedInstance().updateLibretroConfigs([
+                "video_driver": "vulkan",
+                "driver_switch_enable": "true"
+            ])
+        } else {
+            LibretroCore.sharedInstance().updateLibretroConfigs([
+                "video_driver": "gl",
+                "driver_switch_enable": "false"
+            ])
+        }
+
+        LibretroCore.sharedInstance().updateConfig(LibretroCore.Cores.Mupen64PlushNext.name, configs: [
+            "mupen64plus-cpucore": cpuCore,
+            "mupen64plus-rdp-plugin": rdpPlugin,
+            "mupen64plus-rsp-plugin": rspPlugin,
+            "mupen64plus-pak1": pak
+        ], reload: false)
+
+        updateN64Resolution(resolution, reload: reload)
+        refreshN64RuntimeStatusIfNeeded(delay: 0.2)
     }
     
     private func updateDCResolution(_ resolution: GameSetting.Resolution, reload: Bool) {
@@ -4005,7 +4258,8 @@ extension PlayViewController {
     private func updateNDSCursor() {
         guard manicGame.gameType == .ds else { return }
         if manicGame.defaultCore == 0 {
-            if ExternalGameControllerUtils.shared.linkedControllers.count > 0 || ExternalSceneDelegate.isAirPlaying {
+            let hasMFiController = hasConnectedMFiController()
+            if hasMFiController || ExternalSceneDelegate.isAirPlaying {
                 //如果ds模式下连接上外置控制器，支持右摇杆控制光标移动 L3确定
                 LibretroCore.sharedInstance().updateRunningCoreConfigs(["melonds_show_cursor": "always"], flush: false)
             } else {

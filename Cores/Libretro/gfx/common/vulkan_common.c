@@ -21,6 +21,10 @@
 #include <retro_timers.h>
 #include <retro_math.h>
 
+#if defined(__APPLE__)
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 #ifdef HAVE_CONFIG_H
 #include "../../config.h"
 #endif
@@ -52,6 +56,10 @@ static dylib_t                       vulkan_library;
 static VkInstance                    cached_instance_vk;
 static VkDevice                      cached_device_vk;
 static retro_vulkan_destroy_device_t cached_destroy_device_vk;
+
+#if defined(__APPLE__)
+static dylib_t vulkan_load_moltenvk_from_bundle(void);
+#endif
 
 #if 0
 #define WSI_HARDENING_TEST
@@ -2373,6 +2381,10 @@ bool vulkan_context_init(gfx_ctx_vulkan_data_t *vk,
       if (__builtin_available(macOS 10.15, iOS 13, tvOS 12, *))
          vulkan_library = dylib_load("MoltenVK");
       if (!vulkan_library)
+         vulkan_library = dylib_load("@rpath/MoltenVK.framework/MoltenVK");
+      if (!vulkan_library)
+         vulkan_library = vulkan_load_moltenvk_from_bundle();
+      if (!vulkan_library)
          vulkan_library = dylib_load("MoltenVK-v1.2.7.framework");
 #else
       vulkan_library = dylib_load("libvulkan.so.1");
@@ -2949,3 +2961,39 @@ void vulkan_framebuffer_copy(VkImage image,
          VK_QUEUE_FAMILY_IGNORED,
          VK_QUEUE_FAMILY_IGNORED);
 }
+#if defined(__APPLE__)
+static dylib_t vulkan_load_moltenvk_from_bundle(void)
+{
+   CFBundleRef main_bundle = CFBundleGetMainBundle();
+   if (!main_bundle)
+      return NULL;
+
+   CFURLRef frameworks_url = CFBundleCopyPrivateFrameworksURL(main_bundle);
+   if (!frameworks_url)
+      return NULL;
+
+   char frameworks_path[PATH_MAX_LENGTH];
+   Boolean ok = CFURLGetFileSystemRepresentation(frameworks_url, true, (UInt8 *)frameworks_path, sizeof(frameworks_path));
+   CFRelease(frameworks_url);
+   if (!ok)
+      return NULL;
+
+   char moltenvk_path[PATH_MAX_LENGTH];
+   size_t len = strlcpy(moltenvk_path, frameworks_path, sizeof(moltenvk_path));
+   if (len >= sizeof(moltenvk_path))
+      return NULL;
+
+   if (len > 0 && moltenvk_path[len - 1] != '/')
+   {
+      if (len + 1 >= sizeof(moltenvk_path))
+         return NULL;
+      moltenvk_path[len++] = '/';
+      moltenvk_path[len] = '\0';
+   }
+
+   if (strlcpy(moltenvk_path + len, "MoltenVK.framework/MoltenVK", sizeof(moltenvk_path) - len) >= sizeof(moltenvk_path) - len)
+      return NULL;
+
+   return dylib_load(moltenvk_path);
+}
+#endif

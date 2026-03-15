@@ -1,6 +1,15 @@
 {
-  "originHash" : "796a1dce3d607ec116781613fc5b1695b82d4084651fdb2683b70fa028ed0857",
+  "originHash" : "014dbe0eed579797d32e11b7efbe36b9d88799b7e0adaf95052aa7c7fbfae30d",
   "pins" : [
+    {
+      "identity" : "bluruikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/TimOliver/BlurUIKit.git",
+      "state" : {
+        "revision" : "c25ddfec89088dd8e7dac1f85bbe84bb91b449a2",
+        "version" : "1.4.0"
+      }
+    },
     {
       "identity" : "colorfulx",
       "kind" : "remoteSourceControl",
@@ -56,6 +65,15 @@
       }
     },
     {
+      "identity" : "plzmasdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/OlehKulykov/PLzmaSDK.git",
+      "state" : {
+        "revision" : "66a9a1a309905dd257ac649c1876dd9806aeeec0",
+        "version" : "1.5.1"
+      }
+    },
+    {
       "identity" : "r.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mac-cain13/R.swift",
@@ -101,12 +119,30 @@
       }
     },
     {
+      "identity" : "swiftclouddrive",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/drewmccormack/SwiftCloudDrive.git",
+      "state" : {
+        "revision" : "4f2f38724d6a8724f727c1bc10d9cddd17fbb9e8",
+        "version" : "1.4.4"
+      }
+    },
+    {
       "identity" : "swiftsdl2",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ctreffs/SwiftSDL2",
       "state" : {
         "branch" : "master",
         "revision" : "df30583c88c8bb7bccaf8875f0ec4a39cb149fba"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "dba183c96b2da4e4b80bb31b1e2e59cb9542b8fc",
+        "version" : "2.13.0"
       }
     },
     {

@@ -75,6 +75,7 @@ public final class EmulatorCore: NSObject {
     
     private var previousState = State.stopped
     private var preFrameTime: TimeInterval? = nil
+    private var acceptsControllerInput = false
     
     private var resumeInputDispatchGroup: DispatchGroup?
     private let resumeInputsQueue = DispatchQueue(label: "com.aoshuang.EmulatorCore.EmulatorCore.reactivateInputsQueue", attributes: [.concurrent])
@@ -129,9 +130,11 @@ public final class EmulatorCore: NSObject {
 public extension EmulatorCore {
     @discardableResult func start() -> Bool {
         guard _state == .stopped else { return false }
-        
+
         emulationLock.lock()
-        
+
+        acceptsControllerInput = false
+
         _state = .running
         defer { state = _state }
         
@@ -145,7 +148,8 @@ public extension EmulatorCore {
         audioManager.start()
         manicCore.emulatorConnector.start(withGameURL: game.fileURL)
         manicCore.emulatorConnector.loadGameSave(from: gameSaveURL)
-        
+        acceptsControllerInput = true
+
         runGameLoop()
         waitingForUpdate()
         
@@ -160,8 +164,9 @@ public extension EmulatorCore {
         emulationLock.lock()
         
         let isRunning = state == .running
-        
+
         _state = .stopped
+        acceptsControllerInput = false
         defer { state = _state }
         
         if isRunning
@@ -186,6 +191,7 @@ public extension EmulatorCore {
         emulationLock.lock()
         
         _state = .paused
+        acceptsControllerInput = false
         defer { state = _state }
         
         waitingForUpdate()
@@ -213,9 +219,10 @@ public extension EmulatorCore {
         } else {
             audioManager.isEnabled = false
         }
-        
+
         manicCore.emulatorConnector.resume()
-        
+        acceptsControllerInput = true
+
         runGameLoop()
         waitingForUpdate()
         
@@ -426,15 +433,21 @@ public extension EmulatorCore {
 }
 
 extension EmulatorCore: ControllerReceiverProtocol {
-    public func gameController(_ gameController: GameController, didActivate controllerInput: Input, value: Double) {
-        // Ignore controllers without assigned playerIndex.
-        guard let playerIndex = gameController.playerIndex else { return }
-        
-        if !gameViews.isEmpty {
-            // Ignore unless there is a game screen in the active scene.
-            guard gameViews.contains(where: { $0.window?.windowScene?.isKeyBoardFocus == true }) else { return }
+    private func hasActiveGameScene() -> Bool {
+        guard !gameViews.isEmpty else { return true }
+
+        return gameViews.contains { gameView in
+            guard let scene = gameView.window?.windowScene else { return false }
+            return scene.activationState == .foregroundActive
         }
-        
+    }
+
+    public func gameController(_ gameController: GameController, didActivate controllerInput: Input, value: Double) {
+        guard acceptsControllerInput else { return }
+
+        // Fallback to player 0 if index is temporarily unavailable.
+        let playerIndex = gameController.playerIndex ?? 0
+
         gameControllers.add(gameController)
         
 //        if let input = mappedInput(for: controllerInput) {
@@ -445,6 +458,10 @@ extension EmulatorCore: ControllerReceiverProtocol {
         
         
         guard let input = mappedInput(for: controllerInput), input.type == .game(gameType) else { return }
+
+        if gameType.rawValue == "public.aoshuang.game.n64" {
+            NotificationCenter.default.post(name: Notification.Name("ManicN64InputTraceNotification"), object: nil, userInfo: ["message": String(format: "EMU on %@ -> %@ p%d v%.2f", controllerInput.stringValue, input.stringValue, playerIndex, value)])
+        }
         
         // If any of game controller's continue inputs map to input, treat input as continue.
         let continueControllerInput = gameController.continueInputs.first { (continueInput, value) in
@@ -507,23 +524,62 @@ extension EmulatorCore: ControllerReceiverProtocol {
     }
     
     public func gameController(_ gameController: GameController, didDeactivate input: Input) {
-        // Ignore controllers without assigned playerIndex.
-        guard let playerIndex = gameController.playerIndex else { return }
-        
-        if !gameViews.isEmpty {
-            // Ignore unless there is a game screen in the active scene.
-            guard gameViews.contains(where: { $0.window?.windowScene?.isKeyBoardFocus == true }) else { return }
-        }
-        
+        guard acceptsControllerInput else { return }
+
+        // Fallback to player 0 if index is temporarily unavailable.
+        let playerIndex = gameController.playerIndex ?? 0
+
         guard let input = mappedInput(for: input), input.type == .game(gameType) else { return }
+
+        if gameType.rawValue == "public.aoshuang.game.n64" {
+            NotificationCenter.default.post(name: Notification.Name("ManicN64InputTraceNotification"), object: nil, userInfo: ["message": "EMU off \(input.stringValue) p\(playerIndex)"])
+        }
         
         manicCore.emulatorConnector.deactivateInput(input.intValue!, playerIndex: playerIndex)
     }
     
     private func mappedInput(for input: Input) -> Input? {
-        guard let standardInput = StandardGameControllerInput(input: input) else { return input }
-        
-        let mappedInput = standardInput.input(for: gameType)
-        return mappedInput
+        if input.type == .game(gameType) {
+            return input
+        }
+
+        let standardInput: StandardGameControllerInput?
+
+        if input.type == .controller(.mfi) {
+            switch input.stringValue {
+            case "menu": standardInput = .menu
+            case "up": standardInput = .up
+            case "down": standardInput = .down
+            case "left": standardInput = .left
+            case "right": standardInput = .right
+            case "leftThumbstickUp": standardInput = .leftThumbstickUp
+            case "leftThumbstickDown": standardInput = .leftThumbstickDown
+            case "leftThumbstickLeft": standardInput = .leftThumbstickLeft
+            case "leftThumbstickRight": standardInput = .leftThumbstickRight
+            case "rightThumbstickUp": standardInput = .rightThumbstickUp
+            case "rightThumbstickDown": standardInput = .rightThumbstickDown
+            case "rightThumbstickLeft": standardInput = .rightThumbstickLeft
+            case "rightThumbstickRight": standardInput = .rightThumbstickRight
+            case "a": standardInput = .a
+            case "b": standardInput = .b
+            case "x": standardInput = .x
+            case "y": standardInput = .y
+            case "leftShoulder": standardInput = .l1
+            case "leftTrigger": standardInput = .l2
+            case "rightShoulder": standardInput = .r1
+            case "rightTrigger": standardInput = .r2
+            case "start": standardInput = .start
+            case "select": standardInput = .select
+            case "leftThumbstickButton": standardInput = .l3
+            case "rightThumbstickButton": standardInput = .r3
+            default: standardInput = nil
+            }
+        } else {
+            standardInput = StandardGameControllerInput(stringValue: input.stringValue)
+        }
+
+        guard let standardInput else { return nil }
+
+        return standardInput.input(for: gameType)
     }
 }

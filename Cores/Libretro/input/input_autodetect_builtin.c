@@ -805,5 +805,6 @@ const char* const input_builtin_autoconfs[] =
 #if HAVE_MFI
    DECL_AUTOCONF_DEVICE("mFi Controller", "mfi", MFI_DEFAULT_BINDS),
 #endif
+   DECL_AUTOCONF_DEVICE("Manic Controller", "manic", MFI_DEFAULT_BINDS),
    NULL
 };

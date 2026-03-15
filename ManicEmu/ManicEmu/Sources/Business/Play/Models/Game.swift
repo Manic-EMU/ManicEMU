@@ -338,7 +338,11 @@ class Game: Object, ObjectUpdatable {
                 return Bundle.main.path(forResource: "mednafen.saturn.libretro", ofType: "framework", inDirectory: "Frameworks")
             }
         } else if gameType == .n64 {
-            return Bundle.main.path(forResource: "mupen64plus.next.libretro", ofType: "framework", inDirectory: "Frameworks")
+            if jit {
+                return Bundle.main.path(forResource: "mupen64plus.next.jit.libretro", ofType: "framework", inDirectory: "Frameworks")
+            } else {
+                return Bundle.main.path(forResource: "mupen64plus.next.libretro", ofType: "framework", inDirectory: "Frameworks")
+            }
         } else if gameType == .vb {
             return Bundle.main.path(forResource: "mednafen.vb.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .pm {

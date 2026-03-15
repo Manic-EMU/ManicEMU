@@ -770,6 +770,9 @@ static int32_t input_state_wrap(
 {
    int32_t ret = 0;
 
+   const bool joypad_is_manic = joypad && string_is_equal(joypad->ident, "manic");
+   const bool sec_joypad_is_manic = sec_joypad && string_is_equal(sec_joypad->ident, "manic");
+
    if (!binds)
       return 0;
 
@@ -788,6 +791,14 @@ static int32_t input_state_wrap(
       {
          /* Do a bitwise OR to combine both input
           * states together */
+         uint16_t port = joypad_info->joy_idx;
+
+         if (joypad_is_manic && id < RARCH_FIRST_CUSTOM_BIND && joypad->button(port, (uint16_t)id))
+            return 1;
+
+         if (sec_joypad_is_manic && id < RARCH_FIRST_CUSTOM_BIND && sec_joypad->button(port, (uint16_t)id))
+            return 1;
+
          if (binds[_port][id].valid)
          {
             /* Auto-binds are per joypad, not per user. */
@@ -795,7 +806,6 @@ static int32_t input_state_wrap(
             const uint64_t bind_joyaxis    = binds[_port][id].joyaxis;
             const uint64_t autobind_joykey = joypad_info->auto_binds[id].joykey;
             const uint64_t autobind_joyaxis= joypad_info->auto_binds[id].joyaxis;
-            uint16_t port                  = joypad_info->joy_idx;
             float axis_threshold           = joypad_info->axis_threshold;
             const uint64_t joykey          = (bind_joykey != NO_BTN)
                ? bind_joykey  : autobind_joykey;
@@ -994,6 +1004,29 @@ static int16_t input_joypad_analog_axis(
 
    bind_minus   = &binds[ident_minus];
    bind_plus    = &binds[ident_plus];
+
+   if (string_is_equal(drv->ident, "manic"))
+   {
+      uint32_t axis_plus;
+      uint32_t axis_minus;
+
+      switch (idx)
+      {
+         case RETRO_DEVICE_INDEX_ANALOG_LEFT:
+            axis_plus  = (ident == RETRO_DEVICE_ID_ANALOG_X) ? AXIS_POS(0) : AXIS_POS(1);
+            axis_minus = (ident == RETRO_DEVICE_ID_ANALOG_X) ? AXIS_NEG(0) : AXIS_NEG(1);
+            break;
+         case RETRO_DEVICE_INDEX_ANALOG_RIGHT:
+            axis_plus  = (ident == RETRO_DEVICE_ID_ANALOG_X) ? AXIS_POS(2) : AXIS_POS(3);
+            axis_minus = (ident == RETRO_DEVICE_ID_ANALOG_X) ? AXIS_NEG(2) : AXIS_NEG(3);
+            break;
+         default:
+            return 0;
+      }
+
+      return abs(drv->axis(joypad_info->joy_idx, axis_plus))
+           - abs(drv->axis(joypad_info->joy_idx, axis_minus));
+   }
 
    if (!bind_minus->valid || !bind_plus->valid)
       return 0;

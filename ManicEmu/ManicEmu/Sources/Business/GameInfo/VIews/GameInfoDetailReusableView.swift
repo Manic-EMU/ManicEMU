@@ -289,8 +289,9 @@ class GameInfoDetailReusableView: UICollectionReusableView {
     
     private lazy var jitButton: SymbolButton = {
         let title: String
+        let allowExternalN64JIT = game?.gameType == .n64
         let jitAvailable = LibretroCore.jitAvailable()
-        if jitAvailable {
+        if jitAvailable || allowExternalN64JIT {
             if game?.jit ?? false {
                 title = "JIT \(R.string.localizable.on())"
             } else {
@@ -304,7 +305,7 @@ class GameInfoDetailReusableView: UICollectionReusableView {
         view.titleLabel.numberOfLines = 0
         view.addTapGesture { [weak self] gesture in
             guard let self = self else { return }
-            if jitAvailable {
+            if jitAvailable || allowExternalN64JIT {
                 self.jitContextMenuButton.triggerTapGesture()
             } else {
                 UIView.makeToast(message: R.string.localizable.jitNoSupportDesc())
@@ -1592,16 +1593,30 @@ class GameInfoDetailReusableView: UICollectionReusableView {
     
     private func updateN64FunctionButton() {
         manualButton.removeFromSuperview()
+        jitContextMenuButton.removeFromSuperview()
+        jitButton.removeFromSuperview()
         transferPakContextMenuButton.removeFromSuperview()
         transferPakButton.removeFromSuperview()
         rdpPluginContextMenuButton.removeFromSuperview()
         rdpPluginButton.removeFromSuperview()
         if let lastView = functionButtonContainerView.subviews.last {
+            //JIT
+            functionButtonContainerView.addSubview(jitContextMenuButton)
+            functionButtonContainerView.addSubview(jitButton)
+            jitButton.snp.makeConstraints { make in
+                make.leading.equalTo(lastView.snp.trailing).offset(Constants.Size.ContentSpaceMin)
+                make.centerY.equalToSuperview()
+                make.size.equalTo(Constants.Size.IconSizeHuge)
+            }
+            jitContextMenuButton.snp.makeConstraints { make in
+                make.edges.equalTo(jitButton)
+            }
+            
             //transferPak
             functionButtonContainerView.addSubview(transferPakContextMenuButton)
             functionButtonContainerView.addSubview(transferPakButton)
             transferPakButton.snp.makeConstraints { make in
-                make.leading.equalTo(lastView.snp.trailing).offset(Constants.Size.ContentSpaceMin)
+                make.leading.equalTo(jitButton.snp.trailing).offset(Constants.Size.ContentSpaceMin)
                 make.centerY.equalToSuperview()
                 make.size.equalTo(Constants.Size.IconSizeHuge)
             }

@@ -83,6 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //内购初始化
         PurchaseManager.setup()
+        ExternalGameControllerUtils.shared.forceSetPlayerIndex = PurchaseManager.isMember ? 0 : nil
         
         //监听会员状态变化
         NotificationCenter.default.addObserver(forName: Constants.NotificationName.MembershipChange, object: nil, queue: .main) { _ in

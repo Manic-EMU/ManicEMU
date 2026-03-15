@@ -120,12 +120,50 @@ public class MFiGameController: NSObject, GameController
     }
     
     public var deadZone: Float = 0.0
-    
+
     public let inputType: GameControllerInputType = .mfi
-        
+
+    private static func builtInDefaultInputMapping() -> GameControllerInputMapping {
+        var inputMapping = GameControllerInputMapping(gameControllerInputType: .mfi)
+
+        inputMapping.set(StandardGameControllerInput.menu, forControllerInput: MFiGameController.Input.menu)
+        inputMapping.set(StandardGameControllerInput.up, forControllerInput: MFiGameController.Input.up)
+        inputMapping.set(StandardGameControllerInput.down, forControllerInput: MFiGameController.Input.down)
+        inputMapping.set(StandardGameControllerInput.left, forControllerInput: MFiGameController.Input.left)
+        inputMapping.set(StandardGameControllerInput.right, forControllerInput: MFiGameController.Input.right)
+
+        inputMapping.set(StandardGameControllerInput.leftThumbstickUp, forControllerInput: MFiGameController.Input.leftThumbstickUp)
+        inputMapping.set(StandardGameControllerInput.leftThumbstickDown, forControllerInput: MFiGameController.Input.leftThumbstickDown)
+        inputMapping.set(StandardGameControllerInput.leftThumbstickLeft, forControllerInput: MFiGameController.Input.leftThumbstickLeft)
+        inputMapping.set(StandardGameControllerInput.leftThumbstickRight, forControllerInput: MFiGameController.Input.leftThumbstickRight)
+
+        inputMapping.set(StandardGameControllerInput.rightThumbstickUp, forControllerInput: MFiGameController.Input.rightThumbstickUp)
+        inputMapping.set(StandardGameControllerInput.rightThumbstickDown, forControllerInput: MFiGameController.Input.rightThumbstickDown)
+        inputMapping.set(StandardGameControllerInput.rightThumbstickLeft, forControllerInput: MFiGameController.Input.rightThumbstickLeft)
+        inputMapping.set(StandardGameControllerInput.rightThumbstickRight, forControllerInput: MFiGameController.Input.rightThumbstickRight)
+
+        inputMapping.set(StandardGameControllerInput.a, forControllerInput: MFiGameController.Input.a)
+        inputMapping.set(StandardGameControllerInput.b, forControllerInput: MFiGameController.Input.b)
+        inputMapping.set(StandardGameControllerInput.x, forControllerInput: MFiGameController.Input.x)
+        inputMapping.set(StandardGameControllerInput.y, forControllerInput: MFiGameController.Input.y)
+
+        inputMapping.set(StandardGameControllerInput.l1, forControllerInput: MFiGameController.Input.leftShoulder)
+        inputMapping.set(StandardGameControllerInput.l2, forControllerInput: MFiGameController.Input.leftTrigger)
+        inputMapping.set(StandardGameControllerInput.r1, forControllerInput: MFiGameController.Input.rightShoulder)
+        inputMapping.set(StandardGameControllerInput.r2, forControllerInput: MFiGameController.Input.rightTrigger)
+
+        inputMapping.set(StandardGameControllerInput.start, forControllerInput: MFiGameController.Input.start)
+        inputMapping.set(StandardGameControllerInput.select, forControllerInput: MFiGameController.Input.select)
+        inputMapping.set(StandardGameControllerInput.l3, forControllerInput: MFiGameController.Input.leftThumbstickButton)
+        inputMapping.set(StandardGameControllerInput.r3, forControllerInput: MFiGameController.Input.rightThumbstickButton)
+
+        return inputMapping
+    }
+         
     public private(set) lazy var defaultInputMapping: GameControllerInputMappingBase? = {
         guard let fileURL = Bundle.resources.url(forResource: "MFiGameController", withExtension: "keymapping") else {
-            fatalError("MFiGameController.keymapping does not exist.")
+            print("MFiGameController.keymapping is missing, using built-in defaults.")
+            return Self.builtInDefaultInputMapping()
         }
         
         do
@@ -136,7 +174,8 @@ public class MFiGameController: NSObject, GameController
         catch
         {
             print(error)
-            fatalError("MFiGameController.keymapping does not exist.")
+            print("Falling back to built-in MFi controller mapping.")
+            return Self.builtInDefaultInputMapping()
         }
     }()
     
@@ -148,7 +187,8 @@ public class MFiGameController: NSObject, GameController
         
         super.init()
         
-        let inputChangedHandler: (_ input: MFiGameController.Input, _ pressed: Bool) -> Void = { [unowned self] (input, pressed) in
+        let inputChangedHandler: (_ input: MFiGameController.Input, _ pressed: Bool) -> Void = { [weak self] (input, pressed) in
+            guard let self = self else { return }
             if pressed
             {
                 self.activate(input)
@@ -159,7 +199,8 @@ public class MFiGameController: NSObject, GameController
             }
         }
         
-        let thumbstickChangedHandler: (_ input1: MFiGameController.Input, _ input2: MFiGameController.Input, _ value: Float) -> Void = { [unowned self] (input1, input2, value) in
+        let thumbstickChangedHandler: (_ input1: MFiGameController.Input, _ input2: MFiGameController.Input, _ value: Float) -> Void = { [weak self] (input1, input2, value) in
+            guard let self = self else { return }
             
             switch value
             {
