@@ -71,12 +71,36 @@ public class KeyboardGameController: UIResponder, GameController
     }
     
     public var playerIndex: Int?
-    
+
     public let inputType: GameControllerInputType = .keyboard
+
+    private static func builtInDefaultInputMapping() -> GameControllerInputMapping {
+        var inputMapping = GameControllerInputMapping(gameControllerInputType: .keyboard)
+
+        inputMapping.set(StandardGameControllerInput.up, forControllerInput: KeyboardGameController.Input.up)
+        inputMapping.set(StandardGameControllerInput.down, forControllerInput: KeyboardGameController.Input.down)
+        inputMapping.set(StandardGameControllerInput.left, forControllerInput: KeyboardGameController.Input.left)
+        inputMapping.set(StandardGameControllerInput.right, forControllerInput: KeyboardGameController.Input.right)
+
+        inputMapping.set(StandardGameControllerInput.menu, forControllerInput: KeyboardGameController.Input.escape)
+        inputMapping.set(StandardGameControllerInput.a, forControllerInput: KeyboardGameController.Input.space)
+        inputMapping.set(StandardGameControllerInput.start, forControllerInput: KeyboardGameController.Input.return)
+        inputMapping.set(StandardGameControllerInput.select, forControllerInput: KeyboardGameController.Input.tab)
+
+        inputMapping.set(StandardGameControllerInput.a, forControllerInput: KeyboardGameController.Input("z"))
+        inputMapping.set(StandardGameControllerInput.b, forControllerInput: KeyboardGameController.Input("x"))
+        inputMapping.set(StandardGameControllerInput.x, forControllerInput: KeyboardGameController.Input("s"))
+        inputMapping.set(StandardGameControllerInput.y, forControllerInput: KeyboardGameController.Input("a"))
+        inputMapping.set(StandardGameControllerInput.l1, forControllerInput: KeyboardGameController.Input("q"))
+        inputMapping.set(StandardGameControllerInput.r1, forControllerInput: KeyboardGameController.Input("w"))
+
+        return inputMapping
+    }
     
     public private(set) lazy var defaultInputMapping: GameControllerInputMappingBase? = {
         guard let fileURL = Bundle.resources.url(forResource: "KeyboardGameController", withExtension: "keymapping") else {
-            fatalError("KeyboardGameController.keymapping does not exist.")
+            print("KeyboardGameController.keymapping is missing, using built-in defaults.")
+            return Self.builtInDefaultInputMapping()
         }
         
         do
@@ -87,8 +111,8 @@ public class KeyboardGameController: UIResponder, GameController
         catch
         {
             print(error)
-            
-            fatalError("KeyboardGameController.keymapping does not exist.")
+            print("Falling back to built-in keyboard mapping.")
+            return Self.builtInDefaultInputMapping()
         }
     }()
     

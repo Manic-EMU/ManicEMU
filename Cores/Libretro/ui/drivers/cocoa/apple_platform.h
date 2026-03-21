@@ -140,10 +140,15 @@ UINavigationControllerDelegate> {
 - (void)setRespectSilentMode:(BOOL)respect;
 - (NSString * _Nullable)coreConfigValue:(NSString * _Nonnull)coreName key:(NSString * _Nonnull)key;
 - (NSString * _Nullable)libretroConfigValue:(NSString * _Nonnull)key;
+- (NSString * _Nullable)libretroRuntimeVideoDriver;
+- (NSString * _Nullable)n64RuntimeRDPPlugin;
+- (NSString * _Nullable)n64RuntimeRSPPlugin;
+- (NSString * _Nullable)n64ParallelStatus;
 - (void)setDiskIndex:(unsigned)index delay:(BOOL)delay;
 - (NSUInteger)getCurrentDiskIndex;
 - (NSUInteger)getDiskCount;
 - (void)setPSXAnalog:(BOOL)isAnalog;
+- (void)setN64ControllerDevice;
 - (void)setReloadDelay:(double)delay;
 - (void)turnOffHardcode;
 - (void)resetRetroAchievements;

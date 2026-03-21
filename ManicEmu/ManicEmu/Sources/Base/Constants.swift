@@ -355,6 +355,7 @@ struct Constants {
         static let ShowRequestReviewDate = "ShowRequestReviewDate"
         static let SystemCoreVersion = "SystemCoreVersion"
         static let SystemCoreBuildVersion = "SystemCoreBuildVersion"
+        static let SystemCoreBundleSize = "SystemCoreBundleSize"
         static let HasShow3DSPlayAlert = "HasShow3DSPlayAlert"
         static let HasShow3DSNotSupportAlert = "HasShow3DSNotSupportAlert"
         static let FlexSkinFirstTimeGuide = "FlexSkinFirstTimeGuide"

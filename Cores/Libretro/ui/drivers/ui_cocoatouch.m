@@ -27,6 +27,7 @@
 #include <queues/task_queue.h>
 #include <string/stdstring.h>
 #include <retro_timers.h>
+#include <dynamic/dylib.h>
 
 #include "cocoa/cocoa_common.h"
 #include "cocoa/apple_platform.h"
@@ -34,6 +35,7 @@
 #include "../../audio/audio_driver.h"
 #include "../../configuration.h"
 #include "../../frontend/frontend.h"
+#include "../../input/input_driver.h"
 #include "../../input/drivers/cocoa_input.h"
 #include "../../input/drivers_keyboard/keyboard_event_apple.h"
 #include "../../retroarch.h"
@@ -58,6 +60,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <CoreFoundation/CoreFoundation.h>
+#import <dlfcn.h>
 
 #import <MetricKit/MetricKit.h>
 #import <MetricKit/MXMetricManager.h>
@@ -995,6 +998,62 @@ enum
 
 static BOOL LibretroInitial = false;
 static BOOL RespectSilentMode = false;
+static void *loaded_core_handle = NULL;
+
+static void ensure_manic_joypad_driver(void) {
+    settings_t *settings = config_get_ptr();
+    if (!settings) {
+        return;
+    }
+
+    if (!string_is_equal(settings->arrays.input_joypad_driver, "manic")) {
+        configuration_set_string(settings, settings->arrays.input_joypad_driver, "manic");
+    }
+
+    joypad_driver_reinit(NULL, "manic");
+}
+
+static NSString * _Nullable current_n64_runtime_plugin(NSString * _Nullable corePath, const char *symbolName) {
+    typedef const char *(*plugin_getter_t)(void);
+
+    plugin_getter_t getter = (plugin_getter_t)dlsym(RTLD_DEFAULT, symbolName);
+    if (getter) {
+        const char *value = getter();
+        return value ? [NSString stringWithUTF8String:value] : nil;
+    }
+
+    if (!corePath || !symbolName) {
+        return nil;
+    }
+
+    NSString *executablePath = [[NSBundle bundleWithPath:corePath] executablePath] ?: corePath;
+
+    if (!loaded_core_handle) {
+        loaded_core_handle = dlopen(executablePath.fileSystemRepresentation, RTLD_NOW | RTLD_NOLOAD);
+        if (!loaded_core_handle) {
+            loaded_core_handle = dlopen(executablePath.fileSystemRepresentation, RTLD_NOW);
+        }
+    }
+
+    if (!loaded_core_handle) {
+        return nil;
+    }
+
+    getter = (plugin_getter_t)dlsym(loaded_core_handle, symbolName);
+    if (!getter) {
+        return nil;
+    }
+
+    const char *value = getter();
+    return value ? [NSString stringWithUTF8String:value] : nil;
+}
+
+static void post_n64_input_trace(NSString *message) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"ManicN64InputTraceNotification" object:nil userInfo:@{ @"message": message }];
+    });
+}
+
 - (void)startWithCustomSaveDir:(NSString *_Nullable)customSaveDir {
     if (LibretroInitial) {
         return;
@@ -1028,6 +1087,8 @@ static BOOL RespectSilentMode = false;
     }
     
     rarch_main(argc, argv, NULL);
+    ensure_manic_joypad_driver();
+    [self updateLibretroConfig:@"input_joypad_driver" value:@"manic"];
     
     rarch_start_draw_observer();
 }
@@ -1048,6 +1109,7 @@ static BOOL RespectSilentMode = false;
     main_exit(NULL);
     self.gamePath = nil;
     self.corePath = nil;
+    loaded_core_handle = NULL;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
 }
 
@@ -1089,6 +1151,7 @@ static BOOL RespectSilentMode = false;
 }
 
 - (BOOL)loadGame:(NSString *_Nonnull)gamePath corePath:(NSString *_Nonnull)corePath completion:(void(^ _Nullable)(NSDictionary *_Nullable))completion {
+    ensure_manic_joypad_driver();
     settings_t *settings = config_get_ptr();
     settings->bools.video_font_enable = false;//禁用通知
     settings->bools.audio_respect_silent_mode = RespectSilentMode;
@@ -1108,6 +1171,11 @@ static BOOL RespectSilentMode = false;
     } else {
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:options error:&error];
     }
+
+    /* N64 JIT core probe removed: the dlopen/dlclose cycle before the real
+       load could leave JIT memory or OpenGL state in an inconsistent state,
+       causing a black screen.  RetroArch's own core loader will report
+       errors if the dylib cannot be loaded. */
     
     task_push_load_content_with_new_core_from_menu(corePath.UTF8String,
                                                    gamePath.UTF8String,
@@ -1130,6 +1198,7 @@ static BOOL RespectSilentMode = false;
 }
 
 - (void)loadCoreWithoutContent:(NSString *_Nonnull)corePath {
+    ensure_manic_joypad_driver();
     settings_t *settings = config_get_ptr();
     settings->bools.video_font_enable = false;//禁用通知
     settings->bools.audio_respect_silent_mode = RespectSilentMode;
@@ -1141,14 +1210,17 @@ static BOOL RespectSilentMode = false;
 extern void manic_input_button_event(unsigned port, unsigned button_id, bool pressed);
 extern void manic_input_analog_event(unsigned port, unsigned stick_id, float x_value, float y_value);
 - (void)pressButton:(unsigned)button playerIndex:(unsigned)playerIndex {
+    post_n64_input_trace([NSString stringWithFormat:@"LR press %u p%u", button, playerIndex]);
     manic_input_button_event(playerIndex, button, true);
 }
 
 - (void)releaseButton:(unsigned)button playerIndex:(unsigned)playerIndex {
+    post_n64_input_trace([NSString stringWithFormat:@"LR release %u p%u", button, playerIndex]);
     manic_input_button_event(playerIndex, button, false);
 }
 
 - (void)moveStick:(BOOL)isLeft x:(CGFloat)x y:(CGFloat)y playerIndex:(unsigned)playerIndex {
+    post_n64_input_trace([NSString stringWithFormat:@"LR %@ %.2f %.2f p%u", isLeft ? @"left" : @"right", x, y, playerIndex]);
     manic_input_analog_event(playerIndex, isLeft ? RETRO_DEVICE_INDEX_ANALOG_LEFT : RETRO_DEVICE_INDEX_ANALOG_RIGHT, x, y);
 }
 
@@ -1586,10 +1658,17 @@ static NSString *_Nullable needToLoadStatePath = nil;
     
     NSString *newValue = [NSString stringWithFormat:@"%dx%d", 480*resolution, 272*resolution];
     NSString *replacement = [NSString stringWithFormat:@"ppsspp_internal_resolution = \"%@\"", newValue];
-    NSString *updatedContents = [regex stringByReplacingMatchesInString:fileContents
-                                                                options:0
-                                                                  range:NSMakeRange(0, fileContents.length)
-                                                           withTemplate:replacement];
+    NSString *updatedContents = nil;
+    if ([regex numberOfMatchesInString:fileContents options:0 range:NSMakeRange(0, fileContents.length)] > 0) {
+        updatedContents = [regex stringByReplacingMatchesInString:fileContents
+                                                          options:0
+                                                            range:NSMakeRange(0, fileContents.length)
+                                                     withTemplate:replacement];
+    } else if (fileContents.length > 0) {
+        updatedContents = [fileContents stringByAppendingFormat:@"\n%@", replacement];
+    } else {
+        updatedContents = replacement;
+    }
     
     
     
@@ -1637,10 +1716,17 @@ static NSString *_Nullable needToLoadStatePath = nil;
         return;
     }
     NSString *replacement = [NSString stringWithFormat:@"%@ = \"%@\"", key, value];
-    NSString *updatedContents = [regex stringByReplacingMatchesInString:fileContents
-                                                                options:0
-                                                                  range:NSMakeRange(0, fileContents.length)
-                                                           withTemplate:replacement];
+    NSString *updatedContents = nil;
+    if ([regex numberOfMatchesInString:fileContents options:0 range:NSMakeRange(0, fileContents.length)] > 0) {
+        updatedContents = [regex stringByReplacingMatchesInString:fileContents
+                                                          options:0
+                                                            range:NSMakeRange(0, fileContents.length)
+                                                     withTemplate:replacement];
+    } else if (fileContents.length > 0) {
+        updatedContents = [fileContents stringByAppendingFormat:@"\n%@", replacement];
+    } else {
+        updatedContents = replacement;
+    }
     // 写回文件
     [updatedContents writeToFile:configFilePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
     if (reload) {
@@ -1850,6 +1936,23 @@ static NSString *_Nullable needToLoadStatePath = nil;
         return nil;
     }
     return [self configValueForKey:key inFileContents:fileContents];
+}
+
+- (NSString * _Nullable)libretroRuntimeVideoDriver {
+    const char *ident = video_driver_get_ident();
+    return ident ? [NSString stringWithUTF8String:ident] : nil;
+}
+
+- (NSString * _Nullable)n64RuntimeRDPPlugin {
+    return current_n64_runtime_plugin(self.corePath, "mupen64plus_current_rdp_plugin");
+}
+
+- (NSString * _Nullable)n64RuntimeRSPPlugin {
+    return current_n64_runtime_plugin(self.corePath, "mupen64plus_current_rsp_plugin");
+}
+
+- (NSString * _Nullable)n64ParallelStatus {
+    return current_n64_runtime_plugin(self.corePath, "mupen64plus_parallel_status");
 }
 
 - (NSString * _Nullable)configValueForKey:(NSString * _Nonnull)key inFileContents:(NSString * _Nonnull)fileContents {
@@ -2132,6 +2235,16 @@ bool set_shader_preset(const char * _Nullable preset_path)
     }
 }
 
+- (void)setN64ControllerDevice {
+    for (unsigned i = 0; i < 8; i++) {
+        retro_ctx_controller_info_t pad;
+        pad.port   = i;
+        pad.device = RETRO_DEVICE_ANALOG;
+        core_set_controller_port_device(&pad);
+        input_config_set_device(i, RETRO_DEVICE_ANALOG);
+    }
+}
+
 static double needToLoadStateDelay = 0;
 - (void)setReloadDelay:(double)delay {
     needToLoadStateDelay = delay;
@@ -2304,5 +2417,3 @@ int main(int argc, char *argv[])
    }
 }
 #endif
-
-

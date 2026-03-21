@@ -293,6 +293,22 @@ NSString * const MAMEGameFileMissingNotification = @"MAMEGameFileMissingNotifica
     return [[self getRetroArch] coreConfigValue:coreName key:key];
 }
 
+- (NSString * _Nullable)libretroRuntimeVideoDriver {
+    return [[self getRetroArch] libretroRuntimeVideoDriver];
+}
+
+- (NSString * _Nullable)n64RuntimeRDPPlugin {
+    return [[self getRetroArch] n64RuntimeRDPPlugin];
+}
+
+- (NSString * _Nullable)n64RuntimeRSPPlugin {
+    return [[self getRetroArch] n64RuntimeRSPPlugin];
+}
+
+- (NSString * _Nullable)n64ParallelStatus {
+    return [[self getRetroArch] n64ParallelStatus];
+}
+
 - (void)setRespectSilentMode:(BOOL)respect {
     [[self getRetroArch] setRespectSilentMode:respect];
 }
@@ -311,6 +327,10 @@ NSString * const MAMEGameFileMissingNotification = @"MAMEGameFileMissingNotifica
 
 - (void)setPSXAnalog:(BOOL)isAnalog {
     [[self getRetroArch] setPSXAnalog:isAnalog];
+}
+
+- (void)setN64ControllerDevice {
+    [[self getRetroArch] setN64ControllerDevice];
 }
 
 - (void)setReloadDelay:(double)delay {

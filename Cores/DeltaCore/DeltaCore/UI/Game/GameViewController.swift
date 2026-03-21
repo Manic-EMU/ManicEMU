@@ -421,16 +421,12 @@ open class GameViewController: UIViewController, ControllerReceiverProtocol
     // These would normally be declared in an extension, but non-ObjC compatible methods cannot be overridden if declared in extension :(
     open func gameController(_ gameController: GameController, didActivate input: Input, value: Double)
     {
-        // Ignore unless we're the active scene.
-        guard view.window?.windowScene?.isKeyBoardFocus == true else { return }
-        
-        // This method intentionally left blank
+        manicEmuCore?.gameController(gameController, didActivate: input, value: value)
     }
     
     open func gameController(_ gameController: GameController, didDeactivate input: Input)
     {
-        // Ignore unless we're the active scene.
-        guard view.window?.windowScene?.isKeyBoardFocus == true else { return }
+        manicEmuCore?.gameController(gameController, didDeactivate: input)
         
         // Wait until menu button is released before calling handleMenuInputFrom:
         // Fixes potentially missing key-up inputs due to showing pause menu.
@@ -754,7 +750,6 @@ open class GameViewController: UIViewController, ControllerReceiverProtocol
         }
         
         controllerView.addReceiver(self)
-        controllerView.addReceiver(emulatorCore)
         
         let controllerSkin = ControllerSkin.standardControllerSkin(for: game.type)
         controllerView.controllerSkin = controllerSkin

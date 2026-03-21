@@ -13,6 +13,8 @@ import ZIPFoundation
 struct ResourcesKit {
     static func loadResources(completion: ((Bool)->Void)? = nil) {
         //将bunle的加密文件解压到Library中
+        let resourceUrl = Bundle.main.url(forResource: "System", withExtension: "core")!
+        let bundledSystemCoreSize = ((try? FileManager.default.attributesOfItem(atPath: resourceUrl.path)[.size]) as? NSNumber)?.intValue ?? 0
         
         //新版本更新需要强制刷新资源
         var forceRefresh = false
@@ -36,6 +38,12 @@ struct ResourcesKit {
             }
         } else {
             //内容为空 则强制刷新
+            try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: Constants.Path.Resource))
+            forceRefresh = true
+        }
+
+        let previousBundledSystemCoreSize = UserDefaults.standard.integer(forKey: Constants.DefaultKey.SystemCoreBundleSize)
+        if previousBundledSystemCoreSize != bundledSystemCoreSize {
             try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: Constants.Path.Resource))
             forceRefresh = true
         }
@@ -63,7 +71,6 @@ struct ResourcesKit {
                 }
             }
             
-            let resourceUrl = Bundle.main.url(forResource: "System", withExtension: "core")!
             Log.debug("开始解压资源:\(Date.now.timeIntervalSince1970ms)")
             try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: Constants.Path.Resource))
             SSZipArchive.unzipFile(atPath: resourceUrl.path, toDestination: Constants.Path.Resource, overwrite: true, password: nil, progressHandler: nil) { _, isSuccess, error in
@@ -180,6 +187,7 @@ struct ResourcesKit {
                     Log.info("资源解压成功!")
                     UserDefaults.standard.set(Constants.Config.AppVersion, forKey: Constants.DefaultKey.SystemCoreVersion)
                     UserDefaults.standard.set(Constants.Config.AppBuildVersion, forKey: Constants.DefaultKey.SystemCoreBuildVersion)
+                    UserDefaults.standard.set(bundledSystemCoreSize, forKey: Constants.DefaultKey.SystemCoreBundleSize)
                 } else {
                     if let error = error {
                         Log.error("资源解压失败! error:\(error)")
