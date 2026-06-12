@@ -12,7 +12,7 @@ import RealmSwift
 
 ///通过文件名后缀生成GameType
 extension GameType {
-    static var multiPlatformFileExtensions = ["chd", "iso", "bin", "cue", "m3u", "pbp", "ccd", "zip"]
+    static var multiPlatformFileExtensions = ["chd", "iso", "rvz", "bin", "cue", "m3u", "pbp", "ccd", "zip"]
     
     static func gameTypes(multiPlatformFileExtension: String) -> [GameType] {
         let ext = multiPlatformFileExtension.lowercased()
@@ -21,7 +21,9 @@ extension GameType {
         case "chd":
             return [.ps1, .psp, .mcd, .ss, .dc]
         case "iso":
-            return [.psp, .mcd, .ss, .dos]
+            return [.psp, .mcd, .ss, .dos, .gc, .wii]
+        case "rvz":
+            return [.gc, .wii]
         case "bin":
             return [.md, .gg, .ms, ._32x, .dc, .a2600, .a5200, .a7800, .jaguar]
         case "cue":
@@ -58,6 +60,10 @@ extension GameType {
             self = .fds
         }else if ["smc", "sfc", "fig", "snes"].contains(ext) {
             self = .snes
+        } else if ["gcm", "gcz", "dol"].contains(ext) {
+            self = .gc
+        } else if ["wbfs", "ciso", "wia"].contains(ext) {
+            self = .wii
         } else if ["3ds", "cia", "app", "cci", "cxi", "3dsx"].contains(ext) {
             self = ._3ds
         } else if ["elf", "iso", "cso", "prx", "pbp", "chd"].contains(ext) {
@@ -178,6 +184,10 @@ extension GameType {
             self = .jaguar
         } else if shortName.uppercased() == "LYNX" {
             self = .lynx
+        } else if shortName.uppercased() == "GC" {
+            self = .gc
+        } else if shortName.uppercased() == "WII" {
+            self = .wii
         } else if shortName.uppercased() == "XBOX360" {
             self = .xbox360
         } else if shortName.uppercased() == "J2ME" {
@@ -222,6 +232,8 @@ extension GameType {
         case .a7800: return "Atari 7800 ProSystem"
         case .jaguar: return "Atari Jaguar"
         case .lynx: return "Atari Lynx"
+        case .gc: return "Nintendo GameCube"
+        case .wii: return "Nintendo Wii"
         case .j2me: return "Java ME"
         case .xbox360: return "Xbox 360"
         case .dos: return "MS-DOS"
@@ -264,6 +276,8 @@ extension GameType {
         case .a7800: return  NSLocalizedString("7800", comment: "")
         case .jaguar: return  NSLocalizedString("JAGUAR", comment: "")
         case .lynx: return  NSLocalizedString("LYNX", comment: "")
+        case .gc: return  NSLocalizedString("GC", comment: "")
+        case .wii: return  NSLocalizedString("Wii", comment: "")
         case .j2me: return  NSLocalizedString("J2ME", comment: "")
         case .xbox360: return  NSLocalizedString("XBOX360", comment: "")
         case .dos: return  NSLocalizedString("DOS", comment: "")
@@ -307,6 +321,8 @@ extension GameType {
         case .a7800: return 1986
         case .lynx: return 1989
         case .jaguar: return 1993
+        case .gc: return 2001
+        case .wii: return 2006
         case .j2me: return 1999
         case .xbox360: return 2005
         case .dos: return 1981
@@ -347,6 +363,8 @@ extension GameType {
         case .a7800: return A7800.core
         case .jaguar: return Jaguar.core
         case .lynx: return Lynx.core
+        case .gc: return GameCube.core
+        case .wii: return Wii.core
         case .j2me: return J2ME.core
         case .dos: return DOS.core
         default: return nil
@@ -401,6 +419,8 @@ extension GameType {
             return [LibretroCore.Cores.J2meJS.name, LibretroCore.Cores.freej2me.name]
         } else if self == .ps1 {
             return [LibretroCore.Cores.BeetlePSXHW.name, LibretroCore.Cores.PCSXReArmed.name]
+        } else if self == .gc || self == .wii {
+            return [LibretroCore.Cores.Dolphin.name]
         } else if self == .snes {
 #if SIDE_LOAD
             return [LibretroCore.Cores.bsnes.name, LibretroCore.Cores.Snes9x.name]
@@ -453,7 +473,7 @@ extension GameType {
     
     var manufacturer: Manufacturer {
         switch self {
-        case ._3ds, .ds, .gb, .gba, .gbc, .nes, .fds, .snes, .vb, .pm, .n64, .ns:
+        case ._3ds, .ds, .gb, .gba, .gbc, .nes, .fds, .snes, .vb, .pm, .n64, .ns, .gc, .wii:
             return .nintendo
         case .ps1, .psp:
             return .sony
@@ -476,7 +496,7 @@ extension GameType {
     
     var supportAnalogInput: Bool {
         switch self {
-        case .psp, ._3ds, .arcade, .dc, .ps1, .n64, .dos:
+        case .psp, ._3ds, .arcade, .dc, .ps1, .n64, .dos, .gc:
             return true
         default: return false
         }

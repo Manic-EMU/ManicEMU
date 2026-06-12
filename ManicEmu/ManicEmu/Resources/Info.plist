@@ -112,6 +112,30 @@
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
+			<string>GC Game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.aoshuang.game.gc</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Wii Game</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.aoshuang.game.wii</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
 			<string>PSP Game</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -650,6 +674,60 @@
 				<array>
 					<string>gbc</string>
 					<string>gb</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>GC Game</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>file_icon.png</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>public.aoshuang.game.gc</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>gcm</string>
+					<string>gcz</string>
+					<string>rvz</string>
+					<string>iso</string>
+					<string>dol</string>
+					<string>elf</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Wii Game</string>
+			<key>UTTypeIconFiles</key>
+			<array>
+				<string>file_icon.png</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>public.aoshuang.game.wii</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>rvz</string>
+					<string>wbfs</string>
+					<string>ciso</string>
+					<string>wia</string>
+					<string>iso</string>
+					<string>wad</string>
+					<string>dol</string>
+					<string>elf</string>
 				</array>
 			</dict>
 		</dict>

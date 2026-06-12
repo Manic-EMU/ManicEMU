@@ -848,6 +848,10 @@
 		57CDCF892FD5CC1C005BA4C8 /* LookInsideServer in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCF882FD5CC1C005BA4C8 /* LookInsideServer */; };
 		57CDCFBD2FD5D154005BA4C8 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCFBC2FD5D154005BA4C8 /* KeychainAccess */; };
 		57D029192E6C9C5200BF1F9D /* CheevosProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D029182E6C9C4000BF1F9D /* CheevosProgressView.swift */; };
+		57D011012FE6000000000001 /* Dolphin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D011002FE6000000000001 /* Dolphin.swift */; };
+		57D011022FE6000000000001 /* Dolphin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D011002FE6000000000001 /* Dolphin.swift */; };
+		57D011052FE6000000000001 /* dolphin.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D011042FE6000000000001 /* dolphin.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		57D011062FE6000000000001 /* dolphin.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D011042FE6000000000001 /* dolphin.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57D0BC0A2E1AD2BE008C3049 /* N64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0BC092E1AD2BB008C3049 /* N64.swift */; };
 		57D0BC0F2E1AD35D008C3049 /* mupen64plus.next.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D0BC0D2E1AD31A008C3049 /* mupen64plus.next.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57D7CF362EA5DBA800F41540 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF332EA5DB9C00F41540 /* Trigger.swift */; };
@@ -1047,6 +1051,7 @@
 				57CDCF502FD5CBD3005BA4C8 /* Citra.framework in Embed Frameworks */,
 				57CDCF512FD5CBD3005BA4C8 /* Libretro.framework in Embed Frameworks */,
 				57CDCF522FD5CBD3005BA4C8 /* azahar.libretro.framework in Embed Frameworks */,
+				57D011062FE6000000000001 /* dolphin.libretro.framework in Embed Frameworks */,
 				57CDCF532FD5CBD3005BA4C8 /* pcsx.rearmed.libretro.framework in Embed Frameworks */,
 				57CDCF542FD5CBD3005BA4C8 /* snes9x.libretro.framework in Embed Frameworks */,
 				57CDCF552FD5CBD3005BA4C8 /* mupen64plus.next.jit.libretro.framework in Embed Frameworks */,
@@ -1095,6 +1100,7 @@
 				57C75AB12FD557640093A2B3 /* Citra.framework in Embed Frameworks */,
 				57C75A072FD498480093A2B3 /* Libretro.framework in Embed Frameworks */,
 				578E22F42FD1EE7500A2749A /* azahar.libretro.framework in Embed Frameworks */,
+				57D011052FE6000000000001 /* dolphin.libretro.framework in Embed Frameworks */,
 				572918D52F8B9F7A00985D2C /* pcsx.rearmed.libretro.framework in Embed Frameworks */,
 				572918D32F8B9F7200985D2C /* snes9x.libretro.framework in Embed Frameworks */,
 				5792E7312F83B2650015CE0E /* mupen64plus.next.jit.libretro.framework in Embed Frameworks */,
@@ -1585,6 +1591,8 @@
 		57CCB4162D69D1BE0036476B /* HowToButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToButton.swift; sourceTree = "<group>"; };
 		57CDCF792FD5CBD3005BA4C8 /* ManicEmuDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManicEmuDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57D029182E6C9C4000BF1F9D /* CheevosProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheevosProgressView.swift; sourceTree = "<group>"; };
+		57D011002FE6000000000001 /* Dolphin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dolphin.swift; sourceTree = "<group>"; };
+		57D011042FE6000000000001 /* dolphin.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = dolphin.libretro.framework; path = ../Cores/dolphin.libretro.framework; sourceTree = SOURCE_ROOT; };
 		57D0BC092E1AD2BB008C3049 /* N64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N64.swift; sourceTree = "<group>"; };
 		57D0BC0D2E1AD31A008C3049 /* mupen64plus.next.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mupen64plus.next.libretro.framework; path = ../Cores/mupen64plus.next.libretro.framework; sourceTree = SOURCE_ROOT; };
 		57D7CF332EA5DB9C00F41540 /* Trigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
@@ -2498,6 +2506,7 @@
 			isa = PBXGroup;
 			children = (
 				578E22F12FD1EE6600A2749A /* azahar.libretro.framework */,
+				57D011042FE6000000000001 /* dolphin.libretro.framework */,
 				572918892F8B9F6400985D2C /* pcsx.rearmed.libretro.framework */,
 				5729188A2F8B9F6400985D2C /* snes9x.libretro.framework */,
 				578452BE2F6A7F380020A88F /* dosbox.pure.libretro.framework */,
@@ -2689,6 +2698,7 @@
 				57526B7D2EADEECD003F91BD /* FDS.swift */,
 				57A481692E7F05CD001D4598 /* NDS.swift */,
 				5771C28A2E6986BE0062EDE0 /* DC.swift */,
+				57D011002FE6000000000001 /* Dolphin.swift */,
 				574ABEBB2E609FE30045F76E /* GBA.swift */,
 				576A7DA72E3B4B1200008E35 /* PS1.swift */,
 				5744C7172E375BF00088081A /* PM.swift */,
@@ -3492,6 +3502,7 @@
 				57CDCDD52FD5CBD3005BA4C8 /* DownloadManager.swift in Sources */,
 				57CDCDD62FD5CBD3005BA4C8 /* CGSizeExtenstions.swift in Sources */,
 				57CDCDD72FD5CBD3005BA4C8 /* DC.swift in Sources */,
+				57D011022FE6000000000001 /* Dolphin.swift in Sources */,
 				57CDCDD82FD5CBD3005BA4C8 /* CheatCodeBlankSlateView.swift in Sources */,
 				57CDCDD92FD5CBD3005BA4C8 /* UIDeviceExtensions.swift in Sources */,
 				57CDCDDA2FD5CBD3005BA4C8 /* RetroAchievementsProfileCell.swift in Sources */,
@@ -3883,6 +3894,7 @@
 				57F6328B2D6EB84A007270E8 /* DownloadManager.swift in Sources */,
 				57DF849C2D630E5800AA0AAB /* CGSizeExtenstions.swift in Sources */,
 				5771C28B2E6986C00062EDE0 /* DC.swift in Sources */,
+				57D011012FE6000000000001 /* Dolphin.swift in Sources */,
 				57EC6AB02D80321B002920F0 /* CheatCodeBlankSlateView.swift in Sources */,
 				A58C3F4F248E44AF0099E068 /* UIDeviceExtensions.swift in Sources */,
 				5720E7E72E5461CA00EC0DA5 /* RetroAchievementsProfileCell.swift in Sources */,

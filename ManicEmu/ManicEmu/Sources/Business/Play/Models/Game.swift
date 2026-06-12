@@ -211,6 +211,8 @@ class Game: Object, ObjectUpdatable {
             }
         } else if gameType == .lynx {
             return URL(fileURLWithPath: Constants.Path.Holani.appendingPathComponent("\(name).srm"))
+        } else if gameType == .gc || gameType == .wii {
+            return URL(fileURLWithPath: Constants.Path.Data.appendingPathComponent("\(name).\(Dolphin.displayName).srm"))
         } else if gameType == .j2me {
             return URL(fileURLWithPath: Constants.Path.Data.appendingPathComponent("\(name).\(defaultCore == 0 ? LibretroCore.Cores.J2meJS.name : LibretroCore.Cores.freej2me.name).\(gameType.manicEmuCore?.gameSaveFileExtension ?? "")"))
         } else if gameType == .dos {
@@ -430,6 +432,8 @@ class Game: Object, ObjectUpdatable {
             return Bundle.main.path(forResource: "virtualjaguar.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .lynx {
             return Bundle.main.path(forResource: "holani.libretro", ofType: "framework", inDirectory: "Frameworks")
+        } else if gameType == .gc || gameType == .wii {
+            return Dolphin.runtimeCorePath
         } else if gameType == .dos {
             return Bundle.main.path(forResource: "dosbox.pure.libretro", ofType: "framework", inDirectory: "Frameworks")
         }

@@ -91,6 +91,7 @@ struct Constants {
                 case .psp: return 0.57
                 case .ss: return 0.638
                 case .n64: return 1.369
+                case .gc, .wii: return 0.706
                 case .mcd: return (Locale.prefersUS ? 0.5864 : 1.1)
                 case .doom: return 0.731
                 case .arcade: return 0.731
