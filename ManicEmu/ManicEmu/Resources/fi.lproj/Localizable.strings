@@ -940,3 +940,17 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 
 "EmulationAccuracy"="Emuloinnin tarkkuus";
 "EmulationAccuracyDesc"="HLE: Tarjoaa paremman suorituskyvyn ja pienemmän virrankulutuksen, mutta saattaa aiheuttaa yhteensopivuusongelmia.\n\nLLE: Tarjoaa korkeamman tarkkuuden ja paremman yhteensopivuuden, mutta heikommalla suorituskyvyllä. Tietyt laitteistotoiminnot, kuten verkkoyhteys, ovat käytettävissä vain LLE-tilassa.";
+"RommSyncTitle" = "Synkronoi RomM:n kanssa";
+"RommSyncAllConfirmDetail" = "Synkronoidaanko tämän pelin kaikki tallennukset ja pikatallennukset RomM-instanssiisi?";
+"RommSyncConfirmButton" = "Synkronoi";
+"RommSyncSuccessToast" = "RomM-synkronointi valmis";
+"RommSyncCannotConnect" = "RomM-instanssiin ei saada yhteyttä";
+"RommSyncGameNotFound" = "Tätä peliä ei löytynyt RomM-instanssistasi";
+"RommSaveConflictTitle" = "RomM-tallennusristiriita";
+"RommSaveConflictDetail" = "%@\nTämä laite: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Säilytä RomM";
+"RommSaveConflictKeepLocal" = "Säilytä tämä laite";
+"RommSyncOnLaunchTitle"  = "Synkronoi RomM käynnistettäessä";
+"RommSyncOnLaunchDetail" = "Synkronoi RomM-tallennukset, kun sovellus avataan";
+"RommSyncOnGameExitTitle" = "Synkronoi RomM peliä suljettaessa";
+"RommSyncOnGameExitDetail" = "Lähetä tallennukset RomM:ään, kun suljet pelin";

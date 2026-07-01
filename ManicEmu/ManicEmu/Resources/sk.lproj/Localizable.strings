@@ -938,3 +938,17 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "MappingKeyboardInput" = "Mapovanie vstupu z klávesnice";
 "EmulationAccuracy"="Presnosť emulácie";
 "EmulationAccuracyDesc"="HLE: Ponúka lepší výkon a nižšiu spotrebu energie, ale môže mať problémy s kompatibilitou.\n\nLLE: Poskytuje vyššiu presnosť a lepšiu kompatibilitu, ale so zníženým výkonom. Niektoré hardvérové funkcie, ako napríklad prístup k sieti, sú k dispozícii iba v režime LLE.";
+"RommSyncTitle" = "Synchronizovať s RomM";
+"RommSyncAllConfirmDetail" = "Synchronizovať všetky uložené pozície a stavy tejto hry s vašou inštanciou RomM?";
+"RommSyncConfirmButton" = "Synchronizovať";
+"RommSyncSuccessToast" = "Synchronizácia s RomM dokončená";
+"RommSyncCannotConnect" = "Nedá sa pripojiť k inštancii RomM";
+"RommSyncGameNotFound" = "Táto hra sa nenašla na vašej inštancii RomM";
+"RommSaveConflictTitle" = "Konflikt uloženia RomM";
+"RommSaveConflictDetail" = "%@\nToto zariadenie: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Ponechať RomM";
+"RommSaveConflictKeepLocal" = "Ponechať toto zariadenie";
+"RommSyncOnLaunchTitle"  = "Synchronizovať RomM pri spustení aplikácie";
+"RommSyncOnLaunchDetail" = "Synchronizovať uložené hry RomM pri otvorení aplikácie";
+"RommSyncOnGameExitTitle" = "Synchronizovať RomM pri ukončení hry";
+"RommSyncOnGameExitDetail" = "Nahrať uložené hry do RomM pri zatvorení hry";

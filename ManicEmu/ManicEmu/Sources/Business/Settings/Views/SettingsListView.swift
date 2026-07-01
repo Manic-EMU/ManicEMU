@@ -136,6 +136,9 @@ class SettingsListView: BaseView {
                                   SettingItem(type: .globalCoreSwitch),
                 ]
 #endif
+                if RommSyncManager.shared.isConfigured() {
+                    datas[section]?.append(SettingItem(type: .romm))
+                }
             } else if section == .support {
                 datas[section] = [SettingItem(type: .FAQ),
                                   SettingItem(type: .feedback),
@@ -165,10 +168,12 @@ class SettingsListView: BaseView {
     private var membershipNotification: Any? = nil
     private var iCloudDriveSyncChangeNotification: Any? = nil
     private var iCloudEnableChangeNotification: Any? = nil
-    
+    private var importServiceUpdateToken: NotificationToken? = nil
+
     var didTapDetail: ((UIViewController)->Void)? = nil
-    
+
     deinit {
+        importServiceUpdateToken?.invalidate()
         if let membershipNotification = membershipNotification {
             NotificationCenter.default.removeObserver(membershipNotification)
         }
@@ -222,6 +227,29 @@ class SettingsListView: BaseView {
         iCloudEnableChangeNotification = NotificationCenter.default.addObserver(forName: Constants.NotificationName.iCloudEnableChange, object: nil, queue: .main) { [weak self] _ in
             self?.collectionView.reloadData()
         }
+
+        let serviceObjects = Database.realm.objects(ImportService.self).where { !$0.isDeleted }
+        importServiceUpdateToken = serviceObjects.observe { [weak self] changes in
+            guard let self else { return }
+            if case .update(_, let deletions, let insertions, _) = changes,
+               !deletions.isEmpty || !insertions.isEmpty {
+                self.refreshRommSettingsRow()
+            }
+        }
+    }
+
+    private func refreshRommSettingsRow() {
+        guard var advanceItems = items[.advance] else { return }
+        let hasRow = advanceItems.contains { $0.type == .romm }
+        let shouldHaveRow = RommSyncManager.shared.isConfigured()
+        guard hasRow != shouldHaveRow else { return }
+        if shouldHaveRow {
+            advanceItems.append(SettingItem(type: .romm))
+        } else {
+            advanceItems.removeAll { $0.type == .romm }
+        }
+        items[.advance] = advanceItems
+        collectionView.reloadSections([SectionIndex.advance.rawValue])
     }
     
     required init?(coder: NSCoder) {
@@ -482,7 +510,15 @@ extension SettingsListView: UICollectionViewDelegate {
                 } else {
                     topViewController()?.present(vc, animated: true)
                 }
-                
+
+            case .romm:
+                let vc = RommSettingsViewController(showClose: UIDevice.isPad ? false : true)
+                if UIDevice.isPad {
+                    didTapDetail?(vc)
+                } else {
+                    topViewController()?.present(vc, animated: true)
+                }
+
             case .bios:
                 let vc = BIOSSelectionViewController(showClose: UIDevice.isPad ? false : true)
                 if UIDevice.isPad {

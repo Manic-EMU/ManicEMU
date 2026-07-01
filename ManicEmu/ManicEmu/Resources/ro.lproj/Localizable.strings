@@ -938,3 +938,17 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 "MappingKeyboardInput" = "Maparea intrării de la tastatură";
 "EmulationAccuracy"="Precizia emulării";
 "EmulationAccuracyDesc"="HLE: Oferă performanțe mai bune și un consum mai mic de energie, dar poate avea probleme de compatibilitate.\n\nLLE: Oferă o precizie mai mare și o compatibilitate mai bună, dar cu performanțe reduse. Anumite funcții hardware, cum ar fi accesul la rețea, sunt disponibile numai în modul LLE.";
+"RommSyncTitle" = "Sincronizează cu RomM";
+"RommSyncAllConfirmDetail" = "Sincronizezi toate salvările și stările salvate ale acestui joc cu instanța ta RomM?";
+"RommSyncConfirmButton" = "Sincronizează";
+"RommSyncSuccessToast" = "Sincronizarea RomM s-a finalizat";
+"RommSyncCannotConnect" = "Nu se poate conecta la instanța RomM";
+"RommSyncGameNotFound" = "Acest joc nu a fost găsit pe instanța ta RomM";
+"RommSaveConflictTitle" = "Conflict de salvare RomM";
+"RommSaveConflictDetail" = "%@\nAcest dispozitiv: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Păstrează RomM";
+"RommSaveConflictKeepLocal" = "Păstrează acest dispozitiv";
+"RommSyncOnLaunchTitle"  = "Sincronizează RomM la pornirea aplicației";
+"RommSyncOnLaunchDetail" = "Sincronizează salvările RomM la deschiderea aplicației";
+"RommSyncOnGameExitTitle" = "Sincronizează RomM la ieșirea din joc";
+"RommSyncOnGameExitDetail" = "Încarcă salvările în RomM la închiderea unui joc";

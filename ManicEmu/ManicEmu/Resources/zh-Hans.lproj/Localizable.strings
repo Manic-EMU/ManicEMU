@@ -951,3 +951,17 @@
 
 "EmulationAccuracy" = "模拟精度";
 "EmulationAccuracyDesc" = "HLE：性能更高、功耗更低，但可能存在兼容性问题。\n\nLLE：更接近真实硬件，兼容性更佳，但性能较低。部分硬件功能（如网络访问）仅在 LLE 模式下可用。";
+"RommSyncTitle" = "与 RomM 同步";
+"RommSyncAllConfirmDetail" = "是否将此游戏的所有存档和即时存档与你的 RomM 实例同步？";
+"RommSyncConfirmButton" = "同步";
+"RommSyncSuccessToast" = "RomM 同步完成";
+"RommSyncCannotConnect" = "无法连接到 RomM 实例";
+"RommSyncGameNotFound" = "在你的 RomM 实例中未找到此游戏";
+"RommSaveConflictTitle" = "RomM 存档冲突";
+"RommSaveConflictDetail" = "%@\n本设备：%@\nRomM：%@";
+"RommSaveConflictKeepRemote" = "保留 RomM";
+"RommSaveConflictKeepLocal" = "保留本设备";
+"RommSyncOnLaunchTitle"  = "RomM 启动时同步";
+"RommSyncOnLaunchDetail" = "应用启动时同步 RomM 存档";
+"RommSyncOnGameExitTitle" = "RomM 退出游戏时同步";
+"RommSyncOnGameExitDetail" = "关闭游戏时将存档上传到 RomM";

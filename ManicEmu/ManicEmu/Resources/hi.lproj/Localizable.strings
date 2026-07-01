@@ -941,3 +941,17 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 
 "EmulationAccuracy"="एमुलेशन सटीकता";
 "EmulationAccuracyDesc"="HLE: बेहतर प्रदर्शन और कम बिजली की खपत प्रदान करता है, लेकिन संगतता संबंधी समस्याएं हो सकती हैं।\n\nLLE: उच्च सटीकता और बेहतर संगतता प्रदान करता है, लेकिन कम प्रदर्शन के साथ। नेटवर्क एक्सेस जैसी कुछ हार्डवेयर सुविधाएँ केवल LLE मोड में उपलब्ध हैं।";
+"RommSyncTitle" = "RomM के साथ सिंक करें";
+"RommSyncAllConfirmDetail" = "क्या इस गेम की सभी सेव और सेव स्टेट को आपके RomM इंस्टेंस के साथ सिंक करें?";
+"RommSyncConfirmButton" = "सिंक करें";
+"RommSyncSuccessToast" = "RomM सिंक पूर्ण हुआ";
+"RommSyncCannotConnect" = "RomM इंस्टेंस से कनेक्ट नहीं हो सका";
+"RommSyncGameNotFound" = "यह गेम आपके RomM इंस्टेंस पर नहीं मिला";
+"RommSaveConflictTitle" = "RomM सेव टकराव";
+"RommSaveConflictDetail" = "%@\nयह डिवाइस: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "RomM रखें";
+"RommSaveConflictKeepLocal" = "यह डिवाइस रखें";
+"RommSyncOnLaunchTitle"  = "ऐप खुलने पर RomM सिंक करें";
+"RommSyncOnLaunchDetail" = "ऐप खुलने पर RomM सेव सिंक करें";
+"RommSyncOnGameExitTitle" = "गेम बंद होने पर RomM सिंक करें";
+"RommSyncOnGameExitDetail" = "गेम बंद करने पर सेव को RomM पर अपलोड करें";

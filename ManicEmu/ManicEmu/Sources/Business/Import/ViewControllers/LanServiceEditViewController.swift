@@ -128,6 +128,35 @@ class LanServiceEditViewController: BaseViewController {
                     UIView.hideLoading()
                     UIView.makeToast(message: R.string.localizable.errorUnknown())
                 }
+            } else if self.service.type == .romm {
+                if let host = service.host, let scheme = service.scheme,
+                   let client = RommClient(scheme: scheme, host: host, port: service.port,
+                                           user: service.user, password: service.password) {
+                    Task {
+                        do {
+                            let _ = try await client.platforms()
+                            handleServiceDetail()
+                            ImportService.change { realm in
+                                realm.add(self.service)
+                            }
+                            await MainActor.run {
+                                self.dismiss(animated: true) {
+                                    self.successHandler?()
+                                }
+                                UIView.hideLoading()
+                                UIView.makeToast(message: R.string.localizable.addLandServiceSuccess(self.service.title))
+                            }
+                        } catch {
+                            await MainActor.run {
+                                UIView.hideLoading()
+                                UIView.makeToast(message: R.string.localizable.addLandServiceFailed(self.service.title))
+                            }
+                        }
+                    }
+                } else {
+                    UIView.hideLoading()
+                    UIView.makeToast(message: R.string.localizable.errorUnknown())
+                }
             }
         }
         return view
@@ -299,7 +328,7 @@ class LanServiceEditViewController: BaseViewController {
                                 isValid = false
                                 break
                             }
-                        } else if service.type == .webdav {
+                        } else if service.type == .webdav || service.type == .romm {
                             guard let scheme = components.scheme else {
                                 //webdav的scheme必须存在
                                 isValid = false

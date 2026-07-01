@@ -933,3 +933,17 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 
 "EmulationAccuracy"="Độ chính xác mô phỏng";
 "EmulationAccuracyDesc"="HLE: Hiệu suất tốt hơn và tiêu thụ điện năng thấp hơn, nhưng có thể có vấn đề tương thích.\n\nLLE: Cung cấp độ chính xác cao hơn và khả năng tương thích tốt hơn, nhưng hiệu suất giảm. Một số tính năng phần cứng, như truy cập mạng, chỉ khả dụng ở chế độ LLE.";
+"RommSyncTitle" = "Đồng bộ với RomM";
+"RommSyncAllConfirmDetail" = "Đồng bộ tất cả tệp lưu và trạng thái lưu của trò chơi này với máy chủ RomM của bạn?";
+"RommSyncConfirmButton" = "Đồng bộ";
+"RommSyncSuccessToast" = "Đã đồng bộ RomM xong";
+"RommSyncCannotConnect" = "Không thể kết nối với máy chủ RomM";
+"RommSyncGameNotFound" = "Không tìm thấy trò chơi này trên máy chủ RomM của bạn";
+"RommSaveConflictTitle" = "Xung đột lưu RomM";
+"RommSaveConflictDetail" = "%@\nThiết bị này: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Giữ RomM";
+"RommSaveConflictKeepLocal" = "Giữ thiết bị này";
+"RommSyncOnLaunchTitle"  = "Đồng bộ RomM khi mở ứng dụng";
+"RommSyncOnLaunchDetail" = "Đồng bộ tệp lưu RomM khi ứng dụng mở";
+"RommSyncOnGameExitTitle" = "Đồng bộ RomM khi thoát trò chơi";
+"RommSyncOnGameExitDetail" = "Tải tệp lưu lên RomM khi bạn đóng trò chơi";

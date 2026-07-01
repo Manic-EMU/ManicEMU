@@ -913,3 +913,17 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 
 "EmulationAccuracy"="Ketepatan Emulasi";
 "EmulationAccuracyDesc"="HLE: Menawarkan prestasi yang lebih baik dan penggunaan kuasa yang lebih rendah, tetapi mungkin mempunyai masalah keserasian.\n\nLLE: Memberikan ketepatan yang lebih tinggi dan keserasian yang lebih baik, tetapi dengan prestasi yang berkurang. Ciri perkakasan tertentu, seperti akses rangkaian, hanya tersedia dalam mod LLE.";
+"RommSyncTitle" = "Segerak dengan RomM";
+"RommSyncAllConfirmDetail" = "Segerakkan semua simpanan dan keadaan simpanan permainan ini dengan instans RomM anda?";
+"RommSyncConfirmButton" = "Segerak";
+"RommSyncSuccessToast" = "Penyegerakan RomM selesai";
+"RommSyncCannotConnect" = "Tidak dapat menyambung ke instans RomM";
+"RommSyncGameNotFound" = "Permainan ini tidak dijumpai pada instans RomM anda";
+"RommSaveConflictTitle" = "Konflik simpanan RomM";
+"RommSaveConflictDetail" = "%@\nPeranti ini: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Kekalkan RomM";
+"RommSaveConflictKeepLocal" = "Kekalkan peranti ini";
+"RommSyncOnLaunchTitle"  = "Segerak RomM semasa aplikasi dibuka";
+"RommSyncOnLaunchDetail" = "Segerakkan simpanan RomM semasa aplikasi dibuka";
+"RommSyncOnGameExitTitle" = "Segerak RomM semasa keluar dari permainan";
+"RommSyncOnGameExitDetail" = "Muat naik simpanan ke RomM semasa anda menutup permainan";

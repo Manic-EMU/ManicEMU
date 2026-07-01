@@ -940,3 +940,17 @@
 
 "EmulationAccuracy"="Ακρίβεια εξομοίωσης";
 "EmulationAccuracyDesc"="HLE: Προσφέρει καλύτερη απόδοση και χαμηλότερη κατανάλωση ενέργειας, αλλά μπορεί να έχει προβλήματα συμβατότητας.\n\nLLE: Παρέχει υψηλότερη ακρίβεια και καλύτερη συμβατότητα, αλλά με μειωμένη απόδοση. Ορισμένες λειτουργίες υλικού, όπως η πρόσβαση στο δίκτυο, είναι διαθέσιμες μόνο σε λειτουργία LLE.";
+"RommSyncTitle" = "Συγχρονισμός με το RomM";
+"RommSyncAllConfirmDetail" = "Να συγχρονιστούν όλα τα αποθηκευμένα παιχνίδια και οι καταστάσεις αποθήκευσης αυτού του παιχνιδιού με την υπηρεσία RomM σας;";
+"RommSyncConfirmButton" = "Συγχρονισμός";
+"RommSyncSuccessToast" = "Ο συγχρονισμός με το RomM ολοκληρώθηκε";
+"RommSyncCannotConnect" = "Δεν είναι δυνατή η σύνδεση με την υπηρεσία RomM";
+"RommSyncGameNotFound" = "Αυτό το παιχνίδι δεν βρέθηκε στην υπηρεσία RomM σας";
+"RommSaveConflictTitle" = "Διένεξη αποθήκευσης RomM";
+"RommSaveConflictDetail" = "%@\nΑυτή η συσκευή: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Διατήρηση RomM";
+"RommSaveConflictKeepLocal" = "Διατήρηση αυτής της συσκευής";
+"RommSyncOnLaunchTitle"  = "Συγχρονισμός RomM κατά την εκκίνηση";
+"RommSyncOnLaunchDetail" = "Συγχρονισμός των αποθηκεύσεων RomM όταν ανοίγει η εφαρμογή";
+"RommSyncOnGameExitTitle" = "Συγχρονισμός RomM κατά την έξοδο από το παιχνίδι";
+"RommSyncOnGameExitDetail" = "Μεταφόρτωση αποθηκεύσεων στο RomM όταν κλείνετε ένα παιχνίδι";

@@ -935,3 +935,17 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "MappingKeyboardInput" = "キーボード入力をマッピング";
 "EmulationAccuracy"="エミュレーション精度";
 "EmulationAccuracyDesc"="HLE: より高いパフォーマンスと低消費電力ですが、互換性の問題がある可能性があります。\n\nLLE: より高い精度と優れた互換性を提供しますが、パフォーマンスは低下します。ネットワークアクセスなどの特定のハードウェア機能は、LLEモードでのみ利用可能です。";
+"RommSyncTitle" = "RomM と同期";
+"RommSyncAllConfirmDetail" = "このゲームのすべてのセーブとセーブステートを RomM インスタンスと同期しますか？";
+"RommSyncConfirmButton" = "同期";
+"RommSyncSuccessToast" = "RomM の同期が完了しました";
+"RommSyncCannotConnect" = "RomM インスタンスに接続できません";
+"RommSyncGameNotFound" = "このゲームは RomM インスタンスに見つかりませんでした";
+"RommSaveConflictTitle" = "RomM セーブの競合";
+"RommSaveConflictDetail" = "%@\nこのデバイス: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "RomM を保持";
+"RommSaveConflictKeepLocal" = "このデバイスを保持";
+"RommSyncOnLaunchTitle"  = "起動時に RomM と同期";
+"RommSyncOnLaunchDetail" = "アプリ起動時に RomM のセーブを同期します";
+"RommSyncOnGameExitTitle" = "ゲーム終了時に RomM と同期";
+"RommSyncOnGameExitDetail" = "ゲームを閉じたときに RomM へセーブをアップロードします";

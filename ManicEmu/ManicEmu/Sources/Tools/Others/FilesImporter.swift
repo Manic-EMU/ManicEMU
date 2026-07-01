@@ -562,7 +562,11 @@ extension FilesImporter {
                                 }
                             }
                             do {
-                                try realm.write { realm.add(game) }
+                                try realm.write {
+                                    if realm.object(ofType: Game.self, forPrimaryKey: game.id) == nil {
+                                        realm.add(game)
+                                    }
+                                }
                                 SyncManager.upload(localFilePath: game.romUrl.path)
                                 // Upload companion files (.bin, .img, .sub, etc.) for multi-file ROMs
                                 if items.count > 0 {
@@ -572,8 +576,12 @@ extension FilesImporter {
                                     }
                                 }
                                 OnlineCoverManager.shared.addCoverMatch(OnlineCoverManager.CoverMatch(game: game))
+                                let importedGameId = game.id
+                                DispatchQueue.main.async {
+                                    RommSyncManager.shared.syncAfterImport(gameId: importedGameId)
+                                }
                                 completion?(game.gameType == ._3ds ? (game.aliasName ?? game.name) : game.name, nil)
-                                
+
                                 return
                             } catch {
                                 //写入数据失败

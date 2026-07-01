@@ -939,3 +939,17 @@ Kurulumunuzu bir üst seviyeye taşımak istiyorsanız, PlayCase bu kaplama içi
 
 "EmulationAccuracy"="Emülasyon Doğruluğu";
 "EmulationAccuracyDesc"="HLE: Daha iyi performans ve daha düşük güç tüketimi sunar, ancak uyumluluk sorunları olabilir.\n\nLLE: Daha yüksek doğruluk ve daha iyi uyumluluk sağlar, ancak performans düşüktür. Ağ erişimi gibi bazı donanım özellikleri yalnızca LLE modunda kullanılabilir.";
+"RommSyncTitle" = "RomM ile eşitle";
+"RommSyncAllConfirmDetail" = "Bu oyunun tüm kayıtları ve kayıt durumları RomM örneğinizle eşitlensin mi?";
+"RommSyncConfirmButton" = "Eşitle";
+"RommSyncSuccessToast" = "RomM eşitlemesi tamamlandı";
+"RommSyncCannotConnect" = "RomM örneğine bağlanılamıyor";
+"RommSyncGameNotFound" = "Bu oyun RomM örneğinizde bulunamadı";
+"RommSaveConflictTitle" = "RomM kayıt çakışması";
+"RommSaveConflictDetail" = "%@\nBu cihaz: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "RomM'i koru";
+"RommSaveConflictKeepLocal" = "Bu cihazı koru";
+"RommSyncOnLaunchTitle"  = "Uygulama açılışında RomM eşitle";
+"RommSyncOnLaunchDetail" = "Uygulama açıldığında RomM kayıtlarını eşitle";
+"RommSyncOnGameExitTitle" = "Oyundan çıkışta RomM eşitle";
+"RommSyncOnGameExitDetail" = "Bir oyunu kapattığında kayıtları RomM'e yükle";

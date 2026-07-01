@@ -940,3 +940,17 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 
 "EmulationAccuracy"="Emulatienauwkeurigheid";
 "EmulationAccuracyDesc"="HLE: Biedt betere prestaties en lager stroomverbruik, maar kan compatibiliteitsproblemen hebben.\n\nLLE: Biedt hogere nauwkeurigheid en betere compatibiliteit, maar met verminderde prestaties. Bepaalde hardwarefuncties, zoals netwerktoegang, zijn alleen beschikbaar in LLE-modus.";
+"RommSyncTitle" = "Synchroniseren met RomM";
+"RommSyncAllConfirmDetail" = "Alle savegames en savestates van dit spel synchroniseren met je RomM-instantie?";
+"RommSyncConfirmButton" = "Synchroniseren";
+"RommSyncSuccessToast" = "RomM-synchronisatie voltooid";
+"RommSyncCannotConnect" = "Kan geen verbinding maken met RomM-instantie";
+"RommSyncGameNotFound" = "Dit spel is niet gevonden op je RomM-instantie";
+"RommSaveConflictTitle" = "RomM-saveconflict";
+"RommSaveConflictDetail" = "%@\nDit apparaat: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "RomM behouden";
+"RommSaveConflictKeepLocal" = "Dit apparaat behouden";
+"RommSyncOnLaunchTitle"  = "RomM synchroniseren bij opstarten";
+"RommSyncOnLaunchDetail" = "RomM-savegames synchroniseren wanneer de app opent";
+"RommSyncOnGameExitTitle" = "RomM synchroniseren bij afsluiten van spel";
+"RommSyncOnGameExitDetail" = "RomM-savegames uploaden wanneer je een spel sluit";

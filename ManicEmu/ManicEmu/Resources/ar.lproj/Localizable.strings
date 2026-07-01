@@ -912,3 +912,17 @@
 
 "EmulationAccuracy"="دقة المحاكاة";
 "EmulationAccuracyDesc"="HLE: يوفر أداءً أفضل واستهلاكًا أقل للطاقة، ولكن قد تكون هناك مشكلات في التوافق.\n\nLLE: يوفر دقة أعلى وتوافقًا أفضل، ولكن مع أداء منخفض. بعض ميزات الأجهزة، مثل الوصول إلى الشبكة، متاحة فقط في وضع LLE.";
+"RommSyncTitle" = "المزامنة مع RomM";
+"RommSyncAllConfirmDetail" = "هل تريد مزامنة جميع ملفات الحفظ وحالات الحفظ لهذه اللعبة مع خادم RomM؟";
+"RommSyncConfirmButton" = "مزامنة";
+"RommSyncSuccessToast" = "اكتملت مزامنة RomM";
+"RommSyncCannotConnect" = "تعذّر الاتصال بخادم RomM";
+"RommSyncGameNotFound" = "لم يتم العثور على هذه اللعبة في خادم RomM";
+"RommSaveConflictTitle" = "تعارض في حفظ RomM";
+"RommSaveConflictDetail" = "%@\nهذا الجهاز: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "الاحتفاظ بـ RomM";
+"RommSaveConflictKeepLocal" = "الاحتفاظ بهذا الجهاز";
+"RommSyncOnLaunchTitle"  = "مزامنة RomM عند بدء التطبيق";
+"RommSyncOnLaunchDetail" = "مزامنة ملفات حفظ RomM عند فتح التطبيق";
+"RommSyncOnGameExitTitle" = "مزامنة RomM عند الخروج من اللعبة";
+"RommSyncOnGameExitDetail" = "رفع ملفات الحفظ إلى RomM عند إغلاق اللعبة";

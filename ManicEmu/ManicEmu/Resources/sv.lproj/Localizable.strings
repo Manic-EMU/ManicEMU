@@ -933,3 +933,17 @@ Om du vill höja din upplevelse är PlayCase en perfekt match för detta skin.";
 
 "EmulationAccuracy"="Emuleringsnoggrannhet";
 "EmulationAccuracyDesc"="HLE: Ger bättre prestanda och lägre strömförbrukning, men kan ha kompatibilitetsproblem.\n\nLLE: Ger högre noggrannhet och bättre kompatibilitet, men med minskad prestanda. Vissa hårdvarufunktioner, som nätverksåtkomst, är endast tillgängliga i LLE-läge.";
+"RommSyncTitle" = "Synkronisera med RomM";
+"RommSyncAllConfirmDetail" = "Vill du synkronisera alla sparfiler och sparlägen för det här spelet med din RomM-instans?";
+"RommSyncConfirmButton" = "Synkronisera";
+"RommSyncSuccessToast" = "RomM-synkronisering klar";
+"RommSyncCannotConnect" = "Det går inte att ansluta till RomM-instansen";
+"RommSyncGameNotFound" = "Det här spelet hittades inte på din RomM-instans";
+"RommSaveConflictTitle" = "RomM-sparkonflikt";
+"RommSaveConflictDetail" = "%@\nDen här enheten: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Behåll RomM";
+"RommSaveConflictKeepLocal" = "Behåll den här enheten";
+"RommSyncOnLaunchTitle"  = "Synka RomM vid appstart";
+"RommSyncOnLaunchDetail" = "Synka RomM-sparfiler när appen öppnas";
+"RommSyncOnGameExitTitle" = "Synka RomM när spelet avslutas";
+"RommSyncOnGameExitDetail" = "Ladda upp sparfiler till RomM när du stänger ett spel";

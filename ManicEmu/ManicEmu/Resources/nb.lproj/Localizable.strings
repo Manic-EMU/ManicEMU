@@ -931,3 +931,17 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 
 "EmulationAccuracy"="Emuleringsnøyaktighet";
 "EmulationAccuracyDesc"="HLE: Gir bedre ytelse og lavere strømforbruk, men kan ha kompatibilitetsproblemer.\n\nLLE: Gir høyere nøyaktighet og bedre kompatibilitet, men med redusert ytelse. Enkelte maskinvarefunksjoner, som nettverkstilgang, er bare tilgjengelige i LLE-modus.";
+"RommSyncTitle" = "Synkroniser med RomM";
+"RommSyncAllConfirmDetail" = "Vil du synkronisere alle lagringer og lagringstilstander for dette spillet med RomM-instansen din?";
+"RommSyncConfirmButton" = "Synkroniser";
+"RommSyncSuccessToast" = "RomM-synkronisering fullført";
+"RommSyncCannotConnect" = "Kan ikke koble til RomM-instansen";
+"RommSyncGameNotFound" = "Dette spillet ble ikke funnet på RomM-instansen din";
+"RommSaveConflictTitle" = "RomM-lagringskonflikt";
+"RommSaveConflictDetail" = "%@\nDenne enheten: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Behold RomM";
+"RommSaveConflictKeepLocal" = "Behold denne enheten";
+"RommSyncOnLaunchTitle"  = "Synkroniser RomM ved oppstart";
+"RommSyncOnLaunchDetail" = "Synkroniser RomM-lagringer når appen åpnes";
+"RommSyncOnGameExitTitle" = "Synkroniser RomM når spillet avsluttes";
+"RommSyncOnGameExitDetail" = "Last opp lagringer til RomM når du lukker et spill";

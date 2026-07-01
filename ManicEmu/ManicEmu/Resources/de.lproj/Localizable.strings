@@ -940,3 +940,17 @@ Wenn Sie Ihr Setup verbessern möchten, ist PlayCase die perfekte Ergänzung zu 
 "MappingKeyboardInput" = "Tastatureingabe zuordnen";
 "EmulationAccuracy"="Emulationsgenauigkeit";
 "EmulationAccuracyDesc"="HLE: Bietet bessere Leistung und geringeren Stromverbrauch, kann jedoch Kompatibilitätsprobleme aufweisen.\n\nLLE: Bietet höhere Genauigkeit und bessere Kompatibilität, jedoch mit reduzierter Leistung. Bestimmte Hardwarefunktionen wie Netzwerkzugriff sind nur im LLE-Modus verfügbar.";
+"RommSyncTitle" = "Mit RomM synchronisieren";
+"RommSyncAllConfirmDetail" = "Alle Spielstände und Savestates dieses Spiels mit deiner RomM-Instanz synchronisieren?";
+"RommSyncConfirmButton" = "Synchronisieren";
+"RommSyncSuccessToast" = "RomM-Synchronisierung abgeschlossen";
+"RommSyncCannotConnect" = "Verbindung zur RomM-Instanz nicht möglich";
+"RommSyncGameNotFound" = "Dieses Spiel wurde auf deiner RomM-Instanz nicht gefunden";
+"RommSaveConflictTitle" = "RomM-Speicherkonflikt";
+"RommSaveConflictDetail" = "%@\nDieses Gerät: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "RomM behalten";
+"RommSaveConflictKeepLocal" = "Dieses Gerät behalten";
+"RommSyncOnLaunchTitle"  = "RomM beim App-Start synchronisieren";
+"RommSyncOnLaunchDetail" = "RomM-Spielstände beim Öffnen der App synchronisieren";
+"RommSyncOnGameExitTitle" = "RomM beim Beenden des Spiels synchronisieren";
+"RommSyncOnGameExitDetail" = "RomM-Spielstände beim Schließen eines Spiels hochladen";

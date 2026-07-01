@@ -46,6 +46,7 @@ class AddImportServiceView: BaseView {
         var services: [ImportService] = []
         services.append(ImportService.genService(type: .webdav))
         services.append(ImportService.genService(type: .samba))
+        services.append(ImportService.genService(type: .romm))
         return services
     }()
     

@@ -66,4 +66,9 @@ enum ExtraKey: String {
     case globalCoreConfigs
     case manufacturerOrder
     case emulationAccuracy
+    case rommRomId
+    case rommServiceId
+    case rommSaveSyncedAt
+    case rommSyncOnLaunch
+    case rommSyncOnGameExit
 }

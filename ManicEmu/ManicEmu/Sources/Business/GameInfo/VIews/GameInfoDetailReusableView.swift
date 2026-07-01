@@ -1277,10 +1277,28 @@ class GameInfoDetailReusableView: UICollectionReusableView {
         view.isAccessibilityElement = true
         view.accessibilityLabel = R.string.localizable.deleteGameGameStateAlertTitle()
         view.accessibilityTraits = .button
-        
+
         return view
     }()
-    
+
+    private class RommSyncSymbolButton: SymbolButton {}
+    var didSyncSaveState: (()->Void)?
+    private lazy var syncSaveStateButton: RommSyncSymbolButton = {
+        let view = RommSyncSymbolButton(image: .symbolImage(.arrowTriangle2Circlepath).applySymbolConfig(color: Constants.Color.Main))
+        view.layerCornerRadius = Constants.Size.CornerRadiusMid
+        view.addTapGesture { [weak self] gesture in
+            guard let self else { return }
+            self.didSyncSaveState?()
+        }
+        view.isHidden = !RommSyncManager.shared.isConfigured()
+
+        view.isAccessibilityElement = true
+        view.accessibilityLabel = R.string.localizable.rommSyncTitle()
+        view.accessibilityTraits = .button
+
+        return view
+    }()
+
     private lazy var emulationAccuracyContextMenuButton: ContextMenuButton = {
         var actions: [UIMenuElement] = []
         actions.append(UIAction(title: "HLE") { [weak self] _ in
@@ -1315,6 +1333,8 @@ class GameInfoDetailReusableView: UICollectionReusableView {
     
     var game: Game? = nil {
         didSet {
+            syncSaveStateButton.isHidden = !RommSyncManager.shared.isConfigured()
+            updateSaveStateLayout()
             if let game = game {
                 titleTextField.text = game.aliasName ?? game.name
                 if let timeAgo = game.latestPlayDate?.timeAgo() {
@@ -1466,19 +1486,32 @@ class GameInfoDetailReusableView: UICollectionReusableView {
         }
         
         addSubview(segmentView)
-        segmentView.snp.makeConstraints { make in
-            make.top.equalTo(functionButtonContainerView.snp.bottom).offset(29)
-            make.height.equalTo(50)
-            make.leading.equalTo(functionButtonContainerView)
-            make.bottom.equalToSuperview().offset(-Constants.Size.ContentSpaceMax)
-        }
-        
+
         addSubview(deleteSaveStateButton)
         deleteSaveStateButton.snp.makeConstraints { make in
             make.centerY.equalTo(segmentView)
             make.size.equalTo(Constants.Size.ItemHeightMid)
-            make.leading.equalTo(segmentView.snp.trailing).offset(Constants.Size.ContentSpaceMin)
             make.trailing.equalTo(startGameButton)
+        }
+
+        addSubview(syncSaveStateButton)
+        syncSaveStateButton.snp.makeConstraints { make in
+            make.centerY.equalTo(segmentView)
+            make.size.equalTo(Constants.Size.ItemHeightMid)
+            make.trailing.equalTo(deleteSaveStateButton.snp.leading).offset(-Constants.Size.ContentSpaceMin)
+        }
+
+        updateSaveStateLayout()
+    }
+    /// Update the layout if we do not have RomM enabled. 
+    private func updateSaveStateLayout() {
+        let trailingButton: UIView = syncSaveStateButton.isHidden ? deleteSaveStateButton : syncSaveStateButton
+        segmentView.snp.remakeConstraints { make in
+            make.top.equalTo(functionButtonContainerView.snp.bottom).offset(29)
+            make.height.equalTo(50)
+            make.leading.equalTo(functionButtonContainerView)
+            make.bottom.equalToSuperview().offset(-Constants.Size.ContentSpaceMax)
+            make.trailing.equalTo(trailingButton.snp.leading).offset(-Constants.Size.ContentSpaceMin)
         }
     }
     

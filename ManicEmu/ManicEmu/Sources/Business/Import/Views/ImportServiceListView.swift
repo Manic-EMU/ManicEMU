@@ -364,8 +364,8 @@ extension ImportServiceListView: UICollectionViewDelegate {
                     topViewController(appController: true)?.present(BaseNavigationController(rootViewController: CloudDriveBrowserViewController(provider: provider, directory: provider.rootItem, navigationTitle: service.title)), animated: true)
                 }
             }
-        case .samba, .webdav:
-            
+        case .samba, .webdav, .romm:
+
             if !PurchaseManager.isMember {
                 topViewController()?.present(PurchaseViewController(featuresType: .import), animated: true)
                 return

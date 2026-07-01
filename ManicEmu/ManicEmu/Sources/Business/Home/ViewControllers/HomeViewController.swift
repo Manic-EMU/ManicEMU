@@ -131,7 +131,9 @@ class HomeViewController: BaseViewController {
         view.backgroundColor = UIColor(.dm, light: .white, dark: .black)
         
         self.setupViews()
-        
+
+        RommSyncManager.shared.syncAllOnLaunch()
+
         homeSelectionChangeNotification = NotificationCenter.default.addObserver(forName: Constants.NotificationName.HomeSelectionChange, object: nil, queue: .main) { [weak self] notification in
             guard let self = self else { return }
             if let selection = notification.object as? HomeTabBar.BarSelection {
