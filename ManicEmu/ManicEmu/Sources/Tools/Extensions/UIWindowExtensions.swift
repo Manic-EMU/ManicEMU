@@ -22,7 +22,9 @@ extension UIWindow {
     }
     
     static var topWindow: UIWindow? {
-        if let window = ApplicationSceneDelegate.applicationScene?.windows.last(where: { w in
+        var window: UIWindow? = nil
+#if os(iOS)
+        window = ApplicationSceneDelegate.applicationScene?.windows.last(where: { w in
             if w.isHidden {
                 return false
             }
@@ -44,10 +46,11 @@ extension UIWindow {
             }
             
             return true
-        }) {
-            return window
-        }
-        return applicationWindow
+        })
+#elseif os(tvOS)
+        window = TVAppSceneDelegate.applicationScene?.windows.last
+#endif
+        return window ?? applicationWindow
     }
     
 #if os(iOS)

@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/3.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"NSMicrophoneUsageDescription" = "Microphone access required for full Nintendo DS game functionality in Manic EMU";
+"NSLocalNetworkUsageDescription" = "Manic EMU needs access to your local network to find and connect with other devices for online gaming.";

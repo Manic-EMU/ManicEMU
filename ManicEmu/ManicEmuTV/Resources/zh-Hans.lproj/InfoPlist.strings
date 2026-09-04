@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/3.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"NSMicrophoneUsageDescription" = "需要你将麦克风权限授权给 Manic EMU，否则部分DS游戏可能功能受限!";
+"NSLocalNetworkUsageDescription" = "Manic EMU 需要访问您的本地网络，以便发现并连接其他设备，实现在线游戏功能。";
