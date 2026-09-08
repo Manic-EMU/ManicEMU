@@ -18,7 +18,9 @@ enum ThreeDSMode: Int, PersistableEnum {
     case compatibility, performance, quality
 }
 
-extension Game: CKRecordConvertible & CKRecordRecoverable {}
+extension Game: CKRecordConvertible & CKRecordRecoverable {
+    var isSyncable: Bool { !isAzaharArticBase }
+}
 
 class Game: Object, ObjectUpdatable {
     

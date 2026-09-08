@@ -37,14 +37,31 @@ private func hasTXMSilicon() -> Bool {
     return major >= 14
 }
 
+enum JITMemoryPath {
+    case legacy
+    case ppl
+    case txm
+}
+
 public extension ProcessInfo {
+    /// A15+ / M2+ silicon. Independent of OS version.
+    var hasTXMSilicon: Bool { ManicEmu.hasTXMSilicon() }
+
+    /// Allocator path cores use: iOS < 26 is always legacy W^X.
+    internal var jitMemoryPath: JITMemoryPath {
+        if operatingSystemVersion.majorVersion < 26 {
+            return .legacy
+        }
+        return ManicEmu.hasTXMSilicon() ? .txm : .ppl
+    }
+
     var hasTXM: Bool {
         let v = operatingSystemVersion
         if v.majorVersion < 26 {
             Log.debug("[JIT Env] Device: Legacy machine=\(hardwareIdentifier())")
             return false
         }
-        let result = hasTXMSilicon()
+        let result = ManicEmu.hasTXMSilicon()
         Log.debug("[JIT Env] Device: \(result ? "TXM" : "PPL") machine=\(hardwareIdentifier())")
         return result
     }
@@ -53,6 +70,9 @@ public extension ProcessInfo {
 
 @_silgen_name("BreakSendJITScript")
 func BreakSendJITScript(_ script: UnsafePointer<CChar>!, _ length: size_t)
+
+@_silgen_name("JIT26Detach")
+func JIT26Detach()
 
 func handler(sig: Int32, info: UnsafeMutablePointer<siginfo_t>?, context: UnsafeMutableRawPointer?) {
     guard let context = context else { return }

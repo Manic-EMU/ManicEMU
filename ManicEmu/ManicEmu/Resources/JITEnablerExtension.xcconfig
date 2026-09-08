@@ -1,0 +1,38 @@
+//
+//  JITEnablerExtension.xcconfig
+//  ManicEmu
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+PRODUCT_NAME = JITEnabler
+PRODUCT_BUNDLE_IDENTIFIER = com.aoshuang.manicemu.JITEnabler
+PRODUCT_MODULE_NAME = JITEnabler
+IPHONEOS_DEPLOYMENT_TARGET = 17.4
+TARGETED_DEVICE_FAMILY = 1,2
+SWIFT_VERSION = 5.0
+SKIP_INSTALL = YES
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = UU52N52JLD
+CODE_SIGN_IDENTITY = "Apple Development"
+SUPPORTED_PLATFORMS = iphoneos
+SUPPORTS_MACCATALYST = NO
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO
+APPLICATION_EXTENSION_API_ONLY = NO
+CLANG_ENABLE_MODULES = YES
+CLANG_ENABLE_OBJC_ARC = YES
+GENERATE_INFOPLIST_FILE = NO
+SWIFT_INSTALL_OBJC_HEADER = NO
+CURRENT_PROJECT_VERSION = 1
+MARKETING_VERSION = 1.0
+ENABLE_USER_SCRIPT_SANDBOXING = NO
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) DEBUG=1
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG
+
+INFOPLIST_FILE = ManicEmu/Sources/Tools/JIT/JITEnablerExtension/Info.plist
+CODE_SIGN_ENTITLEMENTS = ManicEmu/Sources/Tools/JIT/JITEnablerExtension/JITEnablerExtension.entitlements
+
+LIBRARY_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../StikJIT/idevice"
+HEADER_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../StikJIT/idevice" "$(SRCROOT)/../StikJIT/iokit"
+SWIFT_INCLUDE_PATHS = $(inherited) "$(SRCROOT)/../StikJIT/idevice" "$(SRCROOT)/../StikJIT/iokit"
+OTHER_LDFLAGS = $(inherited) -force_load "$(SRCROOT)/../StikJIT/idevice/libidevice_ffi.a"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks

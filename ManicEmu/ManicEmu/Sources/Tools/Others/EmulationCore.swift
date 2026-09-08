@@ -50,7 +50,8 @@ enum EmulationCore: CaseIterable {
          VICEx64sc,
          PUAE,
          gpSP,
-         MesenS
+         MesenS,
+         Symbian
     
     var name: String {
         switch self {
@@ -140,6 +141,8 @@ enum EmulationCore: CaseIterable {
             "gpSP"
         case .MesenS:
             "Mesen-S"
+        case .Symbian:
+            "Symbian"
         }
     }
     
@@ -223,11 +226,17 @@ enum EmulationCore: CaseIterable {
             return [.gba]
         case .MesenS:
             return [.snes, .gb, .gbc]
+        case .Symbian:
+            return [.symbian]
         }
     }
     
     var isLibretroCore: Bool {
-        if self == .Citra || self == .J2meJS || self == .JGenesis || self == .freej2me {
+        if self == .Citra ||
+            self == .J2meJS ||
+            self == .JGenesis ||
+            self == .freej2me ||
+            self == .Symbian {
             return false
         }
         return true
@@ -265,6 +274,24 @@ enum EmulationCore: CaseIterable {
                 .BeetleNeoPop,
                 .gpSP,
                 .MesenS:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var supportJit: Bool {
+        switch self {
+        case .Citra,
+                .Azahar,
+                .PPSSPP,
+                .melonDSDS,
+                .Mupen64PlushNext,
+                .BeetlePSXHW,
+                .Flycast,
+                .DOSBoxPure,
+                .Symbian,
+                .Dolphin:
             return true
         default:
             return false

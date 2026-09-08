@@ -11,425 +11,380 @@ import UIKit
 import Device
 
 class JITSettingView: BaseView {
-    
-    class JITSettingViewCell: UICollectionViewCell {
-        private let jitView: UIView = {
-            let view = UIView()
-            
-            let container = UIView()
-            container.backgroundColor = R.Color.BackgroundSecondary
-            container.layerCornerRadius = R.Size.CornerRadiusMedium
-            view.addSubview(container)
-            container.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            let iconView = IconView()
-            iconView.contentMode = .center
-            iconView.layerCornerRadius = 6
-            iconView.image = UIImage(symbol: .boltFill, font: R.Font.Footnote(emphasis: true), color: R.Color.LabelPrimary.forceStyle(.dark))
-            iconView.backgroundColor = R.Color.Indigo
-            container.addSubview(iconView)
-            iconView.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(R.Size.ContentSpaceMedium)
-                make.size.equalTo(R.Size.IconSizeLarge)
-                make.centerY.equalToSuperview()
-            }
-            
-            let jitLabel = UILabel()
-            let jitEnable = LibretroCore.jitAvailable()
-            jitLabel.text = jitEnable ? R.string.localizable.jitAllow() : R.string.localizable.jitNotAllow()
-            jitLabel.textColor = jitEnable ? R.Color.Green : R.Color.Red
-            jitLabel.font = R.Font.Body(emphasis: true)
-            container.addSubview(jitLabel)
-            jitLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(iconView)
-                make.leading.equalTo(iconView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-            }
-            
-            return view
-        }()
-        
-        private lazy var deviceView: UIView = {
-            let view = UIView()
-            
-            let titleContainerView = UIView()
-            view.addSubview(titleContainerView)
-            titleContainerView.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(R.Size.ContentSpaceTiny)
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightSmall)
-            }
-            
-            let titleLabel = UILabel()
-            titleLabel.text = R.string.localizable.device()
-            titleLabel.font = R.Font.Footnote(emphasis: true)
-            titleLabel.textColor = R.Color.LabelSecondary
-            titleContainerView.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-            
-            let storageContainer = UIView()
-            storageContainer.backgroundColor = R.Color.BackgroundSecondary
-            storageContainer.layerCornerRadius = R.Size.CornerRadiusMedium
-            view.addSubview(storageContainer)
-            storageContainer.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(titleContainerView.snp.bottom)
-                make.height.equalTo(240)
-            }
-            
-            func genItemView(symbol: SFSymbol, title: String, detail: String) -> UIView {
-                let containerView = UIView()
-                
-                let iconView = IconView()
-                iconView.contentMode = .center
-                iconView.layerCornerRadius = 6
-                iconView.image = UIImage(symbol: symbol, font: R.Font.Footnote(emphasis: true), color: R.Color.LabelPrimary.forceStyle(.dark))
-                iconView.backgroundColor = R.Color.LabelTertiary.forceStyle(.dark)
-                containerView.addSubview(iconView)
-                iconView.snp.makeConstraints { make in
-                    make.leading.equalToSuperview().offset(R.Size.ContentSpaceMedium)
-                    make.size.equalTo(R.Size.IconSizeLarge)
-                    make.centerY.equalToSuperview()
-                }
-                
-                let titleLabel = UILabel()
-                titleLabel.text = title
-                titleLabel.textColor = R.Color.LabelPrimary
-                titleLabel.font = R.Font.Body(emphasis: true)
-                containerView.addSubview(titleLabel)
-                titleLabel.snp.makeConstraints { make in
-                    make.centerY.equalTo(iconView)
-                    make.leading.equalTo(iconView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-                }
-                
-                let detailLabel = UILabel()
-                detailLabel.text = detail
-                detailLabel.textColor = R.Color.LabelSecondary
-                detailLabel.font = R.Font.Caption()
-                containerView.addSubview(detailLabel)
-                detailLabel.snp.makeConstraints { make in
-                    make.centerY.equalTo(iconView)
-                    make.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-                }
-                return containerView
-            }
-            
-            //Install Source
-            var sourceDetail = ""
-            #if SIDE_LOAD
-            sourceDetail = "Sideload"
-            #else
-            sourceDetail = "AppStore"
-            #endif
-            let sourceView = genItemView(symbol: .appFill, title: R.string.localizable.installSource(), detail: sourceDetail)
-            storageContainer.addSubview(sourceView)
-            sourceView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            
-            //Device
-            let deviceView = genItemView(symbol: .iphone, title: R.string.localizable.device(), detail: Device.version().rawValue)
-            storageContainer.addSubview(deviceView)
-            deviceView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(sourceView.snp.bottom)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            //System
-            let v = ProcessInfo.processInfo.operatingSystemVersion
-            let systemView = genItemView(symbol: .squareStack3dUpFill, title: R.string.localizable.system(), detail: "\(v.majorVersion).\(v.minorVersion).\(v.patchVersion)")
-            storageContainer.addSubview(systemView)
-            systemView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(deviceView.snp.bottom)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            //Memory
-            let memoryBytes = ProcessInfo.processInfo.physicalMemory
-            let memoryView = genItemView(symbol: .memorychipFill, title: R.string.localizable.memory(), detail: FileType.humanReadableFileSize(memoryBytes, numeralSystem: 1000, decimalPlaces: 0) ?? "Unknown")
-            storageContainer.addSubview(memoryView)
-            memoryView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(systemView.snp.bottom)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            return view
-        }()
-        
-#if SIDE_LOAD
-        private let enableJITView: UIView = {
-            let view = UIView()
-            view.enablePressEffect = true
-            view.addTapGesture { gesture in
-                if UIApplication.shared.canOpenURL(R.URLs.EnableJITUrl) {
-                    UIApplication.shared.open(R.URLs.EnableJITUrl)
-                } else {
-                    UIView.makeToast(message: R.string.localizable.notInstall("StikDebug"))
-                }
-            }
-            
-            let container = UIView()
-            container.backgroundColor = R.Color.BackgroundSecondary
-            container.layerCornerRadius = R.Size.CornerRadiusMedium
-            view.addSubview(container)
-            container.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            let iconView = IconView()
-            iconView.contentMode = .center
-            iconView.layerCornerRadius = 6
-            iconView.image = UIImage(symbol: .bolt,
-                                     font: R.Font.Footnote(emphasis: true),
-                                     color: R.Color.LabelPrimary.forceStyle(.dark))
-            iconView.backgroundColor = R.Color.BackgroundPrimary.forceStyle(.dark)
-            container.addSubview(iconView)
-            iconView.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(R.Size.ContentSpaceMedium)
-                make.size.equalTo(R.Size.IconSizeLarge)
-                make.centerY.equalToSuperview()
-            }
-            
-            let label = UILabel()
-            label.text = LibretroCore.jitAvailable() ?  R.string.localizable.reEnableJIT() : R.string.localizable.enableJIT()
-            label.textColor = R.Color.LabelPrimary
-            label.font = R.Font.Body(emphasis: true)
-            container.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.centerY.equalTo(iconView)
-                make.leading.equalTo(iconView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-            }
-            
-            let chevronIconView = UIImageView(image: UIImage(symbol: .chevronRight, font: R.Font.Caption(emphasis: true), color: R.Color.LabelSecondary))
-            chevronIconView.contentMode = .center
-            container.addSubview(chevronIconView)
-            chevronIconView.snp.makeConstraints { make in
-                make.centerY.equalTo(iconView)
-                make.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-            }
-            
-            return view
-        }()
-#else
-        private let installSideloadView: UIView = {
-            let view = UIView()
-            view.enablePressEffect = true
-            view.addTapGesture { gesture in
-                if UIApplication.shared.canOpenURL(R.URLs.InstallSideload) {
-                    UIApplication.shared.open(R.URLs.InstallSideload)
-                } else {
-                    UIApplication.shared.open(R.URLs.SideStore)
-                }
-            }
-            
-            let container = UIView()
-            container.backgroundColor = R.Color.BackgroundSecondary
-            container.layerCornerRadius = R.Size.CornerRadiusMedium
-            view.addSubview(container)
-            container.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            let iconView = UIImageView()
-            iconView.contentMode = .center
-            iconView.layerCornerRadius = 6
-            iconView.image = R.image.customArrowTriangleheadSwap()?.applySymbolConfig(font: R.Font.Footnote(emphasis: true), color: R.Color.LabelPrimary.forceStyle(.dark))
-            iconView.backgroundColor = R.Color.BackgroundPrimary.forceStyle(.dark)
-            container.addSubview(iconView)
-            iconView.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(R.Size.ContentSpaceMedium)
-                make.size.equalTo(R.Size.IconSizeLarge)
-                make.centerY.equalToSuperview()
-            }
-            
-            let label = UILabel()
-            label.text = R.string.localizable.installSideloadVersion()
-            label.textColor = R.Color.LabelPrimary
-            label.font = R.Font.Body(emphasis: true)
-            container.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.centerY.equalTo(iconView)
-                make.leading.equalTo(iconView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-            }
-            
-            let chevronIconView = UIImageView(image: UIImage(symbol: .chevronRight, font: R.Font.Caption(emphasis: true), color: R.Color.BackgroundTertiary))
-            chevronIconView.contentMode = .center
-            container.addSubview(chevronIconView)
-            chevronIconView.snp.makeConstraints { make in
-                make.centerY.equalTo(iconView)
-                make.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-            }
-            
-            return view
-        }()
-#endif
-
-        private let detailLabel: UILabel = {
-            let view = UILabel()
-            view.numberOfLines = 0
-            view.text = R.string.localizable.jitDesc()
-            view.font = R.Font.Caption()
-            view.textColor = R.Color.LabelSecondary
-            return view
-        }()
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-        
-            addSubview(jitView)
-            jitView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview().offset(R.Size.ContentSpaceLarge)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            addSubview(deviceView)
-            deviceView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(jitView.snp.bottom)
-                make.height.equalTo(288)
-            }
 
 #if SIDE_LOAD
-            addSubview(enableJITView)
-            enableJITView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(deviceView.snp.bottom).offset(R.Size.ContentSpaceLarge)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-#else
-            addSubview(installSideloadView)
-            installSideloadView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(deviceView.snp.bottom).offset(R.Size.ContentSpaceLarge)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-#endif
-            
-            addSubview(detailLabel)
-            detailLabel.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(deviceView.snp.bottom).offset(92)
-            }
-            
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
+    private enum Row {
+        case status
+        case activeDebugger
+        case source
+        case device
+        case system
+        case memory
+        case txm
+        case jitPath
+        case method
+        case autoEnableOnLaunch
+        case enable
+        case pairing
+        case prepare
+        case resetDDI
     }
-    
-    private lazy var navigationView: ASNavigationView = {
-        var navigation = ASListPage.Navigation.defaultNavigation(title: "JIT",
-                                                                 titleIcon: .symbolImage(R.image.jit_iconSymbols()))
-        navigation.enableClose = showClose
-        let view = ASNavigationView(navigation)
-        view.didTapClose = { [weak self] in
-            guard let self = self else { return }
-            self.hide()
+#else
+    private enum Row {
+        case status
+        case source
+        case device
+        case system
+        case memory
+        case installSideload
+    }
+#endif
+
+    private let showClose: Bool
+
+    private lazy var listPageView: ASListPageView = {
+        let view = ASListPageView(getListPage())
+        view.didActionOccurred = { [weak self] action in
+            self?.handleAction(action)
         }
         return view
     }()
-    
-    private lazy var collectionView: UICollectionView = {
-        let view = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        view.backgroundColor = .clear
-        view.contentInsetAdjustmentBehavior = .never
-        view.register(cellWithClass: JITSettingViewCell.self)
-        view.showsVerticalScrollIndicator = false
-        view.dataSource = self
-        view.delegate = self
-        view.isFocusable = true
-        view.contentInset = .insets(bottom: UIDevice.isPad ? (R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge) : R.Size.ContentInsetBottom)
-        return view
-    }()
-    
-    private let showClose: Bool
 
     required init?(parameters: Any...) {
         self.showClose = parameters.compactMap({ $0 as? Bool }).first ?? true
         super.init(frame: .zero)
-        
-        addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            if showClose {
-                make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
-            } else {
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
-            }
-            make.leading.trailing.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(R.Size.NavigationHeight)
-        }
-        
-        addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(navigationView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+        addSubview(listPageView)
+        listPageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
-    
+
     convenience init(showClose: Bool = true) {
         self.init(parameters: showClose)!
     }
-    
+
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has been implemented")
     }
-    
-    private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
-            //item布局
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                                                 heightDimension: .fractionalHeight(1)))
-            
-            //group布局
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(600)), subitems: [item])
-            group.contentInsets = NSDirectionalEdgeInsets(top: 0,
-                                                            leading: R.Size.ContentSpaceMedium,
-                                                            bottom: 0,
-                                                            trailing: R.Size.ContentSpaceMedium)
-            
-            //section布局
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: R.Size.ContentSpaceSmall, trailing: 0)
-            
-            return section
+
+    private func reloadList() {
+        listPageView.updatePage(getListPage())
+    }
+
+    private func visibleRows() -> [[Row]] {
+#if SIDE_LOAD
+        let info: [Row] = [.source, .device, .system, .memory, .txm, .jitPath]
+        var actions: [Row] = []
+        if StikJITManager.shared.showsMethodPicker {
+            actions.append(.method)
         }
-        return layout
+        if StikJITManager.shared.jitLaunchMode == .builtInDebugger {
+            actions.append(.autoEnableOnLaunch)
+        }
+        actions.append(.enable)
+        if StikJITManager.shared.jitLaunchMode == .builtInDebugger {
+            actions += [.pairing, .prepare, .resetDDI]
+        }
+        return [[.status, .activeDebugger], info, actions]
+#else
+        return [[.status], [.source, .device, .system, .memory], [.installSideload]]
+#endif
     }
-}
 
-extension JITSettingView: UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+    private func row(at indexPath: IndexPath) -> Row? {
+        let rows = visibleRows()
+        guard indexPath.section < rows.count, indexPath.row < rows[indexPath.section].count else {
+            return nil
+        }
+        return rows[indexPath.section][indexPath.row]
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withClass: JITSettingViewCell.self, for: indexPath)
-        return cell
-    }
-}
 
-extension JITSettingView: UICollectionViewDelegate {
-    
+    private func handleAction(_ action: ASListPage.Action) {
+        if let navigationValue = action.navigationValue {
+            if navigationValue.isTapClose {
+                hide()
+            } else if let _ = navigationValue.tapToolsValue {
+                let desc = EmulationCore.libretroCores.filter({ $0.supportJit }).reduce("", { result, core in
+                    var gameTypesString: String = ""
+                    if let gameTypes = core.gameTypes {
+                        gameTypesString = "(\(gameTypes.reduce("", { $0 + ($0.isEmpty ? "" : " ") + $1.localizedShortName })))"
+                    }
+                    return result + (result.isEmpty ? "" : "   ") + core.name + gameTypesString
+                })
+                UIView.makeAlert(detail: R.string.localizable.jitSupportedDesc(desc), cancelTitle: R.string.localizable.gotIt())
+            }
+            return
+        }
+        guard let value = action.normalItemValue, let row = row(at: value.indexPath) else { return }
+#if SIDE_LOAD
+        switch row {
+        case .method:
+            showMethodPicker()
+        case .autoEnableOnLaunch:
+            guard let isOn = value.subActions?.extraValue as? Bool else { return }
+            Settings.defalut.updateExtra(key: ExtraKey.autoEnableJITOnLaunch.rawValue, value: isOn)
+            listPageView.updateCellData(value.cellData.updateNormalSwitch(state: isOn ? .on : .off),
+                                        indexPath: value.indexPath,
+                                        reloadView: false)
+        case .enable:
+            enableJITTapped()
+        case .pairing:
+            importPairingTapped()
+        case .prepare:
+            prepareTapped()
+        case .resetDDI:
+            resetDDITapped()
+        default:
+            break
+        }
+#else
+        if row == .installSideload {
+            if UIApplication.shared.canOpenURL(R.URLs.InstallSideload) {
+                UIApplication.shared.open(R.URLs.InstallSideload)
+            } else {
+                UIApplication.shared.open(R.URLs.SideStore)
+            }
+        }
+#endif
+    }
+
+    private func getListPage() -> ASListPage {
+        var navigation = ASListPage.Navigation.defaultNavigation(
+            title: "JIT",
+            titleIcon: .symbolImage(R.image.jit_iconSymbols()),
+            tools: [.symbolImage(R.image.faq_iconSymbols())])
+        navigation.enableClose = showClose
+
+        let jitEnable = LibretroCore.jitAvailable()
+        let statusCell = ASListPage.Cell.normal([
+            .icon(.symbol(.boltFill, colors: [R.Color.LabelPrimary.forceStyle(.dark)]), iconSize: R.Size.IconSizeLarge.height),
+            .title(.largeText(jitEnable ? R.string.localizable.jitAllow() : R.string.localizable.jitNotAllow(),
+                              color: jitEnable ? R.Color.Green : R.Color.Red))
+        ], enablePressEffect: false)
+
+        #if SIDE_LOAD
+        let sourceDetail = "Sideload"
+        #else
+        let sourceDetail = "AppStore"
+        #endif
+        let version = ProcessInfo.processInfo.operatingSystemVersion
+        let memoryBytes = ProcessInfo.processInfo.physicalMemory
+        let memoryText = FileType.humanReadableFileSize(memoryBytes, numeralSystem: 1000, decimalPlaces: 0) ?? "Unknown"
+
+        var infoCells: [ASListPage.Cell] = [
+            .iconTitleDetailCell(icon: .symbol(.appFill), title: R.string.localizable.installSource(), detail: sourceDetail, enablePressEffect: false),
+            .iconTitleDetailCell(icon: .symbol(.iphone), title: R.string.localizable.device(), detail: Device.version().rawValue, enablePressEffect: false),
+            .iconTitleDetailCell(icon: .symbol(.squareStack3dUpFill), title: R.string.localizable.system(), detail: "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)", enablePressEffect: false),
+            .iconTitleDetailCell(icon: .symbol(.memorychipFill), title: R.string.localizable.memory(), detail: memoryText, enablePressEffect: false)
+        ]
+#if SIDE_LOAD
+        let txmDetail = ProcessInfo.processInfo.hasTXMSilicon
+            ? R.string.localizable.jitTxmPresent()
+            : R.string.localizable.jitTxmNotPresent()
+        let pathDetail: String
+        switch ProcessInfo.processInfo.jitMemoryPath {
+        case .legacy:
+            pathDetail = R.string.localizable.jitPathLegacy()
+        case .ppl:
+            pathDetail = R.string.localizable.jitPathPPL()
+        case .txm:
+            pathDetail = R.string.localizable.jitPathTXM()
+        }
+        infoCells.append(.iconTitleDetailCell(
+            icon: .symbol(.cpu),
+            title: R.string.localizable.jitTxmStatus(),
+            detail: txmDetail,
+            enablePressEffect: false))
+        infoCells.append(.iconTitleDetailCell(
+            icon: .symbol(.arrowLeftArrowRight),
+            title: R.string.localizable.jitPath(),
+            detail: pathDetail,
+            enablePressEffect: false))
+#endif
+        let infoSection = ASListPage.Section(cells: infoCells)
+
+        #if SIDE_LOAD
+        let mode = StikJITManager.shared.jitLaunchMode
+        let enableTitle = jitEnable ? R.string.localizable.reEnableJIT() : R.string.localizable.enableJIT()
+        var actionCells: [ASListPage.Cell] = []
+        if StikJITManager.shared.showsMethodPicker {
+            actionCells.append(.iconTitleChevronCell(
+                icon: .symbolImage(R.image.jit_methodSymbols()),
+                title: R.string.localizable.jitMethod(),
+                chevronTitle: StikJITManager.shared.title(for: mode)))
+        }
+        if mode == .builtInDebugger {
+            let autoEnable = Settings.defalut.getExtraBool(key: ExtraKey.autoEnableJITOnLaunch.rawValue) ?? true
+            actionCells.append(.iconTitleDetailSwitchCell(
+                icon: .symbol(.power),
+                title: R.string.localizable.jitAutoEnableOnLaunch(),
+                detail: R.string.localizable.jitAutoEnableOnLaunchDesc(),
+                state: autoEnable ? .on : .off,
+                enablePressEffect: false))
+        }
+        actionCells.append(.iconTitleChevronCell(icon: .symbolImage(R.image.jit_typeSymbols()), title: enableTitle))
+        if mode == .builtInDebugger {
+            actionCells.append(.iconTitleChevronCell(
+                icon: .symbol(.docFill),
+                title: R.string.localizable.jitImportPairingFile(),
+                chevronTitle: StikJITManager.shared.pairingFileDisplayName))
+            actionCells.append(.iconTitleChevronCell(
+                icon: .symbol(.hammerFill),
+                title: R.string.localizable.jitPrepare(),
+                chevronTitle: StikJITManager.shared.preparationStatus))
+            actionCells.append(.iconTitleChevronCell(
+                icon: .symbol(.trash),
+                title: R.string.localizable.jitResetDDI()))
+        }
+        var statusSection = ASListPage.Section(cells: [
+            statusCell,
+            .iconTitleDetailCell(
+                icon: .symbol(.dotRadiowavesLeftAndRight),
+                title: R.string.localizable.jitActiveDebugger(),
+                detail: StikJITHostCoordinator.shared.activeDebuggerDisplayName,
+                enablePressEffect: false)
+        ])
+        statusSection.header = .texts([.smallText(R.string.localizable.jitDesc(), numberOfLines: 0)], pin: false)
+        var actionSection = ASListPage.Section(cells: actionCells)
+        if StikJITManager.shared.showsMethodPicker {
+            actionSection.footer = .texts([.smallText(R.string.localizable.jitMethodBuiltInInfo(), numberOfLines: 0)], pin: false)
+        }
+        let sections = [
+            statusSection,
+            infoSection,
+            actionSection
+        ]
+        #else
+        var lastSection = ASListPage.Section(cells: [
+            .iconTitleChevronCell(
+                icon: .symbolImage(R.image.customArrowTriangleheadSwap() ?? UIImage()),
+                title: R.string.localizable.installSideloadVersion())
+        ])
+        lastSection.footer = .texts([.smallText(R.string.localizable.jitDesc(), numberOfLines: 0)], pin: false)
+        let sections = [
+            ASListPage.Section(cells: [statusCell]),
+            infoSection,
+            lastSection
+        ]
+        #endif
+
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        return ASListPage(
+            navigation: navigation,
+            sections: sections,
+            backgroundColor: .clear,
+            listInsets: .insets(bottom: listInsetBottom),
+            pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop))
+    }
+
+#if SIDE_LOAD
+    private func showMethodPicker() {
+        let options = [
+            R.string.localizable.jitMethodBuiltInDebugger(),
+            R.string.localizable.jitMethodExternalDebugger()
+        ]
+        let selected = StikJITManager.shared.jitLaunchMode == .builtInDebugger ? 0 : 1
+        OptionsSheetView.show(
+            icon: .symbolImage(R.image.jit_iconSymbols()),
+            title: R.string.localizable.jitMethod(),
+            detail: StikJITManager.shared.info(for: StikJITManager.shared.jitLaunchMode),
+            options: options,
+            selectedIndex: selected
+        ) { [weak self] index in
+            guard let index else { return }
+            let mode: JITLaunchMode = index == 0 ? .builtInDebugger : .externalDebugger
+            if mode == .builtInDebugger {
+                if StikJITManager.shared.isRunningInLiveContainer {
+                    UIView.makeToast(message: R.string.localizable.jitLiveContainerUnavailable())
+                    return
+                }
+                if !StikJITManager.shared.isBuiltInAvailable {
+                    UIView.makeToast(message: R.string.localizable.jitRequiresiOS174())
+                    return
+                }
+            }
+            StikJITManager.shared.jitLaunchMode = mode
+            self?.reloadList()
+        }
+    }
+
+    private func enableJITTapped() {
+        if StikJITManager.shared.jitLaunchMode == .externalDebugger {
+            if !StikJITHostCoordinator.shared.openExternalDebugger() {
+                UIView.makeToast(message: R.string.localizable.notInstall("StikDebug"))
+            }
+            return
+        }
+        UIView.makeLoading(timeout: R.Numbers.WebLoadingViewTimeout)
+        StikJITHostCoordinator.shared.acquireNow { [weak self] ok, message in
+            if ok {
+                UIView.makeToast(message: R.string.localizable.enableJITSuccess() )
+            } else {
+                UIView.makeAlert(
+                    title: R.string.localizable.enableJIT(),
+                    detail: message ?? R.string.localizable.errorUnknown(),
+                    detailAlignment: .center,
+                    cancelTitle: R.string.localizable.gotIt())
+            }
+            DispatchQueue.main.asyncAfter(delay: 0.35, execute: {
+                UIView.hideLoading()
+            })
+            self?.reloadList()
+        }
+    }
+
+    private func importPairingTapped() {
+        StikJITManager.shared.presentPairingFilePicker { [weak self] ok, error in
+            if let error {
+                UIView.makeToast(message: error)
+            } else if ok, StikJITManager.shared.hasPairingFile, StikJITManager.shared.isBuiltInAvailable {
+                StikJITManager.shared.jitLaunchMode = .builtInDebugger
+            }
+            self?.reloadList()
+        }
+    }
+
+    private func prepareTapped() {
+        UIView.makeLoadingToast(message: R.string.localizable.jitPrepare())
+        StikJITHostCoordinator.shared.prepareDevice { stage in
+            UIView.makeLoadingToast(message: stage)
+        } completion: { [weak self] ok, error in
+            if ok {
+                UIView.makeToast(message: R.string.localizable.jitPrepareSuccess())
+            } else {
+                UIView.makeAlert(
+                    title: R.string.localizable.jitPrepare(),
+                    detail: error ?? R.string.localizable.errorUnknown(),
+                    detailAlignment: .center,
+                    cancelTitle: R.string.localizable.gotIt())
+            }
+            self?.reloadList()
+            DispatchQueue.main.asyncAfter(delay: 0.35, execute: {
+                UIView.hideLoadingToast(forceHide: true)
+            })
+        }
+    }
+
+    private func resetDDITapped() {
+        UIView.makeLoading(timeout: R.Numbers.WebLoadingViewTimeout)
+        StikJITHostCoordinator.shared.resetCachedDDI { [weak self] ok, error in
+            if ok {
+                UIView.makeToast(message: R.string.localizable.jitResetDDISuccess())
+            } else {
+                UIView.makeAlert(
+                    title: R.string.localizable.jitPrepare(),
+                    detail: error ?? R.string.localizable.errorUnknown(),
+                    detailAlignment: .center,
+                    cancelTitle: R.string.localizable.gotIt())
+            }
+            self?.reloadList()
+            DispatchQueue.main.asyncAfter(delay: 0.35, execute: {
+                UIView.hideLoading()
+            })
+        }
+    }
+#endif
 }
 
 extension JITSettingView: ShowableView {
-    
 }

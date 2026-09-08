@@ -767,16 +767,25 @@ class PlayViewController: GameViewController {
         }
         //设置外设控制器
         updateExternalGameController()
-        //如果需要加载默认配置
+        // Load default core config after JIT is ready (sideload waits for CS_DEBUGGED first).
         LibretroCore.sharedInstance().forbitJIT = manicGame.safeMode
+#if SIDE_LOAD
+        StikJITHostCoordinator.shared.acquireIfNeeded(game: manicGame) { [weak self] in
+            guard let self else { return }
+            self.loadConfig()
+            self.updateSkin()
+            if !self.manicGame.safeMode {
+                self.updateTriggerPro()
+            }
+        }
+#else
         loadConfig()
-        //更新皮肤
         updateSkin()
-        //更新TriggerPro
         if !manicGame.safeMode {
             updateTriggerPro()
         }
-        //全屏模式的时候点击屏幕临时展示menu和flex按钮
+#endif
+        // In full-screen mode, tap the screen to temporarily show menu and flex buttons.
         view.addTapGesture(handler: { [weak self] _ in
             guard let self, self.isFullScreen else { return }
             self.showFlexButtonsTemporarily()
@@ -858,12 +867,13 @@ class PlayViewController: GameViewController {
         //Libretro已经停止，不要在这里进行注销事项，应该在stop()函数中完成
         
 #if SIDE_LOAD
-        if #available(iOS 26.0, tvOS 26.0, *),
-           ((manicGame.gameType == .dos && ProcessInfo.processInfo.hasTXM) ||
-            manicGame.gameType == .symbian),
-           (LibretroCore.jitAvailable() && manicGame.jit) {
-            if UIApplication.shared.canOpenURL(R.URLs.EnableJITUrl) {
-                UIApplication.shared.open(R.URLs.EnableJITUrl)
+        if LibretroCore.jitAvailable(), manicGame.supportJit, manicGame.jit, !manicGame.safeMode {
+            if StikJITManager.shared.jitLaunchMode == .builtInDebugger, ProcessInfo.processInfo.hasTXM {
+                StikJITHostCoordinator.shared.reacquireAfterDetach()
+            } else {
+                if #available(iOS 26.0, tvOS 26.0, *), ProcessInfo.processInfo.hasTXM {
+                    _ = StikJITHostCoordinator.shared.openExternalDebugger()
+                }
             }
         }
 #endif
@@ -1678,7 +1688,8 @@ extension PlayViewController {
                     .ppsspp_texture_replacement: "disabled",
                     .ppsspp_enable_wlan: "disabled",
                     .ppsspp_internal_resolution: "480x272",
-                    .ppsspp_cpu_core: "Interpreter"
+                    .ppsspp_cpu_core: "Interpreter",
+                    .ppsspp_software_rendering_jit: "disabled"
                 ], safeMode: true)
             } else if manicGame.gameType == .nes || manicGame.gameType == .fds {
                 updateLibretroCoreConfigs(core: .Nestopia, configs: [
@@ -1920,7 +1931,8 @@ extension PlayViewController {
                     .ppsspp_language: languages[manicGame.region],
                     .ppsspp_backend: backend,
                     .ppsspp_texture_replacement: (manicGame.getExtraBool(key: ExtraKey.pspTexture.rawValue) ?? false) ? "enabled" : "disabled",
-                    .ppsspp_cpu_core : enableJIT ? jitValue : "Interpreter"
+                    .ppsspp_cpu_core : enableJIT ? jitValue : "Interpreter",
+                    .ppsspp_software_rendering_jit: enableJIT ? "enabled" : "disabled"
                 ] + networkingConfigs)
                 updatePSPResolution(manicGame.resolution, reload: false)
                 

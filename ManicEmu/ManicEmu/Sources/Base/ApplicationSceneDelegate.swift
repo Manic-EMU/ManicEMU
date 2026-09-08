@@ -59,6 +59,11 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
                             
                         }
                     })
+                    
+#if SIDE_LOAD
+                    StikJITHostCoordinator.shared.enableOnLaunchIfNeeded()
+#endif
+                    
                 }
             }
             let dropInteraction = UIDropInteraction(delegate: self)

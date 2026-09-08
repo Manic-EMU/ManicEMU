@@ -209,6 +209,16 @@ class ASListPageView: BaseView {
 
 //MARK: - UI-related Functions
 extension ASListPageView {
+    /// Text width used by both supplementary items and decoration insets.
+    /// Falls back when the collection view has not received a real bounds yet.
+    private func supplementaryTextWidth(in env: NSCollectionLayoutEnvironment) -> CGFloat {
+        let containerWidth = env.container.effectiveContentSize.width
+        let fallbackWidth = max(collectionView.bounds.width, bounds.width)
+        let width = containerWidth > 1 ? containerWidth : fallbackWidth
+        let resolved = width > 1 ? width : R.Size.WindowWidth
+        return max(resolved - Self.sectionHorizontalInsets * 2 - Self.supplementaryHorizontalInsets * 2, 1)
+    }
+    
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
             guard let self else { return nil }
@@ -239,6 +249,7 @@ extension ASListPageView {
             
             //section
             let section = NSCollectionLayoutSection(group: group)
+            let supplementaryTextWidth = self.supplementaryTextWidth(in: env)
             
             //gen header or footer
             func generateSupplementaryItem(supplementary: ASListPage.Supplementary, isHeader: Bool) -> NSCollectionLayoutBoundarySupplementaryItem {
@@ -246,7 +257,12 @@ extension ASListPageView {
                 var pinToVisibleBounds = false
                 switch supplementary {
                 case .texts(_, let pin):
-                    heightDimension = .estimated(R.Size.SupplementaryItemHeight)
+                    // Absolute height must match decoration insets; estimated 44pt leaves a large
+                    // gap until the footer is self-sized after scrolling.
+                    let height = ASListSupplementaryView.calculateHeight(
+                        width: supplementaryTextWidth,
+                        supplementary: supplementary)
+                    heightDimension = .absolute(height)
                     pinToVisibleBounds = pin
                 case .buttons(_, let pin):
                     heightDimension = .absolute(R.Size.SupplementaryItemHeight)
@@ -299,12 +315,11 @@ extension ASListPageView {
                     
                 }
                 
-                let calculateWidth = env.container.effectiveContentSize.width - Self.sectionHorizontalInsets*2 - Self.supplementaryHorizontalInsets*2
+                let calculateWidth = supplementaryTextWidth
                 
                 var insetsTop = 0.0
                 if let header = sectionData.header {
                     insetsTop = ASListSupplementaryView.calculateHeight(width: calculateWidth, supplementary: header)
-                    insetsTop = max(insetsTop, R.Size.SupplementaryItemHeight)
                 }
                 
                 var insetsBottom = 0.0

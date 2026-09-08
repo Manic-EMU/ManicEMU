@@ -86,4 +86,5 @@ enum ExtraKey: String {
     case symbianPackages
     case wiiController
     case dolphinManicInterpreter
+    case autoEnableJITOnLaunch
 }

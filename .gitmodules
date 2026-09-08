@@ -32,3 +32,7 @@
 	url = https://github.com/Daiuno/ProHUD.git
 	branch = main
 	ignore = all
+[submodule "StikJIT"]
+	path = StikJIT
+	url = https://github.com/StephenDev0/StikJIT.git
+	ignore = all

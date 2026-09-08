@@ -30,6 +30,8 @@ enum SpecialCoreOption: String {
     case ppsspp_cpu_core
     case ppsspp_internal_resolution
     case ppsspp_cheats
+    case ppsspp_software_rendering
+    case ppsspp_software_rendering_jit
     //nes fds
     case nestopia_palette
     case nestopia_aspect
@@ -544,6 +546,10 @@ enum SpecialCoreOption: String {
                                                                      storeKey: .coreOptionsKey(gameId: game.id, defaultCore: game.defaultCore),
                                                                      bestEfforts: true)?.coreOptionsValue {
             resolvedCoreConfigs += storeCoreConfigs
+        }
+        // SoftGPU stays available; only its rasterizer JIT needs executable memory.
+        if game.gameType == .psp, !LibretroCore.jitAvailable() || !game.jit {
+            resolvedCoreConfigs[Self.ppsspp_software_rendering_jit.rawValue] = "disabled"
         }
         return resolvedCoreConfigs
     }

@@ -601,6 +601,7 @@
 		<string>atariemulator</string>
 		<string>xenios</string>
 		<string>stikjit</string>
+		<string>stikdebug</string>
 		<string>dukex</string>
 		<string>armsx2</string>
 		<string>armsx2-ios</string>
