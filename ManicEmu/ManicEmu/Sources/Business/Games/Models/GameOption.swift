@@ -80,7 +80,8 @@ enum GameOption: Int, CaseIterable {
          symbianDevice,
          wiiControllerMode,
          coverScraping,
-         dolphinCpuCore
+         dolphinCpuCore,
+         slowMotion
         
     //When adding a new option, make sure to add it at the end; otherwise, it might affect the existing Prefference configurations
     
@@ -224,6 +225,8 @@ enum GameOption: Int, CaseIterable {
                 .symbolImage(R.image.online_iconSymbols())
         case .symbianDevice:
                 .symbol(.candybarphone)
+        case .slowMotion:
+                .symbol(.tortoise)
         }
     }
     
@@ -371,6 +374,8 @@ enum GameOption: Int, CaseIterable {
             R.string.localizable.coverScraping()
         case .dolphinCpuCore:
             R.string.localizable.cpuEmulationMethod()
+        case .slowMotion:
+            R.string.localizable.slowMotion()
         }
     }
     
@@ -503,6 +508,7 @@ enum GameOption: Int, CaseIterable {
             .quickLoadState,
             .volume,
             .fastForward,
+            .slowMotion,
             .shaders,
             .screenShot,
             .haptic,
@@ -937,6 +943,19 @@ enum GameOption: Int, CaseIterable {
                 return .chevron(R.Strings.DolphinCPUs[firstGameValue ? 0 : 1])
             }
             
+        case .slowMotion:
+            let extraKey = ExtraKey.slowMotionSpeed.rawValue
+            let firstGameValue = firstGame.getExtraInt(key: extraKey) ?? 0
+            if games.allSatisfy({
+                ($0.getExtraInt(key: extraKey) ?? 0) == firstGameValue
+            }) {
+                if firstGameValue == 0 {
+                    return .chevron(R.string.localizable.gameSettingFastForwardResume())
+                } else if let speed = SlowMotionSpeed(rawValue: firstGameValue) {
+                    return .chevron(speed.title)
+                }
+            }
+            
         case .rename,
                 .cover,
                 .skins,
@@ -1223,11 +1242,11 @@ enum GameOption: Int, CaseIterable {
         }
         
         if PlayViewController.isWFCConnect {
-            allOptions.subtract([.saveState, .quickLoadState, .fastForward, .stateList, .cheatCode, .rewind])
+            allOptions.subtract([.saveState, .quickLoadState, .fastForward, .stateList, .cheatCode, .rewind, .slowMotion])
         }
         
         if PlayViewController.isHardcoreMode {
-            allOptions.subtract([.quickLoadState, .cheatCode, .triggerPro, .rewind])
+            allOptions.subtract([.quickLoadState, .cheatCode, .triggerPro, .rewind, .slowMotion])
         }
         
         if !game.supportRewind {
@@ -1256,6 +1275,10 @@ enum GameOption: Int, CaseIterable {
         
         if !game.isDolphinCore || (LibretroCore.jitAvailable() && game.jit) {
             allOptions.remove(.dolphinCpuCore)
+        }
+        
+        if !game.supportSlowMotion {
+            allOptions.remove(.slowMotion)
         }
         
         allOptions.subtract(disableOptionsForScene(scene))

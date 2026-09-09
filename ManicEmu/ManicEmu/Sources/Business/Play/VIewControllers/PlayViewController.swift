@@ -987,6 +987,8 @@ class PlayViewController: GameViewController {
                 Log.debug("长按结束，恢复原速度")
             } else if mappingKey == .rewind {
                 LibretroCore.sharedInstance().setRewind(false)
+            } else if mappingKey == .slowMotion {
+                updateSlowMotion(speed: .off)
             }
         }
     }
@@ -1320,6 +1322,14 @@ extension PlayViewController {
                     return
                 }
                 LibretroCore.sharedInstance().setRewind(true)
+            } else if mappingKey == .slowMotion {
+                let speed: GameOption.SlowMotionSpeed
+                if PurchaseManager.isMember {
+                    speed = .three
+                } else {
+                    speed = .two
+                }
+                updateSlowMotion(speed: speed)
             }
         }
     }
@@ -2938,6 +2948,7 @@ extension PlayViewController {
                         DispatchQueue.main.asyncAfter(delay: 2.5) {
                             self.updateFastforward(speed: self.manicGame.speed)
                             self.updateRewind()
+                            self.trySlowMotionIfNeed()
                         }
                     }
                 }
@@ -3965,6 +3976,8 @@ extension PlayViewController {
             case .five:
                 LibretroCore.sharedInstance().fastForward(7)
             }
+            trySlowMotionIfNeed()
+            
         } else if manicGame.isJGenesisCore {
             switch speed {
             case .one:
@@ -4171,6 +4184,28 @@ extension PlayViewController {
                                                       bufferSizeMB: rewindBufferSizeMB(),
                                                       bufferSizeStepMB: 10,
                                                       mute: false)
+    }
+    
+    private func updateSlowMotion(speed: GameOption.SlowMotionSpeed) {
+        guard !manicGame.safeMode, manicGame.supportSlowMotion, !isHardcoreMode, !isWFCConnect else { return }
+        LibretroCore.sharedInstance().setSlowmotionEnable(speed != .off, ratio: speed.ratio)
+    }
+    
+    private func trySlowMotionIfNeed() {
+        if isHardcoreMode || isWFCConnect {
+            self.updateSlowMotion(speed: GameOption.SlowMotionSpeed.off)
+            return
+        }
+        
+        //If no fastforward, try using slow motion.
+        if self.manicGame.speed == .one,
+            let slowMotionSpeedRawValue = self.manicGame.getExtraInt(key: ExtraKey.slowMotionSpeed.rawValue),
+           let slowMotionSpeed = GameOption.SlowMotionSpeed(rawValue: slowMotionSpeedRawValue),
+            slowMotionSpeed != .off {
+            self.updateSlowMotion(speed: slowMotionSpeed)
+        } else {
+            self.updateSlowMotion(speed: GameOption.SlowMotionSpeed.off)
+        }
     }
 }
 
@@ -4444,5 +4479,11 @@ extension PlayViewController {
             return currentPlayViewController.manicGame
         }
         return nil
+    }
+    
+    static func updateSlowMotion(speed: GameOption.SlowMotionSpeed) {
+        if let currentPlayViewController {
+            currentPlayViewController.updateSlowMotion(speed: speed)
+        }
     }
 }

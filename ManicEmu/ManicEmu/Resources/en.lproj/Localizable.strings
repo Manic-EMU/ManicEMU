@@ -1124,3 +1124,8 @@ Press the controller button to complete mapping...";
 "JitAutoEnableOnLaunch" = "Enable JIT on Launch";
 "JitAutoEnableOnLaunchDesc" = "Make sure the debug environment is ready before launching the app.";
 "JitSupportedDesc" = "Cores that support JIT: %@";
+
+"SlowMotion" = "Slow Motion";
+"SlowMotionRatio" = "Slow Motion %@";
+"SlowMotionSpeedLimit" = "Maximum speed limited to 2x! Upgrade to Premium for 5x slow motion";
+"SlowMotionDesc" = "Slow motion has lower priority than fast forward. If fast forward is enabled, slow motion turns off automatically.";

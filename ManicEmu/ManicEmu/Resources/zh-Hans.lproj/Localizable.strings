@@ -1119,3 +1119,8 @@
 "JitAutoEnableOnLaunch" = "启动时开启 JIT";
 "JitAutoEnableOnLaunchDesc" = "请确保启动应用前调试环境已就绪。";
 "JitSupportedDesc" = "支持 JIT 的核心：%@";
+
+"SlowMotion" = "慢放";
+"SlowMotionRatio" = "慢放%@";
+"SlowMotionSpeedLimit" = "你的最高慢放是x2！请升级成为会员解锁最高x5倍慢放";
+"SlowMotionDesc" = "慢放的优先级低于加速。如果开启了加速，慢放会自动关闭。";

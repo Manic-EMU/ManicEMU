@@ -53,6 +53,8 @@ enum MappingOption: String, CaseIterable {
     //v2.0.0 j2meSettings/dosSettings has been replaced with coreSettings
     case coreSettings
     case rewind
+    //v2.0.1
+    case slowMotion
     
     //Both the key and the value need to be unique
     static let GameOptionMappings: BiMap<MappingOption, GameOption> = [
@@ -119,6 +121,10 @@ enum MappingOption: String, CaseIterable {
         if games.allSatisfy({ $0.gameType.supportsKeyboardSkin }) {
             availableMappingOptions.append(.useJoypadSkin)
             availableMappingOptions.append(.useKeyboardSkin)
+        }
+        
+        if games.allSatisfy({ $0.supportSlowMotion }) {
+            availableMappingOptions.append(.slowMotion)
         }
         
         return availableMappingOptions

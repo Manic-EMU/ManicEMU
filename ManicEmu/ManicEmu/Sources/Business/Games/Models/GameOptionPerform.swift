@@ -1079,6 +1079,13 @@ extension GameOption {
         case .dolphinCpuCore:
             performStringAction(with: games, accessoryChange: accessoryChange)
             
+        case .slowMotion:
+            if performImmediately,
+               let speed = GameOption.SlowMotionSpeed(rawValue: firstGame.getExtraInt(key: ExtraKey.slowMotionSpeed.rawValue) ?? 0) {
+                performSlowMotion(games: games, speed: speed.next)
+            } else {
+                performStringAction(with: games, accessoryChange: accessoryChange)
+            }
         }
     }
     
@@ -1329,6 +1336,9 @@ extension GameOption {
         } else if self == .dolphinCpuCore {
             options = R.Strings.DolphinCPUs
             detail = R.string.localizable.dolphinCPUDesc()
+        } else if self == .slowMotion {
+            options = GameOption.SlowMotionSpeed.allCases.map({ $0.title })
+            detail = R.string.localizable.slowMotionDesc()
         }
         
         guard options.count > 0 else { return }
@@ -1546,6 +1556,10 @@ extension GameOption {
                     games.forEach({
                         $0.updateExtra(key: ExtraKey.dolphinManicInterpreter.rawValue, value: index == 0)
                     })
+                } else if self == .slowMotion {
+                    if let speed = GameOption.SlowMotionSpeed(rawValue: index) {
+                        performSlowMotion(games: games, speed: speed)
+                    }
                 }
                 accessoryChange?()
             } else {
@@ -1732,6 +1746,43 @@ extension GameOption {
             })
         } else {
             continued?()
+        }
+    }
+    
+    private func performSlowMotion(games: [Game],
+                                    speed: GameOption.SlowMotionSpeed) {
+        guard games.count > 0 else { return }
+        if !PurchaseManager.isMember && speed.rawValue > GameOption.SlowMotionSpeed.two.rawValue {
+            pauseEmulationIfNeed()
+            
+            UIView.makeAlert(identifier: R.Strings.PlayPurchaseAlertIdentifier,
+                             detail: R.string.localizable.slowMotionSpeedLimit(),
+                             cancelTitle: R.string.localizable.resetSpeed(),
+                             confirmTitle: R.string.localizable.goToUpgrade(),
+                             confirmAutoHide: false, cancelAction: {
+                PlayViewController.updateSlowMotion(speed: .off)
+                games.forEach({
+                    $0.updateExtra(key: ExtraKey.slowMotionSpeed.rawValue,
+                                   value: GameOption.SlowMotionSpeed.off.rawValue)
+                })
+                resumeEmulationIfNeed()
+                UIView.makeToast(message: R.string.localizable.gameSettingFastForwardResume())
+            }, confirmAction: {
+                topViewController()?.present(PurchaseViewController(), animated: true)
+            }, hideAction: { type in
+                if type == .other {
+                    resumeEmulationIfNeed()
+                }
+            })
+        } else {
+            games.forEach({
+                $0.updateExtra(key: ExtraKey.slowMotionSpeed.rawValue,
+                               value: speed.rawValue)
+            })
+            if PlayViewController.isGaming {
+                PlayViewController.updateSlowMotion(speed: speed)
+                UIView.makeToast(message: speed == .off ? R.string.localizable.gameSettingFastForwardResume() : speed.title, identifier: "gameSpeed")
+            }
         }
     }
 }

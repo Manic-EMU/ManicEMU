@@ -87,4 +87,5 @@ enum ExtraKey: String {
     case wiiController
     case dolphinManicInterpreter
     case autoEnableJITOnLaunch
+    case slowMotionSpeed
 }

@@ -482,4 +482,41 @@ extension GameOption {
             }
         }
     }
+    
+    enum SlowMotionSpeed: Int, CaseIterable  {
+        case off, one, two, three, four, five
+        
+        var title: String {
+            if self == .off {
+                return R.string.localizable.gameSettingFastForwardResume()
+            } else {
+                return R.string.localizable.slowMotionRatio(" x\(self.rawValue)")
+            }
+        }
+        
+        var next: SlowMotionSpeed {
+            if let speed = SlowMotionSpeed(rawValue: self.rawValue + 1) {
+                return speed
+            } else {
+                return .off
+            }
+        }
+
+        var ratio: Float {
+            switch self {
+            case .off:
+                return 1.0
+            case .one:
+                return 1.2
+            case .two:
+                return 1.5
+            case .three:
+                return 3
+            case .four:
+                return 5.0
+            case .five:
+                return 10.0
+            }
+        }
+    }
 }

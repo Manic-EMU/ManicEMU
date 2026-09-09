@@ -1609,6 +1609,13 @@ class Game: Object, ObjectUpdatable {
     var isDolphinCore: Bool {
         gameType == .ngc || gameType == .wii
     }
+    
+    var supportSlowMotion: Bool {
+        if isLibretroType && gameType != .symbian {
+            return true
+        }
+        return false
+    }
 }
 
 
