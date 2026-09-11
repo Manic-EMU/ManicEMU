@@ -65,14 +65,13 @@ enum ASIcon {
         }
     }
     
-    static func imageConfig(size: CGFloat, weight: UIImage.SymbolWeight, colors: [UIColor]) -> UIImage.SymbolConfiguration {
-        var symbolConfig = UIImage.SymbolConfiguration(pointSize: size, weight: weight)
-        if colors.count > 0 {
-            symbolConfig = symbolConfig.applying(UIImage.SymbolConfiguration(paletteColors: colors))
-        } else {
-            symbolConfig = symbolConfig.applying(UIImage.SymbolConfiguration(paletteColors: [R.Color.LabelPrimary]))
+    static func imageConfig(size: CGFloat? = nil, weight: UIImage.SymbolWeight, colors: [UIColor]) -> UIImage.SymbolConfiguration {
+        let palette = colors.isEmpty ? [R.Color.LabelPrimary] : colors
+        let colorConfig = UIImage.SymbolConfiguration(paletteColors: palette)
+        if let size, size > .ulpOfOne {
+            return UIImage.SymbolConfiguration(pointSize: size, weight: weight).applying(colorConfig)
         }
-        return symbolConfig
+        return UIImage.SymbolConfiguration(weight: weight).applying(colorConfig)
     }
     
     ///If no color is set inside the icon, the passed-in color will be used for updating.

@@ -121,7 +121,7 @@ class ASListItemView: BaseView {
     private var groupGuide: UILayoutGuide? = nil
     
     ///icon default size
-    private var iconSize: CGFloat = R.Size.ButtonExtraExtraSmall
+    private var iconSize: ASListPage.Cell.Style.IconSize = .fixSize(CGSize(R.Size.ButtonExtraExtraSmall))
     ///accessory horizontal spacing
     private let accessorySpacing = R.Size.ContentSpaceMedium
     ///icon text spacing
@@ -148,7 +148,7 @@ class ASListItemView: BaseView {
         }
         
         let hasIcon: Bool
-        let iconSize: CGFloat
+        let iconSize: ASListPage.Cell.Style.IconSize
         let hasTitle: Bool
         let hasSubTitle: Bool
         let subtitleFollows: Bool
@@ -181,7 +181,7 @@ class ASListItemView: BaseView {
             }
             
             var hasIcon = false
-            var iconSize = R.Size.ButtonExtraExtraSmall
+            var iconSize: ASListPage.Cell.Style.IconSize = .fixSize(CGSize(R.Size.ButtonExtraExtraSmall))
             if case let .icon(_, size) = icon {
                 hasIcon = true
                 iconSize = size
@@ -354,7 +354,9 @@ class ASListItemView: BaseView {
     
     /// Structure unchanged: update leaf content in place without detaching views or rebuilding constraints.
     private func applyContentUpdates(parsed: ParsedStyles) {
-        _ = configureIcon(from: parsed.icon)
+        if let iconView = configureIcon(from: parsed.icon) {
+            applyIconPositionAndSize(iconView)
+        }
         updateTextContentInPlace(title: parsed.title, detail: parsed.detail)
         updateAccessoriesInPlace(from: styles)
         
@@ -403,6 +405,14 @@ class ASListItemView: BaseView {
             iconView = ASIconView(itemIcon)
         } else {
             iconView?.icon = itemIcon
+        }
+        switch iconSize {
+        case .fixHeight(let height):
+            iconView?.sizeStyle = .fixHeight(height)
+        case .fixSize(let size):
+            iconView?.sizeStyle = .fixSize(size)
+        case .autoLayout:
+            iconView?.sizeStyle = .auto
         }
         return iconView
     }
@@ -691,24 +701,36 @@ class ASListItemView: BaseView {
     
     //MARK: - Layout constraints
     
+    private func applyIconPositionAndSize(_ iconView: ASIconView) {
+        iconView.snp.remakeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+            switch iconSize {
+            case .fixHeight(let height):
+                make.height.equalTo(height)
+                make.width.equalTo(iconView.snp.height).multipliedBy(iconView.contentAspectRatio)
+            case .fixSize(let size):
+                make.size.equalTo(size)
+            case .autoLayout:
+                make.top.greaterThanOrEqualToSuperview().inset(verticalPadding)
+                make.bottom.lessThanOrEqualToSuperview().inset(verticalPadding)
+            }
+        }
+        iconView.invalidateIntrinsicContentSize()
+    }
+    
     private func layout(iconView: ASIconView?,
                         textBlockContainer: UIView?,
                         accessoryStack: UIStackView?,
                         progressView: ASProgressView?,
                         itemProgress: ASProgress?) {
         
-        //icon: Aligned to the leading edge, fixed size, vertically centered relative to the entire line.
-        // 必须 remake：cell 复用时 iconView 会保留旧的 size 常量约束（常见为默认 24），
-        // 再用 makeConstraints 叠加新尺寸会冲突，系统往往会打断较大的那个 → ESRP 图标缩成 24。
+        // Icon: leading aligned, vertically centered. Remake is required: reused cells keep old
+        // size constants (often the default 24); stacking with makeConstraints conflicts and
+        // Auto Layout typically drops the larger one, shrinking icons like ESRP to 24.
         if let iconView {
             addSubview(iconView)
-            iconView.snp.remakeConstraints { make in
-                make.leading.equalToSuperview()
-                make.size.equalTo(iconSize)
-                make.centerY.equalToSuperview()
-                make.top.greaterThanOrEqualToSuperview().inset(verticalPadding)
-                make.bottom.lessThanOrEqualToSuperview().inset(verticalPadding)
-            }
+            applyIconPositionAndSize(iconView)
         }
         
         //accessory: Keep its own size by trailing, and center it vertically relative to the entire line.

@@ -85,6 +85,10 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        FilesSyncManager.shared.handleDidBecomeActive()
+    }
+    
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         for URLContext in URLContexts {
             let url = URLContext.url

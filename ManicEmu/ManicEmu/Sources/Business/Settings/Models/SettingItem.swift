@@ -20,7 +20,7 @@ struct SettingItem {
         var enablePressEffect = false
         //icon
         styles.append(.icon(icon,
-                            iconSize: R.Size.ButtonExtraExtraSmall))
+                            iconSize: .fixSize(CGSize(R.Size.ButtonExtraExtraSmall))))
         //title
         styles.append(.title(.largeText(title)))
         //detail
@@ -271,6 +271,28 @@ struct SettingItem {
             return Settings.appearance.desc
         } else if type == .triggerPro {
             return R.string.localizable.triggerProDesc()
+        } else if type == .iCloud {
+#if SIDE_LOAD
+            return R.string.localizable.iCloudNotEnable()
+#else
+            if !Settings.defalut.iCloudSyncEnable {
+                return R.string.localizable.iCloudNotEnable()
+            }
+            let progress = FilesSyncManager.shared.progress
+            switch progress.phase {
+            case .idle:
+                return R.string.localizable.iCloudSynced()
+            case .paused:
+                return R.string.localizable.iCloudSyncPaused()
+            case .unavailable:
+                return R.string.localizable.iCloudNotEnable()
+            case .scanning, .syncing:
+                if progress.totalCount > 0 {
+                    return R.string.localizable.iCloudSyncing() + " " + R.string.localizable.iCloudSyncProgressFormat(progress.completedCount, progress.totalCount)
+                }
+                return R.string.localizable.iCloudSyncing()
+            }
+#endif
         }
         return nil
     }

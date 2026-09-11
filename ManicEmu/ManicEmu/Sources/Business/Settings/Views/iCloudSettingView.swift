@@ -8,261 +8,29 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import UIKit
+import RealmSwift
 
+#if !SIDE_LOAD
 class ICloudSettingView: BaseView {
     
-    class ICloudSettingViewCell: UICollectionViewCell {
-        private let titleLabel: UILabel = {
-            let view = UILabel()
-            return view
-        }()
-        
-        private let enableContainer: UIView = {
-            let view = UIView()
-            view.backgroundColor = R.Color.BackgroundSecondary
-            view.layerCornerRadius = R.Size.CornerRadiusMedium
-            return view
-        }()
-        
-        var enableSwitchButton: DisabledTapSwitch = {
-            let view = DisabledTapSwitch()
-            view.onTintColor = R.Color.Main
-            view.tintColor = R.Color.BackgroundTertiary
-            return view
-        }()
-        
-        private let storageLabel: UILabel = {
-            let view = UILabel()
-            view.font = R.Font.Caption()
-            view.textColor = R.Color.LabelSecondary
-            return view
-        }()
-        
-        private lazy var storageView: UIView = {
-            let view = UIView()
-            
-            let titleContainerView = UIView()
-            view.addSubview(titleContainerView)
-            titleContainerView.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(R.Size.ContentSpaceTiny)
-                make.leading.trailing.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightSmall)
-            }
-            
-            let titleLabel = UILabel()
-            titleLabel.text = R.string.localizable.iCloudUsage()
-            titleLabel.font = R.Font.Footnote(emphasis: true)
-            titleLabel.textColor = R.Color.LabelSecondary
-            titleContainerView.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-            
-            let storageContainer = UIView()
-            storageContainer.backgroundColor = R.Color.BackgroundSecondary
-            storageContainer.layerCornerRadius = R.Size.CornerRadiusMedium
-            view.addSubview(storageContainer)
-            storageContainer.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(titleContainerView.snp.bottom)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            let storageIconView = UIImageView()
-            storageIconView.contentMode = .center
-            storageIconView.layerCornerRadius = 6
-            storageIconView.image = UIImage(symbol: .opticaldiscdriveFill, font: R.Font.Footnote(emphasis: true), color: R.Color.LabelPrimary.forceStyle(.dark))
-            storageIconView.backgroundColor = R.Color.BackgroundTertiary.forceStyle(.dark)
-            storageContainer.addSubview(storageIconView)
-            storageIconView.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(R.Size.ContentSpaceMedium)
-                make.size.equalTo(R.Size.IconSizeLarge)
-                make.centerY.equalToSuperview()
-            }
-            
-            let storageTitleLabel = UILabel()
-            storageTitleLabel.text = R.string.localizable.usage()
-            storageTitleLabel.textColor = R.Color.LabelPrimary
-            storageTitleLabel.font = R.Font.Body(emphasis: true)
-            storageContainer.addSubview(storageTitleLabel)
-            storageTitleLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(storageIconView)
-                make.leading.equalTo(storageIconView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-            }
-            
-            storageContainer.addSubview(storageLabel)
-            storageLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(storageIconView)
-                make.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-            }
-            
-            view.isHidden = true
-            return view
-        }()
-        
-        private let detailLabel: UILabel = {
-            let view = UILabel()
-            view.numberOfLines = 0
-            view.text = R.string.localizable.iCloudDesc()
-            view.font = R.Font.Caption()
-            view.textColor = R.Color.LabelSecondary
-            return view
-        }()
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            
-            let titleContainerView = UIView()
-            addSubview(titleContainerView)
-            titleContainerView.snp.makeConstraints { make in
-                make.leading.top.trailing.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightSmall)
-            }
-            titleContainerView.addSubview(titleLabel)
-            titleLabel.snp.makeConstraints { make in
-                make.leading.centerY.trailing.equalToSuperview()
-            }
-            
-            addSubview(enableContainer)
-            enableContainer.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(titleContainerView.snp.bottom)
-                make.height.equalTo(R.Size.ItemHeightLarge)
-            }
-            
-            let enableIconView = UIImageView()
-            enableIconView.contentMode = .center
-            enableIconView.layerCornerRadius = 6
-            let symbol: SFSymbol
-            if #available(iOS 17.0, *) {
-                symbol = .arrowTriangle2CirclepathIcloudFill
-            } else {
-                symbol = .cloudFill
-            }
-            enableIconView.image = UIImage(symbol: symbol, font: R.Font.Footnote(emphasis: true), color: R.Color.LabelPrimary.forceStyle(.dark))
-            enableIconView.backgroundColor = R.Color.Indigo
-            enableContainer.addSubview(enableIconView)
-            enableIconView.snp.makeConstraints { make in
-                make.leading.equalToSuperview().offset(R.Size.ContentSpaceMedium)
-                make.size.equalTo(R.Size.IconSizeLarge)
-                make.centerY.equalToSuperview()
-            }
-            
-            let enableTitleLabel = UILabel()
-            enableTitleLabel.text = R.string.localizable.iCloudTitle()
-            enableTitleLabel.textColor = R.Color.LabelPrimary
-            enableTitleLabel.font = R.Font.Body(emphasis: true)
-            enableContainer.addSubview(enableTitleLabel)
-            enableTitleLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(enableIconView)
-                make.leading.equalTo(enableIconView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-            }
-            
-            enableContainer.addSubview(enableSwitchButton)
-            enableSwitchButton.snp.makeConstraints { make in
-                make.centerY.equalTo(enableIconView)
-                make.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-                if #available(iOS 26.0, tvOS 26.0, *) {
-                    make.size.equalTo(CGSize(width: 63, height: 28))
-                } else {
-                    make.size.equalTo(CGSize(width: 51, height: 31))
-                }
-            }
-            if #available(iOS 26.0, tvOS 26.0, *) {} else {
-                enableSwitchButton.transform = CGAffineTransformMakeScale(0.9, 0.9)
-            }
-            
-            addSubview(storageView)
-            storageView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(enableContainer.snp.bottom)
-                make.height.equalTo(108)
-            }
-            
-            addSubview(detailLabel)
-            detailLabel.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalTo(enableContainer.snp.bottom).offset(R.Size.ContentSpaceSmall)
-            }
-            
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        func setDatas() {
-            var matt = NSMutableAttributedString(string: "")
-            var detail = R.string.localizable.iCloudNotEnable()
-            var color = R.Color.LabelSecondary
-            if Settings.defalut.iCloudSyncEnable && PurchaseManager.isMember {
-                if SyncManager.shared.syncState == .idle {
-                    detail = R.string.localizable.iCloudSynced()
-                    color = R.Color.Green
-                } else if SyncManager.shared.syncState == .syncing {
-                    detail = R.string.localizable.iCloudSyncing()
-                    color = R.Color.Yellow
-                }
-                
-                enableSwitchButton.setOn(true, animated: true)
-                
-                storageView.isHidden = false
-                
-                if let iCloudPath = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.path {
-                    storageLabel.text = FileType.humanReadableFileSize(CacheManager.folderSize(atPath: iCloudPath)) ?? "-"
-                } else {
-                    storageLabel.text = "-"
-                }
-                
-                detailLabel.snp.updateConstraints { make in
-                    make.top.equalTo(enableContainer.snp.bottom).offset(120)
-                }
-            } else {
-                enableSwitchButton.setOn(false, animated: true)
-                storageView.isHidden = true
-                detailLabel.snp.updateConstraints { make in
-                    make.top.equalTo(enableContainer.snp.bottom).offset(R.Size.ContentSpaceSmall)
-                }
-            }
-            
-            enableSwitchButton.isEnabled = PurchaseManager.isMember
-            
-            matt.append(NSAttributedString(string: "●", attributes: [.font: R.Font.Caption(), .foregroundColor: color, .baselineOffset: 1]))
-            matt.append(NSAttributedString(string: " " + detail, attributes: [.font: R.Font.Footnote(emphasis: true), .foregroundColor: color]))
-            let style = NSMutableParagraphStyle()
-            style.lineSpacing = R.Size.ContentSpaceTiny/2
-            matt = matt.applying(attributes: [.paragraphStyle: style]) as! NSMutableAttributedString
-            titleLabel.attributedText = matt
-        }
+    private enum MainRow {
+        case master
+        case progress
+        case platform
+        case games
+        case repair
     }
     
-    private lazy var navigationView: ASNavigationView = {
-        var navigation = ASListPage.Navigation.defaultNavigation(title: R.string.localizable.iCloudTitle(),
-                                                                 titleIcon: .symbolImage(R.image.icloudsync_iconSymbols()))
-        navigation.enableClose = showClose
-        let view = ASNavigationView(navigation)
-        view.didTapClose = { [weak self] in
-            guard let self = self else { return }
-            self.hide()
+    private let showClose: Bool
+    private var iCloudDriveSyncChangeNotification: Any?
+    
+    private lazy var listPageView: ASListPageView = {
+        let view = ASListPageView(getListPage())
+        view.didActionOccurred = { [weak self] action in
+            self?.handleAction(action)
         }
         return view
     }()
-    
-    private lazy var collectionView: UICollectionView = {
-        let view = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        view.backgroundColor = .clear
-        view.contentInsetAdjustmentBehavior = .never
-        view.register(cellWithClass: ICloudSettingViewCell.self)
-        view.showsVerticalScrollIndicator = false
-        view.dataSource = self
-        view.delegate = self
-        view.isFocusable = true
-        view.contentInset = .insets(bottom: UIDevice.isPad ? (R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge) : R.Size.ContentInsetBottom)
-        return view
-    }()
-    
-    private let showClose: Bool
-    private var iCloudDriveSyncChangeNotification: Any? = nil
     
     deinit {
         if let iCloudDriveSyncChangeNotification {
@@ -273,27 +41,12 @@ class ICloudSettingView: BaseView {
     required init?(parameters: Any...) {
         self.showClose = parameters.compactMap({ $0 as? Bool }).first ?? true
         super.init(frame: .zero)
-        
-        addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(safeAreaLayoutGuide)
-            if showClose {
-                make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
-            } else {
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
-            }
-            make.height.equalTo(R.Size.NavigationHeight)
+        addSubview(listPageView)
+        listPageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-        
-        addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(navigationView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        iCloudDriveSyncChangeNotification = NotificationCenter.default.addObserver(forName: R.NotificationName.iCloudDriveSyncChange, object: nil, queue: .main) { [weak self] _ in
-            guard let self else { return }
-            self.collectionView.reloadData()
+        iCloudDriveSyncChangeNotification = NotificationCenter.default.addObserver(forName: R.NotificationName.iCloudDriveSyncChange, object: nil, queue: .main) { [weak self] notification in
+            self?.handleProgressNotification(notification)
         }
     }
     
@@ -305,73 +58,362 @@ class ICloudSettingView: BaseView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
-            //item布局
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                                                 heightDimension: .fractionalHeight(1)))
-            
-            //group布局
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(280)), subitems: [item])
-            group.contentInsets = NSDirectionalEdgeInsets(top: 0,
-                                                            leading: R.Size.ContentSpaceMedium,
-                                                            bottom: 0,
-                                                            trailing: R.Size.ContentSpaceMedium)
-            
-            //section布局
-            let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: R.Size.ContentSpaceSmall, trailing: 0)
-            
-            return section
+    private func reloadList() {
+        listPageView.updatePage(getListPage())
+    }
+    
+    private var isSyncEnabled: Bool {
+        Settings.defalut.iCloudSyncEnable && PurchaseManager.isMember
+    }
+    
+    private func getListPage() -> ASListPage {
+        var navigation = ASListPage.Navigation.defaultNavigation(title: R.string.localizable.iCloudTitle(),
+                                                                 titleIcon: .symbolImage(R.image.icloudsync_iconSymbols()))
+        navigation.enableClose = showClose
+        
+        var sections: [ASListPage.Section] = [
+            ASListPage.Section(cells: [masterCell()],
+                               footer: .texts([.smallText(R.string.localizable.iCloudDesc(), numberOfLines: 0)], pin: false))
+        ]
+        if isSyncEnabled {
+            var progressSection = ASListPage.Section(cells: [progressCell(FilesSyncManager.shared.progress)])
+            progressSection.itemLayout = .fixedHeight(R.Size.ItemHeightExtraLarge)
+            sections.append(progressSection)
+            sections.append(ASListPage.Section(cells: [
+                .iconTitleDetailChevronCell(icon: .symbolImage(R.image.category_iconSymbols()),
+                                            title: R.string.localizable.iCloudROMPlatformConfig()),
+                .iconTitleDetailChevronCell(icon: .symbolImage(R.image.games_iconSymbols()),
+                                            title: R.string.localizable.iCloudROMGameConfig())
+            ], header: .defaultHeader(title: R.string.localizable.iCloudROMSyncSetting()),
+               footer: .texts([.smallText(R.string.localizable.iCloudROMSyncDesc(), numberOfLines: 0)], pin: false)))
+            sections.append(ASListPage.Section(cells: [
+                .iconTitleDetailChevronCell(icon: .symbolImage(R.image.refresh_iconSymbols()),
+                                            title: R.string.localizable.iCloudRepairSync())
+            ], footer: .texts([.smallText(R.string.localizable.iCloudRepairSyncDesc(), numberOfLines: 0)], pin: false)))
         }
-        return layout
+        
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        return ASListPage(navigation: navigation,
+                          sections: sections,
+                          backgroundColor: .clear,
+                          listInsets: .insets(bottom: listInsetBottom),
+                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop))
     }
-}
-
-extension ICloudSettingView: UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withClass: ICloudSettingViewCell.self, for: indexPath)
-        cell.setDatas()
-        cell.enableSwitchButton.onChange { [weak cell, weak self] value in
-            //icloud设置
-            if value {
-                UIView.makeAlert(title: R.string.localizable.iCloudTipsTitle(),
-                                 detail: R.string.localizable.iCloudTipsDetail(),
-                                 confirmTitle: R.string.localizable.iCloudConfirm(), cancelAction: { [weak cell] in
-                    cell?.enableSwitchButton.setOn(false, animated: true)
-                }, confirmAction: {
-                    Settings.defalut.iCloudSyncEnable = value
-                    if value, let iCloudServiceEnable = SyncManager.shared.iCloudServiceEnable, !iCloudServiceEnable {
-                        //尝试开启iCloud 但是目前iCloud服务不可用 弹出一个提示
-                        UIView.makeAlert(title: R.string.localizable.iCloudDisableTitle(), detail: R.string.localizable.iCloudDisableDetail(), cancelTitle: R.string.localizable.confirmTitle())
-                    }
-                    self?.collectionView.reloadData()
-                }, tapBackgroundAction: {
-                    cell?.enableSwitchButton.setOn(false, animated: true)
-                })
+    private func masterCell() -> ASListPage.Cell {
+        let enabled = Settings.defalut.iCloudSyncEnable
+        let state: ASSwitch.State
+        if !PurchaseManager.isMember {
+            state = .disabled
+        } else {
+            state = enabled ? .on : .off
+        }
+        let detail: String
+        if enabled && PurchaseManager.isMember {
+            if let iCloudPath = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.path {
+                detail = FileType.humanReadableFileSize(CacheManager.folderSize(atPath: iCloudPath)) ?? R.string.localizable.iCloudSynced()
             } else {
-                Settings.defalut.iCloudSyncEnable = value
-                self?.collectionView.reloadData()
+                detail = R.string.localizable.iCloudSynced()
+            }
+        } else {
+            detail = R.string.localizable.iCloudNotEnable()
+        }
+        return .iconTitleDetailSwitchCell(icon: .symbolImage(R.image.icloudsync_iconSymbols()),
+                                          title: R.string.localizable.iCloudTitle(),
+                                          detail: detail,
+                                          state: state,
+                                          enablePressEffect: false)
+    }
+    
+    private func progressCell(_ progress: FilesSyncProgress) -> ASListPage.Cell {
+        let title: String
+        switch progress.phase {
+        case .idle:
+            title = R.string.localizable.iCloudSynced()
+        case .paused:
+            title = R.string.localizable.iCloudSyncPaused()
+        case .unavailable:
+            title = R.string.localizable.iCloudNotEnable()
+        case .scanning, .syncing:
+            if let name = progress.currentFileName?.components(separatedBy: "/").last, !name.isEmpty {
+                title = R.string.localizable.iCloudSyncing() + " · " + name
+            } else {
+                title = R.string.localizable.iCloudSyncing()
             }
         }
-        cell.enableSwitchButton.onDisableTap {
-            topViewController()?.present(PurchaseViewController(featuresType: .iCloud), animated: true)
+        let total = max(progress.totalCount, 0)
+        let completed = min(progress.completedCount, total)
+        return .iconTitleProgressCell(icon: .symbolImage(R.image.icloudsync_iconSymbols()),
+                                      title: title,
+                                      progress: .init(value: progress.fraction,
+                                                      interaction: .disabled(.small)))
+    }
+    
+    private func handleProgressNotification(_ notification: Notification) {
+        guard isSyncEnabled else { return }
+        let progress = (notification.object as? FilesSyncProgress) ?? FilesSyncManager.shared.progress
+        guard listPageView.sections.count > 1 else {
+            reloadList()
+            return
         }
-         
+        listPageView.updateCellData(progressCell(progress), indexPath: IndexPath(row: 0, section: 1))
+    }
+    
+    private func row(at indexPath: IndexPath) -> MainRow? {
+        if indexPath.section == 0 { return .master }
+        if !isSyncEnabled { return nil }
+        if indexPath.section == 1 { return .progress }
+        if indexPath.section == 2 {
+            return indexPath.row == 0 ? .platform : .games
+        }
+        if indexPath.section == 3 { return .repair }
+        return nil
+    }
+    
+    private func handleAction(_ action: ASListPage.Action) {
+        if action.navigationValue?.isTapClose == true {
+            hide()
+            return
+        }
+        guard let value = action.normalItemValue, let row = row(at: value.indexPath) else { return }
+        switch row {
+        case .master:
+            if value.subActions?.extraValue == nil {
+                topViewController()?.present(PurchaseViewController(featuresType: .iCloud), animated: true)
+                return
+            }
+            guard let isOn = value.subActions?.extraValue as? Bool else { return }
+            if isOn {
+                UIView.makeAlert(title: R.string.localizable.iCloudTipsTitle(),
+                                 detail: R.string.localizable.iCloudTipsDetail(),
+                                 confirmTitle: R.string.localizable.iCloudConfirm(),
+                                 cancelAction: { [weak self] in
+                    self?.listPageView.updateCellData(value.cellData.updateNormalSwitch(state: .off), indexPath: value.indexPath)
+                }, confirmAction: { [weak self] in
+                    Settings.defalut.iCloudSyncEnable = true
+                    if let iCloudServiceEnable = SyncManager.shared.iCloudServiceEnable, !iCloudServiceEnable {
+                        UIView.makeAlert(title: R.string.localizable.iCloudDisableTitle(),
+                                         detail: R.string.localizable.iCloudDisableDetail(),
+                                         cancelTitle: R.string.localizable.confirmTitle())
+                    }
+                    self?.reloadList()
+                }, tapBackgroundAction: { [weak self] in
+                    self?.listPageView.updateCellData(value.cellData.updateNormalSwitch(state: .off), indexPath: value.indexPath)
+                })
+            } else {
+                Settings.defalut.iCloudSyncEnable = false
+                reloadList()
+            }
+        case .progress:
+            break
+        case .platform:
+            showPlatformConfig()
+        case .games:
+            showGameConfig()
+        case .repair:
+            repairSync()
+        }
+    }
+    
+    private func showPlatformConfig() {
+        let gameTypes = FilesSyncPolicy.configurableROMGameTypes()
+        guard gameTypes.count > 0 else { return }
         
-        return cell
+        let cells: [[ASListPage.Cell]] = gameTypes.map { gameType in
+            if R.Style.GamesGroupTitleStyle == .brand {
+                let icon: ASIcon
+                let iconSize: ASListPage.Cell.Style.IconSize
+                if let image = gameType.brandImage {
+                    icon = .image(image)
+                    iconSize = .fixHeight(gameType == .lynx ? 16 : 20)
+                } else {
+                    icon = .symbolImage(R.image.category_iconSymbols())
+                    iconSize = .fixSize(CGSize(R.Size.ButtonExtraExtraSmall))
+                }
+                return [.iconTitleDetailSwitchCell(icon: icon,
+                                                   iconSize: iconSize,
+                                                   state: FilesSyncPolicy.isPlatformROMSyncEnabled(gameType) ? .on : .off,
+                                                   enablePressEffect: false)]
+            } else {
+                let title = R.Style.GamesGroupTitleStyle == .fullName ? gameType.localizedName : gameType.localizedShortName
+                return [.iconTitleDetailSwitchCell(title: title,
+                                                   state: FilesSyncPolicy.isPlatformROMSyncEnabled(gameType) ? .on : .off,
+                                                   enablePressEffect: false)]
+            }
+        }
+        
+        var sheetStyle: ASSheet.Style = .simpleList(icon: .symbolImage(R.image.category_iconSymbols()),
+                                                    title: R.string.localizable.iCloudROMPlatformConfig(),
+                                                    detail: .smallText(R.string.localizable.iCloudROMSyncDesc(), numberOfLines: 0),
+                                                    options: cells)
+        
+        ASSheetView.show(.init(style: sheetStyle), action: { action, updation in
+            guard let normalItemValue = action.listPageValue?.normalItemValue else {
+                return .dismiss()
+            }
+            guard let isOn = normalItemValue.subActions?.extraValue as? Bool else {
+                return .none
+            }
+            let index = normalItemValue.indexPath.section
+            guard index < gameTypes.count else { return .dismiss() }
+            let gameType = gameTypes[index]
+            Self.applyPlatformROMSync(gameType: gameType, enabled: isOn)
+            if case let .simpleList(icon, title, detail, options, cancelEnable) = sheetStyle {
+                var next = options
+                next[index][0] = normalItemValue.cellData.updateNormalSwitch(state: isOn ? .on : .off)
+                sheetStyle = .simpleList(icon: icon, title: title, detail: detail, options: next, cancelEnable: cancelEnable)
+                updation?(sheetStyle)
+            }
+            return .none
+        })
+    }
+    
+    private func showGameConfig() {
+        let realm = Database.realm
+        let games = realm.objects(Game.self).where({ !$0.isDeleted && $0.gameType != .symbian })
+        let configurable = Set(FilesSyncPolicy.configurableROMGameTypes())
+        guard games.contains(where: { configurable.contains($0.gameType) }) else {
+            UIView.makeToast(message: R.string.localizable.transferPakNoGames())
+            return
+        }
+        
+        var datas = [[Game]]()
+        var sections = [ASListPage.Section]()
+        let groupGames = Dictionary(grouping: Array(games), by: { $0.gameType })
+        System.allGameTypes.forEach { sortGameType in
+            guard configurable.contains(sortGameType), let games = groupGames[sortGameType] else { return }
+            datas.append(games)
+            let cells = games.map { game in
+                ASListPage.Cell.iconTitleDetailSwitchCell(icon: game.gameCoverIcon,
+                                                          iconSize: .fixSize(CGSize(R.Size.ButtonMedium)),
+                                                          title: game.displayName,
+                                                          detail: game.fileName,
+                                                          state: FilesSyncPolicy.shouldSyncROM(game) ? .on : .off,
+                                                          enablePressEffect: false)
+            }
+            var headerTitle = sortGameType.localizedShortName
+            if R.Style.GamesGroupTitleStyle == .fullName {
+                headerTitle = sortGameType.localizedName
+            }
+            sections.append(ASListPage.Section(cells: cells, header: .defaultHeader(title: headerTitle)))
+        }
+        
+        let navigation = ASListPage.Navigation.defaultNavigation(title: R.string.localizable.iCloudROMGameConfig(),
+                                                                 titleIcon: .symbolImage(R.image.games_iconSymbols()))
+        let listPage = ASListPage(navigation: navigation, sections: sections)
+        var sheetStyle: ASSheet.Style = .listPage(listPage)
+        
+        ASSheetView.show(.init(style: sheetStyle), action: { action, updation in
+            if action.listPageValue?.navigationValue?.isTapClose == true {
+                return .dismiss()
+            }
+            guard let normalItemValue = action.listPageValue?.normalItemValue else {
+                return .dismiss()
+            }
+            guard let isOn = normalItemValue.subActions?.extraValue as? Bool else {
+                return .none
+            }
+            let indexPath = normalItemValue.indexPath
+            guard indexPath.section < datas.count, indexPath.row < datas[indexPath.section].count else {
+                return .dismiss()
+            }
+            let game = datas[indexPath.section][indexPath.row]
+            Self.applyGameROMSync(game: game, enabled: isOn)
+            if case var .listPage(listPage) = sheetStyle {
+                listPage.sections[indexPath.section].cells[indexPath.row] = normalItemValue.cellData.updateNormalSwitch(state: isOn ? .on : .off)
+                sheetStyle = .listPage(listPage)
+                updation?(sheetStyle)
+            }
+            return .none
+        })
+    }
+    
+    private static func applyPlatformROMSync(gameType: GameType, enabled: Bool) {
+        let wasEnabled = FilesSyncPolicy.isPlatformROMSyncEnabled(gameType)
+        guard wasEnabled != enabled else { return }
+        FilesSyncPolicy.setPlatformROMSyncEnabled(gameType, enabled: enabled)
+        var targets: [Game] = []
+        Game.change { realm in
+            let games = realm.objects(Game.self).where { !$0.isDeleted && $0.gameType == gameType }
+            for game in games {
+                FilesSyncPolicy.setGameROMSyncEnabled(game, enabled: enabled)
+                targets.append(game)
+            }
+        }
+        guard FilesSyncPolicy.isDriveSyncAvailable, !targets.isEmpty else { return }
+        if enabled {
+            for game in targets {
+                FilesSyncManager.shared.uploadROMFiles(for: game)
+            }
+        } else {
+            confirmRemoveCloudROMs(games: targets)
+        }
+    }
+    
+    private static func confirmRemoveCloudROMs(games: [Game]) {
+        guard !games.isEmpty, FilesSyncPolicy.isDriveSyncAvailable else { return }
+        let ids = games.map(\.id)
+        UIView.makeAlert(title: R.string.localizable.iCloudROMRemoveDriveTitle(),
+                         detail: R.string.localizable.iCloudROMRemoveDriveDetail(),
+                         cancelTitle: R.string.localizable.iCloudROMKeepDrive(),
+                         confirmTitle: R.string.localizable.iCloudROMRemoveDriveConfirm(),
+                         confirmAction: {
+            let realm = Database.realm
+            let targets = ids.compactMap { id -> Game? in
+                guard let game = realm.object(ofType: Game.self, forPrimaryKey: id), !game.isDeleted else { return nil }
+                return game
+            }
+            FilesSyncManager.shared.excludeCloudROMs(for: targets)
+        })
+    }
+    
+    private func repairSync() {
+        let started = FilesSyncManager.shared.repair { [weak self] event in
+            self?.handleRepairEvent(event)
+        }
+        if started {
+            UIView.makeLoading()
+        }
+    }
+    
+    private func handleRepairEvent(_ event: FilesSyncRepairEvent) {
+        switch event {
+        case .alreadyRunning:
+            UIView.makeToast(message: R.string.localizable.iCloudRepairSyncInProgress())
+        case .notStarted:
+            UIView.hideLoading {
+                UIView.makeToast(message: R.string.localizable.iCloudRepairSyncNotReady())
+            }
+        case .scanFinished(let stats):
+            UIView.hideLoading {
+                if stats.queued == 0 {
+                    UIView.makeToast(message: R.string.localizable.iCloudRepairSyncAlreadyDone())
+                }
+            }
+        case .completed(let uploaded, let downloaded, let remaining):
+            if uploaded == 0 && downloaded == 0 && remaining == 0 {
+                return
+            }
+            if remaining > 0 {
+                UIView.makeToast(message: R.string.localizable.iCloudRepairSyncResultPending(uploaded, downloaded, remaining))
+            } else {
+                UIView.makeToast(message: R.string.localizable.iCloudRepairSyncResult(uploaded, downloaded))
+            }
+        }
+    }
+    
+    private static func applyGameROMSync(game: Game, enabled: Bool) {
+        Game.change { _ in
+            FilesSyncPolicy.setGameROMSyncEnabled(game, enabled: enabled)
+        }
+        guard FilesSyncPolicy.isDriveSyncAvailable else { return }
+        if enabled {
+            FilesSyncManager.shared.uploadROMFiles(for: game)
+        } else {
+            confirmRemoveCloudROMs(games: [game])
+        }
     }
 }
 
-extension ICloudSettingView: UICollectionViewDelegate {
-    
-}
-
-extension ICloudSettingView: ShowableView {
-    
-}
+extension ICloudSettingView: ShowableView {}
+#endif

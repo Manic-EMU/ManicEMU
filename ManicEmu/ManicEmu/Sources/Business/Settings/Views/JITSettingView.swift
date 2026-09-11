@@ -157,7 +157,7 @@ class JITSettingView: BaseView {
 
         let jitEnable = LibretroCore.jitAvailable()
         let statusCell = ASListPage.Cell.normal([
-            .icon(.symbol(.boltFill, colors: [R.Color.LabelPrimary.forceStyle(.dark)]), iconSize: R.Size.IconSizeLarge.height),
+            .icon(.symbol(.boltFill, colors: [R.Color.LabelPrimary.forceStyle(.dark)]), iconSize: .fixSize(R.Size.IconSizeLarge)),
             .title(.largeText(jitEnable ? R.string.localizable.jitAllow() : R.string.localizable.jitNotAllow(),
                               color: jitEnable ? R.Color.Green : R.Color.Red))
         ], enablePressEffect: false)
@@ -360,7 +360,7 @@ class JITSettingView: BaseView {
             }
             self?.reloadList()
             DispatchQueue.main.asyncAfter(delay: 0.35, execute: {
-                UIView.hideLoadingToast(forceHide: true)
+                UIView.hideLoadingToast()
             })
         }
     }

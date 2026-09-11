@@ -88,4 +88,6 @@ enum ExtraKey: String {
     case dolphinManicInterpreter
     case autoEnableJITOnLaunch
     case slowMotionSpeed
+    case iCloudSyncROM
+    case iCloudSyncROMPlatforms
 }

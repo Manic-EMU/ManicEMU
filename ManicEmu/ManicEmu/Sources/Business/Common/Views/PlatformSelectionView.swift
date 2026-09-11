@@ -56,6 +56,9 @@ class PlatformSelectionView: BaseView {
                             Log.debug("[PlatformSelection] using \(globalCoreSwitch.getUsingCoreName(gameType: gameType) ?? "Unknown")(index) core for \(gameType.localizedShortName)")
                             game.defaultCore = index
                         }
+#if !SIDE_LOAD
+                        FilesSyncPolicy.applyDefaultROMSyncFlag(to: game)
+#endif
                     }
                 }
                 // Fill PSP game code when switching to PSP.
@@ -91,6 +94,9 @@ class PlatformSelectionView: BaseView {
                 for game in games {
                     game.matchCover(force: true)
                 }
+#if !SIDE_LOAD
+                FilesSyncManager.shared.applyROMSyncAfterGameTypeChange(for: games)
+#endif
             }
             completion?()
         })

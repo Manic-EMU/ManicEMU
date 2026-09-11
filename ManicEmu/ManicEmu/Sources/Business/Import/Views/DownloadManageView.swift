@@ -111,7 +111,7 @@ class DownloadManageView: BaseView {
     private func getCell(task: DownloadTask) -> ASListPage.Cell {
         var styles = [ASListPage.Cell.Style]()
         styles.append(.icon(.image(R.image.file_browser_document()),
-                            iconSize: R.Size.IconSizeExtraLarge.height))
+                            iconSize: .fixSize(R.Size.IconSizeExtraLarge)))
         styles.append(.title(.largeText(task.fileName)))
         if task.status == .failed {
             styles.append(.detail(.extraSmallText(R.string.localizable.downloadFailed())))

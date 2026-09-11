@@ -226,7 +226,7 @@ enum GameOption: Int, CaseIterable {
         case .symbianDevice:
                 .symbol(.candybarphone)
         case .slowMotion:
-                .symbol(.tortoise)
+                .symbol(.slowmo)
         }
     }
     

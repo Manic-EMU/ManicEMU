@@ -290,7 +290,7 @@ extension ASListPage {
                                          chevronTitle: String? = nil) -> Self {
             var styles = [Style]()
             if let icon {
-                styles.append(.icon(icon, iconSize: iconSize))
+                styles.append(.icon(icon, iconSize: .fixSize(CGSize(iconSize))))
             }
             if let title {
                 styles.append(.title(.largeText(title, color: titleColor)))
@@ -323,6 +323,7 @@ extension ASListPage {
         
         ///icon: 24x24 title: 15 medium
         static func iconTitleDetailSwitchCell(icon: ASIcon? = nil,
+                                              iconSize: ASListPage.Cell.Style.IconSize = .fixSize(CGSize(R.Size.ButtonExtraExtraSmall)),
                                               title: String? = nil,
                                               titleColor: UIColor = R.Color.LabelPrimary,
                                               detail: String? = nil,
@@ -331,7 +332,7 @@ extension ASListPage {
                                               enablePressEffect: Bool = true) -> Self {
             var styles = [Style]()
             if let icon {
-                styles.append(.icon(icon))
+                styles.append(.icon(icon, iconSize: iconSize))
             }
             if let title {
                 styles.append(.title(.largeText(title, color: titleColor)))
@@ -352,7 +353,7 @@ extension ASListPage {
                                         enablePressEffect: Bool = true) -> Self {
             var styles = [Style]()
             if let icon {
-                styles.append(.icon(icon, iconSize: iconSize))
+                styles.append(.icon(icon, iconSize: .fixSize(CGSize(iconSize))))
             }
             if let title {
                 styles.append(.title(.largeText(title, color: titleColor)))
@@ -463,7 +464,7 @@ extension ASListPage {
                                                  isSelected: Bool = false) -> Self {
             var styles = [Style]()
             if let icon {
-                styles.append(.icon(icon, iconSize: iconSize))
+                styles.append(.icon(icon, iconSize: .fixSize(CGSize(iconSize))))
             }
             if let title {
                 styles.append(.title(.largeText(title, color: titleColor)))
@@ -492,7 +493,13 @@ extension ASListPage {
         }
         
         enum Style {
-            case icon(ASIcon, iconSize: CGFloat = R.Size.ButtonExtraExtraSmall)
+            enum IconSize: Equatable {
+                case fixHeight(CGFloat)
+                case fixSize(CGSize)
+                case autoLayout
+            }
+            
+            case icon(ASIcon, iconSize: IconSize = .fixSize(CGSize(R.Size.ButtonExtraExtraSmall)))
             case title(ASText, subTitle: ASText? = nil, subtitleFollows: Bool = true, enabledInteraction: Bool = false)
             case detail(ASText, enabledInteraction: Bool = false)
             case button(ASButton)
@@ -504,7 +511,7 @@ extension ASListPage {
             case progress(ASProgress) //0-1
             case segment(ASSegment)
             
-            var iconValue: (ASIcon, iconSize: CGFloat)? {
+            var iconValue: (ASIcon, iconSize: IconSize)? {
                 if case let .icon(icon, iconSize) = self {
                     return (icon, iconSize)
                 }

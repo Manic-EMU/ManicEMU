@@ -325,7 +325,7 @@ class SaveStateListView: BaseView {
             var styles = [ASListPage.Cell.Style]()
             styles.append(.icon(.image(.tryDataImageOrPlaceholder(tryData: saveState.stateCover?.storedData()),
                                        cornerStyle: .radius(R.Size.CornerRadiusMicro)),
-                                iconSize: R.Size.ButtonMedium))
+                                iconSize: .fixSize(CGSize(R.Size.ButtonMedium))))
             if saveState.isCompatible {
                 styles.append(.title(.largeText(R.string.localizable.gameSaveTitle(index))))
             } else {

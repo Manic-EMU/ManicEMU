@@ -161,7 +161,6 @@ class PlayViewController: GameViewController {
         
         game.ensurePS1BinCueSheet()
         if game.isRomExtsts || game.isNDSHomeMenuGame || game.isDOSHomeMenuGame {
-            UIView.hideLoadingToast(forceHide: true)
             func showPlayView() {
                 if game.isBIOSMissing() {
                     //检查是否缺失BIOS
@@ -261,16 +260,24 @@ class PlayViewController: GameViewController {
                 showPlayView()
             }
         } else {
+            let availability = FilesSyncManager.shared.romAvailability(for: game)
+            if availability == .syncing {
+                UIView.makeToast(message: R.string.localizable.iCloudROMStillSyncing())
+            }
+            if !FilesSyncPolicy.shouldSyncROM(game) {
+                if availability != .syncing {
+                    UIView.makeToast(message: R.string.localizable.loadGameErrorRomNotExist())
+                }
+                return
+            }
             UIView.makeLoading()
-            SyncManager.isiCloudFileExist(localFilePath: game.romUrl.path) { fileExists in
+            FilesSyncManager.shared.ensureROM(for: game) { error in
                 UIView.hideLoading()
-                if fileExists {
-                    //rom存在iCloud上
-                    //rom还没离线下来
-                    UIView.makeLoadingToast(message: R.string.localizable.loadingTitle())
-                    SyncManager.download(to: game.romUrl.path) { error in
-                        UIView.hideLoadingToast()
-                        UIView.makeToast(message: R.string.localizable.loadRomSuccess(game.displayName))
+                if error == nil, game.isRomExtsts {
+                    UIView.makeToast(message: R.string.localizable.loadRomSuccess(game.displayName))
+                } else if FilesSyncManager.shared.romAvailability(for: game) == .syncing {
+                    if availability != .syncing {
+                        UIView.makeToast(message: R.string.localizable.iCloudROMStillSyncing())
                     }
                 } else {
                     UIView.makeToast(message: R.string.localizable.loadGameErrorRomNotExist())
@@ -287,9 +294,6 @@ class PlayViewController: GameViewController {
         triggerProUpdateToken = nil
         settingsUpdateToken = nil
         notificationTokens.forEach { NotificationCenter.default.removeObserver($0) }
-        if SyncManager.shared.hasDownloadTask {
-            UIView.makeLoadingToast(message: R.string.localizable.loadingTitle())
-        }
     }
     
     private init(game: Game, saveState: GameSaveState? = nil) {

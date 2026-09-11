@@ -551,10 +551,9 @@ extension FilesImporter {
                                     try FileManager.safeCopyItem(at: item, to: URL(fileURLWithPath: romParentPath.appendingPathComponent(item.lastPathComponent)), shouldReplace: true)
                                 }
                                 // Upload all files (main + companions) to iCloud
-                                SyncManager.upload(localFilePath: romUrl.path)
-                                for item in items {
-                                    SyncManager.upload(localFilePath: romParentPath.appendingPathComponent(item.lastPathComponent))
-                                }
+                                FilesSyncManager.shared.uploadROMFiles(for: game, extraFiles: items.map {
+                                    URL(fileURLWithPath: romParentPath.appendingPathComponent($0.lastPathComponent))
+                                })
                                 recoverDeletedGame(game, realm: realm, recoverFaile: {
                                     completion?(game.id, game.name, nil)
                                 })
@@ -562,6 +561,7 @@ extension FilesImporter {
                                 
                             } else {
                                 try FileManager.safeCopyItem(at: url, to: game.romUrl, shouldReplace: true)
+                                FilesSyncManager.shared.uploadROMFiles(for: game)
                                 //文件复制成功
                                 recoverDeletedGame(game, realm: realm, recoverFaile: {
                                     completion?(game.id, game.name, nil)
@@ -690,15 +690,13 @@ extension FilesImporter {
                                 }
                             }
                             do {
-                                try realm.write { realm.add(game) }
-                                SyncManager.upload(localFilePath: game.romUrl.path)
-                                // Upload companion files (.bin, .img, .sub, etc.) for multi-file ROMs
-                                if items.count > 0 {
-                                    let romParentPath = game.romUrl.path.deletingLastPathComponent
-                                    for item in items {
-                                        SyncManager.upload(localFilePath: romParentPath.appendingPathComponent(item.lastPathComponent))
-                                    }
+                                try realm.write {
+                                    FilesSyncPolicy.applyDefaultROMSyncFlag(to: game)
+                                    realm.add(game)
                                 }
+                                FilesSyncManager.shared.uploadROMFiles(for: game, extraFiles: items.map {
+                                    URL(fileURLWithPath: game.romUrl.path.deletingLastPathComponent.appendingPathComponent($0.lastPathComponent))
+                                })
                                 OnlineCoverManager.shared.addCoverMatch(OnlineCoverManager.CoverMatch(game: game))
                                 completion?(game.id, game.gameType == ._3ds ? (game.displayName) : game.name, nil)
                                 
@@ -872,7 +870,6 @@ extension FilesImporter {
                             try realm.write {
                                 realm.add(skin)
                             }
-                            SyncManager.upload(localFilePath: skin.fileURL.path)
                             completion?(skin.name, nil)
                             return
                         } catch {

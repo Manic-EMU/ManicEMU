@@ -910,7 +910,7 @@ class GameListLandscapeView: BaseView {
         
         func radioCell(icon: ASIcon, title: String, selected: Bool) -> ASListPage.Cell {
             .normal([
-                .icon(icon, iconSize: R.Size.ButtonSmall),
+                .icon(icon, iconSize: .fixSize(CGSize(R.Size.ButtonSmall))),
                 .title(.largeText(title)),
                 .radio(.init(isSelected: selected))
             ])

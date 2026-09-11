@@ -85,11 +85,13 @@ extension GameOption {
                                 try? FileManager.safeCopyItem(at: url, to: firstGame.gameSaveUrl, shouldReplace: true)
                                 UIView.makeToast(message: R.string.localizable.importGameSaveSuccessTitle())
                                 firstGame.processNDSGameSave()
+                                SyncManager.upload(localFilePath: firstGame.gameSaveUrl.path)
                             })
                         } else {
                             try? FileManager.safeCopyItem(at: url, to: firstGame.gameSaveUrl, shouldReplace: true)
                             UIView.makeToast(message: R.string.localizable.importGameSaveSuccessTitle())
                             firstGame.processNDSGameSave()
+                            SyncManager.upload(localFilePath: firstGame.gameSaveUrl.path)
                         }
                     }
                 }
@@ -113,6 +115,8 @@ extension GameOption {
                 let performDelete = {
                     Game.change { realm in
                         for game in games {
+                            // Evict Drive copies even if ROM sync was turned off and the cloud file was kept.
+                            FilesSyncManager.shared.noteGameROMRemoval(for: game)
                             if game.gameType == .symbian {
                                 // SIS packages were already uninstalled off the main thread.
                                 if !game.ngageRelativeFiles.isEmpty {

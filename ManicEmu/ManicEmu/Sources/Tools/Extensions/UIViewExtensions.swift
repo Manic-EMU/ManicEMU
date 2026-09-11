@@ -192,21 +192,11 @@ extension UIView {
         LoadingToastRepeater = task
     }
     
-    static func hideLoadingToast(forceHide: Bool = false) {
-        func hideAction() {
-            UIView.hideToast(identifier: LoadingToastIdentifier)
-            LoadingToastRepeater?.cancel()
-            TaskCenter.default.resume(byTag: LoadingToastIdentifier)
-            LoadingToastRepeater = nil
-        }
-        if forceHide {
-            hideAction()
-        } else {
-            //判断一下还有没有下载中的任务
-            if !DownloadManager.shared.hasDownloadTask && !SyncManager.shared.hasDownloadTask {
-                hideAction()
-            }
-        }
+    static func hideLoadingToast() {
+        UIView.hideToast(identifier: LoadingToastIdentifier)
+        LoadingToastRepeater?.cancel()
+        TaskCenter.default.resume(byTag: LoadingToastIdentifier)
+        LoadingToastRepeater = nil
     }
     
     private static let LoadingIdentifier = "LoadingIdentifier"

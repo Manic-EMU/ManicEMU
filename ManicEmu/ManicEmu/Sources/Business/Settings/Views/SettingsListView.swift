@@ -373,11 +373,13 @@ class SettingsListView: BaseView {
                             }
                             
                         case .iCloud:
+#if !SIDE_LOAD
                             if UIDevice.isPad {
                                 didTapDetailView?(ICloudSettingView(showClose: false))
                             } else {
                                 ICloudSettingView.show()
                             }
+#endif
                             
                         case .jit:
                             if UIDevice.isPad {

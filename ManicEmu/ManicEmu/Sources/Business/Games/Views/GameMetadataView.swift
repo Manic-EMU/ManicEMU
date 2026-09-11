@@ -295,7 +295,7 @@ extension GameMetadataView {
     private static func makeESRPCell(metadata: GameMetadata) -> ASListPage.Cell {
         if let rating = metadata.ESRPRating {
             return .normal([
-                .icon(rating.icon, iconSize: R.Size.ButtonExtraLarge),
+                .icon(rating.icon, iconSize: .fixSize(CGSize(R.Size.ButtonExtraLarge))),
                 .title(.largeText(rating.abbr)),
                 .detail(.extraSmallText(rating.desc, numberOfLines: 0)),
                 .chevron(.init())
@@ -309,7 +309,7 @@ extension GameMetadataView {
     private static func makeESRPOptionCell(rating: ESRP?, isSelected: Bool) -> ASListPage.Cell {
         if let rating {
             return .normal([
-                .icon(rating.icon, iconSize: R.Size.ButtonSmall),
+                .icon(rating.icon, iconSize: .fixSize(CGSize(R.Size.ButtonSmall))),
                 .title(.largeText(rating.abbr)),
                 .detail(.extraSmallText(rating.desc, numberOfLines: 0)),
                 .radio(.init(isSelected: isSelected))

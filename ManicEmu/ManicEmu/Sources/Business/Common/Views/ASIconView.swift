@@ -9,12 +9,34 @@ import Kingfisher
 
 class ASIconView: BaseView {
     
-    private let imageView = UIImageView()
+    /// Bitmap UIImageView reports image.size as intrinsic; that must never drive this view's layout.
+    private final class FillingImageView: UIImageView {
+        override var intrinsicContentSize: CGSize {
+            CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
+        }
+    }
+    
+    enum SizeStyle: Equatable {
+        case auto
+        case fixHeight(CGFloat)
+        case fixSize(CGSize)
+    }
+    
+    private let imageView = FillingImageView()
     private var defaultContentSize: CGSize = .zero
     
     var icon: ASIcon? = nil {
         didSet {
             applyIconContent()
+            invalidateIntrinsicContentSize()
+            setNeedsLayout()
+        }
+    }
+    
+    /// Declared size policy. `.fixHeight` makes intrinsic width follow height × image aspect.
+    var sizeStyle: SizeStyle = .auto {
+        didSet {
+            guard oldValue != sizeStyle else { return }
             invalidateIntrinsicContentSize()
             setNeedsLayout()
         }
@@ -30,11 +52,14 @@ class ASIconView: BaseView {
     init(_ icon: ASIcon? = nil) {
         self.icon = icon
         super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
         
         setContentHuggingPriority(.required, for: .horizontal)
         setContentHuggingPriority(.required, for: .vertical)
         setContentCompressionResistancePriority(.required, for: .horizontal)
         setContentCompressionResistancePriority(.required, for: .vertical)
+        
+        imageView.clipsToBounds = true
         
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
@@ -49,8 +74,7 @@ class ASIconView: BaseView {
     }
     
     override var intrinsicContentSize: CGSize {
-        let size = computedIntrinsicContentSize()
-        return size
+        computedIntrinsicContentSize()
     }
     
     override func layoutSubviews() {
@@ -62,13 +86,9 @@ class ASIconView: BaseView {
     
     // MARK: - Intrinsic sizing
     
-    private var contentAspectRatio: CGFloat {
+    var contentAspectRatio: CGFloat {
         guard defaultContentSize.height > .ulpOfOne else { return 1 }
         return defaultContentSize.width / defaultContentSize.height
-    }
-    
-    private var hasExplicitLayoutDimension: Bool {
-        resolvedLayoutDimension(.width) != nil || resolvedLayoutDimension(.height) != nil
     }
     
     private func computedIntrinsicContentSize() -> CGSize {
@@ -76,23 +96,19 @@ class ASIconView: BaseView {
             return .zero
         }
         
-        let width = resolvedLayoutDimension(.width)
-        let height = resolvedLayoutDimension(.height)
-        
-        switch (width, height) {
-        case (.some, .some):
-            return CGSize(width: UIView.noIntrinsicMetric, height: UIView.noIntrinsicMetric)
-        case let (width?, nil):
-            return CGSize(width: width, height: width / contentAspectRatio)
-        case let (nil, height?):
-            return CGSize(width: height * contentAspectRatio, height: height)
-        case (nil, nil):
+        switch sizeStyle {
+        case .auto:
             return defaultContentSize
+        case .fixHeight(let height):
+            return CGSize(width: height * contentAspectRatio, height: height)
+        case .fixSize(let size):
+            return size
         }
     }
     
     // MARK: - Layout dimension resolution
     
+    /// Laid-out size for symbol pointSize.
     private func resolvedLayoutDimension(_ attribute: NSLayoutConstraint.Attribute) -> CGFloat? {
         switch attribute {
         case .width where bounds.width > .ulpOfOne:
@@ -103,32 +119,16 @@ class ASIconView: BaseView {
             break
         }
         
-        if let value = explicitConstraintConstant(for: attribute, in: constraints) {
-            return value
+        switch sizeStyle {
+        case .fixHeight(let height) where attribute == .height:
+            return height
+        case .fixSize(let size) where attribute == .width:
+            return size.width
+        case .fixSize(let size) where attribute == .height:
+            return size.height
+        default:
+            return nil
         }
-        if let superview, let value = explicitConstraintConstant(for: attribute, in: superview.constraints) {
-            return value
-        }
-        return nil
-    }
-    
-    private func explicitConstraintConstant(
-        for attribute: NSLayoutConstraint.Attribute,
-        in constraints: [NSLayoutConstraint]
-    ) -> CGFloat? {
-        for constraint in constraints where constraint.isActive && constraint.relation == .equal {
-            if constraint.firstItem as AnyObject === self,
-               constraint.firstAttribute == attribute,
-               constraint.secondItem == nil {
-                return constraint.constant
-            }
-            if constraint.secondItem as AnyObject === self,
-               constraint.secondAttribute == attribute,
-               constraint.firstItem == nil {
-                return constraint.constant
-            }
-        }
-        return nil
     }
     
     // MARK: - Icon content
@@ -139,22 +139,23 @@ class ASIconView: BaseView {
         guard let icon else {
             imageView.image = nil
             imageView.preferredSymbolConfiguration = nil
+            imageView.tintColor = nil
             defaultContentSize = .zero
             return
         }
         
         switch icon {
-        case .symbol(let symbol, _, _, _, _):
+        case .symbol(let symbol, let weight, let colors, _, _):
             let defaultImage = UIImage(systemSymbol: symbol)
             defaultContentSize = defaultImage.size
-            imageView.preferredSymbolConfiguration = nil
             imageView.image = defaultImage
+            applySymbolAppearance(weight: weight, colors: colors)
             
-        case .symbolImage(let symbolImage, _, _, _, _):
+        case .symbolImage(let symbolImage, let weight, let colors, _, _):
             let symbolImage = symbolImage ?? R.image.logo_iconSymbols() ?? UIImage(systemSymbol: .photo)
             defaultContentSize = symbolImage.size
-            imageView.preferredSymbolConfiguration = nil
             imageView.image = symbolImage
+            applySymbolAppearance(weight: weight, colors: colors)
             
         case .image(let image, let color, _):
             let image = image ?? R.image.logo_iconSymbols() ?? UIImage(systemSymbol: .photo)
@@ -171,57 +172,40 @@ class ASIconView: BaseView {
             
         case .imageUrl(let url, let processSize, _):
             imageView.preferredSymbolConfiguration = nil
+            imageView.tintColor = nil
             imageView.contentMode = .scaleAspectFill
             defaultContentSize = processSize
             imageView.kf.setImage(with: url, options: [.processor(DownsamplingImageProcessor(size: processSize))])
         }
     }
     
-    /// Only apply a SymbolConfiguration with pointSize to vector icons when the user specifies a width or height.
+    /// Palette must always be applied; otherwise SF Symbols fall back to the window tintColor.
+    /// pointSize is optional and only attached when a layout dimension is known.
+    private func applySymbolAppearance(weight: UIImage.SymbolWeight, colors: [UIColor], pointSize: CGFloat? = nil) {
+        let palette = colors.isEmpty ? [R.Color.LabelPrimary] : colors
+        imageView.tintColor = palette[0]
+        imageView.preferredSymbolConfiguration = ASIcon.imageConfig(size: pointSize, weight: weight, colors: palette)
+    }
+    
     private func applyVectorSymbolConfigurationIfNeeded() {
         guard let icon else { return }
         
-        guard hasExplicitLayoutDimension, let pointSize = resolvedSymbolPointSize() else {
-            switch icon {
-            case .symbol(let symbol, _, _, _, _):
-                imageView.preferredSymbolConfiguration = nil
-                imageView.image = UIImage(symbol: symbol)
-                
-            case .symbolImage(let symbolImage, _, _, _, _):
-                imageView.preferredSymbolConfiguration = nil
-                imageView.image = symbolImage
-                
-            case .image, .imageUrl:
-                break
-            }
-            return
-        }
-        
+        let pointSize = resolvedSymbolPointSize()
         switch icon {
         case .symbol(let symbol, let weight, let colors, _, _):
-            let symbolImage = UIImage(systemSymbol: symbol)
-            imageView.image = symbolImage
-            imageView.preferredSymbolConfiguration = ASIcon.imageConfig(
-                size: pointSize,
-                weight: weight,
-                colors: colors
-            )
+            imageView.image = UIImage(systemSymbol: symbol)
+            applySymbolAppearance(weight: weight, colors: colors, pointSize: pointSize)
             
         case .symbolImage(let symbolImage, let weight, let colors, _, _):
             imageView.image = symbolImage
-            imageView.preferredSymbolConfiguration = ASIcon.imageConfig(
-                size: pointSize,
-                weight: weight,
-                colors: colors
-            )
+            applySymbolAppearance(weight: weight, colors: colors, pointSize: pointSize)
+            
         case .image, .imageUrl:
             break
         }
     }
     
     private func resolvedSymbolPointSize() -> CGFloat? {
-        guard hasExplicitLayoutDimension else { return nil }
-        
         let width = resolvedLayoutDimension(.width)
         let height = resolvedLayoutDimension(.height)
         

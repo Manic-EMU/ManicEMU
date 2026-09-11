@@ -1465,6 +1465,27 @@
 		57E9632A2D6B01450022914C /* ImportFileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E963292D6B013B0022914C /* ImportFileCollectionViewCell.swift */; };
 		57E9632C2D6B06320022914C /* ImportFooterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9632B2D6B06090022914C /* ImportFooterCollectionReusableView.swift */; };
 		57E9632E2D6B0B8A0022914C /* SparkleSeperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9632D2D6B0B7D0022914C /* SparkleSeperatorView.swift */; };
+		57EBA5533052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */; };
+		57EBA5543052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */; };
+		57EBA5553052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */; };
+		57EBA5613052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */; };
+		57EBA5623052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */; };
+		57EBA5633052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */; };
+		57EBA5653052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */; };
+		57EBA5663052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */; };
+		57EBA5673052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */; };
+		57EBA5693052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */; };
+		57EBA56A3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */; };
+		57EBA56B3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */; };
+		57EBA56D3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */; };
+		57EBA56E3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */; };
+		57EBA56F3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */; };
+		57EBA5713052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5703052D8AA0017A6C3 /* FilesSyncWatchers.swift */; };
+		57EBA5723052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5703052D8AA0017A6C3 /* FilesSyncWatchers.swift */; };
+		57EBA5733052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5703052D8AA0017A6C3 /* FilesSyncWatchers.swift */; };
+		57EBA5753052D8AA0017A6C3 /* FilesSyncRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5743052D8AA0017A6C3 /* FilesSyncRecord.swift */; };
+		57EBA5763052D8AA0017A6C3 /* FilesSyncRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5743052D8AA0017A6C3 /* FilesSyncRecord.swift */; };
+		57EBA5773052D8AA0017A6C3 /* FilesSyncRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5743052D8AA0017A6C3 /* FilesSyncRecord.swift */; };
 		57EC6AA62D801F56002920F0 /* GamesListBlankSlateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EC6AA52D801F4D002920F0 /* GamesListBlankSlateView.swift */; };
 		57EC6AB82D803810002920F0 /* PlayHistoryBlankSlateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EC6AB72D8037FE002920F0 /* PlayHistoryBlankSlateView.swift */; };
 		57EC6AC82D8119D9002920F0 /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EC6AC72D8119D8002920F0 /* SyncManager.swift */; };
@@ -1971,7 +1992,6 @@
 		575A39CD2DCD00FE00B28FC2 /* OnlineCoverManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineCoverManager.swift; sourceTree = "<group>"; };
 		575A39CF2DCD2B3500B28FC2 /* UIImageViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtensions.swift; sourceTree = "<group>"; };
 		575A39D32DCD9C7000B28FC2 /* LibretroCoverSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibretroCoverSearchView.swift; sourceTree = "<group>"; };
-		575A3A422DCEE9F300B28FC2 /* Config-SideloadRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-SideloadRelease.xcconfig"; sourceTree = "<group>"; };
 		575F03A62DD59AED00950399 /* manic_joypad.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = manic_joypad.m; path = ../Dependencies/Libretro/input/drivers_joypad/manic_joypad.m; sourceTree = SOURCE_ROOT; };
 		575F03BA2DD5E46B00950399 /* platform_darwin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = platform_darwin.m; path = ../Dependencies/Libretro/frontend/drivers/platform_darwin.m; sourceTree = SOURCE_ROOT; };
 		575FF8E72D34A6DF0043B2F3 /* System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = System.swift; sourceTree = "<group>"; };
@@ -6612,6 +6632,13 @@
 		57E963292D6B013B0022914C /* ImportFileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFileCollectionViewCell.swift; sourceTree = "<group>"; };
 		57E9632B2D6B06090022914C /* ImportFooterCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFooterCollectionReusableView.swift; sourceTree = "<group>"; };
 		57E9632D2D6B0B7D0022914C /* SparkleSeperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleSeperatorView.swift; sourceTree = "<group>"; };
+		57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncManager.swift; sourceTree = "<group>"; };
+		57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncPolicy.swift; sourceTree = "<group>"; };
+		57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncIndex.swift; sourceTree = "<group>"; };
+		57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncEngine.swift; sourceTree = "<group>"; };
+		57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncIO.swift; sourceTree = "<group>"; };
+		57EBA5703052D8AA0017A6C3 /* FilesSyncWatchers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncWatchers.swift; sourceTree = "<group>"; };
+		57EBA5743052D8AA0017A6C3 /* FilesSyncRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSyncRecord.swift; sourceTree = "<group>"; };
 		57EC6AA52D801F4D002920F0 /* GamesListBlankSlateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListBlankSlateView.swift; sourceTree = "<group>"; };
 		57EC6AB72D8037FE002920F0 /* PlayHistoryBlankSlateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayHistoryBlankSlateView.swift; sourceTree = "<group>"; };
 		57EC6AC72D8119D8002920F0 /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
@@ -6684,8 +6711,6 @@
 		B28EB6D72A6E7A1C00086CDB /* ManicEmu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ManicEmu.entitlements; sourceTree = "<group>"; };
 		B2C97B4D2A09F3B900053A4C /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		B2C97B4F2A09F3DE00053A4C /* UIimageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIimageExtensions.swift; sourceTree = "<group>"; };
-		B2C97B562A0A420E00053A4C /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
-		B2C97B572A0A423B00053A4C /* Config-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Release.xcconfig"; sourceTree = "<group>"; };
 		B2F4B7AF2A138C74003B0E07 /* PhotoSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSaver.swift; sourceTree = "<group>"; };
 		B2F4B7B12A147226003B0E07 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B93489E15EFD47F2AE825436 /* Amiga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amiga.swift; sourceTree = "<group>"; };
@@ -12806,6 +12831,20 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		57EBA53E3052D6650017A6C3 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */,
+				57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */,
+				57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */,
+				57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */,
+				57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */,
+				57EBA5703052D8AA0017A6C3 /* FilesSyncWatchers.swift */,
+				57EBA5743052D8AA0017A6C3 /* FilesSyncRecord.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
 		57F0D8402DE2CD7500760F57 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
@@ -13042,6 +13081,7 @@
 		A58C3F4D248E448E0099E068 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				57EBA53E3052D6650017A6C3 /* Sync */,
 				57F0D8402DE2CD7500760F57 /* Cores */,
 				F0C5000000000000000000FF /* FocusKit */,
 				57E8A110304A4A1100000014 /* JIT */,
@@ -13095,10 +13135,7 @@
 				A5A0020024555A5F006E0F0E /* Info.plist */,
 				A5DE1F1A256BC78B0099425B /* InfoPlist.strings */,
 				A5DE1F21256BC7F10099425B /* Localizable.strings */,
-				B2C97B562A0A420E00053A4C /* Config-Debug.xcconfig */,
 				57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */,
-				B2C97B572A0A423B00053A4C /* Config-Release.xcconfig */,
-				575A3A422DCEE9F300B28FC2 /* Config-SideloadRelease.xcconfig */,
 				57E8A110304A4A1100000002 /* JITEnablerExtension.xcconfig */,
 				57C7595C2FD451130093A2B3 /* System.core */,
 			);
@@ -14000,6 +14037,13 @@
 				579094C9303C7D9100A53656 /* EmulationCore.swift in Sources */,
 				579094CA303C7D9100A53656 /* GameListView.swift in Sources */,
 				579094CB303C7D9100A53656 /* TriggerButton.swift in Sources */,
+				57EBA5533052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
+				57EBA5613052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
+				57EBA5653052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				57EBA5693052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
+				57EBA56D3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
+				57EBA5713052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
+				57EBA5753052D8AA0017A6C3 /* FilesSyncRecord.swift in Sources */,
 				579094CC303C7D9100A53656 /* UniversalScript.c in Sources */,
 				579094CD303C7D9100A53656 /* ShaderInfoView.swift in Sources */,
 				579094CE303C7D9100A53656 /* ASListItemView.swift in Sources */,
@@ -14455,6 +14499,13 @@
 				57CDCEB22FD5CBD3005BA4C8 /* EmulationCore.swift in Sources */,
 				57CDCEB32FD5CBD3005BA4C8 /* GameListView.swift in Sources */,
 				57CDCEB42FD5CBD3005BA4C8 /* TriggerButton.swift in Sources */,
+				57EBA5543052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
+				57EBA5623052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
+				57EBA5663052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				57EBA56A3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
+				57EBA56E3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
+				57EBA5723052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
+				57EBA5763052D8AA0017A6C3 /* FilesSyncRecord.swift in Sources */,
 				57CDCEB52FD5CBD3005BA4C8 /* UniversalScript.c in Sources */,
 				57CDCEB62FD5CBD3005BA4C8 /* ShaderInfoView.swift in Sources */,
 				57C65AEC2FD6B2E300BB73E0 /* ASListItemView.swift in Sources */,
@@ -14853,6 +14904,13 @@
 				579C114B2D1D0B1900CFD1F5 /* ApplicationSceneDelegate.swift in Sources */,
 				B2C97B502A09F3DE00053A4C /* UIimageExtensions.swift in Sources */,
 				577006092D3F980400762E8F /* CollectionHeaderReusableView.swift in Sources */,
+				57EBA5553052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
+				57EBA5633052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
+				57EBA5673052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				57EBA56B3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
+				57EBA56F3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
+				57EBA5733052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
+				57EBA5773052D8AA0017A6C3 /* FilesSyncRecord.swift in Sources */,
 				57B5E3242ECCCD0800DE17E9 /* MAMEKit.swift in Sources */,
 				5796DB4A2FE41A630051F661 /* ASProgress.swift in Sources */,
 				57ABFB622FEBC335001C1425 /* SettingsMembershipView.swift in Sources */,
@@ -15190,9 +15248,8 @@
 		};
 		575A3A3F2DCEE98500B28FC2 /* SideloadRelease */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B572A0A423B00053A4C /* Config-Release.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
-				APP_BUILD_CONDITIONS = "";
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -15230,7 +15287,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SIDE_LOAD;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15239,9 +15296,8 @@
 		};
 		57909588303C7D9100A53656 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B562A0A420E00053A4C /* Config-Debug.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
-				APP_BUILD_CONDITIONS = "DEBUG SIDE_LOAD";
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -15278,7 +15334,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SIDE_LOAD";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15287,7 +15343,7 @@
 		};
 		57909589303C7D9100A53656 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B572A0A423B00053A4C /* Config-Release.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -15326,7 +15382,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SIDE_LOAD;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15335,7 +15391,7 @@
 		};
 		5790958A303C7D9100A53656 /* SideloadRelease */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 575A3A422DCEE9F300B28FC2 /* Config-SideloadRelease.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -15374,7 +15430,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SIDE_LOAD;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15690,9 +15746,8 @@
 		};
 		57CDCF762FD5CBD3005BA4C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B562A0A420E00053A4C /* Config-Debug.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
-				APP_BUILD_CONDITIONS = "DEBUG SIDE_LOAD";
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -15729,7 +15784,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15738,7 +15793,7 @@
 		};
 		57CDCF772FD5CBD3005BA4C8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B572A0A423B00053A4C /* Config-Release.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -15777,7 +15832,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -15786,7 +15841,7 @@
 		};
 		57CDCF782FD5CBD3005BA4C8 /* SideloadRelease */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B562A0A420E00053A4C /* Config-Debug.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -15825,7 +15880,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SIDE_LOAD";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -16038,7 +16093,7 @@
 		};
 		A5A0020424555A5F006E0F0E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B562A0A420E00053A4C /* Config-Debug.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -16076,7 +16131,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -16085,7 +16140,7 @@
 		};
 		A5A0020524555A5F006E0F0E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2C97B572A0A423B00053A4C /* Config-Release.xcconfig */;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -16124,7 +16179,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(APP_BUILD_CONDITIONS)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

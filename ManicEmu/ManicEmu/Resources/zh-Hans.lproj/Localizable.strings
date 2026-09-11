@@ -1124,3 +1124,23 @@
 "SlowMotionRatio" = "慢放%@";
 "SlowMotionSpeedLimit" = "你的最高慢放是x2！请升级成为会员解锁最高x5倍慢放";
 "SlowMotionDesc" = "慢放的优先级低于加速。如果开启了加速，慢放会自动关闭。";
+
+"ICloudROMSyncSetting" = "ROM 同步配置";
+"ICloudROMSyncDesc" = "ROM 默认同步。关闭后将停止后续上传，并可选择是否从 iCloud 云盘移除已有副本。本机文件会保留在此设备上。";
+"ICloudROMPlatformConfig" = "平台设置";
+"ICloudROMGameConfig" = "游戏设置";
+"ICloudROMRemoveDriveTitle" = "要从 iCloud 云盘移除吗？";
+"ICloudROMRemoveDriveDetail" = "此操作只会删除 iCloud 云盘中的副本以释放空间。ROM 仍会保留在本机。其他设备上已下载的本地副本不会受影响。";
+"ICloudROMRemoveDriveConfirm" = "从 iCloud 云盘移除";
+"ICloudROMKeepDrive" = "保留 iCloud 副本";
+"ICloudSyncPaused" = "iCloud 同步已暂停";
+"ICloudSyncProgressFormat" = "%d/%d";
+"ICloudRepairSync" = "修复同步";
+"ICloudRepairSyncDesc" = "将本机文件与 iCloud 云盘进行比对，并重试失败或遗漏的上传和下载。进度显示在上方。如果导入后 ROM 未出现在 iCloud，或设备曾离线，可使用此功能。";
+"ICloudRepairSyncInProgress" = "修复已在进行中。";
+"ICloudRepairSyncNotReady" = "iCloud 同步仍在启动，请稍后再试。";
+"ICloudRepairSyncAlreadyDone" = "本机文件与 iCloud 云盘已一致。";
+"ICloudRepairSyncResult" = "修复完成。已上传 %d 个，已下载 %d 个。";
+"ICloudRepairSyncResultPending" = "修复完成。已上传 %d 个，已下载 %d 个。另有 %d 个文件稍后重试。";
+"ICloudROMStillSyncing" = "此 ROM 仍在从 iCloud 下载，请稍后再试。";
+
