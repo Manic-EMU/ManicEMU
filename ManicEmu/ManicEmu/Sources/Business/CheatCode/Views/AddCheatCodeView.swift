@@ -250,6 +250,30 @@ class AddCheatCodeView: BaseView {
         updateConfirmButton(enable: isValid)
     }
     
+    /// Beetle raw RAM patch: `AAAA:VV` / `AAAAA:VV`, parts joined by + , ; . _ or space.
+    private static func formattedBeetleRaw(code: String) -> String? {
+        let separators = CharacterSet(charactersIn: "+,;._ \n\t")
+        let parts = code.components(separatedBy: separators).map {
+            $0.trimmingCharacters(in: .whitespacesAndNewlines)
+        }.filter { !$0.isEmpty }
+        guard !parts.isEmpty else { return nil }
+        var normalized = [String]()
+        for part in parts {
+            let pieces = part.split(separator: ":", omittingEmptySubsequences: false)
+            guard pieces.count == 2 else { return nil }
+            let address = String(pieces[0])
+            let value = String(pieces[1])
+            guard (1...5).contains(address.count),
+                  value.count == 2,
+                  address.allSatisfy({ $0.isHexDigit }),
+                  value.allSatisfy({ $0.isHexDigit }) else {
+                return nil
+            }
+            normalized.append("\(address.uppercased()):\(value.uppercased())")
+        }
+        return normalized.joined(separator: "+")
+    }
+    
     private static func formattedCWCheat(code: String) -> String {
         var index = 0
         let codes = code.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: .whitespacesAndNewlines)
@@ -307,7 +331,11 @@ class AddCheatCodeView: BaseView {
                 }
                 return (cheatCode, currentCheatFormat)
             }
-            //指定作弊码类型的检查
+            if currentCheatFormat.type == .beetleRaw {
+                guard let formatString = formattedBeetleRaw(code: cheatCode) else { return nil }
+                return (formatString, currentCheatFormat)
+            }
+            // Validate against the selected cheat format.
             let formatString: String
             if currentCheatFormat.type == .cwCheat {
                 formatString = Self.formattedCWCheat(code: cheatCode)
@@ -324,10 +352,13 @@ class AddCheatCodeView: BaseView {
             return (formatString, currentCheatFormat)
 
         } else {
-            //未指定作弊码类型的检查
+            // Auto-detect among the platform's formats.
             for cheatFormat in supportedCheatFormats.filter({ $0.type != .autoDetect }) {
                 let formatString: String
-                if cheatFormat.type == .cwCheat {
+                if cheatFormat.type == .beetleRaw {
+                    guard let beetleRaw = formattedBeetleRaw(code: cheatCode) else { continue }
+                    return (beetleRaw, cheatFormat)
+                } else if cheatFormat.type == .cwCheat {
                     formatString = formattedCWCheat(code: cheatCode)
                 } else {
                     formatString = cheatCode.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: ":", with: "").components(separatedBy: .whitespacesAndNewlines).joined().formatted(with: cheatFormat)

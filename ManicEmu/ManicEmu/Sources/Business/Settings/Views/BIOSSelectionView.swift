@@ -240,7 +240,13 @@ class BIOSSelectionView: BaseView {
             }
             let isBiosExists: Bool
             if gameType == .arcade {
-                isBiosExists = R.BIOS.MAMEBiosMap.keys.allSatisfy({ FileManager.default.fileExists(atPath: R.Path.Data.appendingPathComponent($0)) })
+                isBiosExists = R.BIOS.MAMEBiosMap.keys.allSatisfy({
+                    if R.BIOS.SegaArcadeBios.contains($0) {
+                        return FileManager.default.fileExists(atPath: R.Path.Flycast.appendingPathComponent("dc/\($0)"))
+                    } else {
+                        return FileManager.default.fileExists(atPath: R.Path.Data.appendingPathComponent($0))
+                    }
+                })
             } else {
                 isBiosExists = fileManager.fileExists(atPath: biosInLib)
             }
@@ -382,7 +388,14 @@ class BIOSSelectionView: BaseView {
                     
                     if mameMatchs.count > 0 {
                         for match in mameMatchs {
-                            try? FileManager.safeCopyItem(at: match.url, to: URL(fileURLWithPath: R.Path.Data.appendingPathComponent(match.fileName)), shouldReplace: true)
+                            if R.BIOS.SegaArcadeBios.contains(match.fileName) {
+                                //Some Sega arcade games need the flycast core to run, so copy the bios to the dc directory.
+                                try? FileManager.safeCopyItem(at: match.url,
+                                                              to: URL(fileURLWithPath: R.Path.Flycast.appendingPathComponent("dc/\(match.fileName)")),
+                                                              shouldReplace: true)
+                            } else {
+                                try? FileManager.safeCopyItem(at: match.url, to: URL(fileURLWithPath: R.Path.Data.appendingPathComponent(match.fileName)), shouldReplace: true)
+                            }
                         }
                     }
                     DispatchQueue.main.async { [weak self] in

@@ -10,7 +10,38 @@
 struct SettingItem {
     
     enum ItemType: String {
-        case appearance, theme, quickGame, autoSaveState, skin, airPlay, iCloud, fullScreenWhenConnectController, bios, respectSilentMode, onlinePlay, rumble, skinSound, retro, triggerPro, jit, shaders, globalCoreSwitch, FAQ, feedback, qq, telegram, discord, about, shareApp, clearCache, language, userAgreement, privacyPolicy, featuredItems, coverScraping
+        case appearance,
+             theme,
+             quickGame,
+             autoSaveState,
+             skin,
+             airPlay,
+             iCloud,
+             fullScreenWhenConnectController,
+             bios,
+             respectSilentMode,
+             onlinePlay,
+             rumble,
+             skinSound,
+             retro,
+             triggerPro,
+             jit,
+             shaders,
+             globalCoreSwitch,
+             FAQ,
+             feedback,
+             qq,
+             telegram,
+             discord,
+             about,
+             shareApp,
+             clearCache,
+             language,
+             userAgreement,
+             privacyPolicy,
+             featuredItems,
+             coverScraping,
+             resetTips
     }
     
     var type: ItemType
@@ -101,7 +132,7 @@ struct SettingItem {
             [R.Color.Purple]
         case .theme, .onlinePlay, .FAQ, .featuredItems:
             [R.Color.Orange]
-        case .autoSaveState, .rumble, .feedback:
+        case .autoSaveState, .rumble, .feedback, .resetTips:
             [R.Color.Green]
         case .skin, .skinSound, .about:
             [R.Color.Pink]
@@ -182,6 +213,8 @@ struct SettingItem {
             ASIcon.symbolImage(R.image.core_iconSymbols(), colors: iconColors)
         case .coverScraping:
             ASIcon.symbolImage(R.image.cover_iconSymbols(), colors: iconColors)
+        case .resetTips:
+            ASIcon.symbol(.textBubble, colors: iconColors)
         }
     }
     
@@ -249,6 +282,8 @@ struct SettingItem {
             R.string.localizable.globalCoreSwitch()
         case .coverScraping:
             R.string.localizable.coverScraping()
+        case .resetTips:
+            R.string.localizable.resetTips()
         }
     }
     
@@ -293,6 +328,8 @@ struct SettingItem {
                 return R.string.localizable.iCloudSyncing()
             }
 #endif
+        } else if type == .resetTips {
+            return R.string.localizable.resetTipsDesc()
         }
         return nil
     }

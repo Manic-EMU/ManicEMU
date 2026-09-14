@@ -40,7 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Allowed interface orientations. Rotation follows this mask, not overlay windows.
     static var orientation: UIInterfaceOrientationMask = R.Config.DefaultOrientation {
         didSet {
-            UIViewController.attemptRotationToDeviceOrientation()
+            if !OrientationLockPin.isPinned {
+                UIViewController.attemptRotationToDeviceOrientation()
+            }
             if #available(iOS 26.0, *) {
                 let root = ApplicationSceneDelegate.applicationWindow?.rootViewController
                 root?.setNeedsUpdateOfSupportedInterfaceOrientations()
@@ -87,6 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Enable the imitation keyboard blocking issue
         IQKeyboardManager.shared.isEnabled = true
+        OrientationLockPin.start()
         return true
     }
     
@@ -116,9 +119,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    //允许的旋转类型
+    // Allowed orientations. Control Center portrait lock is pinned in OrientationLockPin.
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return AppDelegate.orientation
+        return OrientationLockPin.resolvedMask(for: window)
     }
     
     //APNS推送回调 没有真正开启用户推送通知，开启了静默通知 用于CloudKit的同步

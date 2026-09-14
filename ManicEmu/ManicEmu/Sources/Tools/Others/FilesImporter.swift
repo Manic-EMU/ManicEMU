@@ -623,18 +623,24 @@ extension FilesImporter {
                     
                     var gameType = isPSPPBP ? .psp : GameType(fileExtension: game.fileExtension)
                     
-                    if game.fileExtension.lowercased() == "zip" && MAMEKit.isSupportTitle(fileName: game.name) {
+                    if (game.fileExtension.lowercased() == "zip" || game.fileExtension.lowercased() == "7z") &&
+                        MAMEKit.isSupportTitle(fileName: game.name) {
                         gameType = .arcade
+                        if R.Strings.NaomiTitles.contains(game.name) {
+                            game.extras = [ExtraKey.arcadeType.rawValue: 1].jsonData()
+                        } else if R.Strings.AtomiswaveTitles.contains(game.name) {
+                            game.extras = [ExtraKey.arcadeType.rawValue: 2].jsonData()
+                        } else if R.Strings.SegaSPTitles.contains(game.name) {
+                            game.extras = [ExtraKey.arcadeType.rawValue: 3].jsonData()
+                        }
+                        if let mameInfo = MAMEKit.getMAMEInfo(fileName: game.name) {
+                            game.aliasName = mameInfo.name
+                        }
                     }
                     
                     if gameType != .notSupport {
                         game.gameType = gameType
                         ///Handling game info for specific game types.
-                        
-                        //archde
-                        if gameType == .arcade, let mameInfo = MAMEKit.getMAMEInfo(fileName: game.name) {
-                            game.aliasName = mameInfo.name
-                        }
 #if !SIDE_LOAD
                         //32x mcd
                         if game.gameType == ._32x || gameType == .mcd {
@@ -660,17 +666,27 @@ extension FilesImporter {
                             game.extras = [ExtraKey.PSPGameCode.rawValue: gameCode].jsonData()
                         }
 
-                        if game.isDolphinCore, let dolphinID = DolphinGameID.read(from: url) {
-                            if let extras = game.extras,
-                               let data = Game.updateExtra(extras: extras, key: ExtraKey.dolphinGameID.rawValue, value: dolphinID) {
-                                game.extras = data
-                            } else {
-                                game.extras = [ExtraKey.dolphinGameID.rawValue: dolphinID].jsonData()
+                        if game.isDolphinCore {
+                            if let dolphinID = DolphinGameID.read(from: url) {
+                                if let extras = game.extras,
+                                   let data = Game.updateExtra(extras: extras, key: ExtraKey.dolphinGameID.rawValue, value: dolphinID) {
+                                    game.extras = data
+                                } else {
+                                    game.extras = [ExtraKey.dolphinGameID.rawValue: dolphinID].jsonData()
+                                }
                             }
+                            game.region = 1
                         }
                         
                         if game.gameType == .ngp {
                             game.extras = [ExtraKey.gameTypeCategory.rawValue: 1].jsonData()
+                        }
+                        
+                        if game.gameType == .wsc {
+                            let ext = url.pathExtension.lowercased()
+                            if ext == "ws" || ext == "pc2" || ext == "pcv2" {
+                                game.extras = [ExtraKey.gameTypeCategory.rawValue: 1].jsonData()
+                            }
                         }
                         
                         do {

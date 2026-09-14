@@ -53,6 +53,9 @@
 		5706B0FD2DFFED170066122E /* menu_pipeline.metal in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE4C2DD3326400AABF98 /* menu_pipeline.metal */; };
 		5708351C2D3216980079D410 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708351B2D3216930079D410 /* Log.swift */; };
 		570A28002DCF03CF001249C6 /* PLzmaSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 570A27FF2DCF03CF001249C6 /* PLzmaSDK */; };
+		570C614730543805007E0C53 /* mednafen.wswan.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570C6146305437FE007E0C53 /* mednafen.wswan.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		570C61483054380D007E0C53 /* mednafen.wswan.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570C6146305437FE007E0C53 /* mednafen.wswan.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		570C614930543815007E0C53 /* mednafen.wswan.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570C6146305437FE007E0C53 /* mednafen.wswan.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		570F590C2DC5B838007BFD92 /* ThemeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590B2DC5B82F007BFD92 /* ThemeSettingView.swift */; };
 		570F590E2DC5BAEE007BFD92 /* DesktopIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590D2DC5BAE1007BFD92 /* DesktopIconCollectionViewCell.swift */; };
 		570F59102DC5BB03007BFD92 /* ThemeColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590F2DC5BAF4007BFD92 /* ThemeColorCollectionViewCell.swift */; };
@@ -1639,6 +1642,9 @@
 		F9A3C32228B84AD391F34585 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D32FD41D9300A2749A /* NVActivityIndicatorView */; };
 		FDD0064DAC7645118F826ED7 /* Closures in Frameworks */ = {isa = PBXBuildFile; productRef = 578E231F2FD288C600A2749A /* Closures */; };
 		FFD8F5F4CE02425E8BA80296 /* mednafen.pce.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		58D0423D007B462DB353AA16 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
+		54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
+		AD7D0110DD684A0DA5505F08 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1697,6 +1703,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				570C614930543815007E0C53 /* mednafen.wswan.libretro.framework in Embed Frameworks */,
 				57909691303EF3A300A53656 /* mesen-s.libretro.framework in Embed Frameworks */,
 				5790960E303D795200A53656 /* gpsp.libretro.framework in Embed Frameworks */,
 				5790955E303C7D9100A53656 /* puae.libretro.framework in Embed Frameworks */,
@@ -1761,6 +1768,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				570C614730543805007E0C53 /* mednafen.wswan.libretro.framework in Embed Frameworks */,
 				5790968F303EF38F00A53656 /* mesen-s.libretro.framework in Embed Frameworks */,
 				57909605303D793A00A53656 /* gpsp.libretro.framework in Embed Frameworks */,
 				16D61BE375CD4F61ACCF0FF2 /* puae.libretro.framework in Embed Frameworks */,
@@ -1814,6 +1822,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				570C61483054380D007E0C53 /* mednafen.wswan.libretro.framework in Embed Frameworks */,
 				57909690303EF39B00A53656 /* mesen-s.libretro.framework in Embed Frameworks */,
 				57909608303D794200A53656 /* gpsp.libretro.framework in Embed Frameworks */,
 				E2162239F8584ED6843B9760 /* puae.libretro.framework in Embed Frameworks */,
@@ -1896,6 +1905,7 @@
 		5706B0482DFBF8350066122E /* 32X.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 32X.swift; sourceTree = "<group>"; };
 		5706B0592DFC0F7A0066122E /* SS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SS.swift; sourceTree = "<group>"; };
 		5708351B2D3216930079D410 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		570C6146305437FE007E0C53 /* mednafen.wswan.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = mednafen.wswan.libretro.framework; sourceTree = "<group>"; };
 		570F590B2DC5B82F007BFD92 /* ThemeSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingView.swift; sourceTree = "<group>"; };
 		570F590D2DC5BAE1007BFD92 /* DesktopIconCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopIconCollectionViewCell.swift; sourceTree = "<group>"; };
 		570F590F2DC5BAF4007BFD92 /* ThemeColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColorCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -6722,6 +6732,7 @@
 		F0C500000000000000000106 /* FocusCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCollectionView.swift; sourceTree = "<group>"; };
 		F0C500000000000000000107 /* FocusSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSystem.swift; sourceTree = "<group>"; };
 		F0C500000000000000000108 /* FocusSystem+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSystem+UIViewController.swift"; sourceTree = "<group>"; };
+		16B86ECC930242969A108735 /* WSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -12605,6 +12616,7 @@
 		57C75AD42FD572260093A2B3 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				570C6146305437FE007E0C53 /* mednafen.wswan.libretro.framework */,
 				57909689303EF38000A53656 /* mesen-s.libretro.framework */,
 				03741E2E8CB24E5790E97476 /* puae.libretro.framework */,
 				6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */,
@@ -12848,6 +12860,7 @@
 		57F0D8402DE2CD7500760F57 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				16B86ECC930242969A108735 /* WSC.swift */,
 				B93489E15EFD47F2AE825436 /* Amiga.swift */,
 				37C004DF500A40988FE64A18 /* C64.swift */,
 				78D4867970474EB9B27D4D8D /* NGP.swift */,
@@ -13706,6 +13719,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58D0423D007B462DB353AA16 /* WSC.swift in Sources */,
 				57909385303C7D9100A53656 /* Amiga.swift in Sources */,
 				57909386303C7D9100A53656 /* C64.swift in Sources */,
 				57909387303C7D9100A53656 /* NGP.swift in Sources */,
@@ -14168,6 +14182,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */,
 				0965D1CD6E9344C18E3454A6 /* Amiga.swift in Sources */,
 				C77604CEA6544406AAC031FA /* C64.swift in Sources */,
 				A672B510CD9141B18392D564 /* NGP.swift in Sources */,
@@ -14613,6 +14628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD7D0110DD684A0DA5505F08 /* WSC.swift in Sources */,
 				8CFD19E8FFCB46D79A392284 /* Amiga.swift in Sources */,
 				3CC0A81B407547FBA1CF0693 /* C64.swift in Sources */,
 				1186ADAD578A4FAC9E5337EA /* NGP.swift in Sources */,

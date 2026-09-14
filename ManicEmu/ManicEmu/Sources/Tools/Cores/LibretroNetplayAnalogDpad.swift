@@ -46,11 +46,11 @@ final class LibretroNetplayAnalogDpad {
     }
 
     /// Always sends analog via `moveStick`. During netplay, also maps the stick onto D-pad.
-    func moveStick(isLeft: Bool, x: CGFloat, y: CGFloat, playerIndex: Int) {
+    func moveStick(isLeft: Bool, x: CGFloat, y: CGFloat, playerIndex: Int, forceSyncDpad: Bool = false) {
         self.playerIndex = playerIndex
         stick = CGPoint(x: x, y: y)
         LibretroCore.sharedInstance().moveStick(isLeft, x: x, y: y, playerIndex: UInt32(playerIndex))
-        refreshStickDpad()
+        refreshStickDpad(forceSyncDpad: forceSyncDpad)
     }
 
     /// Returns `true` when `button` is a D-pad direction (already applied).
@@ -68,8 +68,8 @@ final class LibretroNetplayAnalogDpad {
         return true
     }
 
-    private func refreshStickDpad() {
-        if LibretroNetplaySession.shared.isNetplay {
+    private func refreshStickDpad(forceSyncDpad: Bool = false) {
+        if LibretroNetplaySession.shared.isNetplay || forceSyncDpad {
             dpadFromStick.up = stick.y > threshold
             dpadFromStick.down = stick.y < -threshold
             dpadFromStick.left = stick.x < -threshold

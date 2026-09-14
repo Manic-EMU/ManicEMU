@@ -31,6 +31,7 @@ extension GameType
     case leftThumbstickDown
     case leftThumbstickLeft
     case leftThumbstickRight
+    case select
 
     case flex
     case menu
@@ -65,6 +66,7 @@ extension GameType
         else if stringValue == "leftThumbstickLeft" { self = .leftThumbstickLeft }
         else if stringValue == "leftThumbstickRight" { self = .leftThumbstickRight }
         else if stringValue == "flex" { self = .flex }
+        else if stringValue == "select" { self = .select }
         else { return nil }
     }
 }
@@ -133,6 +135,7 @@ class DCEmulatorBridge : EmulatorBridgeBase {
         else if gameInput == .down { return .down }
         else if gameInput == .left { return .left }
         else if gameInput == .right { return .right }
+        else if gameInput == .select { return .select }
         return nil
     }
     

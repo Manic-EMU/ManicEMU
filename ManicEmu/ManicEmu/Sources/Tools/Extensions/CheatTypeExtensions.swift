@@ -25,4 +25,5 @@ extension CheatType
     static let importFile = CheatType("importFile")
     static let Gecko = CheatType("Gecko")
     static let ARMax = CheatType("ARMax")
+    static let beetleRaw = CheatType("Beetle RAW")
 }

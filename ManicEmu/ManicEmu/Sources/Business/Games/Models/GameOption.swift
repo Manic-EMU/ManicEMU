@@ -46,6 +46,7 @@ enum GameOption: Int, CaseIterable {
          ndsMicrophone,
          clownMDTvStandard,
          snesVRAM,
+         wswanRotation,
          coreSettings,
          saveState,
          quickLoadState,
@@ -81,7 +82,8 @@ enum GameOption: Int, CaseIterable {
          wiiControllerMode,
          coverScraping,
          dolphinCpuCore,
-         slowMotion
+         slowMotion,
+         ndsLidToggle
         
     //When adding a new option, make sure to add it at the end; otherwise, it might affect the existing Prefference configurations
     
@@ -181,7 +183,7 @@ enum GameOption: Int, CaseIterable {
                 .symbolImage(R.image.airplay_iconSymbols())
         case .controllerSetting:
                 .symbolImage(R.image.controller_iconSymbols())
-        case .orientation:
+        case .orientation, .wswanRotation:
                 .symbolImage(R.image.autorotate_iconSymbols())
         case .gameOptionSort:
                 .symbolImage(R.image.systemtypeRegular_iconSymbols())
@@ -227,6 +229,8 @@ enum GameOption: Int, CaseIterable {
                 .symbol(.candybarphone)
         case .slowMotion:
                 .symbol(.slowmo)
+        case .ndsLidToggle:
+                .symbol(.squareTophalfFilled)
         }
     }
     
@@ -376,6 +380,10 @@ enum GameOption: Int, CaseIterable {
             R.string.localizable.cpuEmulationMethod()
         case .slowMotion:
             R.string.localizable.slowMotion()
+        case .wswanRotation:
+            R.string.localizable.wSwanRotateDisplay()
+        case .ndsLidToggle:
+            R.string.localizable.ndsLidToggle()
         }
     }
     
@@ -451,6 +459,7 @@ enum GameOption: Int, CaseIterable {
         .simBlowing,
         .swapDisk,
         .insertDisc,
+        .ndsLidToggle
     ]
     
     static let defaultGroupAndSort: [[Self]] = [
@@ -501,6 +510,8 @@ enum GameOption: Int, CaseIterable {
             .symbianDevice,
             .wiiControllerMode,
             .dolphinCpuCore,
+            .wswanRotation,
+            .ndsLidToggle,
             .coreSettings,
         ],
         [
@@ -809,6 +820,8 @@ enum GameOption: Int, CaseIterable {
                     }
                 } else if firstGame.gameType == .nes || firstGame.gameType == .fds {
                     return .chevron(firstGame.currentNesPalette.name)
+                } else if firstGame.effectiveGameType == .ws {
+                    return .chevron(firstGame.wswanPaletteTitle)
                 }
             }
             
@@ -956,6 +969,19 @@ enum GameOption: Int, CaseIterable {
                 }
             }
             
+        case .wswanRotation:
+            let extraKey = ExtraKey.wswanRotation.rawValue
+            let firstGameValue = firstGame.getExtraInt(key: extraKey) ?? 0
+            if games.allSatisfy({
+                ($0.getExtraInt(key: extraKey) ?? 0) == firstGameValue
+            }) {
+                if firstGameValue == 0 {
+                    return .chevron(R.string.localizable.skinSegmentPortraitTitle())
+                } else {
+                    return .chevron(R.string.localizable.skinSegmentLandscapeTitle())
+                }
+            }
+            
         case .rename,
                 .cover,
                 .skins,
@@ -982,7 +1008,8 @@ enum GameOption: Int, CaseIterable {
                 .reload,
                 .quit,
                 .gameShortcut,
-                .coverScraping:
+                .coverScraping,
+                .ndsLidToggle:
             break
         }
         return .chevron(nil)
@@ -1002,6 +1029,7 @@ enum GameOption: Int, CaseIterable {
                 .insertDisc,
                 .reload,
                 .quit,
+                .ndsLidToggle,
             ]
         case .gameInfo:
             return disableOptionsForScene(.common) + [.rename, .genHomeMenu, .coverScraping]
@@ -1087,7 +1115,8 @@ enum GameOption: Int, CaseIterable {
         
         if game.gameType.supportCores.count == 0 ||
             (game.gameType == .ss && game.fileExtension.lowercased() == "iso") ||
-            game.isArticBaseHomeMenu {
+            game.isArticBaseHomeMenu ||
+            game.isSegaArcade {
             allOptions.remove(.switchCore)
         }
         
@@ -1279,6 +1308,14 @@ enum GameOption: Int, CaseIterable {
         
         if !game.supportSlowMotion {
             allOptions.remove(.slowMotion)
+        }
+        
+        if game.gameType != .wsc {
+            allOptions.remove(.wswanRotation)
+        }
+        
+        if game.gameType != .ds {
+            allOptions.remove(.ndsLidToggle)
         }
         
         allOptions.subtract(disableOptionsForScene(scene))

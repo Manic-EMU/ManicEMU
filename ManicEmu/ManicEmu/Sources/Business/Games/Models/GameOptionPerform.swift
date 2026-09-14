@@ -1090,6 +1090,26 @@ extension GameOption {
             } else {
                 performStringAction(with: games, accessoryChange: accessoryChange)
             }
+            
+        case .wswanRotation:
+            if performImmediately {
+                var rotationIndex = firstGame.getExtraInt(key: ExtraKey.wswanRotation.rawValue) ?? 0
+                rotationIndex = rotationIndex == 0 ? 1 : 0
+                games.forEach({
+                    $0.updateExtra(key: ExtraKey.wswanRotation.rawValue, value: rotationIndex)
+                })
+                if PlayViewController.isGaming {
+                    LibretroCore.sharedInstance().updateRunningCoreConfigs([
+                        SpecialCoreOption.wswan_rotate_display.rawValue: rotationIndex == 0 ? "landscape" : "portrait"
+                    ], flush: false)
+                }
+            } else {
+                performStringAction(with: games, accessoryChange: accessoryChange)
+            }
+            
+        case .ndsLidToggle:
+            PlayViewController.ndsLidToggle()
+            hideSheetInGaming()
         }
     }
     
@@ -1307,6 +1327,8 @@ extension GameOption {
                 } else if firstGame.defaultCore == 2 {
                     options = GameOption.Palette.allCases.map({ $0.optionForVBAM })
                 }
+            } else if firstGame.effectiveGameType == .ws {
+                options = GameOption.Palette.AllPaletteTitleForWS
             }
         } else if self == .swapDisk {
             if firstGame.gameType == .fds {
@@ -1343,6 +1365,8 @@ extension GameOption {
         } else if self == .slowMotion {
             options = GameOption.SlowMotionSpeed.allCases.map({ $0.title })
             detail = R.string.localizable.slowMotionDesc()
+        } else if self == .wswanRotation {
+            options = [R.string.localizable.skinSegmentLandscapeTitle(), R.string.localizable.skinSegmentPortraitTitle()]
         }
         
         guard options.count > 0 else { return }
@@ -1432,38 +1456,50 @@ extension GameOption {
                     }
                     
                 } else if self == .palette {
-                    if let palette = GameOption.Palette(rawValue: index) {
-                        Game.change { realm in
-                            games.forEach({
-                                if $0.pallete != palette {
-                                    $0.pallete = palette
-                                }
-                            })
-                        }
+                    if firstGame.effectiveGameType == .ws {
+                        games.forEach({
+                            $0.updateExtra(key: ExtraKey.wswanPalette.rawValue, value: index)
+                        })
                         if PlayViewController.isGaming {
-                            if firstGame.gameType == .vb {
-                                LibretroCore.sharedInstance().updateConfig(EmulationCore.BeetleVB.name, key: SpecialCoreOption.vb_color_mode.rawValue, value: palette.paletteTitleForVB, reload: true)
-                            } else if firstGame.gameType == .pm {
-                                LibretroCore.sharedInstance().updateConfig(EmulationCore.PokeMini.name, key: SpecialCoreOption.pokemini_palette.rawValue, value: palette.paletteTitleForPM, reload: true)
-                            } else if firstGame.gameType == .gb {
-                                if firstGame.defaultCore == 0 {
-                                    //Gambatte
-                                    LibretroCore.sharedInstance().updateRunningCoreConfigs([
-                                        SpecialCoreOption.gambatte_gb_colorization.rawValue: palette == .None ? "disabled" : "internal",
-                                        SpecialCoreOption.gambatte_gb_internal_palette.rawValue: palette.optionForGambatte
-                                    ], flush: false)
-                                } else if firstGame.defaultCore == 1 {
-                                    //mGBA
-                                    LibretroCore.sharedInstance().updateRunningCoreConfigs([
-                                        SpecialCoreOption.mgba_gb_colors.rawValue: palette.optionForMGBA
-                                    ], flush: false)
-                                } else if firstGame.defaultCore == 2 {
-                                    LibretroCore.sharedInstance().updateRunningCoreConfigs([
-                                        SpecialCoreOption.vbam_palettes.rawValue: palette.optionForVBAM
-                                    ], flush: false)
-                                }
+                            LibretroCore.sharedInstance().updateRunningCoreConfigs([
+                                SpecialCoreOption.wswan_mono_palette.rawValue: GameOption.Palette.AllPaletteTitleForWS[index]
+                            ], flush: false)
+                        }
+                        
+                    } else {
+                        if let palette = GameOption.Palette(rawValue: index) {
+                            Game.change { realm in
+                                games.forEach({
+                                    if $0.pallete != palette {
+                                        $0.pallete = palette
+                                    }
+                                })
                             }
-                            resumeEmulationIfNeed()
+                            if PlayViewController.isGaming {
+                                if firstGame.gameType == .vb {
+                                    LibretroCore.sharedInstance().updateConfig(EmulationCore.BeetleVB.name, key: SpecialCoreOption.vb_color_mode.rawValue, value: palette.paletteTitleForVB, reload: true)
+                                } else if firstGame.gameType == .pm {
+                                    LibretroCore.sharedInstance().updateConfig(EmulationCore.PokeMini.name, key: SpecialCoreOption.pokemini_palette.rawValue, value: palette.paletteTitleForPM, reload: true)
+                                } else if firstGame.gameType == .gb {
+                                    if firstGame.defaultCore == 0 {
+                                        //Gambatte
+                                        LibretroCore.sharedInstance().updateRunningCoreConfigs([
+                                            SpecialCoreOption.gambatte_gb_colorization.rawValue: palette == .None ? "disabled" : "internal",
+                                            SpecialCoreOption.gambatte_gb_internal_palette.rawValue: palette.optionForGambatte
+                                        ], flush: false)
+                                    } else if firstGame.defaultCore == 1 {
+                                        //mGBA
+                                        LibretroCore.sharedInstance().updateRunningCoreConfigs([
+                                            SpecialCoreOption.mgba_gb_colors.rawValue: palette.optionForMGBA
+                                        ], flush: false)
+                                    } else if firstGame.defaultCore == 2 {
+                                        LibretroCore.sharedInstance().updateRunningCoreConfigs([
+                                            SpecialCoreOption.vbam_palettes.rawValue: palette.optionForVBAM
+                                        ], flush: false)
+                                    }
+                                }
+                                resumeEmulationIfNeed()
+                            }
                         }
                     }
                     
@@ -1563,6 +1599,15 @@ extension GameOption {
                 } else if self == .slowMotion {
                     if let speed = GameOption.SlowMotionSpeed(rawValue: index) {
                         performSlowMotion(games: games, speed: speed)
+                    }
+                } else if self == .wswanRotation {
+                    games.forEach({
+                        $0.updateExtra(key: ExtraKey.wswanRotation.rawValue, value: index)
+                    })
+                    if PlayViewController.isGaming {
+                        LibretroCore.sharedInstance().updateRunningCoreConfigs([
+                            SpecialCoreOption.wswan_rotate_display.rawValue: index == 0 ? "landscape" : "portrait"
+                        ], flush: false)
                     }
                 }
                 accessoryChange?()
@@ -1725,7 +1770,7 @@ extension GameOption {
             tips = R.string.localizable.dolphinSaveTips()
         } else if games.contains(where: { $0.gameType == .symbian }) {
             tips = R.string.localizable.symbianSaveTips()
-        } else if games.contains(where: { $0.gameType == .dc }) {
+        } else if games.contains(where: { $0.gameType == .dc || $0.isSegaArcade }) {
             tips = R.string.localizable.dcSaveTips()
         } else if games.contains(where: { $0.gameType == .doom }) {
             tips = R.string.localizable.doomSaveTips()
@@ -1741,11 +1786,15 @@ extension GameOption {
     }
     
     func showSecondPromptIfNeed(continued: (() -> Void)? = nil) {
-        if self == .quit || self == .reload || self == .quickLoadState {
+        if (self == .quit || self == .reload || self == .quickLoadState) &&
+            !UserDefaults.standard.bool(forKey: R.DefaultKey.DisableSecondPrompt) {
             UIView.makeAlert(title: R.string.localizable.headsUp(),
                              detail: R.string.localizable.continuedAlert(self.title),
+                             cancelTitle: R.string.localizable.dontshowAgain(),
                              confirmTitle: R.string.localizable.confirmTitle(),
-                             confirmAction: {
+                             cancelAction: {
+                UserDefaults.standard.setValue(true, forKey: R.DefaultKey.DisableSecondPrompt)
+            }, confirmAction: {
                 continued?()
             })
         } else {

@@ -1148,3 +1148,9 @@ Press the controller button to complete mapping...";
 "ICloudRepairSyncResult" = "Repair finished. Uploaded %d, downloaded %d.";
 "ICloudRepairSyncResultPending" = "Repair finished. Uploaded %d, downloaded %d. %d files will retry later.";
 "ICloudROMStillSyncing" = "This ROM is still downloading from iCloud. Try again in a moment.";
+
+"WSwanRotateDisplay" = "Rotate Display";
+"NDSLidToggle" = "Toggle Lid";
+"ResetTips" = "Reset Tips";
+"ResetTipsDesc" = "Show previously dismissed alerts and tips again";
+"ResetTipsSuccess" = "Tips reset successfully";

@@ -111,6 +111,7 @@ class SettingsListView: BaseView {
                 datas[section] = [.init(type: .about),
                                   .init(type: .shareApp),
                                   .init(type: .clearCache),
+                                  .init(type: .resetTips),
                                   .init(type: .language),
                                   .init(type: .userAgreement),
                                   .init(type: .privacyPolicy),
@@ -331,6 +332,12 @@ class SettingsListView: BaseView {
                                 self?.listPageView?.updateCellData(cellData.updateNormalChevron(title: nil), indexPath: indexPath)
                                 UIView.hideLoading()
                             }
+                            
+                        case .resetTips:
+                            R.DefaultKey.TipsDefaultKeys.forEach({
+                                UserDefaults.standard.set(false, forKey: $0)
+                            })
+                            UIView.makeToast(message: R.string.localizable.resetTipsSuccess())
                             
                         case .language:
                             if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {

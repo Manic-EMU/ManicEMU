@@ -396,6 +396,37 @@ extension GameOption {
                 return .None
             }
         }
+        
+        //For WS
+        static var AllPaletteTitleForWS: [String] {
+            ["default",
+             "wonderswan",
+             "wondeswan_color",
+             "swancrystal",
+             "gb_dmg",
+             "gb_pocket",
+             "gb_light",
+             "blossom_pink",
+             "bubbles_blue",
+             "buttercup_green",
+             "digivice",
+             "game_com",
+             "gameking",
+             "game_master",
+             "golden_wild",
+             "greenscale",
+             "hokage_orange",
+             "labo_fawn",
+             "legendary_super_saiyan",
+             "microvision",
+             "million_live_gold",
+             "odyssey_gold",
+             "shiny_sky_blue",
+             "slime_blue",
+             "ti_83",
+             "travel_wood",
+             "virtual_boy"]
+        }
     }
     
     enum AirPlayScaling: Int, CaseIterable {

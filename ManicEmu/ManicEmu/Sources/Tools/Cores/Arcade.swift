@@ -117,15 +117,17 @@ class ArcadeEmulatorBridge : EmulatorBridgeBase {
     private var thumbstickPosition: CGPoint = .zero
 
     private let analogDpad = LibretroNetplayAnalogDpad()
+    
+    var isSegaArcade: Bool = false
 
     override func activateInput(_ input: Int, value: Double, playerIndex: Int) {
         guard playerIndex >= 0 else { return }
         if input == ArcadeGameInput.leftThumbstickUp || input == ArcadeGameInput.leftThumbstickDown {
             leftThumbstickPosition.y = input == ArcadeGameInput.leftThumbstickUp ? value : -value
-            analogDpad.moveStick(isLeft: true, x: leftThumbstickPosition.x, y: leftThumbstickPosition.y, playerIndex: playerIndex)
+            analogDpad.moveStick(isLeft: true, x: leftThumbstickPosition.x, y: leftThumbstickPosition.y, playerIndex: playerIndex, forceSyncDpad: isSegaArcade)
         } else if input == ArcadeGameInput.leftThumbstickLeft || input == ArcadeGameInput.leftThumbstickRight {
             leftThumbstickPosition.x = input == ArcadeGameInput.leftThumbstickRight ? value : -value
-            analogDpad.moveStick(isLeft: true, x: leftThumbstickPosition.x, y: leftThumbstickPosition.y, playerIndex: playerIndex)
+            analogDpad.moveStick(isLeft: true, x: leftThumbstickPosition.x, y: leftThumbstickPosition.y, playerIndex: playerIndex, forceSyncDpad: isSegaArcade)
         } else if input == ArcadeGameInput.rightThumbstickUp || input == ArcadeGameInput.rightThumbstickDown {
             rightThumbstickPosition.y = input == ArcadeGameInput.rightThumbstickUp ? value : -value
             LibretroCore.sharedInstance().moveStick(false, x: rightThumbstickPosition.x, y: rightThumbstickPosition.y, playerIndex: UInt32(playerIndex))
@@ -134,12 +136,12 @@ class ArcadeEmulatorBridge : EmulatorBridgeBase {
             LibretroCore.sharedInstance().moveStick(false, x: rightThumbstickPosition.x, y: rightThumbstickPosition.y, playerIndex: UInt32(playerIndex))
         } else if let gameInput = ArcadeGameInput(rawValue: input),
                   let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
-            if analogDpad.handleDpad(libretroButton, pressed: true, playerIndex: playerIndex) {
-                return
-            }
 #if DEBUG
 Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
 #endif
+            if analogDpad.handleDpad(libretroButton, pressed: true, playerIndex: playerIndex) {
+                return
+            }
             LibretroCore.sharedInstance().press(libretroButton, playerIndex: UInt32(playerIndex))
         }
     }

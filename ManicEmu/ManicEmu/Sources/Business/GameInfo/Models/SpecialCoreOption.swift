@@ -121,6 +121,8 @@ enum SpecialCoreOption: String {
     case reicast_internal_resolution
     case reicast_language
     case reicast_renderer
+    case reicast_threaded_rendering
+    case reicast_dynamic_cpu_ratio
     //arcade
     case mame_cheats_enable
     //isAzahar3DS
@@ -194,6 +196,7 @@ enum SpecialCoreOption: String {
     case dolphin_wiispeak_muted
     case dolphin_wii_logi_microphone_enable
     case dolphin_bluetooth_passthrough
+    case dolphin_language
     
     //pce
     case pce_default_joypad_type_p1
@@ -201,6 +204,12 @@ enum SpecialCoreOption: String {
     case pce_default_joypad_type_p3
     case pce_default_joypad_type_p4
     case pce_default_joypad_type_p5
+    
+    //wsc
+    case wswan_language
+    case wswan_rotate_display
+    case wswan_rotate_keymap
+    case wswan_mono_palette
     
     
     
@@ -360,7 +369,8 @@ enum SpecialCoreOption: String {
             var result: [SpecialCoreOption] = [.dolphin_cheats_enabled,
                                                .dolphin_cheats_import,
                                                .dolphin_cpu_core,
-                                               .dolphin_skip_gc_bios]
+                                               .dolphin_skip_gc_bios,
+                                               .dolphin_language]
             if game.gameType == .wii {
                 result += [.dolphin_gc_sp1,
                            .dolphin_enable_gamecube_mic,
@@ -386,6 +396,11 @@ enum SpecialCoreOption: String {
                     .pce_default_joypad_type_p3,
                     .pce_default_joypad_type_p4,
                     .pce_default_joypad_type_p5]
+        } else if game.gameType == .wsc {
+            return [.wswan_language,
+                    .wswan_rotate_display,
+                    .wswan_rotate_keymap,
+                    .wswan_mono_palette]
         }
         return []
     }
@@ -447,7 +462,7 @@ enum SpecialCoreOption: String {
             ]
         } else if game.gameType == .dc {
             result = [.reicast_renderer: "Vulkan"]
-        } else if game.gameType == .arcade, game.defaultCore == 0 {
+        } else if game.gameType == .arcade, !game.isSegaArcade, game.defaultCore == 0 {
             result = [.mame_cheats_enable: "enabled"]
         } else if game.isAzahar3DS {
             result = [
@@ -528,6 +543,12 @@ enum SpecialCoreOption: String {
                 .pce_default_joypad_type_p3: "6 Buttons",
                 .pce_default_joypad_type_p4: "6 Buttons",
                 .pce_default_joypad_type_p5: "6 Buttons"
+            ]
+        } else if game.gameType == .wsc {
+            result = [
+                .wswan_language: "english",
+                .wswan_rotate_display: "landscape",
+                .wswan_mono_palette: "default"
             ]
         }
         return result.mapKeysAndValues({ ($0.key.rawValue, $0.value) })

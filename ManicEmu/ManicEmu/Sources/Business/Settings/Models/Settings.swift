@@ -151,6 +151,8 @@ class Settings: Object, ObjectUpdatable {
             realPlatform = GameType.pce.localizedName
         } else if GameType.ngpc.localizedShortName == platform {
             realPlatform = GameType.ngp.localizedName
+        } else if GameType.ws.localizedShortName == platform {
+            realPlatform = GameType.wsc.localizedName
         }
         return getExtraBool(key: realPlatform + "Visible") ?? true
     }

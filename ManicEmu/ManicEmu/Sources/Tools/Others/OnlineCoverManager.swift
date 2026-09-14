@@ -18,12 +18,16 @@ class OnlineCoverManager {
         var gameID: String
         var gameName: String
         var fileExtension: String
+        var isNaomi: Bool = false
+        var isAtomiswave: Bool = false
         
         init(game: Game) {
             self.gameType = game.effectiveGameType
             self.gameID = game.id
             self.gameName = game.translatedName ?? game.displayName
             self.fileExtension = game.fileExtension
+            self.isNaomi = game.isNaomiGame
+            self.isAtomiswave = game.isAtomiswaveGame
         }
         
         init(gameType: GameType, gameID: String, gameName: String, fileExtension: String) {
@@ -116,7 +120,13 @@ class OnlineCoverManager {
             case .dc:
                 boxArtUrl = host.appendingPathComponent("Sega - Dreamcast/Named_Boxarts")
             case .arcade:
-                boxArtUrl = host.appendingPathComponent("MAME/Named_Boxarts")
+                if coverMatch.isNaomi {
+                    boxArtUrl = host.appendingPathComponent("Sega - Naomi/Named_Boxarts")
+                } else if coverMatch.isAtomiswave {
+                    boxArtUrl = host.appendingPathComponent("Atomiswave/Named_Boxarts")
+                } else {
+                    boxArtUrl = host.appendingPathComponent("MAME/Named_Boxarts")
+                }
             case .a2600:
                 boxArtUrl = host.appendingPathComponent("Atari - 2600/Named_Boxarts")
             case .a5200:
@@ -157,6 +167,10 @@ class OnlineCoverManager {
                 boxArtUrl = host.appendingPathComponent("SNK - Neo Geo Pocket/Named_Boxarts")
             case .ngpc:
                 boxArtUrl = host.appendingPathComponent("SNK - Neo Geo Pocket Color/Named_Boxarts")
+            case .wsc:
+                boxArtUrl = host.appendingPathComponent("Bandai - WonderSwan Color/Named_Boxarts")
+            case .ws:
+                boxArtUrl = host.appendingPathComponent("Bandai - WonderSwan/Named_Boxarts")
             case .c64:
                 boxArtUrl = host.appendingPathComponent("Commodore - 64/Named_Boxarts")
             case .amiga:

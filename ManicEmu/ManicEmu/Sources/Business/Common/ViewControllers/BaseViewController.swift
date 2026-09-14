@@ -145,6 +145,7 @@ class BaseViewController: UIViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        OrientationLockPin.resistPortraitTransitionIfNeeded(to: size)
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.setPreferredContentSize()
@@ -193,6 +194,11 @@ class BaseViewController: UIViewController {
     
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
         return [.left, .right]
+    }
+    
+    @available(iOS 26.0, *)
+    override var prefersInterfaceOrientationLocked: Bool {
+        OrientationLockPin.prefersLocked
     }
     
 }

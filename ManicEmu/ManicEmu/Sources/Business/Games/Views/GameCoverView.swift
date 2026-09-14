@@ -321,6 +321,14 @@ class GameCoverView: BaseView {
                 } else if gameTypeCategory == 1 {
                     image = style == .style2 ? R.image.ngp_color_cover_v() : R.image.ngp_color_cover_h()
                 }
+            } else if gameType == .wsc {
+                if gameTypeCategory == 0 {
+                    image = style == .style2 ? R.image.wsc_cover_v() : R.image.wsc_cover_h()
+                } else if gameTypeCategory == 1 {
+                    image = style == .style2 ? R.image.ws_cover_v() : R.image.ws_cover_h()
+                }
+            } else if gameType == .ws {
+                image = style == .style2 ? R.image.ws_cover_v() : R.image.ws_cover_h()
             } else if gameType == .c64 {
                 image = style == .style2 ? R.image.c64_cover_v() : R.image.c64_cover_h()
             } else if gameType == .amiga {

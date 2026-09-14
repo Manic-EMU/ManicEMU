@@ -418,6 +418,8 @@ class GameListLandscapeView: BaseView {
             platform = GameType.pce.localizedShortName
         } else if gameType == .ngpc {
             platform = GameType.ngp.localizedShortName
+        } else if gameType == .ws {
+            platform = GameType.wsc.localizedShortName
         }
         return Settings.defalut.getPlatformVisible(platform: platform)
     }
@@ -433,6 +435,8 @@ class GameListLandscapeView: BaseView {
             return manufacturer.gameTypes.contains(.pce)
         case .ngpc:
             return manufacturer.gameTypes.contains(.ngp)
+        case .ws:
+            return manufacturer.gameTypes.contains(.wsc)
         default:
             return manufacturer.gameTypes.contains(gameType)
         }
@@ -449,6 +453,7 @@ class GameListLandscapeView: BaseView {
         order.insert(.turbografx_cd, at: order.firstIndex(of: .turbografx_16)!)
         order.insert(.supergrafx, at: order.firstIndex(of: .turbografx_cd)!)
         order.insert(.ngpc, at: order.firstIndex(of: .ngp)!)
+        order.insert(.ws, at: order.firstIndex(of: .wsc)! + 1)
         return order
     }
     

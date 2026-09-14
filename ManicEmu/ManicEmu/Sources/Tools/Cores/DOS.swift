@@ -137,12 +137,12 @@ class DOSEmulatorBridge : EmulatorBridgeBase {
             LibretroCore.sharedInstance().moveStick(false, x: rightThumbstickPosition.x, y: rightThumbstickPosition.y, playerIndex: UInt32(playerIndex))
         } else if let gameInput = DOSGameInput(rawValue: input),
                   let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
-            if analogDpad.handleDpad(libretroButton, pressed: true, playerIndex: playerIndex) {
-                return
-            }
 #if DEBUG
             Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
 #endif
+            if analogDpad.handleDpad(libretroButton, pressed: true, playerIndex: playerIndex) {
+                return
+            }
             LibretroCore.sharedInstance().press(libretroButton, playerIndex: UInt32(playerIndex))
         }
     }

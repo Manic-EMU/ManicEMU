@@ -1144,3 +1144,8 @@
 "ICloudRepairSyncResultPending" = "修复完成。已上传 %d 个，已下载 %d 个。另有 %d 个文件稍后重试。";
 "ICloudROMStillSyncing" = "此 ROM 仍在从 iCloud 下载，请稍后再试。";
 
+"WSwanRotateDisplay" = "旋转显示";
+"NDSLidToggle" = "上盖开合";
+"ResetTips" = "重置提示";
+"ResetTipsDesc" = "让已展示过的弹窗和提示再次出现";
+"ResetTipsSuccess" = "提示重置成功";

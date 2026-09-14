@@ -25,6 +25,11 @@ class PlayViewController: GameViewController {
     private let manicGame: Game
     //默认加载的即时存档
     private var loadSaveState: GameSaveState? = nil
+    /// Jitless Flycast (DC + Naomi/Atomiswave/SystemSP). Threaded rendering lets the SH4 thread run ahead.
+    private var isJitlessFlycast: Bool {
+        (manicGame.gameType == .dc || manicGame.isSegaArcade)
+            && !(LibretroCore.jitAvailable() && manicGame.jit)
+    }
     //MARK: 通知定义
     private var notificationTokens = [Any]()
     
@@ -707,6 +712,13 @@ class PlayViewController: GameViewController {
                                  cancelTitle: R.string.localizable.confirmTitle())
             }
         })
+        notificationTokens.append(center.addObserver(forName: Notification.Name(rawValue: "SegaArcadeBiosMissingNotification"), object: nil, queue: .main) { notification in
+            if let log = notification.object as? String {
+                UIView.makeAlert(title: R.string.localizable.mameFileMissingTitle(),
+                                 detail: log,
+                                 cancelTitle: R.string.localizable.confirmTitle())
+            }
+        })
     }
     
     @MainActor required init() {
@@ -734,7 +746,7 @@ class PlayViewController: GameViewController {
             if manicGame.gameType == .n64 && UIDevice.isPad {
                 make.top.equalTo(gameView.snp.bottom).offset(-9)
             } else if manicGame.gameType == .j2me ||
-                        manicGame.gameType == .gba {
+                        manicGame.gameType == .gba || manicGame.gameType == .wsc {
                 make.top.equalTo(gameView.snp.bottom).offset(3)
             } else if manicGame.gameType.usesDOSSkinLayout {
                 if UIDevice.isSmallScreenPhone {
@@ -760,7 +772,8 @@ class PlayViewController: GameViewController {
                 manicGame.gameType.usesDOSSkinLayout ||
                 (manicGame.gameType == .symbian && UIDevice.isPhone) ||
                 manicGame.gameType == .pce ||
-                manicGame.gameType == .gba {
+                manicGame.gameType == .gba ||
+                manicGame.gameType == .wsc {
                 make.height.equalTo(R.Size.ItemHeightMicro)
             } else if manicGame.gameType == .ngp {
                 make.height.equalTo(R.Size.ItemHeightTiny)
@@ -895,9 +908,14 @@ class PlayViewController: GameViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if #available(iOS 26.0, *) {
-            return AppDelegate.orientation
+            return OrientationLockPin.resolvedMask(for: view.window)
         }
         return super.supportedInterfaceOrientations
+    }
+    
+    @available(iOS 26.0, *)
+    override var prefersInterfaceOrientationLocked: Bool {
+        OrientationLockPin.prefersLocked
     }
     
     /// Default orientation when this screen is presented.
@@ -911,6 +929,7 @@ class PlayViewController: GameViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        OrientationLockPin.resistPortraitTransitionIfNeeded(to: size)
         let fromSize = R.Size.WindowSize
         let toSize = size
         if manicGame.orientation == .portrait {
@@ -1139,7 +1158,9 @@ extension PlayViewController {
             } else if manicGame.isLibretroType {
                 if let statePath = state.stateData?.filePath.path,
                    LibretroCore.sharedInstance().loadState(statePath) {
-                    if manicGame.gameType != .dc, (state.getExtraInt(key: ExtraKey.saveStateCore.rawValue) ?? 0) != manicGame.defaultCore {
+                    if manicGame.gameType != .dc,
+                        !manicGame.isSegaArcade,
+                        (state.getExtraInt(key: ExtraKey.saveStateCore.rawValue) ?? 0) != manicGame.defaultCore {
                         UIView.makeToast(message: R.string.localizable.latestSaveStateUnCompatible())
                     } else {
                         resumeEmulationAndHandleAudio()
@@ -1572,7 +1593,11 @@ extension PlayViewController {
             }
         } else if manicGame.isLibretroType {
             DispatchQueue.main.asyncAfter(delay: manicGame.isPicodriveCore && firstInit ? 1 : 0) {
-                if self.manicGame.gameType == .arcade, self.manicGame.defaultCore == 1, firstInit, !self.isHardcoreMode {
+                if self.manicGame.gameType == .arcade,
+                    !self.manicGame.isSegaArcade,
+                    self.manicGame.defaultCore == 1,
+                    firstInit,
+                    !self.isHardcoreMode {
                     //FBNeo激活作弊码
                     if let configs = LibretroCore.sharedInstance().getConfigs(EmulationCore.FinalBurnNeo.name) {
                         var needToActivedKeys = [String]()
@@ -1672,7 +1697,7 @@ extension PlayViewController {
                         }
                     } else if self.manicGame.isLibretroType {
                         var delay = 0.0
-                        if self.manicGame.gameType == .arcade || self.manicGame.isAzahar3DS {
+                        if (self.manicGame.gameType == .arcade && !self.manicGame.isSegaArcade) || self.manicGame.isAzahar3DS {
                             delay = 4.0
                         }
                         DispatchQueue.main.asyncAfter(delay: delay) {
@@ -1816,16 +1841,23 @@ extension PlayViewController {
                     .beetle_psx_hw_renderer: "hardware_vk",
                     .beetle_psx_hw_cpu_dynarec: "disabled",
                 ], safeMode: true)
-            } else if manicGame.gameType == .dc {
+            } else if manicGame.gameType == .dc || manicGame.isSegaArcade {
                 updateLibretroCoreConfigs(core: .Flycast, configs: [
                     .reicast_internal_resolution: "640x480",
-                    .reicast_language : "Default"
+                    .reicast_language : "Default",
+                    .reicast_threaded_rendering: isJitlessFlycast ? "disabled" : "enabled",
+                    .reicast_dynamic_cpu_ratio: "disabled"
                 ], safeMode: true)
-            } else if manicGame.gameType == .arcade {
+                LibretroCore.sharedInstance().setLibretroLogMonitor(true)
+                if manicGame.gameType == .arcade {
+                    ArcadeEmulatorBridge.shared.isSegaArcade = manicGame.isSegaArcade
+                }
+            } else if manicGame.gameType == .arcade && !manicGame.isSegaArcade {
                 if manicGame.defaultCore == 0 {
                     updateLibretroCoreConfigs(core: .MAME, configs: [:], safeMode: true)
                     LibretroCore.sharedInstance().setLibretroLogMonitor(true)
                 }
+                ArcadeEmulatorBridge.shared.isSegaArcade = false
             } else if manicGame.gameType == ._3ds {
                 ThreeDS.isAzaharCore = manicGame.isAzahar3DS
                 if manicGame.isAzahar3DS {
@@ -1869,9 +1901,11 @@ extension PlayViewController {
                 ])
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
             } else if manicGame.isDolphinCore {
-                updateLibretroCoreConfigs(core: .Dolphin, configs: [:])
+                updateLibretroCoreConfigs(core: .Dolphin, configs: [.dolphin_language: "1"])
             } else if manicGame.gameType == .amiga {
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
+            } else if manicGame.gameType == .wsc {
+                updateLibretroCoreConfigs(core: .BeetleWonderSwan, configs: [:])
             }
         } else {
             //non safe mode
@@ -2098,19 +2132,27 @@ extension PlayViewController {
                     .beetle_psx_hw_renderer: isHardwareRenderer ? "hardware_vk" : "software",
                     .beetle_psx_hw_cpu_dynarec: enableJIT ? "execute" : "disabled"
                 ])
-            } else if manicGame.gameType == .dc {
-                if LibretroCore.jitAvailable(), manicGame.jit {
+            } else if manicGame.gameType == .dc || manicGame.isSegaArcade {
+                let enableJIT = LibretroCore.jitAvailable() && manicGame.jit
+                if enableJIT {
                     setupUniversalScript(gameType: .dc)
                 }
                 updateDCResolution(manicGame.resolution, reload: false)
                 updateLibretroCoreConfigs(core: .Flycast, configs: [
-                    .reicast_language : R.Strings.DCConsoleLanguage[manicGame.region]
+                    .reicast_language : R.Strings.DCConsoleLanguage[manicGame.region],
+                    .reicast_threaded_rendering: isJitlessFlycast ? "disabled" : "enabled",
+                    .reicast_dynamic_cpu_ratio: "disabled"
                 ])
-            } else if manicGame.gameType == .arcade {
+                LibretroCore.sharedInstance().setLibretroLogMonitor(true)
+                if manicGame.gameType == .arcade {
+                    ArcadeEmulatorBridge.shared.isSegaArcade = manicGame.isSegaArcade
+                }
+            } else if manicGame.gameType == .arcade && !manicGame.isSegaArcade {
                 if manicGame.defaultCore == 0 {
                     updateLibretroCoreConfigs(core: .MAME, configs: [:])
                     LibretroCore.sharedInstance().setLibretroLogMonitor(true)
                 }
+                ArcadeEmulatorBridge.shared.isSegaArcade = false
             } else if manicGame.gameType == ._3ds {
                 ThreeDS.isAzaharCore = manicGame.isAzahar3DS
                 if manicGame.isAzahar3DS {
@@ -2181,10 +2223,18 @@ extension PlayViewController {
                  
                 updateLibretroCoreConfigs(core: .Dolphin, configs: [
                     .dolphin_cpu_core: enableJIT ? "4" : (enableManicInterpreter ? "6" : "5"),
-                    .dolphin_cheats_enabled: isHardcoreMode ? "disabled" : "enabled"
+                    .dolphin_cheats_enabled: isHardcoreMode ? "disabled" : "enabled",
+                    .dolphin_language: "\(manicGame.region)"
                 ])
             } else if manicGame.gameType == .amiga {
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
+            } else if manicGame.gameType == .wsc {
+                let rotationIndex = manicGame.getExtraInt(key: ExtraKey.wswanRotation.rawValue) ?? 0
+                updateLibretroCoreConfigs(core: .BeetleWonderSwan, configs: [
+                    .wswan_language: "\(manicGame.region == 0 ? "english" : "japanese")",
+                    .wswan_rotate_display: (rotationIndex == 0 ? "landscape" : "portrait"),
+                    .wswan_mono_palette: manicGame.wswanPaletteTitle
+                ])
             }
         }
         
@@ -2225,8 +2275,11 @@ extension PlayViewController {
                 "camera_driver": "avfoundation",
                 "microphone_enable": enableMircophone ? "true" : "false",
                 "microphone_driver": "coreaudio",
-                "audio_latency": "200",
-                "input_auto_game_focus": "1"
+                // Jitless Flycast underruns below 90ms; 90 is the floor that still boots smoothly.
+                "audio_latency": isJitlessFlycast ? "90" : "200",
+                "audio_sync": "true",
+                "input_auto_game_focus": "1",
+                "vrr_runloop_enable": isJitlessFlycast ? "true" : "false"
             ])
             if manicGame.isN64ParaLLEl {
                 LibretroCore.sharedInstance().setReloadDelay(1)
@@ -2286,7 +2339,7 @@ extension PlayViewController {
             }
             
             //配置System的位置
-            if manicGame.gameType == .dc {
+            if manicGame.gameType == .dc || manicGame.isSegaArcade {
                 LibretroCore.sharedInstance().updateLibretroConfig("system_directory", value: R.Path.Flycast)
             } else if manicGame.gameType == .dos {
                 LibretroCore.sharedInstance().updateLibretroConfig("system_directory", value: R.Path.DOSBoxPureSystem.libretroPath)
@@ -2587,7 +2640,8 @@ extension PlayViewController {
                             manicGame.gameType == .wii ||
                             manicGame.gameType == .ngc ||
                             (manicGame.gameType == .pce && !UIDevice.isLandscape) ||
-                            manicGame.gameType.usesDOSSkinLayout {
+                            manicGame.gameType.usesDOSSkinLayout ||
+                            manicGame.gameType == .wsc {
                             iconColor = .black.withAlphaComponent(0.25)
                         }
                         let buttonContainerView = UIView()
@@ -2920,6 +2974,7 @@ extension PlayViewController {
                     }
                     self.updateDualScreenViews()
                     LibretroCore.sharedInstance().setCustomSaveExtension(customSaveExtension)
+                    applyLibretroFrontendRuntimeConfigs()
                     if self.manicGame.isNDSHomeMenuGame || self.manicGame.isDSiHomeMenuGame || self.manicGame.isDOSHomeMenuGame {
                         LibretroCore.sharedInstance().loadWithoutContent(corePath)
                     } else {
@@ -3385,7 +3440,7 @@ extension PlayViewController {
             updateN64Resolution(resolution, reload: true)
         } else if manicGame.gameType == .ps1 && manicGame.defaultCore == 0 {
             LibretroCore.sharedInstance().updateConfig(EmulationCore.BeetlePSXHW.name, key: "beetle_psx_hw_internal_resolution", value: resolution.resolutionTitleForPS1, reload: true)
-        } else if manicGame.gameType == .dc {
+        } else if manicGame.gameType == .dc || manicGame.isSegaArcade {
             updateDCResolution(resolution, reload: true)
         } else if manicGame.gameType == .ds {
             let scale = UInt32(resolution == .undefine ? 1 : resolution.rawValue)
@@ -4154,6 +4209,16 @@ extension PlayViewController {
         })
     }
     
+    /// Apply frontend pacing before loadGame so this session (not just the next) picks them up.
+    /// Jitless Flycast needs VRR on iOS; latency below 90ms underruns during boot.
+    private func applyLibretroFrontendRuntimeConfigs() {
+        LibretroCore.sharedInstance().updateRuningLibretroConfigs([
+            "audio_latency": isJitlessFlycast ? "90" : "200",
+            "audio_sync": "true",
+            "vrr_runloop_enable": isJitlessFlycast ? "true" : "false"
+        ])
+    }
+    
     private func updateLibretroCoreConfigs(core: EmulationCore,
                                            configs: [SpecialCoreOption: String],
                                            reload: Bool = false,
@@ -4209,6 +4274,18 @@ extension PlayViewController {
             self.updateSlowMotion(speed: slowMotionSpeed)
         } else {
             self.updateSlowMotion(speed: GameOption.SlowMotionSpeed.off)
+        }
+    }
+    
+    private func ndsLidToggle() {
+        if manicGame.gameType == .ds {
+            let button: LibretroButton = (manicGame.defaultCore == 0 ? .L3 : .L2)
+            DispatchQueue.main.asyncAfter(delay: 1) {
+                LibretroCore.sharedInstance().press(button, playerIndex: 0)
+                DispatchQueue.main.asyncAfter(delay: 0.1) {
+                    LibretroCore.sharedInstance().release(button, playerIndex: 0)
+                }
+            }
         }
     }
 }
@@ -4488,6 +4565,12 @@ extension PlayViewController {
     static func updateSlowMotion(speed: GameOption.SlowMotionSpeed) {
         if let currentPlayViewController {
             currentPlayViewController.updateSlowMotion(speed: speed)
+        }
+    }
+    
+    static func ndsLidToggle() {
+        if let currentPlayViewController {
+            currentPlayViewController.ndsLidToggle()
         }
     }
 }

@@ -47,6 +47,7 @@ enum EmulationCore: CaseIterable {
          Dolphin,
          BeetlePCE,
          BeetleNeoPop,
+         BeetleWonderSwan,
          VICEx64sc,
          PUAE,
          gpSP,
@@ -133,6 +134,8 @@ enum EmulationCore: CaseIterable {
             "Beetle PCE"
         case .BeetleNeoPop:
             "Beetle NeoPop"
+        case .BeetleWonderSwan:
+            "Beetle WonderSwan"
         case .VICEx64sc:
             "VICE x64sc"
         case .PUAE:
@@ -218,6 +221,8 @@ enum EmulationCore: CaseIterable {
             return [.pce]
         case .BeetleNeoPop:
             return [.ngp]
+        case .BeetleWonderSwan:
+            return [.wsc]
         case .VICEx64sc:
             return [.c64]
         case .PUAE:
@@ -272,6 +277,7 @@ enum EmulationCore: CaseIterable {
                 .DOSBoxPure,
                 .BeetlePCE,
                 .BeetleNeoPop,
+                .BeetleWonderSwan,
                 .gpSP,
                 .MesenS:
             return true

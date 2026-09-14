@@ -356,6 +356,14 @@ struct Database {
                         config.setUsingCoreName(gameType: ._3ds, coreName: EmulationCore.Azahar.name)
                     }
                 }
+                
+                if systemCoreVersionNumber < 201 {
+                    //By default, Dolphin's language is English.
+                    let games = realm.objects(Game.self).where({ $0.gameType == .wii || $0.gameType == .ngc })
+                    try? realm.write({
+                        games.forEach({ $0.region = 1 })
+                    })
+                }
             }
             
             // After data migrations so Game.portraitSkin still points at live Skin objects.

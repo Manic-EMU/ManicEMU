@@ -159,7 +159,7 @@ class Game: Object, ObjectUpdatable {
                 return URL(string: "uid://\(app.uid)")!
             } else {
                 return URL(string: "uid://\(id)")!
-            }   
+            }
         } else if gameType == .ps1, fileExtension.lowercased() == "bin" {
             // Beetle/PCSX cannot load a raw .bin; prefer the sibling .cue when it exists.
             let cueUrl = localUrl.deletingPathExtension().appendingPathExtension("cue")
@@ -273,6 +273,8 @@ class Game: Object, ObjectUpdatable {
             return URL(fileURLWithPath: R.Path.BeetlePCE.appendingPathComponent("\(name).srm"))
         } else if gameType == .ngp {
             return URL(fileURLWithPath: R.Path.BeetleNeoPop.appendingPathComponent("\(name).flash"))
+        } else if gameType == .wsc {
+            return URL(fileURLWithPath: R.Path.BeetleWonderSwan.appendingPathComponent("\(name).srm"))
         } else if gameType == .c64 {
             return URL(fileURLWithPath: R.Path.VICEx64sc.appendingPathComponent("\(name).nvr"))
         } else if gameType == .amiga {
@@ -307,13 +309,13 @@ class Game: Object, ObjectUpdatable {
             return nil
         }
     }
-
+    
     var gameIDForDolphin: String? {
         guard isDolphinCore else { return nil }
         let value = getExtraString(key: ExtraKey.dolphinGameID.rawValue)
         return (value?.isEmpty == false) ? value : nil
     }
-
+    
     /// Parse the ROM header into extras when the Game ID is missing.
     @discardableResult
     func ensureDolphinGameID() -> String? {
@@ -486,6 +488,9 @@ class Game: Object, ObjectUpdatable {
         } else if gameType == .doom {
             return .PrBoom
         } else if gameType == .arcade {
+            if isSegaArcade {
+                return .Flycast
+            }
             if defaultCore == 0 {
                 return .MAME
             } else {
@@ -507,6 +512,8 @@ class Game: Object, ObjectUpdatable {
             return .BeetlePCE
         } else if gameType == .ngp {
             return .BeetleNeoPop
+        } else if gameType == .wsc {
+            return .BeetleWonderSwan
         } else if gameType == .c64 {
             return .VICEx64sc
         } else if gameType == .amiga {
@@ -580,7 +587,7 @@ class Game: Object, ObjectUpdatable {
             } else if defaultCore == 2 {
                 return Bundle.main.path(forResource: "gpsp.libretro", ofType: "framework", inDirectory: "Frameworks")
             }
-        } else if gameType == .dc {
+        } else if gameType == .dc || isSegaArcade {
             if LibretroCore.jitAvailable(), jit {
                 return Bundle.main.path(forResource: "flycast.libretro", ofType: "framework", inDirectory: "Frameworks")
             } else {
@@ -594,7 +601,7 @@ class Game: Object, ObjectUpdatable {
             }
         } else if gameType == .doom {
             return Bundle.main.path(forResource: "prboom.libretro", ofType: "framework", inDirectory: "Frameworks")
-        } else if gameType == .arcade {
+        } else if gameType == .arcade && !isSegaArcade {
             if defaultCore == 0 {
                 return Bundle.main.path(forResource: "mame.libretro", ofType: "framework", inDirectory: "Frameworks")
             } else {
@@ -616,6 +623,8 @@ class Game: Object, ObjectUpdatable {
             return Bundle.main.path(forResource: "mednafen.pce.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .ngp {
             return Bundle.main.path(forResource: "mednafen.ngp.libretro", ofType: "framework", inDirectory: "Frameworks")
+        } else if gameType == .wsc {
+            return Bundle.main.path(forResource: "mednafen.wswan.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .c64 {
             return Bundle.main.path(forResource: "vice.x64sc.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .amiga {
@@ -1065,7 +1074,8 @@ class Game: Object, ObjectUpdatable {
         if gameType == .gb ||
             (gameType == .dos && !isDOSHomeMenuGame) ||
             gameType == .pce ||
-            gameType == .ngp {
+            gameType == .ngp ||
+            gameType == .wsc {
             return true
         }
         return false
@@ -1080,15 +1090,17 @@ class Game: Object, ObjectUpdatable {
             return [.pce, .turbografx_16, .turbografx_cd, .supergrafx]
         } else if gameType == .ngp {
             return [.ngp, .ngpc]
+        } else if gameType == .wsc {
+            return [.wsc, .ws]
         }
         return []
     }
     
     func updateCategory(gameType: GameType) {
         guard supportChangeCategory else { return }
-        if gameType == .gb || gameType == .dos || gameType == .pce || gameType == .ngp {
+        if gameType == .gb || gameType == .dos || gameType == .pce || gameType == .ngp || gameType == .wsc {
             updateExtra(key: ExtraKey.gameTypeCategory.rawValue, value: 0)
-        } else if gameType == .chm || gameType == .win95 || gameType == .turbografx_16 || gameType == .ngpc {
+        } else if gameType == .chm || gameType == .win95 || gameType == .turbografx_16 || gameType == .ngpc || gameType == .ws {
             updateExtra(key: ExtraKey.gameTypeCategory.rawValue, value: 1)
         } else if gameType == .win98 || gameType == .turbografx_cd {
             updateExtra(key: ExtraKey.gameTypeCategory.rawValue, value: 2)
@@ -1118,7 +1130,7 @@ class Game: Object, ObjectUpdatable {
         return nil
     }
     
-    ///GB/DOS/PCE/NGP support category switching onto virtual GameTypes
+    /// GB/DOS/PCE/NGP/WSC support category switching onto virtual GameTypes.
     var effectiveGameType: GameType {
         virtualGameType ?? gameType
     }
@@ -1148,6 +1160,7 @@ class Game: Object, ObjectUpdatable {
             isAtari ||
             (gameType == .ss && defaultCore == 0) ||
             gameType == .dc ||
+            isSegaArcade ||
             gameType == .j2me ||
             gameType == .dos ||
             gameType == .symbian ||
@@ -1167,7 +1180,9 @@ class Game: Object, ObjectUpdatable {
             gameType == .psp ||
             (gameType == .ss && defaultCore == 0) ||
             gameType == .ds ||
-            gameType == .dc {
+            gameType == .dc ||
+            isDolphinCore ||
+            gameType == .wsc{
             return true
         }
         return false
@@ -1185,6 +1200,10 @@ class Game: Object, ObjectUpdatable {
             languages = R.Strings.DSConsoleLanguage
         } else if gameType == .dc {
             languages = R.Strings.DCConsoleLanguage
+        } else if isDolphinCore {
+            languages = R.Strings.DolphinLanguage
+        } else if gameType == .wsc {
+            languages = R.Strings.WSwanLanguage
         }
         return languages
     }
@@ -1197,6 +1216,7 @@ class Game: Object, ObjectUpdatable {
             gameType == .n64 ||
             (gameType == .ps1 && defaultCore == 0) ||
             gameType == .dc ||
+            isSegaArcade ||
             gameType == .dos ||
             gameType == .symbian ||
             isDolphinCore {
@@ -1309,7 +1329,8 @@ class Game: Object, ObjectUpdatable {
             gameType == .fds ||
             (gameType == .gb && defaultCore != 3) ||
             gameType == .vb ||
-            gameType == .pm {
+            gameType == .pm ||
+            effectiveGameType == .ws {
             return true
         }
         return false
@@ -1615,6 +1636,31 @@ class Game: Object, ObjectUpdatable {
             return true
         }
         return false
+    }
+    
+    var wswanPaletteTitle: String {
+        guard effectiveGameType == .ws else { return "default" }
+        let index = getExtraInt(key: ExtraKey.wswanPalette.rawValue) ?? 0
+        return GameOption.Palette.AllPaletteTitleForWS[index]
+    }
+    
+    var isNaomiGame: Bool {
+        guard gameType == .arcade else { return false }
+        return getExtraInt(key: ExtraKey.arcadeType.rawValue) == 1
+    }
+    
+    var isAtomiswaveGame: Bool {
+        guard gameType == .arcade else { return false }
+        return getExtraInt(key: ExtraKey.arcadeType.rawValue) == 2
+    }
+    
+    var isSegaSPGame: Bool {
+        guard gameType == .arcade else { return false }
+        return getExtraInt(key: ExtraKey.arcadeType.rawValue) == 3
+    }
+    
+    var isSegaArcade: Bool {
+        isNaomiGame || isAtomiswaveGame || isSegaSPGame
     }
 }
 

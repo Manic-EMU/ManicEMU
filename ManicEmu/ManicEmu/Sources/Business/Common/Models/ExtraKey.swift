@@ -90,4 +90,7 @@ enum ExtraKey: String {
     case slowMotionSpeed
     case iCloudSyncROM
     case iCloudSyncROMPlatforms
+    case wswanRotation
+    case wswanPalette
+    case arcadeType//naomi=1 atomiswave=2 segasp=3
 }
