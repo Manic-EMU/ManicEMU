@@ -821,8 +821,6 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "InsertDiscFailed" = "Levyn asettaminen epäonnistui";
 "GenerateHomeMenu" = "Luo aloitusvalikko";
 "SkinSoundEffects" = "Teeman äänitehosteet";
-"JITType" = "JIT-tyyppi";
-"JITTypeDesc" = "Tavallinen JIT tarjoaa parhaan suorituskyvyn, kun taas IR JIT tarjoaa kohtalaisen suorituskyvyn.";
 "Pretendo" = "Pretendo-verkko";
 "BadIpAddress" = "Virheellinen IP-osoite. Yritä uudelleen.";
 "ArticBaseSettings" = "Artic Base -asetukset";

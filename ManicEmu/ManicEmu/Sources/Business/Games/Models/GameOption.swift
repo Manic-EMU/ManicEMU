@@ -32,7 +32,7 @@ enum GameOption: Int, CaseIterable {
          citraShader,
          citraRightEyeRender,
          azaharEmulationAccuracy,
-         pspJitType,
+         pspJitType,//deprecated
          pspRenderer,
          pspTexture,
          ps1Bios,
@@ -286,7 +286,7 @@ enum GameOption: Int, CaseIterable {
         case .azaharEmulationAccuracy:
             R.string.localizable.emulationAccuracy()
         case .pspJitType:
-            R.string.localizable.jitType()
+            ""
         case .pspRenderer:
             R.string.localizable.rendererTitle()
         case .pspTexture:
@@ -398,8 +398,6 @@ enum GameOption: Int, CaseIterable {
             return R.string.localizable.shaderModeDesc()
         case .citraRightEyeRender:
             return R.string.localizable.renderRightEyeDesc()
-        case .pspJitType:
-            return R.string.localizable.jitTypeDesc()
         case .pspRenderer:
             return R.string.localizable.rendererDesc()
         case .pspTexture:
@@ -636,15 +634,6 @@ enum GameOption: Int, CaseIterable {
                 ($0.getExtraInt(key: extraKey) ?? 0) == firstGameValue
             }) {
                 return .chevron(firstGameValue == 0 ? "HLE" : "LLE")
-            }
-            
-        case .pspJitType:
-            let extraKey = ExtraKey.jitType.rawValue
-            let firstGameValue = firstGame.getExtraInt(key: extraKey) ?? 0
-            if games.allSatisfy({
-                ($0.getExtraInt(key: extraKey) ?? 0) == firstGameValue
-            }) {
-                return .chevron(firstGameValue == 0 ? "JIT" : "IR JIT")
             }
             
         case .pspRenderer:
@@ -1015,7 +1004,8 @@ enum GameOption: Int, CaseIterable {
                 .quit,
                 .gameShortcut,
                 .coverScraping,
-                .ndsLidToggle:
+                .ndsLidToggle,
+                .pspJitType:
             break
         }
         return .chevron(nil)
@@ -1036,6 +1026,7 @@ enum GameOption: Int, CaseIterable {
                 .reload,
                 .quit,
                 .ndsLidToggle,
+                .pspJitType,
             ]
         case .gameInfo:
             return disableOptionsForScene(.common) + [.rename, .genHomeMenu, .coverScraping]

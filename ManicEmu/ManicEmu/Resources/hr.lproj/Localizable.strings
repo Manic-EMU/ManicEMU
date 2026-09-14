@@ -818,8 +818,6 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 "InsertDiscFailed" = "Umetanje diska nije uspjelo";
 "GenerateHomeMenu" = "Stvori početni izbornik";
 "SkinSoundEffects" = "Zvučni efekti kože";
-"JITType" = "Vrsta JIT-a";
-"JITTypeDesc" = "Standardni JIT nudi najbolje performanse, dok IR JIT nudi umjerene performanse.";
 "Pretendo" = "Pretendo mreža";
 "BadIpAddress" = "Neispravna IP adresa. Pokušajte ponovno.";
 "ArticBaseSettings" = "Postavke Artic Basea";

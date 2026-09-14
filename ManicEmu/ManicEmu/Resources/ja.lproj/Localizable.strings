@@ -815,8 +815,6 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "InsertDiscFailed" = "ディスクの挿入に失敗しました";
 "GenerateHomeMenu" = "ホームメニューを作成";
 "SkinSoundEffects" = "スキン効果音";
-"JITType" = "JITタイプ";
-"JITTypeDesc" = "標準JITは最高のパフォーマンスを提供し、IR JITは中程度のパフォーマンスを提供します。";
 "Pretendo" = "Pretendoネットワーク";
 "BadIpAddress" = "無効なIPアドレスです。もう一度お試しください。";
 "ArticBaseSettings" = "Artic Base設定";

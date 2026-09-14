@@ -791,8 +791,6 @@
 "InsertDiscFailed" = "فشل إدخال القرص";
 "GenerateHomeMenu" = "إنشاء القائمة الرئيسية";
 "SkinSoundEffects" = "مؤثرات صوتية للواجهة";
-"JITType" = "نوع JIT";
-"JITTypeDesc" = "يوفر JIT القياسي أفضل أداء، بينما يوفر IR JIT أداءً معتدلاً.";
 "Pretendo" = "شبكة Pretendo";
 "BadIpAddress" = "عنوان IP غير صالح. يرجى المحاولة مرة أخرى.";
 "ArticBaseSettings" = "إعدادات Artic Base";

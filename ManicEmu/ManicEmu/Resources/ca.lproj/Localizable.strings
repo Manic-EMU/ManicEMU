@@ -820,8 +820,6 @@ Si voleu millorar la vostra configuració, PlayCase és el complement perfecte p
 "InsertDiscFailed" = "No s'ha pogut inserir el disc";
 "GenerateHomeMenu" = "Crea el menú d'inici";
 "SkinSoundEffects" = "Efectes de so de la pell";
-"JITType" = "Tipus de JIT";
-"JITTypeDesc" = "El JIT estàndard ofereix el millor rendiment, mentre que el JIT IR ofereix un rendiment moderat.";
 "Pretendo" = "Xarxa Pretendo";
 "BadIpAddress" = "Adreça IP no vàlida. Si us plau, torneu-ho a provar.";
 "ArticBaseSettings" = "Configuració d'Artic Base";

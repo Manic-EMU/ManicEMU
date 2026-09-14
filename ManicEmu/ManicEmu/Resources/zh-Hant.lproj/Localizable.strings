@@ -825,8 +825,6 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "InsertDiscFailed" = "插入光碟失敗";
 "GenerateHomeMenu" = "建立 Home Menu";
 "SkinSoundEffects" = "面板音效";
-"JITType" = "JIT類型";
-"JITTypeDesc" = "標準JIT提供最佳效能，而IR JIT提供中等效能表現。";
 "Pretendo" = "Pretendo網路";
 "BadIpAddress" = "IP位址無效，請重新輸入。";
 "ArticBaseSettings" = "Artic Base設定";

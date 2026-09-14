@@ -836,8 +836,6 @@ Press the controller button to complete mapping...";
 "GenerateHomeMenu" = "Create Home Menu";
 "SkinSoundEffects" = "Skin Sound Effects";
 
-"JITType" = "JIT Type";
-"JITTypeDesc" = "Standard JIT offers the best performance, while IR JIT provides moderate performance.";
 "Pretendo" = "Pretendo Network";
 "BadIpAddress" = "Invalid IP address. Please try again.";
 "ArticBaseSettings" = "Artic Base Settings";

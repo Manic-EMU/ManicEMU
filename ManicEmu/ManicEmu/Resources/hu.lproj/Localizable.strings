@@ -820,8 +820,6 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "InsertDiscFailed" = "Lemez behelyezése sikertelen";
 "GenerateHomeMenu" = "Kezdőképernyő menü létrehozása";
 "SkinSoundEffects" = "Skin hangeffektek";
-"JITType" = "JIT típus";
-"JITTypeDesc" = "A szabványos JIT kínálja a legjobb teljesítményt, míg az IR JIT közepes teljesítményt nyújt.";
 "Pretendo" = "Pretendo hálózat";
 "BadIpAddress" = "Érvénytelen IP-cím. Kérjük, próbálja újra.";
 "ArticBaseSettings" = "Artic Base beállítások";

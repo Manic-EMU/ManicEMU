@@ -818,8 +818,6 @@ Kurulumunuzu bir üst seviyeye taşımak istiyorsanız, PlayCase bu kaplama içi
 "InsertDiscFailed" = "Disk Takma Başarısız";
 "GenerateHomeMenu" = "Ana Menü Oluştur";
 "SkinSoundEffects" = "Tema Ses Efektleri";
-"JITType" = "JIT Türü";
-"JITTypeDesc" = "Standart JIT en iyi performansı sunarken, IR JIT orta düzeyde performans sağlar.";
 "Pretendo" = "Pretendo Ağı";
 "BadIpAddress" = "Geçersiz IP adresi. Lütfen tekrar deneyin.";
 "ArticBaseSettings" = "Artic Base Ayarları";

@@ -820,8 +820,6 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 "InsertDiscFailed" = "डिस्क डालने में विफल";
 "GenerateHomeMenu" = "होम मेनू बनाएं";
 "SkinSoundEffects" = "स्किन ध्वनि प्रभाव";
-"JITType" = "JIT प्रकार";
-"JITTypeDesc" = "मानक JIT सर्वोत्तम प्रदर्शन प्रदान करता है, जबकि IR JIT मध्यम प्रदर्शन प्रदान करता है।";
 "Pretendo" = "Pretendo नेटवर्क";
 "BadIpAddress" = "अमान्य IP पता। कृपया पुनः प्रयास करें।";
 "ArticBaseSettings" = "Artic Base सेटिंग्स";

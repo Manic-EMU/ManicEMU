@@ -1731,7 +1731,7 @@ extension PlayViewController {
                     .ppsspp_texture_replacement: "disabled",
                     .ppsspp_enable_wlan: "disabled",
                     .ppsspp_internal_resolution: "480x272",
-                    .ppsspp_cpu_core: "Interpreter",
+                    .ppsspp_cpu_core: "IR JIT",
                     .ppsspp_software_rendering_jit: "disabled"
                 ], safeMode: true)
             } else if manicGame.gameType == .nes || manicGame.gameType == .fds {
@@ -1978,12 +1978,11 @@ extension PlayViewController {
                 if enableJIT {
                     setupUniversalScript(gameType: .psp)
                 }
-                let jitValue = ((manicGame.getExtraInt(key: ExtraKey.jitType.rawValue) ?? 0) == 0) ? "JIT" : "IR JIT"
                 updateLibretroCoreConfigs(core: .PPSSPP, configs: [
                     .ppsspp_language: languages[manicGame.region],
                     .ppsspp_backend: backend,
                     .ppsspp_texture_replacement: (manicGame.getExtraBool(key: ExtraKey.pspTexture.rawValue) ?? false) ? "enabled" : "disabled",
-                    .ppsspp_cpu_core : enableJIT ? jitValue : "Interpreter",
+                    .ppsspp_cpu_core : enableJIT ? "JIT" : "IR JIT",
                     .ppsspp_software_rendering_jit: enableJIT ? "enabled" : "disabled"
                 ] + networkingConfigs)
                 updatePSPResolution(manicGame.resolution, reload: false)

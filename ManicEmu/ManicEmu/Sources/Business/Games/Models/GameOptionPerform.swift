@@ -417,7 +417,7 @@ extension GameOption {
             performStringAction(with: games, accessoryChange: accessoryChange)
             
         case .pspJitType:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            break
             
         case .pspRenderer:
             performStringAction(with: games, accessoryChange: accessoryChange)
@@ -1274,9 +1274,6 @@ extension GameOption {
         if self == .azaharEmulationAccuracy {
             options = ["HLE", "LLE"]
             detail = R.string.localizable.emulationAccuracyDesc()
-        } else if self == .pspJitType {
-            options = ["JIT", "IR JIT"]
-            detail = R.string.localizable.jitTypeDesc()
         } else if self == .pspRenderer {
             options = ["Automatic", "OpenGL", "Vulkan"]
         } else if self == .ps1ControllerMode {
@@ -1392,10 +1389,6 @@ extension GameOption {
                 if self == .azaharEmulationAccuracy {
                     games.forEach({
                         $0.updateExtra(key: ExtraKey.emulationAccuracy.rawValue, value: index)
-                    })
-                } else if self == .pspJitType {
-                    games.forEach({
-                        $0.updateExtra(key: ExtraKey.jitType.rawValue, value: index)
                     })
                 } else if self == .pspRenderer {
                     games.forEach({

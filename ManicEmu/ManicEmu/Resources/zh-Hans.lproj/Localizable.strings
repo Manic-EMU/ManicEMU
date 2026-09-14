@@ -830,8 +830,6 @@
 "GenerateHomeMenu" = "创建 Home Menu";
 "SkinSoundEffects" = "皮肤音效";
 
-"JITType" = "JIT 类型";
-"JITTypeDesc" = "标准 JIT 性能最佳，IR JIT 提供中等性能表现。";
 "Pretendo" = "Pretendo 网络";
 "BadIpAddress" = "IP 地址无效，请重新输入。";
 "ArticBaseSettings" = "Artic Base 设置";

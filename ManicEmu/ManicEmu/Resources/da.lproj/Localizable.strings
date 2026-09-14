@@ -816,8 +816,6 @@ Hvis du vil forbedre dit setup, er PlayCase et perfekt match til dette skin.";
 "InsertDiscFailed" = "Kunne ikke indsætte disk";
 "GenerateHomeMenu" = "Opret startmenu";
 "SkinSoundEffects" = "Skin-lydeffekter";
-"JITType" = "JIT-type";
-"JITTypeDesc" = "Standard JIT tilbyder den bedste ydeevne, mens IR JIT tilbyder moderat ydeevne.";
 "Pretendo" = "Pretendo-netværk";
 "BadIpAddress" = "Ugyldig IP-adresse. Prøv igen.";
 "ArticBaseSettings" = "Artic Base-indstillinger";

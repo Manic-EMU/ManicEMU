@@ -822,8 +822,6 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 "InsertDiscFailed" = "디스크 넣기 실패";
 "GenerateHomeMenu" = "홈 메뉴 생성";
 "SkinSoundEffects" = "스킨 사운드 효과";
-"JITType" = "JIT 유형";
-"JITTypeDesc" = "표준 JIT는 최고의 성능을 제공하며, IR JIT는 중간 수준의 성능을 제공합니다.";
 "Pretendo" = "Pretendo 네트워크";
 "BadIpAddress" = "잘못된 IP 주소입니다. 다시 시도하세요.";
 "ArticBaseSettings" = "Artic Base 설정";

@@ -819,8 +819,6 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 "InsertDiscFailed" = "Plaatsen van schijf mislukt";
 "GenerateHomeMenu" = "Startmenu aanmaken";
 "SkinSoundEffects" = "Skin-geluidseffecten";
-"JITType" = "JIT-type";
-"JITTypeDesc" = "Standaard JIT biedt de beste prestaties, terwijl IR JIT matige prestaties biedt.";
 "Pretendo" = "Pretendo-netwerk";
 "BadIpAddress" = "Ongeldig IP-adres. Probeer opnieuw.";
 "ArticBaseSettings" = "Artic Base-instellingen";

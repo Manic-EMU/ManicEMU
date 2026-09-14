@@ -821,8 +821,6 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "InsertDiscFailed" = "הכנסת הדיסק נכשלה";
 "GenerateHomeMenu" = "צור תפריט בית";
 "SkinSoundEffects" = "אפקטים קוליים של עיצוב";
-"JITType" = "סוג JIT";
-"JITTypeDesc" = "JIT סטנדרטי מציע את הביצועים הטובים ביותר, בעוד ש-IR JIT מציע ביצועים בינוניים.";
 "Pretendo" = "רשת Pretendo";
 "BadIpAddress" = "כתובת IP לא חוקית. אנא נסה שוב.";
 "ArticBaseSettings" = "הגדרות Artic Base";

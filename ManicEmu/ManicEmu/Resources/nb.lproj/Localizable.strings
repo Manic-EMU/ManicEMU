@@ -810,8 +810,6 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 "InsertDiscFailed" = "Kunne ikke sette inn plate";
 "GenerateHomeMenu" = "Opprett startmeny";
 "SkinSoundEffects" = "Skin-lydeffekter";
-"JITType" = "JIT-type";
-"JITTypeDesc" = "Standard JIT gir best ytelse, mens IR JIT gir moderat ytelse.";
 "Pretendo" = "Pretendo-nettverk";
 "BadIpAddress" = "Ugyldig IP-adresse. Prøv igjen.";
 "ArticBaseSettings" = "Artic Base-innstillinger";

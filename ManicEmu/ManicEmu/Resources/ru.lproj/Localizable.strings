@@ -814,8 +814,6 @@ PlayCase специализируется на высококачественн�
 "InsertDiscFailed" = "Не удалось вставить диск";
 "GenerateHomeMenu" = "Создать домашнее меню";
 "SkinSoundEffects" = "Звуковые эффекты скина";
-"JITType" = "Тип JIT";
-"JITTypeDesc" = "Стандартный JIT обеспечивает лучшую производительность, в то время как IR JIT обеспечивает среднюю производительность.";
 "Pretendo" = "Сеть Pretendo";
 "BadIpAddress" = "Недействительный IP-адрес. Пожалуйста, попробуйте снова.";
 "ArticBaseSettings" = "Настройки Artic Base";

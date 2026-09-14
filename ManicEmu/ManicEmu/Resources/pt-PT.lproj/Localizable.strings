@@ -820,8 +820,6 @@ Se pretende melhorar a sua configuração, a PlayCase é o complemento perfeito 
 "InsertDiscFailed" = "Falha ao inserir o disco";
 "GenerateHomeMenu" = "Criar menu inicial";
 "SkinSoundEffects" = "Efeitos sonoros do tema";
-"JITType" = "Tipo de JIT";
-"JITTypeDesc" = "O JIT padrão oferece o melhor desempenho, enquanto o JIT IR oferece um desempenho moderado.";
 "Pretendo" = "Rede Pretendo";
 "BadIpAddress" = "Endereço IP inválido. Tente novamente.";
 "ArticBaseSettings" = "Configurações do Artic Base";

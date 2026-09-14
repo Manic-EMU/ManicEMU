@@ -820,8 +820,6 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "InsertDiscFailed" = "Vloženie disku zlyhalo";
 "GenerateHomeMenu" = "Vytvoriť domovské menu";
 "SkinSoundEffects" = "Zvukové efekty šablóny";
-"JITType" = "Typ JIT";
-"JITTypeDesc" = "Štandardný JIT ponúka najlepší výkon, zatiaľ čo IR JIT ponúka mierny výkon.";
 "Pretendo" = "Sieť Pretendo";
 "BadIpAddress" = "Neplatná IP adresa. Skúste to znova.";
 "ArticBaseSettings" = "Nastavenia Artic Base";

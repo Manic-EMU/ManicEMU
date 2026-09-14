@@ -820,8 +820,6 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 "InsertDiscFailed" = "Nu s-a putut introduce discul";
 "GenerateHomeMenu" = "Creează meniul principal";
 "SkinSoundEffects" = "Efecte sonore temă";
-"JITType" = "Tip JIT";
-"JITTypeDesc" = "JIT standard oferă cea mai bună performanță, în timp ce JIT IR oferă performanță moderată.";
 "Pretendo" = "Rețeaua Pretendo";
 "BadIpAddress" = "Adresă IP invalidă. Vă rugăm să încercați din nou.";
 "ArticBaseSettings" = "Setări Artic Base";

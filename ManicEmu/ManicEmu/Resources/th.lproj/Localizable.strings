@@ -808,8 +808,6 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 "InsertDiscFailed" = "ใส่แผ่นดิสก์ไม่สำเร็จ";
 "GenerateHomeMenu" = "สร้างโฮมเมนู";
 "SkinSoundEffects" = "เอฟเฟกต์เสียงสกิน";
-"JITType" = "ประเภท JIT";
-"JITTypeDesc" = "JIT มาตรฐานให้ประสิทธิภาพดีที่สุด ในขณะที่ IR JIT ให้ประสิทธิภาพปานกลาง";
 "Pretendo" = "เครือข่าย Pretendo";
 "BadIpAddress" = "ที่อยู่ IP ไม่ถูกต้อง กรุณาลองอีกครั้ง";
 "ArticBaseSettings" = "การตั้งค่า Artic Base";

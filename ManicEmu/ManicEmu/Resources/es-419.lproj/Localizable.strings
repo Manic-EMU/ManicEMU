@@ -818,8 +818,6 @@ Si quieres mejorar tu experiencia, PlayCase combina perfecto con esta funda.";
 "InsertDiscFailed" = "Error al insertar el disco";
 "GenerateHomeMenu" = "Crear menú de inicio";
 "SkinSoundEffects" = "Efectos de sonido del skin";
-"JITType" = "Tipo de JIT";
-"JITTypeDesc" = "El JIT estándar ofrece el mejor rendimiento, mientras que el JIT IR brinda un rendimiento moderado.";
 "Pretendo" = "Red Pretendo";
 "BadIpAddress" = "Dirección IP no válida. Inténtalo de nuevo.";
 "ArticBaseSettings" = "Configuración de Artic Base";

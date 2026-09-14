@@ -792,8 +792,6 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "InsertDiscFailed" = "Gagal Memasukkan Cakera";
 "GenerateHomeMenu" = "Cipta Menu Utama";
 "SkinSoundEffects" = "Kesan Bunyi Kulit";
-"JITType" = "Jenis JIT";
-"JITTypeDesc" = "JIT Standard menawarkan prestasi terbaik, manakala JIT IR menawarkan prestasi sederhana.";
 "Pretendo" = "Rangkaian Pretendo";
 "BadIpAddress" = "Alamat IP tidak sah. Sila cuba lagi.";
 "ArticBaseSettings" = "Tetapan Artic Base";

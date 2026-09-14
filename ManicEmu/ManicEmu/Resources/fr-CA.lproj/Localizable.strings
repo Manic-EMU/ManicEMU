@@ -820,8 +820,6 @@ Si vous voulez améliorer votre installation, PlayCase est le complément parfai
 "InsertDiscFailed" = "Échec de l'insertion du disque";
 "GenerateHomeMenu" = "Créer le menu d'accueil";
 "SkinSoundEffects" = "Effets sonores de l'interface";
-"JITType" = "Type de JIT";
-"JITTypeDesc" = "Le JIT standard offre la meilleure performance, tandis que le JIT IR offre une performance modérée.";
 "Pretendo" = "Réseau Pretendo";
 "BadIpAddress" = "Adresse IP invalide. Veuillez réessayer.";
 "ArticBaseSettings" = "Paramètres d'Artic Base";

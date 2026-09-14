@@ -811,8 +811,6 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 "InsertDiscFailed" = "Gagal Memasukkan Disk";
 "GenerateHomeMenu" = "Buat Menu Beranda";
 "SkinSoundEffects" = "Efek Suara Tema";
-"JITType" = "Tipe JIT";
-"JITTypeDesc" = "JIT standar menawarkan kinerja terbaik, sementara JIT IR menawarkan kinerja sedang.";
 "Pretendo" = "Jaringan Pretendo";
 "BadIpAddress" = "Alamat IP tidak valid. Silakan coba lagi.";
 "ArticBaseSettings" = "Pengaturan Artic Base";

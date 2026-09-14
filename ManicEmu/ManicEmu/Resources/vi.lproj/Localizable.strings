@@ -812,8 +812,6 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 "InsertDiscFailed" = "Chèn đĩa thất bại";
 "GenerateHomeMenu" = "Tạo menu chính";
 "SkinSoundEffects" = "Hiệu ứng âm thanh giao diện";
-"JITType" = "Loại JIT";
-"JITTypeDesc" = "JIT tiêu chuẩn mang lại hiệu suất tốt nhất, trong khi JIT IR mang lại hiệu suất trung bình.";
 "Pretendo" = "Mạng Pretendo";
 "BadIpAddress" = "Địa chỉ IP không hợp lệ. Vui lòng thử lại.";
 "ArticBaseSettings" = "Cài đặt Artic Base";

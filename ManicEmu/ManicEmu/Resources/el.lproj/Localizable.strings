@@ -821,8 +821,6 @@
 "InsertDiscFailed" = "Απέτυχε η εισαγωγή δίσκου";
 "GenerateHomeMenu" = "Δημιουργία αρχικού μενού";
 "SkinSoundEffects" = "Ηχητικά εφέ θέματος";
-"JITType" = "Τύπος JIT";
-"JITTypeDesc" = "Το τυπικό JIT προσφέρει την καλύτερη απόδοση, ενώ το IR JIT προσφέρει μέτρια απόδοση.";
 "Pretendo" = "Δίκτυο Pretendo";
 "BadIpAddress" = "Μη έγκυρη διεύθυνση IP. Παρακαλώ δοκιμάστε ξανά.";
 "ArticBaseSettings" = "Ρυθμίσεις Artic Base";
