@@ -26,6 +26,9 @@ extension GameOption {
         case .cover:
             GameCoverModifyView.show(game: firstGame)
             
+        case .editLink:
+            AddUrlGameView.show(game: firstGame)
+            
         case .stateList:
             pauseEmulationIfNeed()
             SaveStateListView.show(game: firstGame, hideCompletion: { savestate in
@@ -122,7 +125,7 @@ extension GameOption {
                                 if !game.ngageRelativeFiles.isEmpty {
                                     game.uninstallFromSymbianStorage()
                                 }
-                            } else if game.isRomExtsts {
+                            } else if !game.isUrlGame, game.isRomExtsts {
                                 if game.gameType == ._3ds, game.fileExtension.lowercased() == "app", let range = game.romUrl.path.range(of: "/content/") {
                                     let gamePath = String(game.romUrl.path[...range.lowerBound])
                                     try FileManager.safeRemoveItem(at: URL(fileURLWithPath: gamePath))

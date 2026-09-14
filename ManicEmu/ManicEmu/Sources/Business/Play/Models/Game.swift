@@ -112,13 +112,31 @@ class Game: Object, ObjectUpdatable {
     static let DsiHomeMenuPrimaryKey = "Home Menu (DSi)"
     static let DOSHomeMenuPrimaryKey = "Home Menu (DOSBox)"
     static let SymbianHomePrimary = "Home Menu (Symbian)"
+    /// Marker used by shortcut games that launch via a third-party URL scheme.
+    static let urlGameFileExtension = "url"
     
-    ///安全模式
+    /// CreamAsset filenames cannot contain URL `:`/`/`, so the Realm primary key is an MD5 of the launch URL.
+    static func urlGamePrimaryKey(for urlString: String) -> String {
+        urlString.data(using: .utf8)?.md5String ?? urlString
+    }
+    
+    /// Safe mode
     var safeMode = false
     
-    ///文件是否存在
+    /// Shortcut game stored as a URL scheme. Uses limited options, like `GameType.externalType`.
+    var isUrlGame: Bool {
+        getExtraBool(key: ExtraKey.isUrlGame.rawValue) == true
+            || fileExtension.lowercased() == Self.urlGameFileExtension
+    }
+    
+    /// Deep link used to open the third-party emulator. Falls back to `id` for older URL-as-primary-key rows.
+    var urlGameLaunchURL: String {
+        getExtraString(key: ExtraKey.urlGameURL.rawValue) ?? id
+    }
+    
+    /// ROM file exists locally. URL games have no ROM file but still count as present.
     var isRomExtsts: Bool {
-        if isAzaharArticBase || gameType == .symbian {
+        if isUrlGame || isAzaharArticBase || gameType == .symbian {
             return true
         }
         return FileManager.default.fileExists(atPath: romUrl.path)
@@ -1157,6 +1175,7 @@ class Game: Object, ObjectUpdatable {
             gameType == .pm ||
             isJGenesisCore ||
             gameType.externalType ||
+            isUrlGame ||
             isAtari ||
             (gameType == .ss && defaultCore == 0) ||
             gameType == .dc ||
@@ -1269,6 +1288,7 @@ class Game: Object, ObjectUpdatable {
             gameType == .j2me ||
             (gameType == .n64 && !isN64ParaLLEl) ||
             gameType.externalType ||
+            isUrlGame ||
             gameType == .symbian {
             return false
         }
@@ -1397,8 +1417,8 @@ class Game: Object, ObjectUpdatable {
     
     /// Whether rewind is available. Requires savestate_features of serialized or higher.
     var supportRewind: Bool {
-        // Non-libretro and external types do not support rewind.
-        guard isLibretroType, !gameType.externalType else { return false }
+        // Non-libretro, external platforms, and URL shortcuts do not support rewind.
+        guard isLibretroType, !gameType.externalType, !isUrlGame else { return false }
         // Jaguar has savestate = false. DOOM, 3DS, DC, Symbian, NGC, and Wii are basic-only.
         if gameType == .jaguar ||
             gameType == .doom ||
@@ -1609,7 +1629,7 @@ class Game: Object, ObjectUpdatable {
             let biosCompletion = gameType.isNDSBiosComplete()
             if (id == Game.DsHomeMenuPrimaryKey && !biosCompletion.isDSComplete) ||
                 (id == Game.DsiHomeMenuPrimaryKey && !biosCompletion.isDsiComplete) {
-                //弹出bios导入页面
+                // Prompt BIOS import when Home Menu BIOS files are missing.
                 BIOSSelectionView.show(gameType: gameType)
             } else {
                 PlayViewController.startGame(game: self, saveState: saveState)
@@ -1617,7 +1637,11 @@ class Game: Object, ObjectUpdatable {
         } else if isSymbianHomeMenu {
             SymbianFirmwareView.show()
         } else if Settings.defalut.quickGame || forceQuick {
-            PlayViewController.startGame(game: self, saveState: saveState)
+            if isUrlGame {
+                EmulatorInteractionKit.openExternalGameURL(urlGameLaunchURL)
+            } else {
+                PlayViewController.startGame(game: self, saveState: saveState)
+            }
         } else {
             if gameType == .unknown {
                 PlatformSelectionView.show(games: [self])

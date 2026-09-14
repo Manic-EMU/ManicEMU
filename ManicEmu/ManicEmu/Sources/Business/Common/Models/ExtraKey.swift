@@ -94,4 +94,8 @@ enum ExtraKey: String {
     case wswanRotation
     case wswanPalette
     case arcadeType//naomi=1 atomiswave=2 segasp=3
+    /// Game that launches a third-party emulator via a custom URL scheme.
+    case isUrlGame
+    /// Launch URL for `isUrlGame`. Game.id is an MD5 of this string so CreamAsset filenames stay valid.
+    case urlGameURL
 }

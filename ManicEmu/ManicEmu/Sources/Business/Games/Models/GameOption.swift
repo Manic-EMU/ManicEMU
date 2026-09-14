@@ -83,7 +83,8 @@ enum GameOption: Int, CaseIterable {
          coverScraping,
          dolphinCpuCore,
          slowMotion,
-         ndsLidToggle
+         ndsLidToggle,
+         editLink
         
     //When adding a new option, make sure to add it at the end; otherwise, it might affect the existing Prefference configurations
     
@@ -109,7 +110,7 @@ enum GameOption: Int, CaseIterable {
                 .symbolImage(R.image.category_iconSymbols())
         case .genHomeMenu:
                 .symbolImage(R.image.home_iconSymbols())
-        case .copyLink:
+        case .copyLink, .editLink:
                 .symbolImage(R.image.link_iconSymbols())
         case .shareRom:
                 .symbolImage(R.image.shareRa_iconSymbols())
@@ -262,6 +263,8 @@ enum GameOption: Int, CaseIterable {
             R.string.localizable.generateHomeMenu()
         case .copyLink:
             R.string.localizable.copyLaunchLinkTitle()
+        case .editLink:
+            R.string.localizable.editLink()
         case .retroAchievements:
             "RetroAchievements"
         case .cheatCode:
@@ -440,6 +443,7 @@ enum GameOption: Int, CaseIterable {
     private static let disableOptionsForMultiGames: [Self] = [
         .rename,
         .cover,
+        .editLink,
         .stateList,
         .importSave,
         .copyLink,
@@ -466,6 +470,7 @@ enum GameOption: Int, CaseIterable {
         [
             .rename,
             .cover,
+            .editLink,
             .coverScraping,
             .skins
         ],
@@ -984,6 +989,7 @@ enum GameOption: Int, CaseIterable {
             
         case .rename,
                 .cover,
+                .editLink,
                 .skins,
                 .stateList,
                 .importSave,
@@ -1095,6 +1101,10 @@ enum GameOption: Int, CaseIterable {
             return options
         }
         
+        if game.isUrlGame {
+            return [.cover, .editLink, .delete]
+        }
+        
         if game.gameType.externalType {
             return [.rename, .cover, .delete]
         }
@@ -1108,6 +1118,7 @@ enum GameOption: Int, CaseIterable {
         }
         
         var allOptions = Set(GameOption.allCases)
+        allOptions.remove(.editLink)
         
         if GameType.gameTypes(multiPlatformFileExtension: game.fileExtension).count == 0 {
             allOptions.remove(.platformChange)

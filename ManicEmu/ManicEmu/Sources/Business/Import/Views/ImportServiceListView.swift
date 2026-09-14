@@ -31,27 +31,26 @@ class ImportServiceListView: BaseView {
                 ASWebView.show(url: R.URLs.GameImportGuide)
             } else if index == 2 {
                 //More
-                ChevronSheetView.show(stringOptions: [
-                    R.string.localizable.fetchGamesFromMeloNX(),
-                    R.string.localizable.fetchGamesFromXeniOS(),
-                    R.string.localizable.fetchGamesFromDukeX(),
-                    R.string.localizable.fetchGamesFromARMSX2(),
-                ], completion: { [weak self] index in
-                    guard let self else { return }
-                    if let index {
-                        var type: EmulatorInteractionKit.EmulatorType? = nil
-                        if index == 0 {
-                            type = .meloNX
-                        } else if index == 1 {
-                            type = .xeniOS
-                        } else if index == 2 {
-                            type = .dukeX
-                        } else if index == 3 {
-                            type = .armsx2
-                        }
-                        if let type {
-                            EmulatorInteractionKit.fetchGames(type: type)
-                        }
+                ChevronSheetView.show(sections: [
+                    (header: R.string.localizable.addGameLink(),
+                     cells: [.iconTitleChevronCell(icon: .symbolImage(R.image.link_iconSymbols()),
+                                                   title: R.string.localizable.addGameLink())]),
+                    (header: R.string.localizable.fetchGamesFromOtherEmulators(),
+                     cells: [
+                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromMeloNX()),
+                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromXeniOS()),
+                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromDukeX()),
+                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromARMSX2())
+                     ])
+                ], completion: { indexPath in
+                    guard let indexPath else { return }
+                    if indexPath.section == 0 {
+                        AddUrlGameView.show()
+                        return
+                    }
+                    let types: [EmulatorInteractionKit.EmulatorType] = [.meloNX, .xeniOS, .dukeX, .armsx2]
+                    if types.indices.contains(indexPath.row) {
+                        EmulatorInteractionKit.fetchGames(type: types[indexPath.row])
                     }
                 })
             }

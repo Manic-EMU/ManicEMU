@@ -21,6 +21,75 @@ struct EmulatorInteractionKit {
         case meloNX, xeniOS, dukeX, armsx2
     }
     
+    /// Display name plus the public URL scheme. Extra ARMSX2 aliases stay in `supportedLaunchSchemes`.
+    static let supportedLaunchers: [(name: String, scheme: String)] = [
+        ("Delta", "delta"),
+        ("RetroArch", "retroarch"),
+        ("PPSSPP", "ppsspp"),
+        ("Provenance", "provenance"),
+        ("Gamma", "gamma"),
+        ("GBA4iOS", "gba4ios"),
+        ("MeloNX", "atariemulator"),
+        ("XeniOS", "xenios"),
+        ("DukeX", "dukex"),
+        ("ARMSX2", "armsx2"),
+        ("Consoles", "consolesapp"),
+        ("MeloCafe", "melocafe")
+    ]
+    
+    /// Schemes that must also be listed in `LSApplicationQueriesSchemes`.
+    static let supportedLaunchSchemes: Set<String> = Set(supportedLaunchers.map(\.scheme)).union([
+        "armsx2-ios",
+        "armsx2ios"
+    ])
+    
+    enum LaunchURLValidation {
+        case ok(URL)
+        case invalid
+        case unsupportedScheme
+    }
+    
+    /// Parse a pasted emulator deep link. Rejects http(s)/file and unknown schemes.
+    static func validateLaunchURL(_ string: String) -> LaunchURLValidation {
+        let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return .invalid }
+        guard let components = URLComponents(string: trimmed),
+              let scheme = components.scheme?.lowercased(),
+              !scheme.isEmpty else {
+            return .invalid
+        }
+        if scheme == "http" || scheme == "https" || scheme == "file" || scheme == "ftp" {
+            return .unsupportedScheme
+        }
+        guard supportedLaunchSchemes.contains(scheme) else {
+            return .unsupportedScheme
+        }
+        if let url = components.url {
+            return .ok(url)
+        }
+        if let url = URL(string: trimmed) {
+            return .ok(url)
+        }
+        return .invalid
+    }
+    
+    static func openExternalGameURL(_ string: String) {
+        let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let url = URL(string: trimmed) ?? URLComponents(string: trimmed)?.url else {
+            UIView.makeToast(message: R.string.localizable.addUrlGameInvalidUrl())
+            return
+        }
+        UIApplication.shared.open(url, options: [:]) { success in
+            guard !success else { return }
+            DispatchQueue.main.async {
+                let scheme = url.scheme ?? ""
+                UIView.makeToast(message: scheme.isEmpty
+                                 ? R.string.localizable.addUrlGameInvalidUrl()
+                                 : R.string.localizable.notInstall(scheme))
+            }
+        }
+    }
+    
     static func isInstalled(type: EmulatorType) -> Bool {
         switch type {
         case .meloNX:

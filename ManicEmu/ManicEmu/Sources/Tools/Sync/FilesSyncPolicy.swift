@@ -160,6 +160,7 @@ enum FilesSyncPolicy {
         return false
 #else
         if game.gameType == .unknown || game.gameType == .notSupport { return false }
+        if game.isUrlGame { return false }
         if game.gameType == .symbian { return true }
         if game.isAzaharArticBase { return false }
         if let explicit = explicitROMSyncFlag(game) {
@@ -230,7 +231,7 @@ enum FilesSyncPolicy {
 extension Game {
     /// Local ROM files/directories that belong to this game for iCloud Drive include/exclude.
     var iCloudROMFileURLs: [URL] {
-        if isAzaharArticBase || gameType == .symbian {
+        if isUrlGame || isAzaharArticBase || gameType == .symbian {
             return []
         }
         let url = romUrl

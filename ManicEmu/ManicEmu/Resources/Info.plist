@@ -618,6 +618,14 @@
 		<string>armsx2</string>
 		<string>armsx2-ios</string>
 		<string>armsx2ios</string>
+		<string>delta</string>
+		<string>retroarch</string>
+		<string>ppsspp</string>
+		<string>provenance</string>
+		<string>gamma</string>
+		<string>gba4ios</string>
+		<string>consolesapp</string>
+		<string>melocafe</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

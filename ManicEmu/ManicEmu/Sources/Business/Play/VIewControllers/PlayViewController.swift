@@ -150,6 +150,10 @@ class PlayViewController: GameViewController {
     private var skinSwitchBindDatas = [String: Bool]()
     
     static func startGame(game: Game, saveState: GameSaveState? = nil) {
+        if game.isUrlGame {
+            game.handleTapAction(forceQuick: true)
+            return
+        }
         if game.gameType == .ns {
             EmulatorInteractionKit.startGame(type: .meloNX, id: game.id)
             return

@@ -1151,3 +1151,18 @@
 "ResetTipsSuccess" = "提示重置成功";
 
 "EnableCarouselStyle" = "启用轮播样式";
+
+"AddGameLink" = "添加游戏链接";
+"FetchGamesFromOtherEmulators" = "从其他模拟器导入";
+"AddUrlGameName" = "游戏名称";
+"AddUrlGameNamePlaceholder" = "请输入名称";
+"AddUrlGameUrl" = "URL 方案";
+"AddUrlGamePlatform" = "平台";
+"AddUrlGameAdd" = "添加";
+"AddUrlGameInvalidUrl" = "请输入有效的 URL 方案，例如 delta://game/...";
+"AddUrlGameUnsupportedScheme" = "不支持此 URL 方案。";
+"AddUrlGameAlreadyExists" = "该游戏链接已存在。";
+"AddUrlGameSuccess" = "游戏链接添加成功";
+"EditLink" = "编辑链接";
+"AddUrlGameUpdated" = "游戏链接保存成功";
+"AddGameLinkDesc" = "支持的模拟器：%@";

@@ -1156,3 +1156,18 @@ Press the controller button to complete mapping...";
 "ResetTipsSuccess" = "Tips reset successfully";
 
 "EnableCarouselStyle" = "Enable Carousel Style";
+
+"AddGameLink" = "Add Game Link";
+"FetchGamesFromOtherEmulators" = "Import from Other Emulators";
+"AddUrlGameName" = "Game Name";
+"AddUrlGameNamePlaceholder" = "Enter a name";
+"AddUrlGameUrl" = "URL Scheme";
+"AddUrlGamePlatform" = "Platform";
+"AddUrlGameAdd" = "Add";
+"AddUrlGameInvalidUrl" = "Please enter a valid URL scheme, such as delta://game/...";
+"AddUrlGameUnsupportedScheme" = "This URL scheme is not supported.";
+"AddUrlGameAlreadyExists" = "This game link already exists.";
+"AddUrlGameSuccess" = "Game link added";
+"EditLink" = "Edit Link";
+"AddUrlGameUpdated" = "Game link saved";
+"AddGameLinkDesc" = "Supported emulators: %@";

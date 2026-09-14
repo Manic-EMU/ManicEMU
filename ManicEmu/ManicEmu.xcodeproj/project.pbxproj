@@ -32,6 +32,7 @@
 		3DD4E96091F64806BA370918 /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E209D2FD1B8CB00A2749A /* CollectionViewPagingLayout */; };
 		3E00CA4429104FD6937382A8 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 57F0D84A2DE2E7A600760F57 /* SwiftCloudDrive */; };
 		478A7D3ED65840479AA36B1F /* Libretro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE172DD32F7700AABF98 /* Libretro.framework */; };
+		54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
 		568CCBBFAD4A4409BB9E3CCB /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 5726FF452D741F5C00041AD5 /* ColorfulX */; };
 		57047A0A2D85217C00C62FF6 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A092D85217400C62FF6 /* PurchaseView.swift */; };
 		57047A0C2D852E7F00C62FF6 /* FeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A0B2D852E7200C62FF6 /* FeaturesView.swift */; };
@@ -964,6 +965,9 @@
 		57BFBE772DD336E000AABF98 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE762DD336DD00AABF98 /* main.swift */; };
 		57BFBE792DD336FC00AABF98 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE782DD336F100AABF98 /* Application.swift */; };
 		57BFBE902DD435C900AABF98 /* PSP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE8F2DD435C700AABF98 /* PSP.swift */; };
+		57C447183057D7E00099C15F /* AddUrlGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C447133057D7CB0099C15F /* AddUrlGameView.swift */; };
+		57C447193057D7E00099C15F /* AddUrlGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C447133057D7CB0099C15F /* AddUrlGameView.swift */; };
+		57C4471A3057D7E00099C15F /* AddUrlGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C447133057D7CB0099C15F /* AddUrlGameView.swift */; };
 		57C65AE32FD6B2D200BB73E0 /* ASListPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C65ADF2FD6B2BA00BB73E0 /* ASListPageView.swift */; };
 		57C65AE42FD6B2D200BB73E0 /* ASListPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C65ADF2FD6B2BA00BB73E0 /* ASListPageView.swift */; };
 		57C65AEB2FD6B2E300BB73E0 /* ASListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C65AE62FD6B2D600BB73E0 /* ASListItemView.swift */; };
@@ -1550,6 +1554,7 @@
 		57FD14143011C73D007F211A /* ShaderPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FD140F3011C71E007F211A /* ShaderPreviewView.swift */; };
 		57J2ME02F23397000EA24F1 /* J2ME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57J2ME01F23397000EA24F1 /* J2ME.swift */; };
 		5832261697984FE3A7919D8A /* ProHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20A92FD1C40700A2749A /* ProHUD */; };
+		58D0423D007B462DB353AA16 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
 		5A74D5E598F44663BCC2F1EE /* Citra.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C75AB02FD5575D0093A2B3 /* Citra.framework */; };
 		5F5353532F884986BF3BA407 /* ObjcExceptionBridging in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306B2D91AFE00043C28A /* ObjcExceptionBridging */; };
 		5F74DFC689D94836B20159EB /* mednafen.ngp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56A0D131A148448EA9816B /* mednafen.ngp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1585,6 +1590,7 @@
 		A672B510CD9141B18392D564 /* NGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D4867970474EB9B27D4D8D /* NGP.swift */; };
 		A8D9BF2608324215AB272D58 /* BlankSlate in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23A42FD2AA0600A2749A /* BlankSlate */; };
 		AA122ED56C3140C1864D4EC8 /* mednafen.pce.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AD7D0110DD684A0DA5505F08 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
 		ADE1A2C2A17E4D50AE2EB564 /* PLzmaSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 570A27FF2DCF03CF001249C6 /* PLzmaSDK */; };
 		AE5A3FEEB61B4A0B9DB6C05A /* JXBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23B62FD2B7D400A2749A /* JXBanner */; };
 		B2383F512A2733DF000563E6 /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2383F502A2733DF000563E6 /* UIFontExtensions.swift */; };
@@ -1642,9 +1648,6 @@
 		F9A3C32228B84AD391F34585 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D32FD41D9300A2749A /* NVActivityIndicatorView */; };
 		FDD0064DAC7645118F826ED7 /* Closures in Frameworks */ = {isa = PBXBuildFile; productRef = 578E231F2FD288C600A2749A /* Closures */; };
 		FFD8F5F4CE02425E8BA80296 /* mednafen.pce.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		58D0423D007B462DB353AA16 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
-		54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
-		AD7D0110DD684A0DA5505F08 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1883,6 +1886,7 @@
 /* Begin PBXFileReference section */
 		03741E2E8CB24E5790E97476 /* puae.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = puae.libretro.framework; path = ../Cores/puae.libretro.framework; sourceTree = SOURCE_ROOT; };
 		0A2DDA01B1DB4E15B8F0C5C6 /* Wii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wii.swift; sourceTree = "<group>"; };
+		16B86ECC930242969A108735 /* WSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSC.swift; sourceTree = "<group>"; };
 		2068D6E791D56FF6148997EA /* DOOM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DOOM.swift; sourceTree = "<group>"; };
 		20B6A88FB41ED3142FD4FD9E /* prboom.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = prboom.libretro.framework; path = ../Cores/prboom.libretro.framework; sourceTree = SOURCE_ROOT; };
 		25F38CF54CA347238295BE77 /* eka2l1.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = eka2l1.libretro.framework; path = ../Cores/eka2l1.libretro.framework; sourceTree = SOURCE_ROOT; };
@@ -6497,6 +6501,7 @@
 		57BFBE762DD336DD00AABF98 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		57BFBE782DD336F100AABF98 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		57BFBE8F2DD435C700AABF98 /* PSP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSP.swift; sourceTree = "<group>"; };
+		57C447133057D7CB0099C15F /* AddUrlGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlGameView.swift; sourceTree = "<group>"; };
 		57C65ADF2FD6B2BA00BB73E0 /* ASListPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASListPageView.swift; sourceTree = "<group>"; };
 		57C65AE62FD6B2D600BB73E0 /* ASListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASListItemView.swift; sourceTree = "<group>"; };
 		57C7595C2FD451130093A2B3 /* System.core */ = {isa = PBXFileReference; lastKnownFileType = file; path = System.core; sourceTree = "<group>"; };
@@ -6732,7 +6737,6 @@
 		F0C500000000000000000106 /* FocusCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCollectionView.swift; sourceTree = "<group>"; };
 		F0C500000000000000000107 /* FocusSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSystem.swift; sourceTree = "<group>"; };
 		F0C500000000000000000108 /* FocusSystem+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSystem+UIViewController.swift"; sourceTree = "<group>"; };
-		16B86ECC930242969A108735 /* WSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -7211,6 +7215,7 @@
 		577005B12D3E6E9F00762E8F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				57C447133057D7CB0099C15F /* AddUrlGameView.swift */,
 				57CC357F2DC0683700DF7418 /* DownloadManageView.swift */,
 				57B6EBDA2D7587FE002E619C /* GamesSelectionView.swift */,
 				57E9632B2D6B06090022914C /* ImportFooterCollectionReusableView.swift */,
@@ -13725,6 +13730,7 @@
 				57909387303C7D9100A53656 /* NGP.swift in Sources */,
 				57909388303C7D9100A53656 /* PCE.swift in Sources */,
 				57909389303C7D9100A53656 /* Wii.swift in Sources */,
+				57C4471A3057D7E00099C15F /* AddUrlGameView.swift in Sources */,
 				5790938A303C7D9100A53656 /* NGC.swift in Sources */,
 				5790938B303C7D9100A53656 /* Symbian.swift in Sources */,
 				5790938C303C7D9100A53656 /* FocusTypes.swift in Sources */,
@@ -14188,6 +14194,7 @@
 				A672B510CD9141B18392D564 /* NGP.swift in Sources */,
 				1CAAD3DB49C34DAD998DD033 /* PCE.swift in Sources */,
 				0E964747C5B24B348A8665E0 /* Wii.swift in Sources */,
+				57C447193057D7E00099C15F /* AddUrlGameView.swift in Sources */,
 				3008E79240634E729DB35FEB /* NGC.swift in Sources */,
 				75A984D24586436BA6AF31C9 /* Symbian.swift in Sources */,
 				F0C500000000000000000201 /* FocusTypes.swift in Sources */,
@@ -15034,6 +15041,7 @@
 				57D481FE3014A2480030A771 /* ShaderLIstView.swift in Sources */,
 				5796DB3D2FE41A0A0051F661 /* ASRadio.swift in Sources */,
 				570F59C02DC91FF5007BFD92 /* ColorPickerView.swift in Sources */,
+				57C447183057D7E00099C15F /* AddUrlGameView.swift in Sources */,
 				57BF5EE22FDB09BC0073D318 /* ASRadioView.swift in Sources */,
 				57B6ECBD2D7953EC002E619C /* CheatCodeListView.swift in Sources */,
 				5760A3A63029E813002CCF6B /* ShaderToy.swift in Sources */,

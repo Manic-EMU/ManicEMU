@@ -81,4 +81,67 @@ class ChevronSheetView: BaseView {
             }
         })
     }
+    
+    /// Chevron sheet with named sections. `completion` receives the tapped `IndexPath`.
+    static func show(icon: ASIcon = .symbolImage(R.image.ellipsis_iconSymbols()),
+                     title: String = R.string.localizable.moreSettingTitle(),
+                     detail: String? = nil,
+                     sections: [(header: String?, cells: [ASListPage.Cell])],
+                     cancelEnable: Bool = true,
+                     dismissOnTap: Bool = true,
+                     completion: ((_ indexPath: IndexPath?) -> Void)? = nil) {
+        let validSections = sections.filter({ !$0.cells.isEmpty })
+        guard validSections.count > 0 else {
+            completion?(nil)
+            return
+        }
+        
+        var navigation = ASListPage.Navigation.defaultNavigation(title: title, titleIcon: icon)
+        navigation.enableClose = cancelEnable
+        
+        let listSections: [ASListPage.Section] = validSections.enumerated().map { index, section in
+            var header: ASListPage.Supplementary? = nil
+            if let headerTitle = section.header, !headerTitle.isEmpty {
+                header = .defaultHeader(title: headerTitle)
+            }
+            if index == 0, let detail, !detail.isEmpty {
+                var texts = [ASText.smallText(detail, numberOfLines: 0)]
+                if let headerTitle = section.header, !headerTitle.isEmpty {
+                    texts.append(.init(attributes: .init(text: headerTitle,
+                                                         color: R.Color.LabelSecondary,
+                                                         font: R.Font.Subheadline(emphasis: true))))
+                }
+                header = .texts(texts, pin: false)
+            }
+            return .init(cells: section.cells, header: header)
+        }
+        
+        let listPage = ASListPage(navigation: navigation,
+                                  sections: listSections,
+                                  backgroundColor: .clear)
+        var didComplete = false
+        ASSheetView.show(.init(style: .listPage(listPage)), action: { sheetAction, _ in
+            if let indexPath = sheetAction.listPageValue?.normalItemValue?.indexPath {
+                if dismissOnTap {
+                    didComplete = true
+                    return .dismiss {
+                        completion?(indexPath)
+                    }
+                } else {
+                    completion?(indexPath)
+                    return .none
+                }
+            } else if let isTapClose = sheetAction.listPageValue?.navigationValue?.isTapClose, isTapClose {
+                didComplete = true
+                return .dismiss {
+                    completion?(nil)
+                }
+            }
+            return .none
+        }, dismiss: {
+            if !didComplete {
+                completion?(nil)
+            }
+        })
+    }
 }
