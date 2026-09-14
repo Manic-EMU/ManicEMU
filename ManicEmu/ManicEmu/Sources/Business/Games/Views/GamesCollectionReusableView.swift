@@ -102,7 +102,7 @@ class GamesCollectionReusableView: UICollectionReusableView {
         }
     }
     
-    func setData(gameType: GameType, highlightString: String? = nil, gamesCount: Int = 0, isFolded: Bool = false) {
+    func setData(gameType: GameType, highlightString: String? = nil, gamesCount: Int = 0, isFolded: Bool = false, allowsFold: Bool = true) {
         if R.Style.GamesGroupTitleStyle == .brand && gameType != .unknown {
             titleContainer.isHidden = true
             brandImageContainer.isHidden = false
@@ -122,7 +122,8 @@ class GamesCollectionReusableView: UICollectionReusableView {
         }
         
         gamesCountButton.setTitleString("\(gamesCount) \(R.string.localizable.tabbarTitleGames())")
-        if UIDevice.isPhone, UIDevice.isLandscape {
+        gamesCountButton.isUserInteractionEnabled = allowsFold
+        if !allowsFold || (UIDevice.isPhone && UIDevice.isLandscape) {
             gamesCountButton.setIcon(nil)
         } else {
             gamesCountButton.setIcon(.symbol(isFolded ? .chevronDown : .chevronUp, colors: [R.Color.LabelSecondary]))

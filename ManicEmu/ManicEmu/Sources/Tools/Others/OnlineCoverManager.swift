@@ -371,7 +371,16 @@ class OnlineCoverManager {
                 request.addValue("Bearer \(R.Cipher.DeepSeek)", forHTTPHeaderField: "Authorization")
                 request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.addValue("application/json", forHTTPHeaderField: "Accept")
-                request.httpBody = ["frequency_penalty": 0.7, "max_tokens": 2048, "model": "deepseek-v4-flash", "presence_penalty": 0.7, "stream" : false, "temperature" : 1.3, "top_p" : 0.9, "response_format" : ["type": "json_object"], "messages": [["content": "\(content)", "role":"user"]]].jsonData()
+                // Flash thinks by default; disable it so a short JSON title does not burn reasoning tokens.
+                request.httpBody = [
+                    "model": "deepseek-flash",
+                    "max_tokens": 128,
+                    "stream": false,
+                    "temperature": 1.3,
+                    "thinking": ["type": "disabled"],
+                    "response_format": ["type": "json_object"],
+                    "messages": [["content": content, "role": "user"]]
+                ].jsonData()
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
                     if let _ = error {
                         completion?(name)

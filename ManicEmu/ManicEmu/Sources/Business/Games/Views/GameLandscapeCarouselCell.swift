@@ -12,7 +12,7 @@ import CollectionViewPagingLayout
 enum LandscapeCarouselStyle: Int, CaseIterable {
     case scale, stack, snapshot
     
-    ///当前生效的样式族 持久化在Theme extras中 默认Scale
+    /// Active style family, persisted in Theme extras. Default Scale.
     static var current: LandscapeCarouselStyle {
         get {
             LandscapeCarouselStyle(rawValue: Theme.defalut.getExtraInt(key: ExtraKey.landscapeListStyle.rawValue) ?? 0) ?? .scale
@@ -20,6 +20,12 @@ enum LandscapeCarouselStyle: Int, CaseIterable {
         set {
             Theme.defalut.updateExtra(key: ExtraKey.landscapeListStyle.rawValue, value: newValue.rawValue)
         }
+    }
+    
+    /// Cover-flow carousel when true (default). Sectioned list rows when false.
+    static var isCarouselEnabled: Bool {
+        get { Theme.defalut.getExtraBool(key: ExtraKey.landscapeCarouselEnabled.rawValue) ?? true }
+        set { Theme.defalut.updateExtra(key: ExtraKey.landscapeCarouselEnabled.rawValue, value: newValue) }
     }
     
     var title: String {

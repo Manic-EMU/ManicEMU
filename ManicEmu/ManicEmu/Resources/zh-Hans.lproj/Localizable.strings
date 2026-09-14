@@ -1149,3 +1149,5 @@
 "ResetTips" = "重置提示";
 "ResetTipsDesc" = "让已展示过的弹窗和提示再次出现";
 "ResetTipsSuccess" = "提示重置成功";
+
+"EnableCarouselStyle" = "启用轮播样式";

@@ -1154,3 +1154,5 @@ Press the controller button to complete mapping...";
 "ResetTips" = "Reset Tips";
 "ResetTipsDesc" = "Show previously dismissed alerts and tips again";
 "ResetTipsSuccess" = "Tips reset successfully";
+
+"EnableCarouselStyle" = "Enable Carousel Style";

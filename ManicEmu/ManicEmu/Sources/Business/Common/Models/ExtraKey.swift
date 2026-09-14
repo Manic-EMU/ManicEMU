@@ -70,6 +70,7 @@ enum ExtraKey: String {
     case gamehackingBookMark
     case steamGridDBAPIKey
     case landscapeListStyle
+    case landscapeCarouselEnabled
     case landscapeShaderToy
     case landscapeBackgroundMusic
     case landscapeSoundEffects
