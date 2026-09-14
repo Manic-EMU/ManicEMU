@@ -27,7 +27,7 @@ extension GameType {
         case "cue":
             return [.ps1, .mcd, .ss, .dc, .dos, .pce, .amiga]
         case "m3u":
-            return [.ps1, .mcd, .ss, .dc, .dos, .pce, .c64, .amiga]
+            return [.ps1, .mcd, .ss, .dc, .dos, .pce, .c64, .amiga, .ngc]
         case "pbp":
             return [.ps1, .psp]
         case "ccd":

@@ -496,12 +496,9 @@ Press the controller button to complete mapping...";
 
 "ImportMissingFile" = "Failed to import %@: Missing file %@";
 "MultiDiscBuilder" = "MultiDisc Helper";
-"MultiDiscBuilderDesc" = "The MultiDisc Helper creates disc-swappable .m3u files for multi-disc games (.cue(.bin) .cdi or .chd). Skip this if you already have an .m3u file – import it directly via Game Import.";
 "M3uFileShare" = "Share .m3u File";
 "M3uFileImport" = "Add to Library";
 "MultiDiscAddFile" = "Add %@ File";
-"MultiDiscImportErrorConflict" = "Error: Cannot mix .cue .cdi and .chd files";
-"MultiDiscImportErrorMissing" = "Error: No .cue .cdi or .chd files found";
 "GenerateM3uFailed" = "Failed to generate .m3u file";
 "MultiDiscCloseAlert" = ".m3u file generated. Close this page after importing it to your library.";
 "MultiDiscContinueClose" = "Continue Closing";
@@ -1169,3 +1166,8 @@ Press the controller button to complete mapping...";
 "EditLink" = "Edit Link";
 "AddUrlGameUpdated" = "Game link saved";
 "AddGameLinkDesc" = "Supported emulators: %@";
+
+"MultiDiscBuilderDesc" = "The MultiDisc Helper creates .m3u files for multi-disc games so you can swap discs during play. Add disc images of the same type, such as .cue(.bin), .gdi, .chd, .cdi, .iso, .rvz, or .d64. If you already have an .m3u file, skip this and import it directly.";
+"MultiDiscSupportedFormats" = "Supported formats: %@";
+"MultiDiscImportErrorConflict" = "Error: Cannot mix different disc image formats.";
+"MultiDiscImportErrorMissing" = "Error: No supported disc image found.";

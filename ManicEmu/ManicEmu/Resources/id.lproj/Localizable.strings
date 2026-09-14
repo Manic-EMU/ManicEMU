@@ -478,12 +478,9 @@ Tekan tombol kontroler...";
 
 "ImportMissingFile" = "Gagal impor %@: File %@ tidak ditemukan";
 "MultiDiscBuilder" = "Pemutar MultiDisc";
-"MultiDiscBuilderDesc" = "Membuat file .m3u tukar-disk untuk game multidisc (.cue(.bin) .cdi atau .chd). Lewati jika sudah punya .m3u - impor langsung via Impor Game";
 "M3uFileShare" = "Bagikan File .m3u";
 "M3uFileImport" = "Tambahkan ke Library";
 "MultiDiscAddFile" = "Tambahkan File %@";
-"MultiDiscImportErrorConflict" = "Error: Tidak bisa campur file .cue .cdi dan .chd";
-"MultiDiscImportErrorMissing" = "Error: File .cue/.cdi/.chd tidak ditemukan";
 "GenerateM3uFailed" = "Gagal membuat file .m3u";
 "MultiDiscCloseAlert" = "File .m3u telah dibuat. Tutup halaman ini setelah diimpor";
 "MultiDiscContinueClose" = "Tutup";

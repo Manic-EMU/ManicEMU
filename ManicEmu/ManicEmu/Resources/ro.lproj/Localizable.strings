@@ -487,12 +487,9 @@ Apasă butonul controlerului...";
 
 "ImportMissingFile" = "Import %@ eșuat: Lipsește fișierul %@";
 "MultiDiscBuilder" = "Asistent multi-disc";
-"MultiDiscBuilderDesc" = "Creează fișiere .m3u interschimbabile pentru jocuri multi-disc (.cue(.bin) .cdi sau .chd). Omite dacă ai deja .m3u - importă direct prin Import Joc";
 "M3uFileShare" = "Partajează .m3u";
 "M3uFileImport" = "Adaugă în colecție";
 "MultiDiscAddFile" = "Adaugă fișier %@";
-"MultiDiscImportErrorConflict" = "Eroare: Nu se pot amesteca .cue .cdi și .chd";
-"MultiDiscImportErrorMissing" = "Eroare: Nu s-au găsit fișiere .cue/.cdi/.chd";
 "GenerateM3uFailed" = "Generare .m3u eșuată";
 "MultiDiscCloseAlert" = ".m3u generat. Închide după import";
 "MultiDiscContinueClose" = "Închide";

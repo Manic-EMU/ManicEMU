@@ -488,12 +488,9 @@
 
 "ImportMissingFile" = "Αποτυχία εισαγωγής %@: Λείπει το αρχείο %@";
 "MultiDiscBuilder" = "Βοηθός Πολλαπλών Δίσκων";
-"MultiDiscBuilderDesc" = "Δημιουργεί .m3u αρχεία για παιχνίδια πολλαπλών δίσκων (.cue(.bin) .cdi ή .chd). Παραλείψτε αν έχετε ήδη .m3u - εισάγετε απευθείας μέσω Εισαγωγής Παιχνιδιού";
 "M3uFileShare" = "Κοινοποίηση .m3u";
 "M3uFileImport" = "Προσθήκη στη βιβλιοθήκη";
 "MultiDiscAddFile" = "Προσθήκη αρχείου %@";
-"MultiDiscImportErrorConflict" = "Σφάλμα: Αδυναμία ανάμειξης .cue .cdi και .chd";
-"MultiDiscImportErrorMissing" = "Σφάλμα: Δεν βρέθηκαν .cue/.cdi/.chd αρχεία";
 "GenerateM3uFailed" = "Αποτυχία δημιουργίας .m3u";
 "MultiDiscCloseAlert" = ".m3u δημιουργήθηκε. Κλείστε μετά την εισαγωγή";
 "MultiDiscContinueClose" = "Κλείσιμο";

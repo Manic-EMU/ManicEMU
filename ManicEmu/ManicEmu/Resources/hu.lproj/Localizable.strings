@@ -487,12 +487,9 @@ Nyomja meg a kontroller gombját...";
 
 "ImportMissingFile" = "%@ importálása sikertelen: Hiányzó %@ fájl";
 "MultiDiscBuilder" = "MultiDisc segéd";
-"MultiDiscBuilderDesc" = "Lemezt cserélhető .m3u fájlokat készít többlemezes játékokhoz (.cue(.bin) .cdi vagy .chd). Hagyd ki, ha már van .m3u fájlod – importáld közvetlenül a Játék importálás menüponton keresztül";
 "M3uFileShare" = ".m3u fájl megosztása";
 "M3uFileImport" = "Hozzáadás a gyűjteményhez";
 "MultiDiscAddFile" = "%@ fájl hozzáadása";
-"MultiDiscImportErrorConflict" = "Hiba: .cue .cdi és .chd fájlok nem keverhetők";
-"MultiDiscImportErrorMissing" = "Hiba: .cue/.cdi/.chd fájl nem található";
 "GenerateM3uFailed" = ".m3u létrehozása sikertelen";
 "MultiDiscCloseAlert" = ".m3u elkészült. Zárja be az importálás után";
 "MultiDiscContinueClose" = "Bezárás";

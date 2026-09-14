@@ -479,12 +479,9 @@ Tryck på kontrollknappen...";
 
 "ImportMissingFile" = "Misslyckades importera %@: Filen %@ saknas";
 "MultiDiscBuilder" = "Multidiskhjälpare";
-"MultiDiscBuilderDesc" = "Skapar bytbara .m3u-filer för multidisk-spel (.cue(.bin) .cdi eller .chd). Hoppa över om du redan har .m3u - importera direkt via Spelimport";
 "M3uFileShare" = "Dela .m3u-fil";
 "M3uFileImport" = "Lägg till i bibliotek";
 "MultiDiscAddFile" = "Lägg till %@-fil";
-"MultiDiscImportErrorConflict" = "Fel: Kan inte blanda .cue .cdi och .chd";
-"MultiDiscImportErrorMissing" = "Fel: Hittade inga .cue/.cdi/.chd-filer";
 "GenerateM3uFailed" = "Misslyckades skapa .m3u";
 "MultiDiscCloseAlert" = ".m3u skapad. Stäng sidan efter import";
 "MultiDiscContinueClose" = "Stäng";

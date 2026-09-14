@@ -482,12 +482,9 @@
 
 "ImportMissingFile" = "%@のインポート失敗：ファイル%@が見つかりません";
 "MultiDiscBuilder" = "マルチディスクヘルパー";
-"MultiDiscBuilderDesc" = "マルチディスクヘルパーは、マルチディスクゲーム(.cue(.bin) .cdi/.chd)用のディスク交換可能な.m3uファイルを作成します。既に.m3uファイルをお持ちの場合はスキップし、ゲームインポートから直接追加してください";
 "M3uFileShare" = ".m3uファイルを共有";
 "M3uFileImport" = "ライブラリに追加";
 "MultiDiscAddFile" = "%@ファイルを追加";
-"MultiDiscImportErrorConflict" = "エラー：.cue .cdiと.chdファイルを混在できません";
-"MultiDiscImportErrorMissing" = "エラー：.cue .cdiまたは.chdファイルが見つかりません";
 "GenerateM3uFailed" = ".m3uファイルの生成に失敗";
 "MultiDiscCloseAlert" = ".m3uファイルが生成されました。ライブラリにインポート後、この画面を閉じてください";
 "MultiDiscContinueClose" = "閉じる";

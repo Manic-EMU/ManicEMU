@@ -485,12 +485,9 @@ Kontrolcü düğmesine basın...";
 
 "ImportMissingFile" = "%@ içe aktarma başarısız: %@ dosyası eksik";
 "MultiDiscBuilder" = "Çoklu Disk Yardımcısı";
-"MultiDiscBuilderDesc" = "Çok diskli oyunlar (.cue(.bin) .cdi veya .chd) için disk değiştirilebilir .m3u dosyaları oluşturur. Zaten .m3u dosyanız varsa atlayın - doğrudan Oyun İçe Aktarma ile içe aktarın";
 "M3uFileShare" = ".m3u Dosyasını Paylaş";
 "M3uFileImport" = "Kütüphaneye Ekle";
 "MultiDiscAddFile" = "%@ Dosyası Ekle";
-"MultiDiscImportErrorConflict" = "Hata: .cue .cdi ve .chd dosyaları karıştırılamaz";
-"MultiDiscImportErrorMissing" = "Hata: .cue .cdi veya .chd dosyası bulunamadı";
 "GenerateM3uFailed" = ".m3u dosyası oluşturulamadı";
 "MultiDiscCloseAlert" = ".m3u dosyası oluşturuldu. Kütüphaneye aktardıktan sonra bu sayfayı kapatın";
 "MultiDiscContinueClose" = "Kapatmaya Devam Et";

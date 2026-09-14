@@ -459,12 +459,9 @@ Tekan butang pengawal...";
 
 "ImportMissingFile" = "Gagal import %@: Fail %@ tiada";
 "MultiDiscBuilder" = "Pembantu MultiDisc";
-"MultiDiscBuilderDesc" = "Cipta fail .m3u tukar-cakera untuk permainan multidisc (.cue(.bin) .cdi atau .chd). Langkau jika sudah ada .m3u - import terus melalui Import Permainan";
 "M3uFileShare" = "Kongsi Fail .m3u";
 "M3uFileImport" = "Tambah ke Pustaka";
 "MultiDiscAddFile" = "Tambah Fail %@";
-"MultiDiscImportErrorConflict" = "Ralat: Tidak boleh campur .cue .cdi dan .chd";
-"MultiDiscImportErrorMissing" = "Ralat: Tiada fail .cue/.cdi/.chd dijumpai";
 "GenerateM3uFailed" = "Gagal hasilkan .m3u";
 "MultiDiscCloseAlert" = "Fail .m3u dihasilkan. Tutup halaman selepas import";
 "MultiDiscContinueClose" = "Tutup";

@@ -490,12 +490,9 @@
 
 "ImportMissingFile" = "導入%@失敗：缺少文件%@";
 "MultiDiscBuilder" = "多光碟助手";
-"MultiDiscBuilderDesc" = "此工具為多光碟遊戲(.cue(.bin) .cdi或.chd)建立可換碟的.m3u檔案。若已有.m3u檔案，請跳過此步驟並直接透過遊戲導入功能添加";
 "M3uFileShare" = "分享.m3u檔案";
 "M3uFileImport" = "加入遊戲庫";
 "MultiDiscAddFile" = "加入%@檔案";
-"MultiDiscImportErrorConflict" = "錯誤：不可混合.cue .cdi與.chd檔案";
-"MultiDiscImportErrorMissing" = "錯誤：找不到.cue .cdi或.chd檔案";
 "GenerateM3uFailed" = "生成.m3u檔案失敗";
 "MultiDiscCloseAlert" = ".m3u檔案已生成。導入遊戲庫後可關閉此頁面";
 "MultiDiscContinueClose" = "繼續關閉";

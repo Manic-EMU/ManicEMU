@@ -488,12 +488,9 @@ Paina ohjaimen nappia...";
 
 "ImportMissingFile" = "%@-tuonti epäonnistui: Tiedostoa %@ ei löydy";
 "MultiDiscBuilder" = "Monilevyavustin";
-"MultiDiscBuilderDesc" = "Luo levyjä vaihdettavia .m3u-tiedostoja monilevyisille peleille (.cue(.bin) .cdi tai .chd). Ohita jos sinulla on jo .m3u - tuo suoraan Pelituonnissa";
 "M3uFileShare" = "Jaa .m3u-tiedosto";
 "M3uFileImport" = "Lisää kirjastoon";
 "MultiDiscAddFile" = "Lisää %@-tiedosto";
-"MultiDiscImportErrorConflict" = "Virhe: .cue .cdi ja .chd tiedostoja ei voi sekoittaa";
-"MultiDiscImportErrorMissing" = "Virhe: .cue/.cdi/.chd tiedostoja ei löytynyt";
 "GenerateM3uFailed" = ".m3u-tiedoston luonti epäonnistui";
 "MultiDiscCloseAlert" = ".m3u luotu. Sulje sivu tuonnin jälkeen";
 "MultiDiscContinueClose" = "Sulje";

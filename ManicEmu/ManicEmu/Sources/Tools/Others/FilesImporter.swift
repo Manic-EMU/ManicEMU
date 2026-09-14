@@ -659,6 +659,9 @@ extension FilesImporter {
                         if game.gameType == .j2me, let j2MEManifest = J2MEManifest.read(from: url.path) {
                             game.aliasName = j2MEManifest.displayName
                             game.extras = [ExtraKey.j2meScreenSize.rawValue: j2MEManifest.screenSize.stringValue].jsonData()
+                            if let iconData = j2MEManifest.imageData {
+                                game.gameCover = CreamAsset.create(objectID: game.id, propName: "gameCover", data: iconData)
+                            }
                         }
                         
                         //Obtain the game code for PSP.
@@ -1262,31 +1265,27 @@ extension FilesImporter {
                         continue
                     }
                     for fileName in fileNames {
-                        //读取m3u的每一行
+                        // Read each playlist entry and require the referenced file to be in this import batch.
                         if !fileName.isEmpty {
-                            //查询这个文件是否存在
                             if let fileUrl = urls.first(where: { $0.lastPathComponent == fileName}) {
-                                if fileUrl.pathExtension.lowercased() == "cue" {
-                                    //cue文件则从cueItems中进行判断
-                                    if let cue = multiFileItems.first(where: { $0.url.lastPathComponent == fileName }) {
-                                        //cue文件存在 则排除这个cue
-                                        excludeMultiFiles.append(cue)
-                                        excludeUrls.append(cue.url)
-                                        m3uFiles.append(cue.url)
-                                        m3uFiles.append(contentsOf: cue.files)
+                                let playlistExt = fileUrl.pathExtension.lowercased()
+                                if playlistExt == "cue" || playlistExt == "gdi" {
+                                    // Attach cue/gdi companion tracks so they are not imported as separate games.
+                                    if let companion = multiFileItems.first(where: { $0.url.lastPathComponent == fileName }) {
+                                        excludeMultiFiles.append(companion)
+                                        excludeUrls.append(companion.url)
+                                        m3uFiles.append(companion.url)
+                                        m3uFiles.append(contentsOf: companion.files)
                                     } else {
-                                        //m3u中的不包含这个cue文件 说明这个m3u不合法，文件有缺失 则不导入这个m3u文件，并且将m3u中的其他文件也一并排除
                                         isBadM3u = true
                                         missFileName = fileName
                                     }
                                 } else {
-                                    //文件存在 则将这个文件排除，不再需要导入
                                     excludeUrls.append(fileUrl)
                                     m3uFiles.append(fileUrl)
                                 }
 
                             } else {
-                                //m3u中的文件不存在 说明这个m3u不合法，文件有缺失 则不导入这个m3u文件，并且将m3u中的其他文件也一并排除
                                 isBadM3u = true
                                 missFileName = fileName
                                 break
@@ -1294,10 +1293,9 @@ extension FilesImporter {
                         }
                     }
                     if isBadM3u {
-                        //排除错误文件
                         excludeUrls.append(url)
                         for fileName in fileNames {
-                            if fileName.pathExtension.lowercased() == "cue" {
+                            if fileName.pathExtension.lowercased() == "cue" || fileName.pathExtension.lowercased() == "gdi" {
                                 excludeMultiFiles.append(contentsOf: multiFileItems.filter({ $0.url.lastPathComponent == fileName }))
                             } else {
                                 excludeUrls.append(contentsOf: urls.filter({ $0.lastPathComponent == fileName }))
@@ -1305,12 +1303,10 @@ extension FilesImporter {
                         }
                         resultErrors.append(.missingFile(errorFileName: url.lastPathComponent, missingFileName: missFileName))
                     } else {
-                        //m3u文件合法
                         resultUrls.append(url)
                         resultM3uItems.append(MultiFileRom(url: url, files: m3uFiles))
                     }
                 } else {
-                    //无法读取m3u文件
                     resultErrors.append(.badFile(fileName: url.lastPathComponent))
                 }
             } else {
@@ -1318,7 +1314,6 @@ extension FilesImporter {
             }
         }
         
-        //排除m3u的files
         resultUrls.removeAll(where: { excludeUrls.contains([$0]) })
         
         let resultCueItems = multiFileItems.filter { originCue in

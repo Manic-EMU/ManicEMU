@@ -492,12 +492,9 @@
 
 "ImportMissingFile" = "导入%@失败，缺失文件：%@";
 "MultiDiscBuilder" = "多碟助手";
-"MultiDiscBuilderDesc" = "多碟助手可以帮你将多碟游戏格式 .cue(.bin) .cdi 或 .chd 生成支持换碟的m3u文件, 如果你已经拥有m3u文件则无需使用此助手，直接使用游戏导入功能导入m3u";
 "M3uFileShare" = "分享m3u文件";
 "M3uFileImport" = "导入游戏库";
 "MultiDiscAddFile" = "添加%@文件";
-"MultiDiscImportErrorConflict" = "cue cdi和chd只能任选其一导入";
-"MultiDiscImportErrorMissing" = "没有发现cue cdi或chd文件";
 "GenerateM3uFailed" = "无法生成m3u文件";
 "MultiDiscCloseAlert" = "m3u文件已经生成，如果你还没有导入到游戏库中，可以选择导入后关闭页面。";
 "MultiDiscContinueClose" = "继续关闭";
@@ -1164,3 +1161,8 @@
 "EditLink" = "编辑链接";
 "AddUrlGameUpdated" = "游戏链接保存成功";
 "AddGameLinkDesc" = "支持的模拟器：%@";
+
+"MultiDiscBuilderDesc" = "多碟助手可为多碟游戏生成m3u文件，方便在游戏中换碟。请添加相同格式的光盘镜像，例如 .cue(.bin)、.gdi、.chd、.cdi、.iso、.rvz 或 .d64。若已有m3u文件，可跳过此步骤，直接导入即可。";
+"MultiDiscSupportedFormats" = "支持的格式：%@";
+"MultiDiscImportErrorConflict" = "错误：不能混用不同格式的光盘镜像";
+"MultiDiscImportErrorMissing" = "错误：未找到支持的光盘镜像";

@@ -297,9 +297,11 @@ extension Game {
             if seen.insert(key).inserted {
                 urls.append(fileURL)
             }
-            if fileURL.pathExtension.lowercased() == "cue", fileURL != playlist,
+            if fileURL.pathExtension.lowercased() == "cue" || fileURL.pathExtension.lowercased() == "gdi",
+               fileURL != playlist,
                let nested = try? String(contentsOf: fileURL, encoding: .utf8) {
-                for nestedName in cueFileNames(in: nested) {
+                let nestedNames = fileURL.pathExtension.lowercased() == "cue" ? cueFileNames(in: nested) : gdiFileNames(in: nested)
+                for nestedName in nestedNames {
                     let nestedURL = fileURL.deletingLastPathComponent().appendingPathComponent(nestedName)
                     let nestedKey = nestedURL.lastPathComponent.lowercased()
                     if seen.insert(nestedKey).inserted {
@@ -339,6 +341,18 @@ extension Game {
         quoted?.matches(in: text, range: NSRange(location: 0, length: nsText.length)).forEach { match in
             if match.numberOfRanges > 1 {
                 names.append(nsText.substring(with: match.range(at: 1)))
+            }
+        }
+        if !names.isEmpty {
+            return names
+        }
+        let lines = text.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty && !$0.hasPrefix("#") }
+        for line in lines.dropFirst() {
+            let components = line.split(separator: " ", omittingEmptySubsequences: true)
+            if components.count >= 5 {
+                names.append(String(components[components.count - 2]))
             }
         }
         return names

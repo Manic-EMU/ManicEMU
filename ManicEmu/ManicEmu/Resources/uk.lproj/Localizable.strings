@@ -487,12 +487,9 @@
 
 "ImportMissingFile" = "Помилка імпорту %@: Відсутній файл %@";
 "MultiDiscBuilder" = "Помічник мультидисків";
-"MultiDiscBuilderDesc" = "Створює .m3u файли для зміни дисків у мультидискових іграх (.cue(.bin) .cdi або .chd). Пропустіть, якщо вже маєте .m3u – імпортуйте напряму через Імпорт гри";
 "M3uFileShare" = "Поділитися .m3u";
 "M3uFileImport" = "Додати до бібліотеки";
 "MultiDiscAddFile" = "Додати файл %@";
-"MultiDiscImportErrorConflict" = "Помилка: Не можна змішувати .cue .cdi та .chd";
-"MultiDiscImportErrorMissing" = "Помилка: Файлів .cue/.cdi/.chd не знайдено";
 "GenerateM3uFailed" = "Не вдалося створити .m3u";
 "MultiDiscCloseAlert" = ".m3u створено. Закрийте після імпорту";
 "MultiDiscContinueClose" = "Закрити";

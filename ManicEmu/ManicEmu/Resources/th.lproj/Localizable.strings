@@ -475,12 +475,9 @@
 
 "ImportMissingFile" = "นำเข้า %@ ไม่สำเร็จ: ไม่พบไฟล์ %@";
 "MultiDiscBuilder" = "ตัวช่วยหลายดิสก์";
-"MultiDiscBuilderDesc" = "สร้างไฟล์ .m3u สำหรับเปลี่ยนดิสก์ในเกมหลายดิสก์ (.cue(.bin) .cdi หรือ .chd) ข้ามขั้นตอนนี้หากคุณมีไฟล์ .m3u อยู่แล้ว - นำเข้าได้โดยตรงผ่านการนำเข้าเกม";
 "M3uFileShare" = "แชร์ไฟล์ .m3u";
 "M3uFileImport" = "เพิ่มไปที่ไลบรารี";
 "MultiDiscAddFile" = "เพิ่มไฟล์ %@";
-"MultiDiscImportErrorConflict" = "ข้อผิดพลาด: ไม่สามารถผสมไฟล์ .cue .cdi และ .chd";
-"MultiDiscImportErrorMissing" = "ข้อผิดพลาด: ไม่พบไฟล์ .cue .cdi หรือ .chd";
 "GenerateM3uFailed" = "สร้างไฟล์ .m3u ไม่สำเร็จ";
 "MultiDiscCloseAlert" = "สร้างไฟล์ .m3u เสร็จสิ้น ปิดหน้านี้หลังนำเข้าไปที่ไลบรารี";
 "MultiDiscContinueClose" = "ปิด";

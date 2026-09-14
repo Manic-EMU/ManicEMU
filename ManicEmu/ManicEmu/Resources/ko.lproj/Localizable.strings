@@ -489,12 +489,9 @@
 
 "ImportMissingFile" = "%@ 가져오기 실패: %@ 파일 없음";
 "MultiDiscBuilder" = "멀티디스크 도우미";
-"MultiDiscBuilderDesc" = "멀티디스크 게임(.cue(.bin) .cdi 또는 .chd)용 디스크 교체 가능 .m3u 파일 생성. 이미 .m3u 파일이 있다면 건너뛰고 게임 가져오기로 직접 추가하세요";
 "M3uFileShare" = ".m3u 파일 공유";
 "M3uFileImport" = "라이브러리에 추가";
 "MultiDiscAddFile" = "%@ 파일 추가";
-"MultiDiscImportErrorConflict" = "오류: .cue .cdi와 .chd 파일 혼합 불가";
-"MultiDiscImportErrorMissing" = "오류: .cue .cdi 또는 .chd 파일 없음";
 "GenerateM3uFailed" = ".m3u 파일 생성 실패";
 "MultiDiscCloseAlert" = ".m3u 파일 생성됨. 라이브러리로 가져온 후 이 페이지 닫기";
 "MultiDiscContinueClose" = "닫기";

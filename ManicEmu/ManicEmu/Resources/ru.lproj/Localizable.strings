@@ -481,12 +481,9 @@
 
 "ImportMissingFile" = "Ошибка импорта %@: Отсутствует файл %@";
 "MultiDiscBuilder" = "Помощник многодисковых игр";
-"MultiDiscBuilderDesc" = "Создает .m3u файлы для переключения дисков в многодисковых играх (.cue(.bin) .cdi или .chd). Пропустите, если у вас уже есть .m3u - импортируйте его через Импорт Игр";
 "M3uFileShare" = "Поделиться .m3u";
 "M3uFileImport" = "Добавить в библиотеку";
 "MultiDiscAddFile" = "Добавить файл %@";
-"MultiDiscImportErrorConflict" = "Ошибка: Нельзя смешивать .cue .cdi и .chd";
-"MultiDiscImportErrorMissing" = "Ошибка: Файлы .cue/.cdi/.chd не найдены";
 "GenerateM3uFailed" = "Ошибка создания .m3u";
 "MultiDiscCloseAlert" = ".m3u создан. Закройте после импорта";
 "MultiDiscContinueClose" = "Закрыть";

@@ -485,12 +485,9 @@
 
 "ImportMissingFile" = "Uvoz %@ neuspješan: Nedostaje datoteka %@";
 "MultiDiscBuilder" = "MultiDisc pomoćnik";
-"MultiDiscBuilderDesc" = "Stvara .m3u datoteke za višediskne igre (.cue(.bin) .cdi ili .chd). Preskoči ako već imaš .m3u - uvezi izravno putem Uvoza igre";
 "M3uFileShare" = "Dijeli .m3u datoteku";
 "M3uFileImport" = "Dodaj u biblioteku";
 "MultiDiscAddFile" = "Dodaj %@ datoteku";
-"MultiDiscImportErrorConflict" = "Greška: Nemiješati .cue .cdi i .chd datoteke";
-"MultiDiscImportErrorMissing" = "Greška: Nema .cue/.cdi/.chd datoteka";
 "GenerateM3uFailed" = "Greška pri stvaranju .m3u";
 "MultiDiscCloseAlert" = ".m3u stvoren. Zatvori stranicu nakon uvoza";
 "MultiDiscContinueClose" = "Zatvori";

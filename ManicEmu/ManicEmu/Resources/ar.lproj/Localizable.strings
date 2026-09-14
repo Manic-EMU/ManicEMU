@@ -460,12 +460,9 @@
 
 "ImportMissingFile" = "فشل استيراد %@: الملف %@ مفقود";
 "MultiDiscBuilder" = "مساعد الأقراص المتعددة";
-"MultiDiscBuilderDesc" = "ينشئ ملفات .m3u قابلة للتبديل لألعاب متعددة الأقراص (.cue(.bin) .cdi أو .chd). تخطى هذا إذا كان لديك ملف .m3u - استورده مباشرة عبر استيراد اللعبة";
 "M3uFileShare" = "مشاركة ملف .m3u";
 "M3uFileImport" = "إضافة إلى المكتبة";
 "MultiDiscAddFile" = "إضافة ملف %@";
-"MultiDiscImportErrorConflict" = "خطأ: لا يمكن خلط ملفات .cue .cdi و .chd";
-"MultiDiscImportErrorMissing" = "خطأ: لم يتم العثور على ملفات .cue .cdi أو .chd";
 "GenerateM3uFailed" = "فشل إنشاء ملف .m3u";
 "MultiDiscCloseAlert" = "تم إنشاء ملف .m3u. أغلق هذه الصفحة بعد استيراده إلى مكتبتك";
 "MultiDiscContinueClose" = "متابعة الإغلاق";

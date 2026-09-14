@@ -488,12 +488,9 @@
 
 "ImportMissingFile" = "ייבוא %@ נכשל: הקובץ %@ חסר";
 "MultiDiscBuilder" = "מנהל רב-דיסקים";
-"MultiDiscBuilderDesc" = "יוצר קבצי .m3u להחלפת דיסקים במשחקי רב-דיסק (.cue(.bin) .cdi או .chd). דלג אם כבר יש לך .m3u - ייבא ישירות דרך ייבוא משחק";
 "M3uFileShare" = "שתף קובץ .m3u";
 "M3uFileImport" = "הוסף לספרייה";
 "MultiDiscAddFile" = "הוסף קובץ %@";
-"MultiDiscImportErrorConflict" = "שגיאה: לא ניתן לערבב .cue .cdi ו־.chd";
-"MultiDiscImportErrorMissing" = "שגיאה: לא נמצאו קבצי .cue/.cdi/.chd";
 "GenerateM3uFailed" = "יצירת .m3u נכשלה";
 "MultiDiscCloseAlert" = "קובץ .m3u נוצר. סגור לאחר הייבוא";
 "MultiDiscContinueClose" = "סגור";

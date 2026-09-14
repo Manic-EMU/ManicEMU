@@ -487,12 +487,9 @@ Prem el botó del control...";
 
 "ImportMissingFile" = "Error important %@: Falta fitxer %@";
 "MultiDiscBuilder" = "Ajudant multidisc";
-"MultiDiscBuilderDesc" = "Crea fitxers .m3u intercanviables per jocs multidisc (.cue(.bin) .cdi o .chd). Omet si ja tens .m3u - importa'l directament via Importar Joc";
 "M3uFileShare" = "Compartir fitxer .m3u";
 "M3uFileImport" = "Afegir a biblioteca";
 "MultiDiscAddFile" = "Afegir fitxer %@";
-"MultiDiscImportErrorConflict" = "Error: No es poden barrejar .cue .cdi i .chd";
-"MultiDiscImportErrorMissing" = "Error: No s'han trobat fitxers .cue/.cdi/.chd";
 "GenerateM3uFailed" = "Error generant .m3u";
 "MultiDiscCloseAlert" = "Fitxer .m3u generat. Tanca després d'importar";
 "MultiDiscContinueClose" = "Tancar";

@@ -479,12 +479,9 @@ Nhấn nút điều khiển...";
 
 "ImportMissingFile" = "Nhập %@ thất bại: Thiếu tệp %@";
 "MultiDiscBuilder" = "Trợ lý đa đĩa";
-"MultiDiscBuilderDesc" = "Tạo tệp .m3u có thể đổi đĩa cho game đa đĩa (.cue(.bin) .cdi hoặc .chd). Bỏ qua nếu đã có .m3u - nhập trực tiếp qua Nhập Game";
 "M3uFileShare" = "Chia sẻ tệp .m3u";
 "M3uFileImport" = "Thêm vào thư viện";
 "MultiDiscAddFile" = "Thêm tệp %@";
-"MultiDiscImportErrorConflict" = "Lỗi: Không thể trộn tệp .cue .cdi và .chd";
-"MultiDiscImportErrorMissing" = "Lỗi: Không tìm thấy tệp .cue/.cdi/.chd";
 "GenerateM3uFailed" = "Tạo tệp .m3u thất bại";
 "MultiDiscCloseAlert" = "Đã tạo tệp .m3u. Đóng trang sau khi nhập vào thư viện";
 "MultiDiscContinueClose" = "Đóng";

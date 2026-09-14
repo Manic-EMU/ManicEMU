@@ -487,12 +487,9 @@
 
 "ImportMissingFile" = "%@ आयात विफल: %@ फ़ाइल गायब";
 "MultiDiscBuilder" = "मल्टीडिस्क सहायक";
-"MultiDiscBuilderDesc" = "मल्टीडिस्क गेम्स (.cue(.bin) .cdi या .chd) के लिए डिस्क-बदली .m3u फ़ाइलें बनाता है। यदि पहले से .m3u फ़ाइल है तो छोड़ें - सीधे गेम आयात से जोड़ें";
 "M3uFileShare" = ".m3u फ़ाइल साझा करें";
 "M3uFileImport" = "लाइब्रेरी में जोड़ें";
 "MultiDiscAddFile" = "%@ फ़ाइल जोड़ें";
-"MultiDiscImportErrorConflict" = "त्रुटि: .cue .cdi और .chd फ़ाइलें मिश्रित नहीं की जा सकतीं";
-"MultiDiscImportErrorMissing" = "त्रुटि: कोई .cue .cdi या .chd फ़ाइल नहीं मिली";
 "GenerateM3uFailed" = ".m3u फ़ाइल बनाने में विफल";
 "MultiDiscCloseAlert" = ".m3u फ़ाइल बन गई। लाइब्रेरी में आयात करने के बाद पेज बंद करें";
 "MultiDiscContinueClose" = "बंद करना जारी रखें";

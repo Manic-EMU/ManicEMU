@@ -486,12 +486,9 @@ Druk op de controllerknop...";
 
 "ImportMissingFile" = "Import %@ mislukt: Bestand %@ ontbreekt";
 "MultiDiscBuilder" = "MultiDisc-hulpmiddel";
-"MultiDiscBuilderDesc" = "Maakt verwisselbare .m3u-bestanden voor multidisc-spellen (.cue(.bin) .cdi of .chd). Overslaan als u al een .m3u heeft - importeer direct via Spel importeren";
 "M3uFileShare" = ".m3u-bestand delen";
 "M3uFileImport" = "Toevoegen aan bibliotheek";
 "MultiDiscAddFile" = "%@-bestand toevoegen";
-"MultiDiscImportErrorConflict" = "Fout: .cue .cdi en .chd niet mengen";
-"MultiDiscImportErrorMissing" = "Fout: Geen .cue/.cdi/.chd-bestanden gevonden";
 "GenerateM3uFailed" = ".m3u aanmaken mislukt";
 "MultiDiscCloseAlert" = ".m3u aangemaakt. Sluit na importeren";
 "MultiDiscContinueClose" = "Doorgaan met sluiten";

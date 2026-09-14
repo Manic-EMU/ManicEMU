@@ -14,19 +14,60 @@ class MultiDiscBuilderView: BaseView {
         var files: [URL] { get set }
     }
     
-    struct CUE: M3uItem {
+    struct DiscItem: M3uItem {
         var url: URL
         var files: [URL]
     }
     
-    struct CHD: M3uItem {
-        var url: URL
-        var files: [URL]
-    }
-    
-    struct CDI: M3uItem {
-        var url: URL
-        var files: [URL]
+    /// One playlist can only contain one disc-image type. `.cue`/`.gdi` keep companion tracks; others are one file per disc.
+    private enum PlaylistFormat: Equatable {
+        case undetermined
+        case cue
+        case gdi
+        case standalone(String)
+        
+        static let standaloneExtensions = ["chd", "cdi", "iso", "rvz", "gcm", "gcz", "img", "d64"]
+        static let cueSidecars = ["bin", "iso", "img"]
+        static let gdiSidecars = ["bin", "raw", "iso"]
+        
+        var pickerExtensions: [String] {
+            switch self {
+            case .undetermined:
+                return ["cue", "gdi", "bin", "raw"] + Self.standaloneExtensions
+            case .cue:
+                return ["cue"] + Self.cueSidecars
+            case .gdi:
+                return ["gdi"] + Self.gdiSidecars
+            case .standalone(let ext):
+                return [ext]
+            }
+        }
+        
+        var addButtonSuffix: String {
+            switch self {
+            case .undetermined:
+                return "ROM"
+            case .cue:
+                return ".cue .bin"
+            case .gdi:
+                return ".gdi .bin .raw"
+            case .standalone(let ext):
+                return ".\(ext)"
+            }
+        }
+        
+        static func from(fileExtension ext: String) -> PlaylistFormat {
+            switch ext {
+            case "cue": return .cue
+            case "gdi": return .gdi
+            default: return .standalone(ext)
+            }
+        }
+        
+        static var supportedFormatList: String {
+            ([".cue(.bin)", ".gdi(.bin .raw)"] + standaloneExtensions.map { ".\($0)" })
+                .joined(separator: "   ")
+        }
     }
     
     private var datas: [M3uItem] = [] {
@@ -35,30 +76,18 @@ class MultiDiscBuilderView: BaseView {
         }
     }
     
-    private enum FileType {
-        case undetermined, cue, chd, cdi
-    }
-    
-    private var fileType: FileType {
-        get {
-            if self.datas.count == 0 {
-                return .undetermined
-            } else {
-                if self.datas.first!.url.pathExtension.lowercased() == "cue" {
-                    return .cue
-                } else if self.datas.first!.url.pathExtension.lowercased() == "chd" {
-                    return .chd
-                } else  {
-                    return .cdi
-                }
-            }
+    private var playlistFormat: PlaylistFormat {
+        guard let ext = datas.first?.url.pathExtension.lowercased(), !ext.isEmpty else {
+            return .undetermined
         }
+        return PlaylistFormat.from(fileExtension: ext)
     }
     
     private lazy var navigationView: ASNavigationView = {
         let view = ASNavigationView(.defaultNavigation(title: R.string.localizable.multiDiscBuilder(),
                                                        titleIcon: .symbolImage(R.image.disc_iconSymbols()),
-                                                       tools: [.symbolImage(R.image.ellipsis_iconSymbols())]))
+                                                       tools: [.symbolImage(R.image.faq_iconSymbols()),
+                                                               .symbolImage(R.image.ellipsis_iconSymbols())]))
         view.didTapClose = { [weak self] in
             guard let self else { return }
             guard self.datas.count > 0, !self.hasAddToLibrary else {
@@ -70,7 +99,6 @@ class MultiDiscBuilderView: BaseView {
                              confirmTitle: R.string.localizable.multiDiscContinueClose(),
                              cancelAction: { [weak self] in
                 guard let self else { return }
-                //导入游戏库
                 self.importGame()
                 self.hide()
             }, confirmAction: { [weak self] in
@@ -79,13 +107,16 @@ class MultiDiscBuilderView: BaseView {
             })
         }
         
-        view.didTapTools = { [weak self] _ in
+        view.didTapTools = { [weak self] index in
             guard let self else { return }
-            //more
+            if index == 0 {
+                UIView.makeAlert(detail: R.string.localizable.multiDiscSupportedFormats(PlaylistFormat.supportedFormatList),
+                                 cancelTitle: R.string.localizable.gotIt())
+                return
+            }
             ChevronSheetView.show(stringOptions: [R.string.localizable.m3uFileShare()], completion: { [weak self] index in
                 guard let self else { return }
                 if let index {
-                    //share m3u file
                     if let url = self.generateM3uFile() {
                         ShareManager.shareFile(fileUrl: url)
                     } else {
@@ -188,7 +219,6 @@ class MultiDiscBuilderView: BaseView {
             UIView.makeToast(message: R.string.localizable.generateM3uFailed())
             return
         }
-        //导入游戏库
         if let m3uUrl = generateM3uFile() {
             var urls: [URL] = [m3uUrl]
             for item in datas {
@@ -233,6 +263,39 @@ class MultiDiscBuilderView: BaseView {
         }
         return layout
     }
+    
+    private func contentTypes(for extensions: [String]) -> [UTType] {
+        var seen = Set<String>()
+        var types: [UTType] = []
+        for ext in extensions {
+            guard seen.insert(ext).inserted else { continue }
+            guard let type = UTType(filenameExtension: ext) ?? UTType(filenameExtension: ext, conformingTo: .data) else { continue }
+            types.append(type)
+        }
+        return types
+    }
+    
+    private func copyToTemp(_ url: URL) -> URL {
+        let dest = URL(fileURLWithPath: R.Path.Temp.appendingPathComponent(url.lastPathComponent))
+        try? FileManager.safeCopyItem(at: url, to: dest, shouldReplace: true)
+        return dest
+    }
+    
+    private func appendDiscItems(_ items: [DiscItem]) {
+        guard !items.isEmpty else { return }
+        let format: PlaylistFormat
+        if let ext = items.first?.url.pathExtension.lowercased(), !ext.isEmpty {
+            format = PlaylistFormat.from(fileExtension: ext)
+        } else {
+            format = .undetermined
+        }
+        addItemText = R.string.localizable.multiDiscAddFile(format.addButtonSuffix)
+        var next = datas
+        for item in items {
+            next.append(item)
+        }
+        datas = next
+    }
 }
 
 extension MultiDiscBuilderView: UICollectionViewDataSource {
@@ -249,7 +312,6 @@ extension MultiDiscBuilderView: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withClass: MultiDiscDescCollectionCell.self, for: indexPath)
             return cell
         } else if indexPath.section == datas.count + 1 {
-            //添加文件按钮
             let cell = collectionView.dequeueReusableCell(withClass: MultiDiscAddCollectionCell.self, for: indexPath)
             cell.titleLabel.text = addItemText
             return cell
@@ -258,11 +320,10 @@ extension MultiDiscBuilderView: UICollectionViewDataSource {
             cell.setData(index: indexPath.section, item: datas[indexPath.section-1])
             cell.deleteIcon.addTapGesture { [weak self] gesture in
                 guard let self else { return }
-                self.datas.remove(at: indexPath.section-1)
-                self.collectionView.reloadData()
-                if self.datas.count == 0 {
+                if self.datas.count == 1 {
                     self.addItemText = R.string.localizable.multiDiscAddFile("ROM")
                 }
+                self.datas.remove(at: indexPath.section-1)
             }
             return cell
         }
@@ -277,73 +338,70 @@ extension MultiDiscBuilderView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == datas.count + 1 {
-            let supportedType: [UTType]
-            if let cue = UTType(filenameExtension: "cue"), let bin = UTType(filenameExtension: "bin"), let chd = UTType(filenameExtension: "chd"), let cdi = UTType(filenameExtension: "cdi") {
-                switch self.fileType {
+            let supportedTypes = contentTypes(for: playlistFormat.pickerExtensions)
+            guard !supportedTypes.isEmpty else { return }
+            FilesImporter.shared.presentImportController(supportedTypes: supportedTypes) { [weak self] urls in
+                guard let self else { return }
+                let urls = urls.sorted(by: { $0.path < $1.path })
+                let selectedExts = Set(urls.map { $0.pathExtension.lowercased() }.filter { !$0.isEmpty })
+                let hasCue = selectedExts.contains("cue")
+                let hasGdi = selectedExts.contains("gdi")
+                let standaloneHits = PlaylistFormat.standaloneExtensions.filter { selectedExts.contains($0) }
+                
+                let ingestCompanion: Bool
+                switch self.playlistFormat {
+                case .cue, .gdi:
+                    ingestCompanion = true
+                case .standalone:
+                    ingestCompanion = false
                 case .undetermined:
-                    supportedType = [cue, bin, chd, cdi]
-                case .cue:
-                    supportedType = [cue, bin]
-                case .chd:
-                    supportedType = [chd]
-                case .cdi:
-                    supportedType = [cdi]
-                }
-                FilesImporter.shared.presentImportController(supportedTypes: supportedType) { [weak self] urls in
-                    guard let self else { return }
-                    let isCue = urls.contains(where: { $0.url?.pathExtension.lowercased() == "cue" })
-                    let isChd = urls.contains(where: { $0.url?.pathExtension.lowercased() == "chd" })
-                    let isCdi = urls.contains(where: { $0.url?.pathExtension.lowercased() == "cdi" })
-                    if (isCue || urls.contains(where: { $0.url?.pathExtension.lowercased() == "bin" })) && (isChd || isCdi) {
+                    if hasCue && hasGdi {
                         UIView.makeToast(message: R.string.localizable.multiDiscImportErrorConflict())
                         return
                     }
-                    let urls = urls.sorted(by: { $0.path < $1.path })
-                    if isCue {
-                        let (_, errors, cueItems) = FilesImporter.handleMultiFiles(urls: urls)
-                        if errors.count > 0 {
-                            UIView.makeAlert(detail: errors.reduce("", { $0 + $1.localizedDescription + "\n"}))
-                        }
-                        var cues = [CUE]()
-                        if cueItems.count > 0 {
-                            for item in cueItems {
-                                let tempCueUrl = URL(fileURLWithPath: R.Path.Temp.appendingPathComponent(item.url.lastPathComponent))
-                                try? FileManager.safeCopyItem(at: item.url, to: tempCueUrl)
-                                var bins = [URL]()
-                                for binUrl in item.files {
-                                    let tempBinUrl = URL(fileURLWithPath: R.Path.Temp.appendingPathComponent(binUrl.lastPathComponent))
-                                    try? FileManager.safeCopyItem(at: binUrl, to: tempBinUrl, shouldReplace: true)
-                                    bins.append(tempBinUrl)
-                                }
-                                cues.append(CUE(url: tempCueUrl, files: bins))
-                            }
-                            self.addItemText = R.string.localizable.multiDiscAddFile(".cue .bin")
-                            self.datas.append(contentsOf: cues)
-                            self.collectionView.reloadData()
-                        }
-                    } else if isChd {
-                        var chds = [CHD]()
-                        for url in urls {
-                            let tempChdUrl = URL(fileURLWithPath: R.Path.Temp.appendingPathComponent(url.lastPathComponent))
-                            try? FileManager.safeCopyItem(at: url, to: tempChdUrl, shouldReplace: true)
-                            chds.append(CHD(url: tempChdUrl, files: []))
-                        }
-                        self.datas.append(contentsOf: chds)
-                        self.addItemText = R.string.localizable.multiDiscAddFile(".chd")
-                        self.collectionView.reloadData()
-                    } else if isCdi {
-                        var cdis = [CDI]()
-                        for url in urls {
-                            let tempChdUrl = URL(fileURLWithPath: R.Path.Temp.appendingPathComponent(url.lastPathComponent))
-                            try? FileManager.safeCopyItem(at: url, to: tempChdUrl, shouldReplace: true)
-                            cdis.append(CDI(url: tempChdUrl, files: []))
-                        }
-                        self.datas.append(contentsOf: cdis)
-                        self.addItemText = R.string.localizable.multiDiscAddFile(".cdi")
-                        self.collectionView.reloadData()
-                    } else {
-                        UIView.makeToast(message: R.string.localizable.multiDiscImportErrorMissing())
+                    let sidecars = Set(hasCue ? PlaylistFormat.cueSidecars : (hasGdi ? PlaylistFormat.gdiSidecars : []))
+                    let foreignStandalone = standaloneHits.filter { !sidecars.contains($0) }
+                    if (hasCue || hasGdi) && !foreignStandalone.isEmpty {
+                        UIView.makeToast(message: R.string.localizable.multiDiscImportErrorConflict())
+                        return
                     }
+                    if !hasCue && !hasGdi && standaloneHits.count > 1 {
+                        UIView.makeToast(message: R.string.localizable.multiDiscImportErrorConflict())
+                        return
+                    }
+                    ingestCompanion = hasCue || hasGdi
+                }
+                
+                let standaloneExt: String?
+                if case .standalone(let ext) = self.playlistFormat {
+                    standaloneExt = ext
+                } else {
+                    standaloneExt = standaloneHits.first
+                }
+                
+                if ingestCompanion {
+                    let (_, errors, companionItems) = FilesImporter.handleMultiFiles(urls: urls)
+                    if errors.count > 0 {
+                        UIView.makeAlert(detail: errors.reduce("", { $0 + $1.localizedDescription + "\n"}))
+                    }
+                    let discs = companionItems.map { item in
+                        DiscItem(url: self.copyToTemp(item.url), files: item.files.map { self.copyToTemp($0) })
+                    }
+                    if discs.isEmpty {
+                        if errors.isEmpty {
+                            UIView.makeToast(message: R.string.localizable.multiDiscImportErrorMissing())
+                        }
+                        return
+                    }
+                    self.appendDiscItems(discs)
+                } else if let ext = standaloneExt {
+                    let discs = urls.compactMap { url -> DiscItem? in
+                        guard url.pathExtension.lowercased() == ext else { return nil }
+                        return DiscItem(url: self.copyToTemp(url), files: [])
+                    }
+                    self.appendDiscItems(discs)
+                } else {
+                    UIView.makeToast(message: R.string.localizable.multiDiscImportErrorMissing())
                 }
             }
         }

@@ -487,12 +487,9 @@ Pressione o botão do comando...";
 
 "ImportMissingFile" = "Falha ao importar %@: Ficheiro %@ em falta";
 "MultiDiscBuilder" = "Assistente multidisco";
-"MultiDiscBuilderDesc" = "Cria ficheiros .m3u intercambiáveis para jogos multidisco (.cue(.bin) .cdi ou .chd). Ignore se já tiver .m3u - importe diretamente via Importar Jogo";
 "M3uFileShare" = "Partilhar .m3u";
 "M3uFileImport" = "Adicionar à biblioteca";
 "MultiDiscAddFile" = "Adicionar ficheiro %@";
-"MultiDiscImportErrorConflict" = "Erro: Não misture .cue .cdi e .chd";
-"MultiDiscImportErrorMissing" = "Erro: Nenhum .cue/.cdi/.chd encontrado";
 "GenerateM3uFailed" = "Falha ao gerar .m3u";
 "MultiDiscCloseAlert" = ".m3u gerado. Feche após importação";
 "MultiDiscContinueClose" = "Fechar";

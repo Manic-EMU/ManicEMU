@@ -1490,6 +1490,7 @@
 					<string>iso</string>
 					<string>dol</string>
 					<string>elf</string>
+					<string>m3u</string>
 				</array>
 			</dict>
 		</dict>

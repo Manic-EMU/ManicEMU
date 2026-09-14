@@ -481,12 +481,9 @@ Stiskněte tlačítko ovladače...";
 
 "ImportMissingFile" = "Chyba při importu %@: Soubor %@ nebyl nalezen";
 "MultiDiscBuilder" = "Pomocník pro více disků";
-"MultiDiscBuilderDesc" = "Vytváří vyměnitelné .m3u soubory pro hry na více discích (.cue(.bin) .cdi nebo .chd). Přeskočte, pokud již .m3u máte – importujte přímo přes Import her";
 "M3uFileShare" = "Sdílet .m3u soubor";
 "M3uFileImport" = "Přidat do knihovny";
 "MultiDiscAddFile" = "Přidat soubor %@";
-"MultiDiscImportErrorConflict" = "Chyba: Nelze kombinovat .cue .cdi a .chd soubory";
-"MultiDiscImportErrorMissing" = "Chyba: Nenalezeny .cue/.cdi/.chd soubory";
 "GenerateM3uFailed" = "Chyba při vytváření .m3u";
 "MultiDiscCloseAlert" = ".m3u vytvořen. Po importu zavřete";
 "MultiDiscContinueClose" = "Zavřít";

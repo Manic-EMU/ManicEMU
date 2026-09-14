@@ -3,7 +3,7 @@
 //  ManicEmu
 //
 //  Reads the 6-character Game ID from common GC/Wii image headers.
-//  Covers iso/gcm, rvz/wia, wbfs, and elf/dol. Skips gcz/ciso/wad.
+//  Covers iso/gcm, rvz/wia, wbfs, elf/dol, and m3u (first readable disc). Skips gcz/ciso/wad.
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -18,6 +18,8 @@ enum DolphinGameID {
 
     static func read(from url: URL) -> String? {
         switch url.pathExtension.lowercased() {
+        case "m3u":
+            return readFromM3U(url)
         case "iso", "gcm":
             return readDiscHeader(from: url, offset: 0)
         case "rvz", "wia":
@@ -29,6 +31,20 @@ enum DolphinGameID {
         default:
             return nil
         }
+    }
+    
+    /// m3u playlists point at the real discs; use the first readable entry.
+    private static func readFromM3U(_ url: URL) -> String? {
+        guard let text = try? String(contentsOf: url, encoding: .utf8) else { return nil }
+        let directory = url.deletingLastPathComponent()
+        for line in text.components(separatedBy: .newlines) {
+            let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmed.isEmpty || trimmed.hasPrefix("#") { continue }
+            if let id = read(from: directory.appendingPathComponent(trimmed)) {
+                return id
+            }
+        }
+        return nil
     }
 
     /// ELF is shared with PSP; only call after the game is known to be NGC/Wii.
