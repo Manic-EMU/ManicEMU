@@ -14,7 +14,7 @@ import IceCream
 extension ImportService: CKRecordConvertible & CKRecordRecoverable { }
 
 enum ImportServiceType: Int, PersistableEnum {
-    case files, wifi, paste, googledrive, dropbox, onedrive, baiduyun, aliyun, samba, webdav, multiDisc, romPatcher
+    case files, wifi, paste, googledrive, dropbox, onedrive, baiduyun, aliyun, samba, webdav, multiDisc, romPatcher, romm
 }
 
 class ImportService: Object, ObjectUpdatable {
@@ -102,6 +102,8 @@ class ImportService: Object, ObjectUpdatable {
             R.string.localizable.multiDiscBuilder()
         case .romPatcher:
             "RomPatcher"
+        case .romm:
+            "RomM"
         }
     }
     
@@ -131,12 +133,14 @@ class ImportService: Object, ObjectUpdatable {
             R.image.import_multi_disc_icon()!
         case .romPatcher:
             R.image.import_rom_patcher()!
+        case .romm:
+            R.image.import_romm()!
         }
     }()
     
     var iconCornerRadius: Double {
         switch type {
-        case .files, .wifi, .paste, .googledrive, .dropbox, .onedrive, .baiduyun, .aliyun, .multiDisc, .romPatcher:
+        case .files, .wifi, .paste, .googledrive, .dropbox, .onedrive, .baiduyun, .aliyun, .multiDisc, .romPatcher, .romm:
             R.Size.CornerRadiusSmall
         case .samba, .webdav:
             0
@@ -155,6 +159,8 @@ class ImportService: Object, ObjectUpdatable {
             R.Color.Pink.withAlphaComponent(0.1)
         case .romPatcher:
             R.Color.Cyan.withAlphaComponent(0.1)
+        case .romm:
+            R.Color.BackgroundSecondary
         case .googledrive, .dropbox, .onedrive, .baiduyun, .aliyun:
             R.Color.BackgroundSecondary
         case .samba, .webdav:
@@ -164,7 +170,7 @@ class ImportService: Object, ObjectUpdatable {
     
     var iconBorderColor: UIColor {
         switch type {
-        case .files, .wifi, .paste, .googledrive, .dropbox, .onedrive, .baiduyun, .aliyun, .multiDisc, .romPatcher:
+        case .files, .wifi, .paste, .googledrive, .dropbox, .onedrive, .baiduyun, .aliyun, .multiDisc, .romPatcher, .romm:
             R.Color.Border
         case .samba, .webdav:
             UIColor.clear
@@ -202,6 +208,8 @@ class ImportService: Object, ObjectUpdatable {
             provider = SMBServiceProvider(service: self)
         case .webdav:
             provider = WebDavServiceProvider(service: self)
+        case .romm:
+            provider = RommServiceProvider(service: self)
         default:
             return nil
         }
