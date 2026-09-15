@@ -327,7 +327,7 @@ extension ImportServiceListView: UICollectionViewDelegate {
                 }
             }
             
-        case .samba, .webdav:
+        case .samba, .webdav, .romm:
             
             if !PurchaseManager.isMember {
                 topViewController()?.present(PurchaseViewController(featuresType: .import), animated: true)
@@ -369,20 +369,78 @@ extension ImportServiceListView: UICollectionViewDelegate {
         let service = services[indexPath.row]
         guard service.type != .wifi && service.type != .paste && service.type != .multiDisc && service.type != .romPatcher else { return nil }
         
-        ChevronSheetView.show(cellOptions: [.iconTitleChevronCell(icon: .symbolImage(R.image.delete_iconSymbols(), colors: [R.Color.Red]),
-                                                                  title: R.string.localizable.importServiceDelete(),
-                                                                  titleColor: R.Color.Red)],
-                              completion: { index in
-            if let _ = index {
-                ImportService.change { realm in
-                    if Settings.defalut.iCloudSyncEnable {
-                        service.isDeleted = true
+        if service.type == .romm {
+            ChevronSheetView.show(cellOptions: [
+                .iconTitleChevronCell(icon: .symbol(.arrowDown),
+                                      title: R.string.localizable.rommPullFromService()),
+                .iconTitleChevronCell(icon: .symbol(.arrowUp),
+                                      title: R.string.localizable.rommPushToService()),
+                .iconTitleChevronCell(icon: .symbolImage(R.image.delete_iconSymbols(), colors: [R.Color.Red]),
+                                      title: R.string.localizable.importServiceDelete(),
+                                      titleColor: R.Color.Red)
+            ], completion: { [weak self] index in
+                guard let self, let index else { return }
+                switch index {
+                case 0:
+                    self.confirmRommTransfer(service: service, pull: true)
+                case 1:
+                    self.confirmRommTransfer(service: service, pull: false)
+                case 2:
+                    self.deleteImportService(service)
+                default:
+                    break
+                }
+            })
+        } else {
+            ChevronSheetView.show(cellOptions: [.iconTitleChevronCell(icon: .symbolImage(R.image.delete_iconSymbols(), colors: [R.Color.Red]),
+                                                                      title: R.string.localizable.importServiceDelete(),
+                                                                      titleColor: R.Color.Red)],
+                                  completion: { [weak self] index in
+                if index != nil {
+                    self?.deleteImportService(service)
+                }
+            })
+        }
+        return nil
+    }
+    
+    private func deleteImportService(_ service: ImportService) {
+        ImportService.change { realm in
+            if Settings.defalut.iCloudSyncEnable {
+                service.isDeleted = true
+            } else {
+                realm.delete(service)
+            }
+        }
+    }
+    
+    private func confirmRommTransfer(service: ImportService, pull: Bool) {
+        let count = RommLibrary.shared.linkedGameCount(service: service)
+        guard count > 0 else {
+            UIView.makeToast(message: R.string.localizable.rommNoLinkedGames())
+            return
+        }
+        let detail = pull
+            ? R.string.localizable.rommPullConfirmDetail(count)
+            : R.string.localizable.rommPushConfirmDetail(count)
+        UIView.makeAlert(detail: detail,
+                         confirmTitle: R.string.localizable.confirmTitle()) {
+            Task {
+                await MainActor.run { UIView.makeLoading() }
+                let summary = pull
+                    ? await RommLibrary.shared.pull(service: service)
+                    : await RommLibrary.shared.push(service: service)
+                await MainActor.run {
+                    UIView.hideLoading()
+                    if summary.succeeded == 0 && summary.failed > 0 {
+                        UIView.makeToast(message: R.string.localizable.rommTransferFailed())
+                    } else if summary.failed == 0 {
+                        UIView.makeToast(message: R.string.localizable.rommTransferSuccess(summary.succeeded))
                     } else {
-                        realm.delete(service)
+                        UIView.makeToast(message: R.string.localizable.rommTransferPartial(summary.succeeded, summary.failed))
                     }
                 }
             }
-        })
-        return nil
+        }
     }
 }
