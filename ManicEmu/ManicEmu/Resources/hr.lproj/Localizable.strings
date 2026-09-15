@@ -937,3 +937,17 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 
 "EmulationAccuracy"="Točnost emulacije";
 "EmulationAccuracyDesc"="HLE: Nudi bolje performanse i manju potrošnju energije, ali može imati problema s kompatibilnošću.\n\nLLE: Pruža veću točnost i bolju kompatibilnost, ali sa smanjenim performansama. Određene hardverske značajke, poput mrežnog pristupa, dostupne su samo u LLE načinu rada.";
+"RommSyncTitle" = "Sinkroniziraj s RomM";
+"RommSyncAllConfirmDetail" = "Sinkronizirati sve spremljene igre i stanja spremanja za ovu igru s tvojom RomM instancom?";
+"RommSyncConfirmButton" = "Sinkroniziraj";
+"RommSyncSuccessToast" = "RomM sinkronizacija dovršena";
+"RommSyncCannotConnect" = "Nije moguće povezati se s RomM instancom";
+"RommSyncGameNotFound" = "Ova igra nije pronađena na tvojoj RomM instanci";
+"RommSaveConflictTitle" = "Sukob spremanja RomM";
+"RommSaveConflictDetail" = "%@\nOvaj uređaj: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Zadrži RomM";
+"RommSaveConflictKeepLocal" = "Zadrži ovaj uređaj";
+"RommSyncOnLaunchTitle"  = "Sinkroniziraj RomM pri pokretanju aplikacije";
+"RommSyncOnLaunchDetail" = "Sinkroniziraj RomM spremanja pri otvaranju aplikacije";
+"RommSyncOnGameExitTitle" = "Sinkroniziraj RomM pri izlasku iz igre";
+"RommSyncOnGameExitDetail" = "Pošalji spremanja na RomM pri zatvaranju igre";

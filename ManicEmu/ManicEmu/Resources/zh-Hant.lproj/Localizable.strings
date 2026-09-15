@@ -945,3 +945,17 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "MappingKeyboardInput" = "對應鍵盤輸入";
 "EmulationAccuracy"="模擬準確度";
 "EmulationAccuracyDesc"="HLE：效能更高、功耗更低，但可能會有相容性問題。\n\nLLE：提供更高的準確度及更好的相容性，但效能較低。部分硬體功能（如網路存取）僅在LLE模式下可用。";
+"RommSyncTitle" = "與 RomM 同步";
+"RommSyncAllConfirmDetail" = "是否將此遊戲的所有存檔和即時存檔與你的 RomM 實例同步？";
+"RommSyncConfirmButton" = "同步";
+"RommSyncSuccessToast" = "RomM 同步完成";
+"RommSyncCannotConnect" = "無法連線到 RomM 實例";
+"RommSyncGameNotFound" = "在你的 RomM 實例中找不到此遊戲";
+"RommSaveConflictTitle" = "RomM 存檔衝突";
+"RommSaveConflictDetail" = "%@\n本裝置：%@\nRomM：%@";
+"RommSaveConflictKeepRemote" = "保留 RomM";
+"RommSaveConflictKeepLocal" = "保留本裝置";
+"RommSyncOnLaunchTitle"  = "RomM 啟動時同步";
+"RommSyncOnLaunchDetail" = "App 啟動時同步 RomM 存檔";
+"RommSyncOnGameExitTitle" = "RomM 退出遊戲時同步";
+"RommSyncOnGameExitDetail" = "關閉遊戲時將存檔上傳到 RomM";

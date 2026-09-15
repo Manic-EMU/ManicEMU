@@ -233,6 +233,16 @@ class Game: Object, ObjectUpdatable {
     var identifierFor3DS: UInt64 {
         return UInt64(getExtraInt(key: ExtraKey.identifier.rawValue) ?? 0)
     }
+
+    var rommRomId: Int? {
+        get { getExtraInt(key: ExtraKey.rommRomId.rawValue) }
+        set { updateExtra(key: ExtraKey.rommRomId.rawValue, value: newValue) }
+    }
+
+    var rommServiceId: String? {
+        get { getExtraString(key: ExtraKey.rommServiceId.rawValue) }
+        set { updateExtra(key: ExtraKey.rommServiceId.rawValue, value: newValue) }
+    }
     
     var gameCodeForPSP: String? {
         if gameType == .psp {

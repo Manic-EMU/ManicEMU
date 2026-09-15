@@ -929,3 +929,17 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 
 "EmulationAccuracy"="ความแม่นยำในการจำลอง";
 "EmulationAccuracyDesc"="HLE: ให้ประสิทธิภาพที่ดีขึ้นและการใช้พลังงานต่ำกว่า แต่อาจมีปัญหาความเข้ากันได้\n\nLLE: ให้ความแม่นยำสูงขึ้นและความเข้ากันได้ดีขึ้น แต่ประสิทธิภาพลดลง คุณสมบัติฮาร์ดแวร์บางอย่าง เช่น การเข้าถึงเครือข่าย จะใช้ได้เฉพาะในโหมด LLE เท่านั้น";
+"RommSyncTitle" = "ซิงค์กับ RomM";
+"RommSyncAllConfirmDetail" = "ซิงค์ไฟล์บันทึกและสถานะบันทึกทั้งหมดของเกมนี้กับอินสแตนซ์ RomM ของคุณไหม";
+"RommSyncConfirmButton" = "ซิงค์";
+"RommSyncSuccessToast" = "ซิงค์ RomM เสร็จสมบูรณ์";
+"RommSyncCannotConnect" = "ไม่สามารถเชื่อมต่อกับอินสแตนซ์ RomM";
+"RommSyncGameNotFound" = "ไม่พบเกมนี้ในอินสแตนซ์ RomM ของคุณ";
+"RommSaveConflictTitle" = "ข้อขัดแย้งของไฟล์บันทึก RomM";
+"RommSaveConflictDetail" = "%@\nอุปกรณ์นี้: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "เก็บ RomM";
+"RommSaveConflictKeepLocal" = "เก็บอุปกรณ์นี้";
+"RommSyncOnLaunchTitle"  = "ซิงค์ RomM เมื่อเปิดแอป";
+"RommSyncOnLaunchDetail" = "ซิงค์ไฟล์บันทึก RomM เมื่อเปิดแอป";
+"RommSyncOnGameExitTitle" = "ซิงค์ RomM เมื่อออกจากเกม";
+"RommSyncOnGameExitDetail" = "อัปโหลดไฟล์บันทึกไปยัง RomM เมื่อปิดเกม";

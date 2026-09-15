@@ -947,6 +947,16 @@
 		7E864E4CE64E0E64CCE47550 /* DOOM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2068D6E791D56FF6148997EA /* DOOM.swift */; };
 		851B5B08F99A452A91D3DC9D /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D82FD41E1200A2749A /* SideMenu */; };
 		8B4A567A714641A89C989853 /* VisualEffectView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26DD2FD41E4D00A2749A /* VisualEffectView */; };
+		8D9375EE2FF469F700EB6EBC /* RommSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9375ED2FF469F700EB6EBC /* RommSyncManager.swift */; };
+		8D9375EF2FF469F700EB6EBC /* RommSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9375ED2FF469F700EB6EBC /* RommSyncManager.swift */; };
+		8D9375F62FF46AB400EB6EBC /* RommSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9375F52FF46AB400EB6EBC /* RommSettingsViewController.swift */; };
+		8D9375F72FF46AB400EB6EBC /* RommSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9375F52FF46AB400EB6EBC /* RommSettingsViewController.swift */; };
+		8D9375FD2FF46AC500EB6EBC /* RommSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9375FC2FF46AC500EB6EBC /* RommSettingsView.swift */; };
+		8D9375FE2FF46AC500EB6EBC /* RommSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D9375FC2FF46AC500EB6EBC /* RommSettingsView.swift */; };
+		8DE5981D2FF34866005CE9CA /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE5981C2FF34866005CE9CA /* RommServiceProvider.swift */; };
+		8DE5981E2FF34866005CE9CA /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE5981C2FF34866005CE9CA /* RommServiceProvider.swift */; };
+		8DE598232FF34B4E005CE9CA /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE598222FF34B4E005CE9CA /* RommClient.swift */; };
+		8DE598242FF34B4E005CE9CA /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DE598222FF34B4E005CE9CA /* RommClient.swift */; };
 		902DFD5CBFDB4F459499DD93 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7591E2FD42D480093A2B3 /* Fuse */; };
 		957B6B3A58F143B0A1505FF2 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759E02FD487190093A2B3 /* KeyboardKit */; };
 		A121A866AFE249E883FB8650 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 57E48D902D8D736B008000A3 /* ConfettiSwiftUI */; };
@@ -1669,6 +1679,11 @@
 		57F632FF2D718360007270E8 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		57F633032D718C45007270E8 /* LocaleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtensions.swift; sourceTree = "<group>"; };
 		57J2ME01F23397000EA24F1 /* J2ME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = J2ME.swift; sourceTree = "<group>"; };
+		8D9375ED2FF469F700EB6EBC /* RommSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommSyncManager.swift; sourceTree = "<group>"; };
+		8D9375F52FF46AB400EB6EBC /* RommSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommSettingsViewController.swift; sourceTree = "<group>"; };
+		8D9375FC2FF46AC500EB6EBC /* RommSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommSettingsView.swift; sourceTree = "<group>"; };
+		8DE5981C2FF34866005CE9CA /* RommServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommServiceProvider.swift; sourceTree = "<group>"; };
+		8DE598222FF34B4E005CE9CA /* RommClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommClient.swift; sourceTree = "<group>"; };
 		A392D5632E96682600F920E7 /* DisabledTapSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledTapSwitch.swift; sourceTree = "<group>"; };
 		A392D5B22E9796B800F920E7 /* ServiceIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceIconView.swift; sourceTree = "<group>"; };
 		A3A0437F2E9BF57A006442C2 /* UIScrollViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtensions.swift; sourceTree = "<group>"; };
@@ -2006,6 +2021,7 @@
 		57605FF62D20F23200A98B0C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8D9375F52FF46AB400EB6EBC /* RommSettingsViewController.swift */,
 				578E4B482F8A27E40027E6D0 /* GlobalCoreSwitchViewController.swift */,
 				57EED02F2EC8D99D003971BD /* JITSettingViewController.swift */,
 				57EED0252EC8D783003971BD /* iCloudSettingViewController.swift */,
@@ -2577,6 +2593,8 @@
 				57F632AC2D6FEC25007270E8 /* WebDavServiceProvider.swift */,
 				57F632AA2D6FEBE7007270E8 /* SMBServiceProvider.swift */,
 				577005B82D3E71B200762E8F /* ImportService.swift */,
+				8DE5981C2FF34866005CE9CA /* RommServiceProvider.swift */,
+				8DE598222FF34B4E005CE9CA /* RommClient.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2731,6 +2749,7 @@
 		57F632FC2D718224007270E8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8D9375FC2FF46AC500EB6EBC /* RommSettingsView.swift */,
 				578E4B4F2F8A2AA50027E6D0 /* GlobalCoreSwitchView.swift */,
 				57EED0342EC8D9BB003971BD /* JITSettingView.swift */,
 				57EED02A2EC8D7C1003971BD /* iCloudSettingView.swift */,
@@ -2925,6 +2944,7 @@
 		A5A69BA9256E56FF00D51C09 /* Others */ = {
 			isa = PBXGroup;
 			children = (
+				8D9375ED2FF469F700EB6EBC /* RommSyncManager.swift */,
 				577EC55F2F7E561900E8E3EB /* UniversalScript.swift */,
 				577EC5AA2F7E566700E8E3EB /* UniversalScript.c */,
 				57DC7FFB2F52EC38004B6FFD /* WeakScriptMessageHandler.swift */,
@@ -3340,24 +3360,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		57E0CCC92D9075110027FB8E /* Verify LFS */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Verify LFS";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "bash \"${SRCROOT}/../Scripts/VerifyLFS.sh\" --fix\n";
-		};
 		57E0CCC82D9075110027FB8D /* Gen System.core */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -3377,6 +3379,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "bash \"${SRCROOT}/../Scripts/GenSystemCore.sh\"\n";
+		};
+		57E0CCC92D9075110027FB8E /* Verify LFS */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Verify LFS";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${SRCROOT}/../Scripts/VerifyLFS.sh\" --fix\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3552,6 +3572,7 @@
 				57CDCE112FD5CBD3005BA4C8 /* CheevosChallengeView.swift in Sources */,
 				57CDCE122FD5CBD3005BA4C8 /* Arcade.swift in Sources */,
 				57CDCE132FD5CBD3005BA4C8 /* RadialGradientView.swift in Sources */,
+				8D9375EF2FF469F700EB6EBC /* RommSyncManager.swift in Sources */,
 				57CDCE142FD5CBD3005BA4C8 /* RomPatcherView.swift in Sources */,
 				57CDCE152FD5CBD3005BA4C8 /* CheatCodeCollectionViewCell.swift in Sources */,
 				57CDCE162FD5CBD3005BA4C8 /* UIViewControllerExtensions.swift in Sources */,
@@ -3559,6 +3580,7 @@
 				57CDCE182FD5CBD3005BA4C8 /* BaseView.swift in Sources */,
 				57CDCE192FD5CBD3005BA4C8 /* TriggerProActionSettingViews.swift in Sources */,
 				57CDCE1A2FD5CBD3005BA4C8 /* PlatformSelectionView.swift in Sources */,
+				8D9375FE2FF46AC500EB6EBC /* RommSettingsView.swift in Sources */,
 				57CDCE1B2FD5CBD3005BA4C8 /* FilesImporter.swift in Sources */,
 				57CDCE1C2FD5CBD3005BA4C8 /* JITSettingViewController.swift in Sources */,
 				57CDCE1D2FD5CBD3005BA4C8 /* PS1.swift in Sources */,
@@ -3629,6 +3651,7 @@
 				57CDCE5E2FD5CBD3005BA4C8 /* DownloadViewController.swift in Sources */,
 				57CDCE5F2FD5CBD3005BA4C8 /* AddSkinCollectionViewCell.swift in Sources */,
 				57CDCE602FD5CBD3005BA4C8 /* SymbolButton.swift in Sources */,
+				8DE598242FF34B4E005CE9CA /* RommClient.swift in Sources */,
 				57CDCE612FD5CBD3005BA4C8 /* SettingItem.swift in Sources */,
 				57CDCE622FD5CBD3005BA4C8 /* AddCheatCodeView.swift in Sources */,
 				57CDCE632FD5CBD3005BA4C8 /* HowToButton.swift in Sources */,
@@ -3713,6 +3736,7 @@
 				57CDCEB22FD5CBD3005BA4C8 /* LibretroCoreExtensions.swift in Sources */,
 				57CDCEB32FD5CBD3005BA4C8 /* GameListView.swift in Sources */,
 				57CDCEB42FD5CBD3005BA4C8 /* TriggerButton.swift in Sources */,
+				8DE5981D2FF34866005CE9CA /* RommServiceProvider.swift in Sources */,
 				57CDCEB52FD5CBD3005BA4C8 /* UniversalScript.c in Sources */,
 				57CDCEB62FD5CBD3005BA4C8 /* ShaderInfoView.swift in Sources */,
 				57CDCEB72FD5CBD3005BA4C8 /* ArticBaseRegionChooseView.swift in Sources */,
@@ -3733,6 +3757,7 @@
 				57CDCEC62FD5CBD3005BA4C8 /* AddCheatCodeTitleCell.swift in Sources */,
 				57CDCEC72FD5CBD3005BA4C8 /* EmulatorInteractionKit.swift in Sources */,
 				57CDCEC82FD5CBD3005BA4C8 /* MS.swift in Sources */,
+				8D9375F62FF46AB400EB6EBC /* RommSettingsViewController.swift in Sources */,
 				57CDCEC92FD5CBD3005BA4C8 /* AppDelegate.swift in Sources */,
 				57CDCECA2FD5CBD3005BA4C8 /* OnlineCoverManager.swift in Sources */,
 				57CDCECB2FD5CBD3005BA4C8 /* BlankSlateTableView.swift in Sources */,
@@ -3943,6 +3968,7 @@
 				57A480E72E74030E001D4598 /* CheevosChallengeView.swift in Sources */,
 				57B5E3142ECC625E00DE17E9 /* Arcade.swift in Sources */,
 				5720E7AA2E541F2000EC0DA5 /* RadialGradientView.swift in Sources */,
+				8D9375EE2FF469F700EB6EBC /* RommSyncManager.swift in Sources */,
 				573CEE0E2F20D05800EA24F1 /* RomPatcherView.swift in Sources */,
 				57B6ECC22D796B97002E619C /* CheatCodeCollectionViewCell.swift in Sources */,
 				A52C1D89257F96C90029B15B /* UIViewControllerExtensions.swift in Sources */,
@@ -3950,6 +3976,7 @@
 				5713300F2D90FF820043C28A /* BaseView.swift in Sources */,
 				57D7CF902EA8DB7800F41540 /* TriggerProActionSettingViews.swift in Sources */,
 				57655C262DF6BCF3003E4A6E /* PlatformSelectionView.swift in Sources */,
+				8D9375FD2FF46AC500EB6EBC /* RommSettingsView.swift in Sources */,
 				577005552D3CC25700762E8F /* FilesImporter.swift in Sources */,
 				57EED0312EC8D9AA003971BD /* JITSettingViewController.swift in Sources */,
 				576A7DA82E3B4B1400008E35 /* PS1.swift in Sources */,
@@ -4020,6 +4047,7 @@
 				57CC357E2DC0683100DF7418 /* DownloadViewController.swift in Sources */,
 				57CCB3B32D6700A20036476B /* AddSkinCollectionViewCell.swift in Sources */,
 				57DE10472D606C4E00CDD82A /* SymbolButton.swift in Sources */,
+				8DE598232FF34B4E005CE9CA /* RommClient.swift in Sources */,
 				57F633002D718366007270E8 /* SettingItem.swift in Sources */,
 				57B6ECC02D7969E2002E619C /* AddCheatCodeView.swift in Sources */,
 				57CCB4172D69D1C30036476B /* HowToButton.swift in Sources */,
@@ -4104,6 +4132,7 @@
 				57BA59B52E3F13D100110849 /* LibretroCoreExtensions.swift in Sources */,
 				577006892D438F1100762E8F /* GameListView.swift in Sources */,
 				57D7CF862EA88AC100F41540 /* TriggerButton.swift in Sources */,
+				8DE5981E2FF34866005CE9CA /* RommServiceProvider.swift in Sources */,
 				577EC5AB2F7E566700E8E3EB /* UniversalScript.c in Sources */,
 				5781F47E2EEE572A00916D8B /* ShaderInfoView.swift in Sources */,
 				572D028B2F8805A1000BD6F4 /* ArticBaseRegionChooseView.swift in Sources */,
@@ -4124,6 +4153,7 @@
 				57B6ECC92D797CA3002E619C /* AddCheatCodeTitleCell.swift in Sources */,
 				5781F5462EF1384500916D8B /* EmulatorInteractionKit.swift in Sources */,
 				5706B0402DFBEC300066122E /* MS.swift in Sources */,
+				8D9375F72FF46AB400EB6EBC /* RommSettingsViewController.swift in Sources */,
 				A5A001F324555A5F006E0F0E /* AppDelegate.swift in Sources */,
 				575A39CE2DCD011500B28FC2 /* OnlineCoverManager.swift in Sources */,
 				57B6ECEC2D79E19E002E619C /* BlankSlateTableView.swift in Sources */,

@@ -938,3 +938,17 @@ PlayCase спеціалізується на високоякісних чохл
 "MappingKeyboardInput" = "Призначення введення з клавіатури";
 "EmulationAccuracy"="Точність емуляції";
 "EmulationAccuracyDesc"="HLE: Забезпечує кращу продуктивність і нижче енергоспоживання, але можуть бути проблеми сумісності.\n\nLLE: Забезпечує вищу точність і кращу сумісність, але зі зниженою продуктивністю. Деякі апаратні функції, такі як доступ до мережі, доступні лише в режимі LLE.";
+"RommSyncTitle" = "Синхронізувати з RomM";
+"RommSyncAllConfirmDetail" = "Синхронізувати всі збереження та швидкі збереження цієї гри з вашим сервером RomM?";
+"RommSyncConfirmButton" = "Синхронізувати";
+"RommSyncSuccessToast" = "Синхронізацію з RomM завершено";
+"RommSyncCannotConnect" = "Не вдалося підключитися до сервера RomM";
+"RommSyncGameNotFound" = "Цю гру не знайдено на вашому сервері RomM";
+"RommSaveConflictTitle" = "Конфлікт збережень RomM";
+"RommSaveConflictDetail" = "%@\nЦей пристрій: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Залишити RomM";
+"RommSaveConflictKeepLocal" = "Залишити цей пристрій";
+"RommSyncOnLaunchTitle"  = "Синхронізація RomM під час запуску";
+"RommSyncOnLaunchDetail" = "Синхронізувати збереження RomM під час відкриття застосунку";
+"RommSyncOnGameExitTitle" = "Синхронізація RomM під час виходу з гри";
+"RommSyncOnGameExitDetail" = "Вивантажувати збереження до RomM під час закриття гри";

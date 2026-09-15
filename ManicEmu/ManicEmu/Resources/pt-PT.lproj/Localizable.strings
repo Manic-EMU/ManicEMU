@@ -941,3 +941,17 @@ Se pretende melhorar a sua configuração, a PlayCase é o complemento perfeito 
 
 "EmulationAccuracy"="Precisão de Emulação";
 "EmulationAccuracyDesc"="HLE: Oferece melhor desempenho e menor consumo de energia, mas pode ter problemas de compatibilidade.\n\nLLE: Fornece maior precisão e melhor compatibilidade, mas com desempenho reduzido. Certos recursos de hardware, como acesso à rede, estão disponíveis apenas no modo LLE.";
+"RommSyncTitle" = "Sincronizar com o RomM";
+"RommSyncAllConfirmDetail" = "Sincronizar todos os jogos guardados e estados guardados deste jogo com a sua instância do RomM?";
+"RommSyncConfirmButton" = "Sincronizar";
+"RommSyncSuccessToast" = "Sincronização com o RomM concluída";
+"RommSyncCannotConnect" = "Não foi possível ligar à instância do RomM";
+"RommSyncGameNotFound" = "Este jogo não foi encontrado na sua instância do RomM";
+"RommSaveConflictTitle" = "Conflito de gravação do RomM";
+"RommSaveConflictDetail" = "%@\nEste dispositivo: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Manter o RomM";
+"RommSaveConflictKeepLocal" = "Manter este dispositivo";
+"RommSyncOnLaunchTitle"  = "Sincronizar o RomM ao iniciar a app";
+"RommSyncOnLaunchDetail" = "Sincronizar as gravações do RomM ao abrir a app";
+"RommSyncOnGameExitTitle" = "Sincronizar o RomM ao sair do jogo";
+"RommSyncOnGameExitDetail" = "Enviar as gravações para o RomM ao fechar um jogo";

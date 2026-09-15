@@ -957,3 +957,17 @@ Press the controller button to complete mapping...";
 
 "EmulationAccuracy" = "Emulation Accuracy";
 "EmulationAccuracyDesc" = "HLE: Offers better performance and lower power consumption, but may have compatibility issues.\n\nLLE: Provides higher accuracy and better compatibility, but with reduced performance. Certain hardware features, such as network access, are only available in LLE mode.";
+"RommSyncTitle" = "Sync with RomM";
+"RommSyncAllConfirmDetail" = "Sync all saves and save states for this game with your RomM instance?";
+"RommSyncConfirmButton" = "Sync";
+"RommSyncSuccessToast" = "RomM sync complete";
+"RommSyncCannotConnect" = "Cannot connect to RomM instance";
+"RommSyncGameNotFound" = "This game was not found on your RomM instance";
+"RommSaveConflictTitle" = "RomM Save Conflict";
+"RommSaveConflictDetail" = "%@\nThis device: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Keep RomM";
+"RommSaveConflictKeepLocal" = "Keep This Device";
+"RommSyncOnLaunchTitle"  = "RomM Sync on App Launch";
+"RommSyncOnLaunchDetail" = "Sync RomM saves when the app opens";
+"RommSyncOnGameExitTitle" = "RomM Sync on Game Exit";
+"RommSyncOnGameExitDetail" = "Push RomM saves when you close a game";

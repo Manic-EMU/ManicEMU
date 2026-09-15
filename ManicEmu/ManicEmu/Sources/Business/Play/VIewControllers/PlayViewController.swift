@@ -231,7 +231,6 @@ class PlayViewController: GameViewController {
             EmulatorInteractionKit.startGame(type: .xeniOS, id: game.id)
             return
         }
-        
         if game.isRomExtsts || game.isNDSHomeMenuGame || game.isDOSHomeMenuGame {
             UIView.hideLoadingToast(forceHide: true)
             func showPlayView() {
@@ -849,7 +848,10 @@ class PlayViewController: GameViewController {
         
         //发送结束游戏通知
         NotificationCenter.default.post(name: Constants.NotificationName.StopPlayGame, object: nil)
-        
+
+        //We Sync saves when a user closes a game
+        RommSyncManager.shared.syncOnClose(game: manicGame)
+
         //取消静音监听
         muteSwitchMonitor.stopMonitoring()
         

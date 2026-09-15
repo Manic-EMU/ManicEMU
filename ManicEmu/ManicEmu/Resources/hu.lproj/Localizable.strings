@@ -938,3 +938,17 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "MappingKeyboardInput" = "Billentyűzetbemenet leképezése";
 "EmulationAccuracy"="Emulációs pontosság";
 "EmulationAccuracyDesc"="HLE: Jobb teljesítményt és alacsonyabb energiafogyasztást kínál, de kompatibilitási problémái lehetnek.\n\nLLE: Nagyobb pontosságot és jobb kompatibilitást biztosít, de csökkentett teljesítménnyel. Bizonyos hardverfunkciók, például a hálózati hozzáférés, csak LLE módban érhetők el.";
+"RommSyncTitle" = "Szinkronizálás a RomM-mel";
+"RommSyncAllConfirmDetail" = "Szinkronizálod a játék összes mentését és mentési állapotát a RomM-példányoddal?";
+"RommSyncConfirmButton" = "Szinkronizálás";
+"RommSyncSuccessToast" = "RomM-szinkronizálás kész";
+"RommSyncCannotConnect" = "Nem sikerült csatlakozni a RomM-példányhoz";
+"RommSyncGameNotFound" = "Ez a játék nem található a RomM-példányodon";
+"RommSaveConflictTitle" = "RomM mentési ütközés";
+"RommSaveConflictDetail" = "%@\nEz az eszköz: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "RomM megtartása";
+"RommSaveConflictKeepLocal" = "Ez az eszköz megtartása";
+"RommSyncOnLaunchTitle"  = "RomM szinkronizálása indításkor";
+"RommSyncOnLaunchDetail" = "RomM mentések szinkronizálása az alkalmazás megnyitásakor";
+"RommSyncOnGameExitTitle" = "RomM szinkronizálása a játékból kilépéskor";
+"RommSyncOnGameExitDetail" = "Mentések feltöltése a RomM-be a játék bezárásakor";

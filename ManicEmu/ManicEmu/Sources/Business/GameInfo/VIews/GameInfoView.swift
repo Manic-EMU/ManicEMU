@@ -445,6 +445,10 @@ extension GameInfoView: UICollectionViewDataSource {
                     UIView.makeToast(message: R.string.localizable.noSaveStateToast(self.isManualGameSaveStatesPage ? R.string.localizable.readySegmentManualSave() : R.string.localizable.readySegmentAutoSave()))
                 }
             }
+            header.didSyncSaveState = { [weak self] in
+                guard let self else { return }
+                self.handleRommSync()
+            }
             header.game = game
             if showGameSaveOnly {
                 header.resetForGamingUsing()
@@ -465,6 +469,45 @@ extension GameInfoView: UICollectionViewDataSource {
             return true
         }
         return false
+    }
+}
+
+extension GameInfoView {
+    private func handleRommSync() {
+        let gameSaveStates = isManualGameSaveStatesPage ? manualGameSaveStates : autoGameSaveStates
+        if let items = collectionView.indexPathsForSelectedItems, items.count > 0 {
+            let selected = items.compactMap { gameSaveStates[$0.row] }
+            performRommSync(states: selected)
+        } else {
+            UIView.makeAlert(title: R.string.localizable.rommSyncTitle(),
+                             detail: R.string.localizable.rommSyncAllConfirmDetail(),
+                             confirmTitle: R.string.localizable.rommSyncConfirmButton(),
+                             confirmAction: { [weak self] in
+                self?.performRommSync(states: nil)
+            })
+        }
+    }
+
+    private func performRommSync(states: [GameSaveState]?) {
+        let game = self.game
+        UIView.makeLoadingToast(message: R.string.localizable.loadingTitle())
+        Task {
+            let outcome: RommSyncManager.SyncOutcome
+            if let states {
+                outcome = await RommSyncManager.shared.manualSync(game: game, states: states)
+            } else {
+                outcome = await RommSyncManager.shared.manualSync(game: game)
+            }
+            UIView.hideLoadingToast()
+            switch outcome {
+            case .success:
+                UIView.makeToast(message: R.string.localizable.rommSyncSuccessToast())
+            case .notConnected:
+                UIView.makeAlert(detail: R.string.localizable.rommSyncCannotConnect())
+            case .noMatch:
+                UIView.makeToast(message: R.string.localizable.rommSyncGameNotFound())
+            }
+        }
     }
 }
 

@@ -10,7 +10,7 @@
 struct SettingItem {
     
     enum ItemType: String {
-        case theme, quickGame, airPlay, iCloud, fullScreenWhenConnectController, FAQ, feedback, shareApp, qq, telegram, discord, clearCache, language, userAgreement, privacyPolicy, autoSaveState, bios, respectSilentMode, onlinePlay, about, retro, rumble, appearance, triggerPro, skin, jit, shaders, featuredItems, skinSound, globalCoreSwitch
+        case theme, quickGame, airPlay, iCloud, fullScreenWhenConnectController, FAQ, feedback, shareApp, qq, telegram, discord, clearCache, language, userAgreement, privacyPolicy, autoSaveState, bios, respectSilentMode, onlinePlay, about, retro, rumble, appearance, triggerPro, skin, jit, shaders, featuredItems, skinSound, globalCoreSwitch, romm, rommSyncOnLaunch, rommSyncOnGameExit
     }
     
     var type: ItemType
@@ -27,7 +27,7 @@ struct SettingItem {
             return Constants.Color.Green
         case .airPlay, .FAQ, .about, .rumble, .jit:
             return Constants.Color.Indigo
-        case .iCloud, .userAgreement, .appearance, .skinSound:
+        case .iCloud, .userAgreement, .appearance, .skinSound, .romm, .rommSyncOnLaunch, .rommSyncOnGameExit:
             return Constants.Color.Blue
         case .fullScreenWhenConnectController, .shareApp, .triggerPro:
             return Constants.Color.Orange
@@ -110,6 +110,12 @@ struct SettingItem {
             UIImage(symbol: .waveform, font: Constants.Font.body(size: .s, weight: .medium), color: Constants.Color.LabelPrimary.forceStyle(.dark))
         case .globalCoreSwitch:
             R.image.customGearshape()!.applySymbolConfig(font: Constants.Font.body(size: .m, weight: .medium), color: Constants.Color.LabelPrimary.forceStyle(.dark))
+        case .romm:
+            UIImage(symbol: .arrowTriangle2Circlepath, font: Constants.Font.body(size: .s, weight: .medium), color: Constants.Color.LabelPrimary.forceStyle(.dark))
+        case .rommSyncOnLaunch:
+            UIImage(symbol: .arrowDownCircleFill, font: Constants.Font.body(size: .s, weight: .medium), color: Constants.Color.LabelPrimary.forceStyle(.dark))
+        case .rommSyncOnGameExit:
+            UIImage(symbol: .arrowUpCircleFill, font: Constants.Font.body(size: .s, weight: .medium), color: Constants.Color.LabelPrimary.forceStyle(.dark))
         }
     }
     
@@ -175,6 +181,12 @@ struct SettingItem {
             R.string.localizable.skinSoundEffects()
         case .globalCoreSwitch:
             R.string.localizable.globalCoreSwitch()
+        case .romm:
+            R.string.localizable.rommSyncTitle()
+        case .rommSyncOnLaunch:
+            R.string.localizable.rommSyncOnLaunchTitle()
+        case .rommSyncOnGameExit:
+            R.string.localizable.rommSyncOnGameExitTitle()
         }
     }
     
@@ -197,6 +209,10 @@ struct SettingItem {
             return Settings.appearance.desc
         } else if type == .triggerPro {
             return R.string.localizable.triggerProDesc()
+        } else if type == .rommSyncOnLaunch {
+            return R.string.localizable.rommSyncOnLaunchDetail()
+        } else if type == .rommSyncOnGameExit {
+            return R.string.localizable.rommSyncOnGameExitDetail()
         }
         return nil
     }

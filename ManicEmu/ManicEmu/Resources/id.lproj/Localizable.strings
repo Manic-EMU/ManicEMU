@@ -932,3 +932,17 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 
 "EmulationAccuracy"="Akurasi Emulasi";
 "EmulationAccuracyDesc"="HLE: Memberikan kinerja yang lebih baik dan konsumsi daya yang lebih rendah, tetapi mungkin memiliki masalah kompatibilitas.\n\nLLE: Memberikan akurasi yang lebih tinggi dan kompatibilitas yang lebih baik, tetapi dengan kinerja yang berkurang. Fitur perangkat keras tertentu, seperti akses jaringan, hanya tersedia dalam mode LLE.";
+"RommSyncTitle" = "Sinkronkan dengan RomM";
+"RommSyncAllConfirmDetail" = "Sinkronkan semua data simpanan dan save state gim ini dengan instans RomM Anda?";
+"RommSyncConfirmButton" = "Sinkronkan";
+"RommSyncSuccessToast" = "Sinkronisasi RomM selesai";
+"RommSyncCannotConnect" = "Tidak dapat terhubung ke instans RomM";
+"RommSyncGameNotFound" = "Gim ini tidak ditemukan di instans RomM Anda";
+"RommSaveConflictTitle" = "Konflik simpanan RomM";
+"RommSaveConflictDetail" = "%@\nPerangkat ini: %@\nRomM: %@";
+"RommSaveConflictKeepRemote" = "Pertahankan RomM";
+"RommSaveConflictKeepLocal" = "Pertahankan perangkat ini";
+"RommSyncOnLaunchTitle"  = "Sinkronkan RomM saat aplikasi dibuka";
+"RommSyncOnLaunchDetail" = "Sinkronkan simpanan RomM saat aplikasi dibuka";
+"RommSyncOnGameExitTitle" = "Sinkronkan RomM saat keluar dari gim";
+"RommSyncOnGameExitDetail" = "Unggah simpanan ke RomM saat Anda menutup gim";
