@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Letöltési hiba\n%@";
 "ImportDownloadContinue" = "Letöltés folytatása...\n%@";
 "LandServiceEditServerName" = "Szerver neve";
-"LandServiceEditServerNamePlaceholder" = "Saját SMB szerverem";
 "LandServiceEditHost" = "Szerver címe";
 "LandServiceEditUserName" = "Felhasználónév";
 "LandServiceEditPassword" = "Jelszó";

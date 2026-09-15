@@ -20,7 +20,6 @@
 "ImportDownloadError" = "下载错误\n%@";
 "ImportDownloadContinue" = "继续下载...\n%@";
 "LandServiceEditServerName" = "服务器标题";
-"LandServiceEditServerNamePlaceholder" = "我的SMB服务器";
 "LandServiceEditHost" = "服务器地址";
 "LandServiceEditUserName" = "登录用户";
 "LandServiceEditPassword" = "密码";
@@ -1166,3 +1165,17 @@
 "MultiDiscSupportedFormats" = "支持的格式：%@";
 "MultiDiscImportErrorConflict" = "错误：不能混用不同格式的光盘镜像";
 "MultiDiscImportErrorMissing" = "错误：未找到支持的光盘镜像";
+
+"SkinButtonBinding" = "皮肤按键绑定";
+"SkinButtonBindingDesc" = "将皮肤按钮绑定到键盘按键。";
+"RommPasswordOrApiKey" = "密码或 API 密钥";
+"RommPullFromService" = "从 RomM 拉取数据";
+"RommPushToService" = "向 RomM 推送更改";
+"RommPullConfirmDetail" = "将覆盖 %d 个已关联游戏的本地封面、元数据、游戏时长、游戏存档，以及匹配的即时存档。是否继续？";
+"RommPushConfirmDetail" = "将覆盖 RomM 上 %d 个已关联游戏的封面、简介、游戏存档和即时存档，并累加游戏时长。是否继续？";
+"RommNoLinkedGames" = "没有从此 RomM 服务导入的游戏。";
+"RommTransferSuccess" = "完成，已更新 %d 个游戏。";
+"RommTransferPartial" = "完成，成功 %d 个，失败 %d 个。";
+"RommTransferFailed" = "同步失败，请检查服务器连接。";
+"RommLanAddressOnly" = "RomM 目前仅支持局域网 IP 地址（如 192.168.x.x、10.x.x.x 或 169.254.x.x），暂不支持主机名和公网 IP。";
+"LandServiceEditServerNamePlaceholder" = "我的服务器";

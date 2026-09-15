@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Erro no download\n%@";
 "ImportDownloadContinue" = "Continuar download...\n%@";
 "LandServiceEditServerName" = "Nome do servidor";
-"LandServiceEditServerNamePlaceholder" = "Meu servidor SMB";
 "LandServiceEditHost" = "Endereço do servidor";
 "LandServiceEditUserName" = "Usuário";
 "LandServiceEditPassword" = "Senha";

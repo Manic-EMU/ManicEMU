@@ -22,7 +22,6 @@
 "ImportDownloadError" = "Lỗi tải xuống\n%@";
 "ImportDownloadContinue" = "Tiếp tục tải...\n%@";
 "LandServiceEditServerName" = "Tên máy chủ";
-"LandServiceEditServerNamePlaceholder" = "Máy chủ SMB của tôi";
 "LandServiceEditHost" = "Địa chỉ máy chủ";
 "LandServiceEditUserName" = "Tên đăng nhập";
 "LandServiceEditPassword" = "Mật khẩu";

@@ -20,7 +20,6 @@
 "ImportDownloadError" = "Download Error\n%@";
 "ImportDownloadContinue" = "Resuming Download...\n%@";
 "LandServiceEditServerName" = "Server Title";
-"LandServiceEditServerNamePlaceholder" = "My SMB Server";
 "LandServiceEditHost" = "Server Address";
 "LandServiceEditUserName" = "Username";
 "LandServiceEditPassword" = "Password";
@@ -1172,15 +1171,17 @@ Press the controller button to complete mapping...";
 "MultiDiscImportErrorConflict" = "Error: Cannot mix different disc image formats.";
 "MultiDiscImportErrorMissing" = "Error: No supported disc image found.";
 
-"SkinButtonBinding" = " Skin Button Binding";
-"SkinButtonBindingDesc" = "Bind skin buttons to keyboard keys";
+"SkinButtonBinding" = "Skin Button Binding";
+"SkinButtonBindingDesc" = "Bind skin buttons to keyboard keys.";
 
 "RommPasswordOrApiKey" = "Password or API Key";
-"RommPullFromService" = "Pull data from RomM";
-"RommPushToService" = "Push changes to RomM";
-"RommPullConfirmDetail" = "This will overwrite local covers, metadata, play time, battery saves, and matching save states for %d linked game(s). Continue?";
-"RommPushConfirmDetail" = "This will overwrite RomM covers, summaries, saves, and save states for %d linked game(s), and append play time. Continue?";
+"RommPullFromService" = "Pull Data from RomM";
+"RommPushToService" = "Push Changes to RomM";
+"RommPullConfirmDetail" = "This will overwrite local covers, metadata, play time, game saves, and matching save states for %d linked games. Continue?";
+"RommPushConfirmDetail" = "This will overwrite RomM covers, summaries, game saves, and save states for %d linked games, and append play time. Continue?";
 "RommNoLinkedGames" = "No games imported from this RomM service.";
-"RommTransferSuccess" = "Finished. %d game(s) updated.";
+"RommTransferSuccess" = "Finished. %d games updated.";
 "RommTransferPartial" = "Finished. %d succeeded, %d failed.";
 "RommTransferFailed" = "Transfer failed. Check the server connection.";
+"RommLanAddressOnly" = "RomM currently accepts LAN IP addresses only (such as 192.168.x.x, 10.x.x.x, or 169.254.x.x). Hostnames and public IPs are not supported yet.";
+"LandServiceEditServerNamePlaceholder" = "My Server";

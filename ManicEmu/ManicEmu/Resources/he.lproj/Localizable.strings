@@ -21,7 +21,6 @@
 "ImportDownloadError" = "שגיאה בהורדה\n%@";
 "ImportDownloadContinue" = "ממשיך בהורדה...\n%@";
 "LandServiceEditServerName" = "שם השרת";
-"LandServiceEditServerNamePlaceholder" = "השרת שלי SMB";
 "LandServiceEditHost" = "כתובת השרת";
 "LandServiceEditUserName" = "שם משתמש";
 "LandServiceEditPassword" = "סיסמה";

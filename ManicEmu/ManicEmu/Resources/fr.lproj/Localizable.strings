@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Erreur de téléchargement\n%@";
 "ImportDownloadContinue" = "Téléchargement en cours...\n%@";
 "LandServiceEditServerName" = "Nom du serveur";
-"LandServiceEditServerNamePlaceholder" = "Mon serveur SMB";
 "LandServiceEditHost" = "Adresse du serveur";
 "LandServiceEditUserName" = "Nom d'utilisateur";
 "LandServiceEditPassword" = "Mot de passe";

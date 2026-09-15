@@ -22,7 +22,6 @@
 "ImportDownloadError" = "เกิดข้อผิดพลาดในการดาวน์โหลด\n%@";
 "ImportDownloadContinue" = "ดำเนินการดาวน์โหลดต่อ...\n%@";
 "LandServiceEditServerName" = "ชื่อเซิร์ฟเวอร์";
-"LandServiceEditServerNamePlaceholder" = "เซิร์ฟเวอร์ SMB ของฉัน";
 "LandServiceEditHost" = "ที่อยู่เซิร์ฟเวอร์";
 "LandServiceEditUserName" = "ชื่อผู้ใช้";
 "LandServiceEditPassword" = "รหัสผ่าน";

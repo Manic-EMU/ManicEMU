@@ -22,7 +22,6 @@
 "ImportDownloadError" = "Nedladdningsfel\n%@";
 "ImportDownloadContinue" = "Fortsätt ladda ner...\n%@";
 "LandServiceEditServerName" = "Servernamn";
-"LandServiceEditServerNamePlaceholder" = "Min SMB-server";
 "LandServiceEditHost" = "Serveradress";
 "LandServiceEditUserName" = "Användarnamn";
 "LandServiceEditPassword" = "Lösenord";

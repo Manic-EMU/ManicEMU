@@ -22,7 +22,6 @@
 "ImportDownloadError" = "Σφάλμα λήψης\n%@";
 "ImportDownloadContinue" = "Συνέχεια λήψης...\n%@";
 "LandServiceEditServerName" = "Τίτλος Διακομιστή";
-"LandServiceEditServerNamePlaceholder" = "Ο SMB Διακομιστής μου";
 "LandServiceEditHost" = "Διεύθυνση Διακομιστή";
 "LandServiceEditUserName" = "Όνομα Χρήστη";
 "LandServiceEditPassword" = "Κωδικός";

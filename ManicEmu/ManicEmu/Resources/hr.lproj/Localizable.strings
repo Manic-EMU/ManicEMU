@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Greška pri preuzimanju\n%@";
 "ImportDownloadContinue" = "Nastavljam preuzimanje...\n%@";
 "LandServiceEditServerName" = "Naziv poslužitelja";
-"LandServiceEditServerNamePlaceholder" = "Moj SMB poslužitelj";
 "LandServiceEditHost" = "Adresa poslužitelja";
 "LandServiceEditUserName" = "Korisničko ime";
 "LandServiceEditPassword" = "Lozinka";

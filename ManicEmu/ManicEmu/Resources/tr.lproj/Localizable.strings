@@ -21,7 +21,6 @@
 "ImportDownloadError" = "İndirme hatası\n%@";
 "ImportDownloadContinue" = "İndirmeye devam ediliyor...\n%@";
 "LandServiceEditServerName" = "Sunucu Başlığı";
-"LandServiceEditServerNamePlaceholder" = "Benim SMB Sunucum";
 "LandServiceEditHost" = "Sunucu Adresi";
 "LandServiceEditUserName" = "Kullanıcı Adı";
 "LandServiceEditPassword" = "Şifre";

@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Latausvirhe\n%@";
 "ImportDownloadContinue" = "Jatketaan latausta...\n%@";
 "LandServiceEditServerName" = "Palvelimen nimi";
-"LandServiceEditServerNamePlaceholder" = "Oma SMB-palvelin";
 "LandServiceEditHost" = "Palvelimen osoite";
 "LandServiceEditUserName" = "Käyttäjätunnus";
 "LandServiceEditPassword" = "Salasana";

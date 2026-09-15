@@ -22,7 +22,6 @@
 "ImportDownloadError" = "下載錯誤\n%@";
 "ImportDownloadContinue" = "繼續下載...\n%@";
 "LandServiceEditServerName" = "伺服器標題";
-"LandServiceEditServerNamePlaceholder" = "我的SMB伺服器";
 "LandServiceEditHost" = "伺服器地址";
 "LandServiceEditUserName" = "登入用戶";
 "LandServiceEditPassword" = "密碼";

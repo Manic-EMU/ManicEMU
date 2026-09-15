@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Chyba stahování\n%@";
 "ImportDownloadContinue" = "Pokračovat ve stahování...\n%@";
 "LandServiceEditServerName" = "Název serveru";
-"LandServiceEditServerNamePlaceholder" = "Můj SMB server";
 "LandServiceEditHost" = "Adresa serveru";
 "LandServiceEditUserName" = "Uživatelské jméno";
 "LandServiceEditPassword" = "Heslo";

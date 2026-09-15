@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Eroare la descărcare\n%@";
 "ImportDownloadContinue" = "Continuă descărcarea...\n%@";
 "LandServiceEditServerName" = "Nume server";
-"LandServiceEditServerNamePlaceholder" = "Serverul meu SMB";
 "LandServiceEditHost" = "Adresă server";
 "LandServiceEditUserName" = "Utilizator";
 "LandServiceEditPassword" = "Parolă";

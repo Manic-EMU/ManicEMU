@@ -22,7 +22,6 @@
 "ImportDownloadError" = "डाउनलोड त्रुटि\n%@";
 "ImportDownloadContinue" = "डाउनलोड जारी...\n%@";
 "LandServiceEditServerName" = "सर्वर शीर्षक";
-"LandServiceEditServerNamePlaceholder" = "मेरा SMB सर्वर";
 "LandServiceEditHost" = "सर्वर पता";
 "LandServiceEditUserName" = "लॉगिन यूजर";
 "LandServiceEditPassword" = "पासवर्ड";

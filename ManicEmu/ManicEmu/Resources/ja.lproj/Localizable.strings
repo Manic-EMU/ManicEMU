@@ -20,7 +20,6 @@
 "ImportDownloadError" = "ダウンロードエラー\n%@";
 "ImportDownloadContinue" = "ダウンロードを続行...\n%@";
 "LandServiceEditServerName" = "サーバー名";
-"LandServiceEditServerNamePlaceholder" = "マイSMBサーバー";
 "LandServiceEditHost" = "サーバーアドレス";
 "LandServiceEditUserName" = "ユーザー名";
 "LandServiceEditPassword" = "パスワード";

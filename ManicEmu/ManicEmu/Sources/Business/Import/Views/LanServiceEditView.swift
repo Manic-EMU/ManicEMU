@@ -269,6 +269,10 @@ class LanServiceEditView: BaseView {
                                 isValid = false
                                 break
                             }
+                            if service.type == .romm, !Self.isLanIPv4Host(components.host) {
+                                isValid = false
+                                break
+                            }
                         }
                         service.scheme = components.scheme
                         service.host = components.host
@@ -305,6 +309,22 @@ class LanServiceEditView: BaseView {
         button.allAttributes[.disabled] = disableAttributes
         button.state = isValid ? .normal : .disabled
         return button
+    }
+
+    /// Temporary add-form gate: private IPv4 only. Hostnames and public IPs are rejected.
+    private static func isLanIPv4Host(_ host: String) -> Bool {
+        let folded = host.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if folded == "localhost" { return true }
+        let parts = folded.split(separator: ".", omittingEmptySubsequences: false)
+        guard parts.count == 4,
+              let b1 = UInt8(parts[0]), let b2 = UInt8(parts[1]),
+              UInt8(parts[2]) != nil, UInt8(parts[3]) != nil else { return false }
+        if b1 == 10 { return true }
+        if b1 == 127 { return true }
+        if b1 == 169 && b2 == 254 { return true }
+        if b1 == 192 && b2 == 168 { return true }
+        if b1 == 172 && (16...31).contains(b2) { return true }
+        return false
     }
 }
 

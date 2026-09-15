@@ -79,6 +79,9 @@ class ImportServiceListView: BaseView {
     private let fileService = ImportService.genService(type: .files, detail: R.string.localizable.importServiceListFilesDetail())
     
     private var serviceUpdateToken: NotificationToken? = nil
+    /// Context-menu API shows a custom sheet and returns nil, so UIKit would otherwise treat the long-press as a tap.
+    private var suppressSelectionFromLongPress = false
+    private var isPresentingServiceLongPressMenu = false
     private var services: [ImportService] = {
         var services: [ImportService] = []
         //默认添加wifi、粘贴板、多碟助手、RomPatcher
@@ -291,7 +294,19 @@ extension ImportServiceListView: UICollectionViewDataSource {
 }
 
 extension ImportServiceListView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if suppressSelectionFromLongPress {
+            suppressSelectionFromLongPress = false
+            return false
+        }
+        return true
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if suppressSelectionFromLongPress {
+            suppressSelectionFromLongPress = false
+            return
+        }
         if indexPath.section == 0, indexPath.row == 1 {
             //files
             FilesImporter.shared.presentImportController()
@@ -369,6 +384,21 @@ extension ImportServiceListView: UICollectionViewDelegate {
         let service = services[indexPath.row]
         guard service.type != .wifi && service.type != .paste && service.type != .multiDisc && service.type != .romPatcher else { return nil }
         
+        suppressSelectionFromLongPress = true
+        if !isPresentingServiceLongPressMenu {
+            isPresentingServiceLongPressMenu = true
+            presentServiceLongPressMenu(service)
+            DispatchQueue.main.async { [weak self] in
+                self?.isPresentingServiceLongPressMenu = false
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.suppressSelectionFromLongPress = false
+        }
+        return nil
+    }
+    
+    private func presentServiceLongPressMenu(_ service: ImportService) {
         if service.type == .romm {
             ChevronSheetView.show(cellOptions: [
                 .iconTitleChevronCell(icon: .symbol(.arrowDown),
@@ -401,7 +431,6 @@ extension ImportServiceListView: UICollectionViewDelegate {
                 }
             })
         }
-        return nil
     }
     
     private func deleteImportService(_ service: ImportService) {
@@ -424,7 +453,8 @@ extension ImportServiceListView: UICollectionViewDelegate {
             ? R.string.localizable.rommPullConfirmDetail(count)
             : R.string.localizable.rommPushConfirmDetail(count)
         UIView.makeAlert(detail: detail,
-                         confirmTitle: R.string.localizable.confirmTitle()) {
+                         confirmTitle: R.string.localizable.confirmTitle(),
+                         confirmAction: {
             Task {
                 await MainActor.run { UIView.makeLoading() }
                 let summary = pull
@@ -441,6 +471,6 @@ extension ImportServiceListView: UICollectionViewDelegate {
                     }
                 }
             }
-        }
+        })
     }
 }

@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Downloadfout\n%@";
 "ImportDownloadContinue" = "Download wordt voortgezet...\n%@";
 "LandServiceEditServerName" = "Servernaam";
-"LandServiceEditServerNamePlaceholder" = "Mijn SMB-server";
 "LandServiceEditHost" = "Serveradres";
 "LandServiceEditUserName" = "Gebruikersnaam";
 "LandServiceEditPassword" = "Wachtwoord";

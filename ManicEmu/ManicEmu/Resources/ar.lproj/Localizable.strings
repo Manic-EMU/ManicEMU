@@ -22,7 +22,6 @@
 "ImportDownloadError" = "خطأ في التحميل\n%@";
 "ImportDownloadContinue" = "متابعة التحميل...\n%@";
 "LandServiceEditServerName" = "اسم الخادم";
-"LandServiceEditServerNamePlaceholder" = "خادم SMB الخاص بي";
 "LandServiceEditHost" = "عنوان الخادم";
 "LandServiceEditUserName" = "اسم المستخدم";
 "LandServiceEditPassword" = "كلمة المرور";

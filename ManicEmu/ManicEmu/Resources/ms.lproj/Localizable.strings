@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Ralat muat turun\n%@";
 "ImportDownloadContinue" = "Meneruskan muat turun...\n%@";
 "LandServiceEditServerName" = "Nama Pelayan";
-"LandServiceEditServerNamePlaceholder" = "Pelayan SMB Saya";
 "LandServiceEditHost" = "Alamat Pelayan";
 "LandServiceEditUserName" = "ID Pengguna";
 "LandServiceEditPassword" = "Kata Laluan";

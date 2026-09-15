@@ -22,7 +22,6 @@
 "ImportDownloadError" = "다운로드 오류\n%@";
 "ImportDownloadContinue" = "다운로드 계속...\n%@";
 "LandServiceEditServerName" = "서버 제목";
-"LandServiceEditServerNamePlaceholder" = "나의 SMB 서버";
 "LandServiceEditHost" = "서버 주소";
 "LandServiceEditUserName" = "사용자 이름";
 "LandServiceEditPassword" = "비밀번호";

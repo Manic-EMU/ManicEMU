@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Помилка завантаження\n%@";
 "ImportDownloadContinue" = "Продовжити завантаження...\n%@";
 "LandServiceEditServerName" = "Назва сервера";
-"LandServiceEditServerNamePlaceholder" = "Мій SMB-сервер";
 "LandServiceEditHost" = "Адреса сервера";
 "LandServiceEditUserName" = "Користувач";
 "LandServiceEditPassword" = "Пароль";

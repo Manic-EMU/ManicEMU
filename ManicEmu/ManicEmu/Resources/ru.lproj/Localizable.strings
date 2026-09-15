@@ -22,7 +22,6 @@
 "ImportDownloadError" = "Ошибка загрузки\n%@";
 "ImportDownloadContinue" = "Продолжить загрузку...\n%@";
 "LandServiceEditServerName" = "Название сервера";
-"LandServiceEditServerNamePlaceholder" = "Мой SMB-сервер";
 "LandServiceEditHost" = "Адрес сервера";
 "LandServiceEditUserName" = "Имя пользователя";
 "LandServiceEditPassword" = "Пароль";

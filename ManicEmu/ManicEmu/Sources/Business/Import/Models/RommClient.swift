@@ -20,12 +20,80 @@ struct RommPlatform: Decodable {
     let rom_count: Int?
 }
 
+struct RommAgeRating: Decodable {
+    let rating: String?
+    let category: String?
+
+    init(rating: String?, category: String?) {
+        self.rating = rating
+        self.category = category
+    }
+
+    enum CodingKeys: String, CodingKey { case rating, category }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let string = try? container.decode(String.self, forKey: .rating) {
+            rating = string
+        } else if let number = try? container.decode(Int.self, forKey: .rating) {
+            rating = String(number)
+        } else {
+            rating = nil
+        }
+        if let string = try? container.decode(String.self, forKey: .category) {
+            category = string
+        } else if let number = try? container.decode(Int.self, forKey: .category) {
+            category = String(number)
+        } else {
+            category = nil
+        }
+    }
+}
+
+struct RommIGDBMetadata: Decodable {
+    let age_ratings: [RommAgeRating]?
+
+    enum CodingKeys: String, CodingKey { case age_ratings }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let objects = try? container.decode([RommAgeRating].self, forKey: .age_ratings) {
+            age_ratings = objects
+        } else if let strings = try? container.decode([String].self, forKey: .age_ratings) {
+            age_ratings = strings.map { RommAgeRating(rating: $0, category: nil) }
+        } else {
+            age_ratings = nil
+        }
+    }
+}
+
 struct RommMetadatum: Decodable {
     let genres: [String]?
     let franchises: [String]?
     let companies: [String]?
     let age_ratings: [String]?
     let first_release_date: Int64?
+
+    enum CodingKeys: String, CodingKey {
+        case genres, franchises, companies, age_ratings, first_release_date
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        genres = try? container.decode([String].self, forKey: .genres)
+        franchises = try? container.decode([String].self, forKey: .franchises)
+        companies = try? container.decode([String].self, forKey: .companies)
+        first_release_date = try? container.decode(Int64.self, forKey: .first_release_date)
+        if let list = try? container.decode([String].self, forKey: .age_ratings) {
+            age_ratings = list
+        } else if let one = try? container.decode(String.self, forKey: .age_ratings), !one.isEmpty {
+            age_ratings = [one]
+        } else if let objects = try? container.decode([RommAgeRating].self, forKey: .age_ratings) {
+            age_ratings = objects.compactMap(\.rating)
+        } else {
+            age_ratings = nil
+        }
+    }
 }
 
 struct RommUser: Decodable {
@@ -41,13 +109,50 @@ struct RommRom: Decodable {
     let path_cover_small: String?
     let path_cover_large: String?
     let url_cover: String?
+    let has_manual: Bool?
+    let path_manual: String?
+    let url_manual: String?
     let platform_display_name: String?
     let metadatum: RommMetadatum?
+    let igdb_metadata: RommIGDBMetadata?
     let rom_user: RommUser?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, fs_name, fs_size_bytes, summary
+        case path_cover_small, path_cover_large, url_cover
+        case has_manual, path_manual, url_manual
+        case platform_display_name, metadatum, igdb_metadata, rom_user
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        fs_name = try container.decode(String.self, forKey: .fs_name)
+        fs_size_bytes = try container.decodeIfPresent(Int64.self, forKey: .fs_size_bytes)
+        summary = try container.decodeIfPresent(String.self, forKey: .summary)
+        path_cover_small = try container.decodeIfPresent(String.self, forKey: .path_cover_small)
+        path_cover_large = try container.decodeIfPresent(String.self, forKey: .path_cover_large)
+        url_cover = try container.decodeIfPresent(String.self, forKey: .url_cover)
+        has_manual = try? container.decode(Bool.self, forKey: .has_manual)
+        path_manual = try? container.decode(String.self, forKey: .path_manual)
+        url_manual = try? container.decode(String.self, forKey: .url_manual)
+        platform_display_name = try container.decodeIfPresent(String.self, forKey: .platform_display_name)
+        metadatum = try? container.decode(RommMetadatum.self, forKey: .metadatum)
+        igdb_metadata = try? container.decode(RommIGDBMetadata.self, forKey: .igdb_metadata)
+        rom_user = try? container.decode(RommUser.self, forKey: .rom_user)
+    }
 
     var preferredCoverPath: String? {
         if let path = path_cover_large, !path.isEmpty { return path }
         if let path = path_cover_small, !path.isEmpty { return path }
+        return nil
+    }
+
+    /// Local resource path first. `url_manual` is the scraped source (ScreenScraper, etc.).
+    var preferredManualPath: String? {
+        if let path = path_manual, !path.isEmpty { return path }
+        if let path = url_manual, !path.isEmpty { return path }
         return nil
     }
 }
@@ -189,10 +294,19 @@ final class RommClient {
     }
 
     func data(for request: URLRequest) async throws -> Data {
+        let url = request.url?.absoluteString ?? "?"
+        Log.debug("[RomM HTTP] \(request.httpMethod ?? "GET") \(url)")
         let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
+        guard let http = response as? HTTPURLResponse else {
+            Log.debug("[RomM HTTP] ← non-HTTP response \(data.count) bytes \(url)")
+            throw URLError(.badServerResponse)
+        }
+        if !(200..<300 ~= http.statusCode) {
+            let body = String(data: data, encoding: .utf8).map { String($0.prefix(400)) } ?? "<\(data.count) bytes>"
+            Log.debug("[RomM HTTP] ← \(http.statusCode) \(data.count) bytes \(url) body=\(body)")
             throw URLError(.userAuthenticationRequired)
         }
+        Log.debug("[RomM HTTP] ← \(http.statusCode) \(data.count) bytes \(url)")
         return data
     }
 
@@ -207,7 +321,54 @@ final class RommClient {
     }
 
     func rom(id: Int) async throws -> RommRom {
-        try await get("\(RomApiStub)/\(id)")
+        guard let req = request(path: "\(RomApiStub)/\(id)") else {
+            throw URLError(.badURL)
+        }
+        let payload = try await data(for: req)
+        Self.logRomPayload(id: id, payload: payload)
+        return try Self.jsonDecoder.decode(RommRom.self, from: payload)
+    }
+
+    private static func logRomPayload(id: Int, payload: Data) {
+        guard let json = try? JSONSerialization.jsonObject(with: payload) as? [String: Any] else {
+            Log.debug("[RomM] GET /api/roms/\(id) payload is not a JSON object (\(payload.count) bytes)")
+            return
+        }
+        let keys = json.keys.sorted()
+        Log.debug("[RomM] GET /api/roms/\(id) keys=\(keys)")
+        for key in ["id", "name", "fs_name", "summary", "path_cover_small", "path_cover_large", "url_cover", "has_cover", "has_manual", "path_manual", "url_manual", "platform_name", "platform_display_name"] {
+            if let value = json[key] {
+                Log.debug("[RomM]   \(key)=\(Self.shortValue(value))")
+            }
+        }
+        if let metadatum = json["metadatum"] {
+            Log.debug("[RomM]   metadatum=\(Self.shortValue(metadatum))")
+        }
+        if let igdb = json["igdb_metadata"] {
+            Log.debug("[RomM]   igdb_metadata=\(Self.shortValue(igdb))")
+        }
+        if let romUser = json["rom_user"] {
+            Log.debug("[RomM]   rom_user=\(Self.shortValue(romUser))")
+        }
+        let coverKeys = keys.filter { $0.lowercased().contains("cover") }
+        if !coverKeys.isEmpty {
+            Log.debug("[RomM]   cover-related keys=\(coverKeys)")
+        }
+    }
+
+    private static func shortValue(_ value: Any, limit: Int = 240) -> String {
+        let raw: String
+        if let string = value as? String {
+            raw = string
+        } else if JSONSerialization.isValidJSONObject(value),
+                  let data = try? JSONSerialization.data(withJSONObject: value, options: [.sortedKeys]),
+                  let string = String(data: data, encoding: .utf8) {
+            raw = string
+        } else {
+            raw = String(describing: value)
+        }
+        if raw.count <= limit { return raw }
+        return String(raw.prefix(limit)) + "…"
     }
 
     func searchRoms(term: String) async throws -> [RommRom] {
@@ -254,7 +415,7 @@ final class RommClient {
         request(path: "\(StateApiStub)/\(stateID)/content")
     }
 
-    func assetDownloadRequest(downloadPath: String) -> URLRequest? {
+    func assetDownloadRequest(downloadPath: String, ignoreCache: Bool = false) -> URLRequest? {
         let rawPath = String(downloadPath.split(separator: "?", maxSplits: 1, omittingEmptySubsequences: false)[0])
         var components = URLComponents()
         components.scheme = baseURL.scheme
@@ -264,6 +425,9 @@ final class RommClient {
         guard let url = components.url else { return nil }
         var req = URLRequest(url: url)
         req.setValue(authHeader, forHTTPHeaderField: "Authorization")
+        if ignoreCache {
+            req.cachePolicy = .reloadIgnoringLocalCacheData
+        }
         return req
     }
 
@@ -297,7 +461,48 @@ final class RommClient {
                          screenshot: screenshot)
     }
 
-    func updateLastPlayed(romID: Int) async throws {
+    func uploadManual(romID: Int, fileName: String, fileData: Data) async throws {
+        guard var req = request(path: "\(RomApiStub)/\(romID)/manuals") else { throw URLError(.badURL) }
+        let safeName = URL(fileURLWithPath: fileName).lastPathComponent
+        let boundary = "ManicEmuBoundary-manual-\(romID)"
+        req.httpMethod = "POST"
+        req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        req.setValue(safeName, forHTTPHeaderField: "x-upload-filename")
+        var body = Data()
+        body.appendFormFile(boundary: boundary,
+                            name: safeName,
+                            fileName: safeName,
+                            mime: "application/pdf",
+                            data: fileData)
+        body.append("--\(boundary)--\r\n")
+        Log.debug("[RomM HTTP] POST \(req.url?.absoluteString ?? "?") manual=\(safeName) bytes=\(fileData.count)")
+        let (data, response) = try await session.upload(for: req, from: body)
+        guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            let bodyText = String(data: data, encoding: .utf8).map { String($0.prefix(400)) } ?? "<\(data.count) bytes>"
+            Log.debug("[RomM HTTP] ← \(status) POST /api/roms/\(romID)/manuals body=\(bodyText)")
+            throw URLError(.userAuthenticationRequired)
+        }
+        Log.debug("[RomM HTTP] ← \(http.statusCode) POST /api/roms/\(romID)/manuals \(data.count) bytes")
+    }
+
+    func deleteManual(romID: Int) async throws {
+        guard var req = request(path: "\(RomApiStub)/\(romID)/manuals") else { throw URLError(.badURL) }
+        req.httpMethod = "DELETE"
+        Log.debug("[RomM HTTP] DELETE \(req.url?.absoluteString ?? "?")")
+        let (data, response) = try await session.data(for: req)
+        guard let http = response as? HTTPURLResponse else { throw URLError(.badServerResponse) }
+        if http.statusCode == 404 {
+            Log.debug("[RomM HTTP] ← 404 DELETE /api/roms/\(romID)/manuals (already gone)")
+            return
+        }
+        if !(200..<300 ~= http.statusCode) {
+            let bodyText = String(data: data, encoding: .utf8).map { String($0.prefix(400)) } ?? "<\(data.count) bytes>"
+            Log.debug("[RomM HTTP] ← \(http.statusCode) DELETE /api/roms/\(romID)/manuals body=\(bodyText)")
+            throw URLError(.userAuthenticationRequired)
+        }
+        Log.debug("[RomM HTTP] ← \(http.statusCode) DELETE /api/roms/\(romID)/manuals")
+    }
         guard var req = request(path: "\(RomApiStub)/\(romID)/props",
                                 query: [.init(name: "update_last_played", value: "true")]) else {
             throw URLError(.badURL)
@@ -349,10 +554,15 @@ final class RommClient {
                                 data: artwork.data)
         }
         body.append("--\(boundary)--\r\n")
+        Log.debug("[RomM HTTP] PUT \(req.url?.absoluteString ?? "?") name=\(name ?? "nil") summaryChars=\(summary?.count ?? 0) artworkBytes=\(artwork?.data.count ?? 0)")
         let (data, response) = try await session.upload(for: req, from: body)
         guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            let bodyText = String(data: data, encoding: .utf8).map { String($0.prefix(400)) } ?? "<\(data.count) bytes>"
+            Log.debug("[RomM HTTP] ← \(status) PUT /api/roms/\(romID) body=\(bodyText)")
             throw URLError(.userAuthenticationRequired)
         }
+        Log.debug("[RomM HTTP] ← \(http.statusCode) PUT /api/roms/\(romID) \(data.count) bytes")
         _ = data
     }
 
@@ -391,10 +601,15 @@ final class RommClient {
         }
         body.append("--\(boundary)--\r\n")
 
+        Log.debug("[RomM HTTP] POST \(req.url?.absoluteString ?? "?") field=\(fileField) file=\(fileName) bytes=\(fileData.count) screenshot=\(screenshot?.fileName ?? "nil")")
         let (data, response) = try await session.upload(for: req, from: body)
         guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
+            let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+            let bodyText = String(data: data, encoding: .utf8).map { String($0.prefix(400)) } ?? "<\(data.count) bytes>"
+            Log.debug("[RomM HTTP] ← \(status) POST \(stub) \(fileName) body=\(bodyText)")
             throw URLError(.userAuthenticationRequired)
         }
+        Log.debug("[RomM HTTP] ← \(http.statusCode) POST \(stub) \(fileName) \(data.count) bytes")
         return try Self.jsonDecoder.decode(T.self, from: data)
     }
 }

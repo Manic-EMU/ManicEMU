@@ -728,8 +728,10 @@ extension FilesImporter {
                                 })
                                 if RommLibrary.shared.hasPendingLink(fileName: originalUrl.lastPathComponent)
                                     || RommLibrary.shared.hasPendingLink(fileName: game.fileName) {
+                                    Log.debug("[RomM] import success, apply sidecar original=\(originalUrl.lastPathComponent) gameFile=\(game.fileName) gameId=\(game.id)")
                                     RommLibrary.shared.applyAfterImport(gameId: game.id, fileName: originalUrl.lastPathComponent)
                                 } else {
+                                    Log.debug("[RomM] import success, no pending link original=\(originalUrl.lastPathComponent) gameFile=\(game.fileName)")
                                     OnlineCoverManager.shared.addCoverMatch(OnlineCoverManager.CoverMatch(game: game))
                                 }
                                 completion?(game.id, game.gameType == ._3ds ? (game.displayName) : game.name, nil)

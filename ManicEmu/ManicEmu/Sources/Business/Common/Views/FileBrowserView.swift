@@ -454,9 +454,12 @@ class FileBrowserView: BaseView {
                     if let url = request?.url {
                         downloadItems[item.name] = url
                         if let romId = Int(item.id.split(separator: "/").first.map(String.init) ?? "") {
+                            Log.debug("[RomM] download queue file=\(item.name) romId=\(romId) serviceId=\(provider.serviceId) url=\(url.absoluteString)")
                             RommLibrary.shared.registerDownloadedRom(fileName: item.name,
                                                                     romId: romId,
                                                                     serviceId: provider.serviceId)
+                        } else {
+                            Log.debug("[RomM] download queue skipped: cannot parse romId from item.id=\(item.id)")
                         }
                     }
                     headers = request?.allHTTPHeaderFields

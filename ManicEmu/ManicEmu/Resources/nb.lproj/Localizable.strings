@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Nedlastingsfeil\n%@";
 "ImportDownloadContinue" = "Fortsett nedlasting...\n%@";
 "LandServiceEditServerName" = "Servernavn";
-"LandServiceEditServerNamePlaceholder" = "Min SMB-server";
 "LandServiceEditHost" = "Serveradresse";
 "LandServiceEditUserName" = "Brukernavn";
 "LandServiceEditPassword" = "Passord";

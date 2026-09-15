@@ -21,7 +21,6 @@
 "ImportDownloadError" = "Kesalahan unduh\n%@";
 "ImportDownloadContinue" = "Lanjutkan unduhan...\n%@";
 "LandServiceEditServerName" = "Judul Server";
-"LandServiceEditServerNamePlaceholder" = "Server SMB Saya";
 "LandServiceEditHost" = "Alamat Server";
 "LandServiceEditUserName" = "Nama Pengguna";
 "LandServiceEditPassword" = "Kata Sandi";
