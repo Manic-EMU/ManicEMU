@@ -54,12 +54,12 @@ struct ResourcesKit {
             if !FileManager.default.fileExists(atPath: R.Path.ThreeDS.appendingPathComponent("sdmc")) {
                 if FileManager.default.fileExists(atPath: R.Path.Data.appendingPathComponent("3DS/sdmc")) {
                     try? FileManager.safeMoveItem(at: URL(fileURLWithPath: R.Path.Data.appendingPathComponent("3DS/sdmc")),
-                                             to: URL(fileURLWithPath: R.Path.ThreeDS.appendingPathComponent("sdmc")),
-                                             shouldReplace: true)
+                                                  to: URL(fileURLWithPath: R.Path.ThreeDS.appendingPathComponent("sdmc")),
+                                                  shouldReplace: true)
                     try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: R.Path.Data.appendingPathComponent("3DS")))
                 } else {
                     try? FileManager.default.createDirectory(atPath: R.Path.ThreeDS.appendingPathComponent("sdmc"),
-                                                        withIntermediateDirectories: true)
+                                                             withIntermediateDirectories: true)
                 }
             }
             

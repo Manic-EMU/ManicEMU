@@ -23,48 +23,58 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
             ApplicationSceneDelegate.applicationWindow = window
             window?.tintColor = R.Color.Main
             installGamepadEventInteraction(on: window)
-            ResourcesKit.loadResources { isSuccess in
-                Database.setup {
-                    ThemeManager.shared.setup()
-                    self.window?.rootViewController = HomeViewController()
-                    self.window?.makeKeyAndVisible()
-                    BackgroundMusicKit.shared.startMonitoring()
-                    FocusSoundEffects.shared.startMonitoring()
-                    if Settings.defalut.iCloudSyncEnable {
-                        SyncManager.shared.startSync()
-                    }
-                    
-                    if !isSuccess {
-                        UIView.makeAlert(title: R.string.localizable.fatalErrorTitle(), detail: R.string.localizable.fatalErrorDesc(), cancelTitle: R.string.localizable.confirmTitle())
-                    }
-                    if connectionOptions.urlContexts.count > 0 {
-                        self.scene(scene, openURLContexts: connectionOptions.urlContexts)
-                    }
-                    
-                    //设置RetroAchievement
-                    CheevosBridge.setup(with: R.Config.AppVersion, requireCredentials: {
-                        if let user = AchievementsUser.getUser() {
-                            let cheevosUser = CheevosUser()
-                            cheevosUser.userName = user.username
-                            cheevosUser.password = user.password
-                            cheevosUser.token = user.token
-                            return cheevosUser
+            let loadThenPresentHome = {
+                ResourcesKit.loadResources { isSuccess in
+                    Database.setup {
+                        ThemeManager.shared.setup()
+                        self.window?.rootViewController = HomeViewController()
+                        self.window?.makeKeyAndVisible()
+                        BackgroundMusicKit.shared.startMonitoring()
+                        FocusSoundEffects.shared.startMonitoring()
+                        if Settings.defalut.iCloudSyncEnable {
+                            SyncManager.shared.startSync()
                         }
-                        return nil
-                    }, updateCredentials: { cheevosUser in
-                        if let u = cheevosUser?.userName,
-                           let p = cheevosUser?.password,
-                           let t = cheevosUser?.token {
-                            AchievementsUser.updateUser(username: u, password: p, token: t)
-                            
+                        
+                        if !isSuccess {
+                            UIView.makeAlert(title: R.string.localizable.fatalErrorTitle(), detail: R.string.localizable.fatalErrorDesc(), cancelTitle: R.string.localizable.confirmTitle())
                         }
-                    })
-                    
+                        if connectionOptions.urlContexts.count > 0 {
+                            self.scene(scene, openURLContexts: connectionOptions.urlContexts)
+                        }
+                        
+                        CheevosBridge.setup(with: R.Config.AppVersion, requireCredentials: {
+                            if let user = AchievementsUser.getUser() {
+                                let cheevosUser = CheevosUser()
+                                cheevosUser.userName = user.username
+                                cheevosUser.password = user.password
+                                cheevosUser.token = user.token
+                                return cheevosUser
+                            }
+                            return nil
+                        }, updateCredentials: { cheevosUser in
+                            if let u = cheevosUser?.userName,
+                               let p = cheevosUser?.password,
+                               let t = cheevosUser?.token {
+                                AchievementsUser.updateUser(username: u, password: p, token: t)
+                                
+                            }
+                        })
+                        
 #if SIDE_LOAD
                     StikJITHostCoordinator.shared.enableOnLaunchIfNeeded()
 #endif
                     
+                    }
                 }
+            }
+            // Same unzip conditions as ResourcesKit; keep this read-only so the original extract path is unchanged.
+            if Self.needsResourceExtract() {
+                window?.rootViewController = LaunchPlaceholderViewController()
+                window?.makeKeyAndVisible()
+                // Return from scene-create first; unzip still runs on main on the next turn.
+                DispatchQueue.main.async(execute: loadThenPresentHome)
+            } else {
+                loadThenPresentHome()
             }
             let dropInteraction = UIDropInteraction(delegate: self)
             window?.addInteraction(dropInteraction)
@@ -83,6 +93,26 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             window.addInteraction(interaction)
         }
+    }
+    
+    /// Mirrors ResourcesKit's unzip gate without performing any file work.
+    private static func needsResourceExtract() -> Bool {
+        if let systemCoreVersion = UserDefaults.standard.string(forKey: R.DefaultKey.SystemCoreVersion) {
+            let appVersionNumber = UInt64(R.Config.AppVersion.replacingOccurrences(ofPattern: "\\.", withTemplate: ""))!
+            let systemCoreVersionNumber = UInt64(systemCoreVersion.replacingOccurrences(ofPattern: "\\.", withTemplate: ""))!
+            if systemCoreVersionNumber < appVersionNumber {
+                return true
+            }
+            let systemCoreBuildVersion = UserDefaults.standard.integer(forKey: R.DefaultKey.SystemCoreBuildVersion)
+            let appBuildVersion = Int(R.Config.AppBuildVersion)!
+            if appBuildVersion > systemCoreBuildVersion {
+                return true
+            }
+        } else {
+            return true
+        }
+        return !FileManager.default.fileExists(atPath: R.Path.Resource)
+            || !FileManager.default.fileExists(atPath: R.Path.ExtrasDB)
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
@@ -241,5 +271,53 @@ extension ApplicationSceneDelegate: UIDropInteractionDelegate {
     
     func dropInteraction(_ interaction: UIDropInteraction, sessionDidEnd session: any UIDropSession) {
         window?.hideDropView()
+    }
+}
+
+/// LaunchScreen layout plus a spinner, used only while System.core is extracted on first launch or upgrade.
+private final class LaunchPlaceholderViewController: UIViewController {
+    override var prefersStatusBarHidden: Bool { true }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let backgroundImageView = UIImageView(image: R.image.launch_bg())
+        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.clipsToBounds = true
+        
+        let iconImageView = UIImageView(image: R.image.icon_corner())
+        iconImageView.contentMode = .scaleAspectFill
+        iconImageView.clipsToBounds = true
+        iconImageView.layerCornerRadius = 20
+        
+        let titleImageView = UIImageView(image: R.image.app_title_light())
+        titleImageView.contentMode = .scaleToFill
+        
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .white
+        indicator.hidesWhenStopped = false
+        indicator.startAnimating()
+        
+        view.addSubview(backgroundImageView)
+        view.addSubview(iconImageView)
+        view.addSubview(titleImageView)
+        view.addSubview(indicator)
+        
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        iconImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-80)
+            make.size.equalTo(80)
+        }
+        titleImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        indicator.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(titleImageView.snp.bottom).offset(R.Size.ContentSpaceHuge)
+        }
     }
 }
