@@ -11,6 +11,7 @@
 import Fuse
 import SwiftSoup
 import CryptoKit
+import IceCream
 
 class OnlineCoverManager {
     struct CoverMatch {
@@ -139,6 +140,16 @@ class OnlineCoverManager {
                 boxArtUrl = host.appendingPathComponent("Atari - Lynx/Named_Boxarts")
             case .xbox360:
                 boxArtUrl = host.appendingPathComponent("Microsoft - Xbox 360/Named_Boxarts")
+            case .flash:
+                if storeCoverFromSWF(gameID: coverMatch.gameID) {
+                    completion?([], false)
+                    return
+                }
+                searchCoversFromMoby(coverMatch: coverMatch,
+                                     persistentedTranslation: persistentedTranslation,
+                                     isCallBackMain: isCallBackMain,
+                                     completion: completion)
+                return
             case .ns, .j2me, .symbian:
                 searchCoversFromMoby(coverMatch: coverMatch,
                                      persistentedTranslation: persistentedTranslation,
@@ -240,6 +251,25 @@ class OnlineCoverManager {
                         completion?(onlineCoverUrls, matchList.count == 0)
                     }
                 }
+            }
+        }
+
+        /// Use an embedded SWF bitmap when Libretro/Moby have no Flash box art.
+        static func storeCoverFromSWF(gameID: String) -> Bool {
+            let realm = Database.realm
+            guard let game = realm.object(ofType: Game.self, forPrimaryKey: gameID),
+                  !game.isDeleted else { return false }
+            if game.gameCover != nil { return true }
+            guard FileManager.default.fileExists(atPath: game.romUrl.path),
+                  let coverData = FLASHCover.extractJPEGData(from: game.romUrl) else { return false }
+            do {
+                try realm.write {
+                    game.gameCover = CreamAsset.create(objectID: game.id, propName: "gameCover", data: coverData)
+                }
+                return true
+            } catch {
+                Log.debug("[FLASHCover] Failed to store SWF cover: \(error)")
+                return false
             }
         }
         

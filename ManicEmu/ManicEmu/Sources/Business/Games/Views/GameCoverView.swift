@@ -287,6 +287,8 @@ class GameCoverView: BaseView {
                 image = style == .style2 ? R.image.xbox360_cover_v() : R.image.xbox360_cover_h()
             } else if gameType == .j2me {
                 image = style == .style2 ? R.image.j2me_cover_v() : R.image.j2me_cover_h()
+            } else if gameType == .flash {
+                image = style == .style2 ? R.image.flash_cover_v() : R.image.flash_cover_h()
             } else if gameType == .doom {
                 image = style == .style2 ? R.image.doom_cover_v() : R.image.doom_cover_h()
             } else if gameType == .dos {

@@ -758,8 +758,10 @@ extension GameOption {
             }
 
         case .screenShot:
-            PlayViewController.saveSnapShot()
-            hideSheetInGaming()
+            PermissionKit.requestPhoto(authorized: {
+                PlayViewController.saveSnapShot()
+                hideSheetInGaming()
+            })
             
         case .haptic:
             if performImmediately {
@@ -1113,6 +1115,9 @@ extension GameOption {
         case .ndsLidToggle:
             PlayViewController.ndsLidToggle()
             hideSheetInGaming()
+            
+        case .skinButtonBinding:
+            SkinButtonBindingView.show(games: games)
         }
     }
     

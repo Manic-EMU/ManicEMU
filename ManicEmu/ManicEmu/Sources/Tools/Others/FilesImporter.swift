@@ -663,6 +663,10 @@ extension FilesImporter {
                                 game.gameCover = CreamAsset.create(objectID: game.id, propName: "gameCover", data: iconData)
                             }
                         }
+
+                        if game.gameType == .flash, let coverData = FLASHCover.extractJPEGData(from: url) {
+                            game.gameCover = CreamAsset.create(objectID: game.id, propName: "gameCover", data: coverData)
+                        }
                         
                         //Obtain the game code for PSP.
                         if gameType == .psp, !isPSPPBP, let gameCode = LibretroCore.getPSPGameID(withRomPath: url.path) {

@@ -97,4 +97,6 @@ enum ExtraKey: String {
     case isUrlGame
     /// Launch URL for `isUrlGame`. Game.id is an MD5 of this string so CreamAsset filenames stay valid.
     case urlGameURL
+    /// JSON recipe mapping FLASHSkinButton raw values to FLASHKey (KeyboardEvent.code) values.
+    case skinButtonBinding
 }

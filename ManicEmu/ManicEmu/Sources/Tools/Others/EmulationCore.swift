@@ -52,7 +52,8 @@ enum EmulationCore: CaseIterable {
          PUAE,
          gpSP,
          MesenS,
-         Symbian
+         Symbian,
+         Ruffle
     
     var name: String {
         switch self {
@@ -146,6 +147,8 @@ enum EmulationCore: CaseIterable {
             "Mesen-S"
         case .Symbian:
             "Symbian"
+        case .Ruffle:
+            "Ruffle"
         }
     }
     
@@ -233,6 +236,8 @@ enum EmulationCore: CaseIterable {
             return [.snes, .gb, .gbc]
         case .Symbian:
             return [.symbian]
+        case .Ruffle:
+            return [.flash]
         }
     }
     
@@ -241,7 +246,8 @@ enum EmulationCore: CaseIterable {
             self == .J2meJS ||
             self == .JGenesis ||
             self == .freej2me ||
-            self == .Symbian {
+            self == .Symbian ||
+            self == .Ruffle {
             return false
         }
         return true

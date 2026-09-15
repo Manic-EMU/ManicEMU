@@ -57,6 +57,7 @@ enum MappingOption: String, CaseIterable {
     case slowMotion
     case wswanRotation
     case ndsLidToggle
+    case skinButtonBinding
     
     //Both the key and the value need to be unique
     static let GameOptionMappings: BiMap<MappingOption, GameOption> = [
@@ -94,7 +95,8 @@ enum MappingOption: String, CaseIterable {
         .insertDisc: .insertDisc,
         .coreSettings: .coreSettings,
         .wswanRotation: .wswanRotation,
-        .ndsLidToggle: .ndsLidToggle
+        .ndsLidToggle: .ndsLidToggle,
+        .skinButtonBinding: .skinButtonBinding
     ]
     
     static func availableOptions(games: [Game]) -> [Self] {

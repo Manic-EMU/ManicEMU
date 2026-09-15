@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>Ruffle</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden; position: fixed;
+            touch-action: none; background: #000;
+        }
+        #container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+        }
+        #container ruffle-player,
+        ruffle-player {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+    </style>
+    <script>
+    document.addEventListener('touchmove', function(e) {
+        var target = e.target;
+        while (target && target !== document.body) {
+            if (target.scrollHeight > target.clientHeight ||
+                target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' ||
+                target.contentEditable === 'true') return;
+            target = target.parentElement;
+        }
+        e.preventDefault();
+    }, { passive: false });
+    var lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        var now = Date.now();
+        if (now - lastTouchEnd <= 300) e.preventDefault();
+        lastTouchEnd = now;
+    }, false);
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+    <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+        autoplay: "on",
+        unmuteOverlay: "hidden",
+        splashScreen: false,
+        letterbox: "on",
+        contextMenu: "off",
+        preferredRenderer: "webgl"
+    };
+    </script>
+    <script src="./ruffle.js"></script>
+    <script>
+    (function() {
+        function post(type, extra) {
+            try {
+                if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.ruffle) {
+                    var payload = extra || {};
+                    payload.type = type;
+                    window.webkit.messageHandlers.ruffle.postMessage(payload);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function toUint8Array(fileData) {
+            if (fileData instanceof Uint8Array) return fileData;
+            if (fileData instanceof ArrayBuffer) return new Uint8Array(fileData);
+            if (typeof fileData === 'string') {
+                var binary = atob(fileData);
+                var bytes = new Uint8Array(binary.length);
+                for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                return bytes;
+            }
+            return null;
+        }
+
+        var playerElement = null;
+        var playerApi = null;
+        var savedVolume = 1;
+        var speedMultiplier = 1;
+
+        function ensurePlayer() {
+            if (playerApi) return playerApi;
+            var ruffle = window.RufflePlayer.newest();
+            playerElement = ruffle.createPlayer();
+            playerElement.setAttribute('tabindex', '0');
+            document.getElementById('container').appendChild(playerElement);
+            playerApi = playerElement.ruffle();
+            try { playerElement.focus({ preventScroll: true }); } catch (e) {}
+            return playerApi;
+        }
+
+        window.ruffleAPI = {
+            openFileByUrlAndName: function(url, fileName) {
+                var api = ensurePlayer();
+                fetch(url).then(function(response) {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.arrayBuffer();
+                }).then(function(buffer) {
+                    return window.ruffleAPI.openFile(new Uint8Array(buffer), fileName);
+                }).catch(function(error) {
+                    console.error('openFileByUrlAndName failed', error);
+                    post('loadFailed', { message: String(error) });
+                });
+            },
+
+            openFile: function(fileData, fileName) {
+                var api = ensurePlayer();
+                var bytes = toUint8Array(fileData);
+                if (!bytes) {
+                    post('loadFailed', { message: 'invalid file data' });
+                    return Promise.resolve();
+                }
+                return api.load({
+                    data: bytes,
+                    swfFileName: fileName || 'movie.swf',
+                    autoplay: 'on',
+                    unmuteOverlay: 'hidden',
+                    splashScreen: false,
+                    letterbox: 'on'
+                }).then(function() {
+                    post('loadComplete', { fileName: fileName || 'movie.swf' });
+                }).catch(function(error) {
+                    console.error('load failed', error);
+                    post('loadFailed', { message: String(error) });
+                });
+            },
+
+            pause: function() {
+                if (playerApi) playerApi.suspend();
+            },
+
+            resume: function() {
+                if (playerApi) playerApi.resume();
+            },
+
+            isPaused: function() {
+                return playerApi ? playerApi.suspended : true;
+            },
+
+            setMute: function(mute) {
+                if (!playerApi) return;
+                if (mute) {
+                    savedVolume = playerApi.volume;
+                    playerApi.volume = 0;
+                } else if (speedMultiplier <= 1) {
+                    playerApi.volume = savedVolume;
+                }
+            },
+
+            setVolume: function(value) {
+                savedVolume = value;
+                if (playerApi && speedMultiplier <= 1) playerApi.volume = value;
+            },
+
+            setSpeed: function(multiplier) {
+                multiplier = Math.max(0.25, Math.min(Number(multiplier) || 1, 8));
+                speedMultiplier = multiplier;
+                var api = ensurePlayer();
+                if (typeof api.setPlaybackSpeed === 'function') {
+                    api.setPlaybackSpeed(multiplier);
+                }
+                if (multiplier > 1) {
+                    api.volume = 0;
+                } else {
+                    api.volume = savedVolume;
+                }
+            },
+
+            getMetadata: function() {
+                return playerApi && playerApi.metadata ? JSON.stringify(playerApi.metadata) : null;
+            },
+
+            getSaveData: function() {
+                var data = {};
+                for (var i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    data[key] = localStorage.getItem(key);
+                }
+                return JSON.stringify(data);
+            },
+
+            loadSaveData: function(json) {
+                if (!json) return;
+                try {
+                    var data = JSON.parse(json);
+                    localStorage.clear();
+                    Object.keys(data).forEach(function(key) {
+                        if (data[key] != null) localStorage.setItem(key, data[key]);
+                    });
+                } catch (e) {
+                    console.error('loadSaveData failed', e);
+                }
+            },
+
+            pressKey: function(code, key, pressed, keyCode) {
+                ensurePlayer();
+                // Ruffle's window keydown/keyup handlers ignore events unless the
+                // player has JS focus. Touching native analog controls blurs WKWebView
+                // and would otherwise drop keyup, leaving a stuck key.
+                if (playerElement && typeof playerElement.focus === 'function') {
+                    try { playerElement.focus({ preventScroll: true }); } catch (e) {}
+                }
+                var init = {
+                    code: code,
+                    key: key || code,
+                    bubbles: true,
+                    cancelable: true
+                };
+                var type = pressed ? 'keydown' : 'keyup';
+                var event = new KeyboardEvent(type, init);
+                try {
+                    Object.defineProperty(event, 'keyCode', { get: function() { return keyCode || 0; } });
+                    Object.defineProperty(event, 'which', { get: function() { return keyCode || 0; } });
+                } catch (e) {}
+                // Listeners are on window. Do not also dispatch on the player:
+                // bubbling would deliver the same event twice.
+                window.dispatchEvent(event);
+            },
+
+            reset: function() {
+                if (playerApi) playerApi.reload();
+            }
+        };
+
+        try {
+            ensurePlayer();
+            post('ready');
+        } catch (e) {
+            console.error('Ruffle init failed', e);
+            post('readyFailed', { message: String(e) });
+        }
+    })();
+    </script>
+</body>
+</html>

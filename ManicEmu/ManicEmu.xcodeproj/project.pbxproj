@@ -20,6 +20,8 @@
 		1EADD4E491B048A4A3E448B1 /* SMBClient in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632A22D6F17AB007270E8 /* SMBClient */; };
 		20DCABBC83024417BC08EB72 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23D02FD2BD0800A2749A /* ZipArchive */; };
 		2197E4E9458342E6AF80B1BA /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		220A1FDAB02E4E41999363CA /* RuffleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */; };
+		2315CFACDCA546689D506EEB /* FLASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809D2DE31034EF5B9135498 /* FLASH.swift */; };
 		23CE581FDA6A4771B987DE69 /* dolphin.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9770068F58CC4F29B21DE396 /* dolphin.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23DA80D04F904D45A8C893AC /* GCDWebUploader in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23862FD2981800A2749A /* GCDWebUploader */; };
 		2A580A2CC68B45E99AB72675 /* Fireworks in Frameworks */ = {isa = PBXBuildFile; productRef = 578E24562FD3F9D700A2749A /* Fireworks */; };
@@ -32,6 +34,7 @@
 		3DD4E96091F64806BA370918 /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E209D2FD1B8CB00A2749A /* CollectionViewPagingLayout */; };
 		3E00CA4429104FD6937382A8 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 57F0D84A2DE2E7A600760F57 /* SwiftCloudDrive */; };
 		478A7D3ED65840479AA36B1F /* Libretro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE172DD32F7700AABF98 /* Libretro.framework */; };
+		4C03A073F6DB40669F022100 /* FLASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809D2DE31034EF5B9135498 /* FLASH.swift */; };
 		54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
 		568CCBBFAD4A4409BB9E3CCB /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 5726FF452D741F5C00041AD5 /* ColorfulX */; };
 		57047A0A2D85217C00C62FF6 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A092D85217400C62FF6 /* PurchaseView.swift */; };
@@ -1377,6 +1380,9 @@
 		57D4842F302312020030A771 /* AddTriggerActionComboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4842A302311F20030A771 /* AddTriggerActionComboView.swift */; };
 		57D48450302330060030A771 /* MultiDiscBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4844F302330030030A771 /* MultiDiscBuilderView.swift */; };
 		57D48451302330060030A771 /* MultiDiscBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4844F302330030030A771 /* MultiDiscBuilderView.swift */; };
+		57D48BDB30585CDA00151935 /* SkinButtonBindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48BDA30585CD300151935 /* SkinButtonBindingView.swift */; };
+		57D48BDC30585CDA00151935 /* SkinButtonBindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48BDA30585CD300151935 /* SkinButtonBindingView.swift */; };
+		57D48BDD30585CDA00151935 /* SkinButtonBindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48BDA30585CD300151935 /* SkinButtonBindingView.swift */; };
 		57D7CF362EA5DBA800F41540 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF332EA5DB9C00F41540 /* Trigger.swift */; };
 		57D7CF592EA78B2B00F41540 /* TriggerProPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF572EA78B1700F41540 /* TriggerProPreviewController.swift */; };
 		57D7CF622EA792FB00F41540 /* AddTriggerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF612EA792F900F41540 /* AddTriggerButtonView.swift */; };
@@ -1569,6 +1575,7 @@
 		8CFD19E8FFCB46D79A392284 /* Amiga.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93489E15EFD47F2AE825436 /* Amiga.swift */; };
 		902DFD5CBFDB4F459499DD93 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7591E2FD42D480093A2B3 /* Fuse */; };
 		957B6B3A58F143B0A1505FF2 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759E02FD487190093A2B3 /* KeyboardKit */; };
+		A0D929BA27CC4FE68A49BDAB /* FLASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809D2DE31034EF5B9135498 /* FLASH.swift */; };
 		A121A866AFE249E883FB8650 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 57E48D902D8D736B008000A3 /* ConfettiSwiftUI */; };
 		A392D5652E96682C00F920E7 /* DisabledTapSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D5632E96682600F920E7 /* DisabledTapSwitch.swift */; };
 		A392D5B32E9796B900F920E7 /* ServiceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D5B22E9796B800F920E7 /* ServiceIconView.swift */; };
@@ -1603,6 +1610,7 @@
 		B2F4B7B22A147226003B0E07 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4B7B12A147226003B0E07 /* UIViewExtensions.swift */; };
 		B866FD09ADDF4F39949809EE /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759142FD42CB70093A2B3 /* BetterSegmentedControl */; };
 		BCF469A4CBCE4B75B6E4BC3C /* UniversalDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7596E2FD455AA0093A2B3 /* UniversalDetector */; };
+		C425CFE2F6744DD2B82FDB01 /* RuffleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */; };
 		C4B2ED967D564367AD169A2C /* SmartCodable in Frameworks */ = {isa = PBXBuildFile; productRef = 57DA89122D82B0C20074052A /* SmartCodable */; };
 		C51F8155E82E429886D3E153 /* CloudServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23022FD27DA800A2749A /* CloudServiceKit */; };
 		C6A3B47603E14D269F8A697C /* ChromaColorPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759D92FD486BA0093A2B3 /* ChromaColorPicker */; };
@@ -1622,6 +1630,7 @@
 		E2162239F8584ED6843B9760 /* puae.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 03741E2E8CB24E5790E97476 /* puae.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2CFD49A14B2461EA3CBFA66 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 575A39CB2DCCFA6B00B28FC2 /* SwiftSoup */; };
 		E2EA5DEE0D384C1281D9CF83 /* WebDavKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632E22D714E46007270E8 /* WebDavKit */; };
+		E4DFA97292C840F29BC49ED5 /* RuffleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */; };
 		E5385955E04D43598CAC5694 /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E977CAA1F3C34827833FAF30 /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306D2D91AFE00043C28A /* XCGLogger */; };
 		EAE31C39F6FF42DE8F5BA497 /* Schedule in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759192FD42D030093A2B3 /* Schedule */; };
@@ -6568,6 +6577,7 @@
 		57D48420302311C80030A771 /* AddTriggerActionHoldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTriggerActionHoldView.swift; sourceTree = "<group>"; };
 		57D4842A302311F20030A771 /* AddTriggerActionComboView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTriggerActionComboView.swift; sourceTree = "<group>"; };
 		57D4844F302330030030A771 /* MultiDiscBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiDiscBuilderView.swift; sourceTree = "<group>"; };
+		57D48BDA30585CD300151935 /* SkinButtonBindingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinButtonBindingView.swift; sourceTree = "<group>"; };
 		57D7CF332EA5DB9C00F41540 /* Trigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		57D7CF572EA78B1700F41540 /* TriggerProPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerProPreviewController.swift; sourceTree = "<group>"; };
 		57D7CF612EA792F900F41540 /* AddTriggerButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTriggerButtonView.swift; sourceTree = "<group>"; };
@@ -6693,9 +6703,11 @@
 		57FD13F0301109D5007F211A /* LandscapeBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeBackgroundView.swift; sourceTree = "<group>"; };
 		57FD140F3011C71E007F211A /* ShaderPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderPreviewView.swift; sourceTree = "<group>"; };
 		57J2ME01F23397000EA24F1 /* J2ME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = J2ME.swift; sourceTree = "<group>"; };
+		6809D2DE31034EF5B9135498 /* FLASH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLASH.swift; sourceTree = "<group>"; };
 		691349DFB9FB4307A3151455 /* NGC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NGC.swift; sourceTree = "<group>"; };
 		6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vice.x64sc.libretro.framework; path = ../Cores/vice.x64sc.libretro.framework; sourceTree = SOURCE_ROOT; };
 		78D4867970474EB9B27D4D8D /* NGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NGP.swift; sourceTree = "<group>"; };
+		8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuffleView.swift; sourceTree = "<group>"; };
 		9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = mednafen.pce.libretro.framework; path = ../Cores/mednafen.pce.libretro.framework; sourceTree = SOURCE_ROOT; };
 		9770068F58CC4F29B21DE396 /* dolphin.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = dolphin.libretro.framework; path = ../Cores/dolphin.libretro.framework; sourceTree = SOURCE_ROOT; };
 		A0E402E22DFA4C9D96FFBC89 /* PCE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PCE.swift; sourceTree = "<group>"; };
@@ -7355,6 +7367,7 @@
 				57399AC72E40AFB100AB73DD /* PSXSBICollectionCell.swift */,
 				576F0E042D88005800D2A1BA /* GameSavePurchaseGuideView.swift */,
 				57F1A9172D7D25B600D0CC93 /* GameInfoView.swift */,
+				57D48BDA30585CD300151935 /* SkinButtonBindingView.swift */,
 				57D9424F302CA8E100C06208 /* GameCoverModifyView.swift */,
 				576C4C043041978C00DB526E /* GameCoverScrapingView.swift */,
 				57913B412D5ED722004D51AA /* GameInfoCoverView.swift */,
@@ -12865,6 +12878,7 @@
 		57F0D8402DE2CD7500760F57 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				6809D2DE31034EF5B9135498 /* FLASH.swift */,
 				16B86ECC930242969A108735 /* WSC.swift */,
 				B93489E15EFD47F2AE825436 /* Amiga.swift */,
 				37C004DF500A40988FE64A18 /* C64.swift */,
@@ -13020,6 +13034,7 @@
 				572D02DB2F894812000BD6F4 /* OptionsSheetView.swift */,
 				57F1D40D2FF21B6E00FC5B2A /* ChevronSheetView.swift */,
 				573CEE0C2F20D05100EA24F1 /* RomPatcherView.swift */,
+				8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */,
 				57DC7FF32F52E92B004B6FFD /* J2MEView.swift */,
 				5781F5AB2EF45C6900916D8B /* JGenesisView.swift */,
 				57EED0752ECB8172003971BD /* IconView.swift */,
@@ -13724,6 +13739,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C425CFE2F6744DD2B82FDB01 /* RuffleView.swift in Sources */,
+				4C03A073F6DB40669F022100 /* FLASH.swift in Sources */,
 				58D0423D007B462DB353AA16 /* WSC.swift in Sources */,
 				57909385303C7D9100A53656 /* Amiga.swift in Sources */,
 				57909386303C7D9100A53656 /* C64.swift in Sources */,
@@ -14117,6 +14134,7 @@
 				579094FE303C7D9100A53656 /* BonjourKit.swift in Sources */,
 				579094FF303C7D9100A53656 /* BaseNavigationController.swift in Sources */,
 				57909500303C7D9100A53656 /* ResourcesKit.swift in Sources */,
+				57D48BDD30585CDA00151935 /* SkinButtonBindingView.swift in Sources */,
 				57909501303C7D9100A53656 /* ASListPageView.swift in Sources */,
 				57909502303C7D9100A53656 /* GamesNavigationView.swift in Sources */,
 				57909503303C7D9100A53656 /* GamesCollectionReusableView.swift in Sources */,
@@ -14188,6 +14206,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				220A1FDAB02E4E41999363CA /* RuffleView.swift in Sources */,
+				2315CFACDCA546689D506EEB /* FLASH.swift in Sources */,
 				54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */,
 				0965D1CD6E9344C18E3454A6 /* Amiga.swift in Sources */,
 				C77604CEA6544406AAC031FA /* C64.swift in Sources */,
@@ -14581,6 +14601,7 @@
 				57CDCEE42FD5CBD3005BA4C8 /* BonjourKit.swift in Sources */,
 				57CDCEE52FD5CBD3005BA4C8 /* BaseNavigationController.swift in Sources */,
 				57CDCEE62FD5CBD3005BA4C8 /* ResourcesKit.swift in Sources */,
+				57D48BDB30585CDA00151935 /* SkinButtonBindingView.swift in Sources */,
 				57C65AE42FD6B2D200BB73E0 /* ASListPageView.swift in Sources */,
 				57CDCEEA2FD5CBD3005BA4C8 /* GamesNavigationView.swift in Sources */,
 				57CDCEEC2FD5CBD3005BA4C8 /* GamesCollectionReusableView.swift in Sources */,
@@ -14635,6 +14656,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4DFA97292C840F29BC49ED5 /* RuffleView.swift in Sources */,
+				A0D929BA27CC4FE68A49BDAB /* FLASH.swift in Sources */,
 				AD7D0110DD684A0DA5505F08 /* WSC.swift in Sources */,
 				8CFD19E8FFCB46D79A392284 /* Amiga.swift in Sources */,
 				3CC0A81B407547FBA1CF0693 /* C64.swift in Sources */,
@@ -14765,6 +14788,7 @@
 				574ABEBC2E609FE60045F76E /* GBA.swift in Sources */,
 				5754D8932E2751CA001EA5ED /* WFC.swift in Sources */,
 				57D4841B3023119B0030A771 /* AddTriggerActionSimpleView.swift in Sources */,
+				57D48BDC30585CDA00151935 /* SkinButtonBindingView.swift in Sources */,
 				5770055F2D3CC40400762E8F /* Skin.swift in Sources */,
 				573CEE8C2F2338D800EA24F1 /* A7800.swift in Sources */,
 				577005D42D3F2F8E00762E8F /* WebServer.swift in Sources */,

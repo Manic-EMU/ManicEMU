@@ -132,6 +132,8 @@ extension GameType {
             self = .amiga
         } else if ["ws", "wsc", "pc2", "pcv2"].contains(ext) {
             self = .wsc
+        } else if ["swf"].contains(ext) {
+            self = .flash
         } else {
             self = .notSupport
         }
@@ -234,6 +236,8 @@ extension GameType {
             self = .wsc
         } else if shortName.uppercased() == "WS" {
             self = .ws
+        } else if shortName.uppercased() == "FLASH" {
+            self = .flash
         } else {
             return nil
         }
@@ -292,6 +296,7 @@ extension GameType {
         case .amiga: return "Commodore Amiga"
         case .wsc: return "WonderSwan Color"
         case .ws: return "WonderSwan"
+        case .flash: return "Adobe Flash"
         default: return ""
         }
     }
@@ -349,6 +354,7 @@ extension GameType {
         case .amiga: return  NSLocalizedString("Amiga", comment: "")
         case .wsc: return  NSLocalizedString("WSC", comment: "")
         case .ws: return  NSLocalizedString("WS", comment: "")
+        case .flash: return  NSLocalizedString("Flash", comment: "")
         case .unknown: return R.string.localizable.unknownPlatform()
         default: return ""
         }
@@ -407,6 +413,7 @@ extension GameType {
         case .amiga: return 1985
         case .wsc: return 2000
         case .ws: return 1999
+        case .flash: return 1996
         default: return 0
         }
     }
@@ -452,6 +459,7 @@ extension GameType {
         case .c64: return C64.core
         case .amiga: return Amiga.core
         case .wsc: return WSC.core
+        case .flash: return FLASH.core
         default: return nil
         }
     }
@@ -521,6 +529,7 @@ extension GameType {
         case .jaguar: return "jag"
         case .lynx: return "lnx"
         case .j2me: return nil
+        case .flash: return nil
         case .dos: return nil
         case .symbian: return nil
         case .pce, .turbografx_16: return "pce"
@@ -668,6 +677,8 @@ extension GameType {
             return .commodore
         case .wsc, .ws:
             return .bandai
+        case .flash:
+            return .adobe
         default:
             return .nintendo
         }
@@ -813,6 +824,8 @@ extension GameType {
                 image = R.image.wsc_group_brand()
             } else if self == .ws {
                 image = R.image.ws_group_brand()
+            } else if self == .flash {
+                image = R.image.flash_group_brand()
             } else if self == .ps2 {
                 image = R.image.ps2_group_brand()
             }
@@ -833,6 +846,7 @@ extension GameType {
     
     var supportShaders: Bool {
         if self == .j2me ||
+            self == .flash ||
             externalType {
             return false
         }

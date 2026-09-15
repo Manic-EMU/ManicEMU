@@ -97,6 +97,12 @@ class PlayViewController: GameViewController {
         }
         return nil
     }
+    private var ruffleCore: RuffleView? {
+        if manicGame.isRuffleCore {
+            return gameMetalView as? RuffleView
+        }
+        return nil
+    }
     //监听静音键变化
     private lazy var muteSwitchMonitor = DLTAMuteSwitchMonitor()
     //kvo监听
@@ -762,7 +768,7 @@ class PlayViewController: GameViewController {
                 }
             } else if manicGame.gameType == .symbian, UIDevice.isPhone {
                 make.top.equalTo(gameView.snp.bottom).offset(4)
-            } else if manicGame.isDolphinCore {
+            } else if manicGame.isDolphinCore || manicGame.gameType == .flash {
                 make.top.equalTo(gameView.snp.bottom).offset(5)
             } else if manicGame.gameType == .pce {
                 make.top.equalTo(gameView.snp.bottom).offset(R.Size.ContentSpaceMedium)
@@ -846,7 +852,7 @@ class PlayViewController: GameViewController {
         repeatTimer.suspend()
         //清理AirPlay画面
         if let airPlayViewController = ExternalSceneDelegate.airPlayViewController, let airPlayGameView = airPlayViewController.libretroView {
-            if manicGame.isLibretroType || manicGame.isJGenesisCore || manicGame.isJ2MECore {
+            if manicGame.isLibretroType || manicGame.isJGenesisCore || manicGame.isJ2MECore || manicGame.isRuffleCore {
                 airPlayGameView.parentViewController?.removeFromParent()
                 airPlayGameView.removeFromSuperview()
                 airPlayViewController.libretroView = nil
@@ -984,13 +990,19 @@ class PlayViewController: GameViewController {
         
         guard !isPaused || input.stringValue == "menu" else { return }
         if let directKeyboardInput = input as? AnyInput,
-           directKeyboardInput.type == .controller(GameControllerInputType("directKeyboard")),
-           manicGame.isLibretroType,
-           let keyCode = LibretroKeyboardCode.createCode(withLabel: directKeyboardInput.stringValue) {
-            LibretroCore.sharedInstance().pressKeyboard(keyCode)
-        } else {
-            handleGameInput(input.stringValue)
+           directKeyboardInput.type == .controller(GameControllerInputType("directKeyboard")) {
+            if manicGame.isRuffleCore,
+               let flashKey = FLASHKey.fromLibretroLabel(directKeyboardInput.stringValue) {
+                PlayViewController.ruffleView?.pressButton(flashKey, pressed: true)
+                return
+            }
+            if manicGame.isLibretroType,
+               let keyCode = LibretroKeyboardCode.createCode(withLabel: directKeyboardInput.stringValue) {
+                LibretroCore.sharedInstance().pressKeyboard(keyCode)
+                return
+            }
         }
+        handleGameInput(input.stringValue)
     }
     
     override func gameController(_ gameController: any GameController, didDeactivate input: any Input) {
@@ -1001,10 +1013,17 @@ class PlayViewController: GameViewController {
             return
         }
         if let directKeyboardInput = input as? AnyInput,
-           directKeyboardInput.type == .controller(GameControllerInputType("directKeyboard")),
-           manicGame.isLibretroType,
-           let keyCode = LibretroKeyboardCode.createCode(withLabel: directKeyboardInput.stringValue) {
-            LibretroCore.sharedInstance().releaseKeyboard(keyCode)
+           directKeyboardInput.type == .controller(GameControllerInputType("directKeyboard")) {
+            if manicGame.isRuffleCore,
+               let flashKey = FLASHKey.fromLibretroLabel(directKeyboardInput.stringValue) {
+                PlayViewController.ruffleView?.pressButton(flashKey, pressed: false)
+                return
+            }
+            if manicGame.isLibretroType,
+               let keyCode = LibretroKeyboardCode.createCode(withLabel: directKeyboardInput.stringValue) {
+                LibretroCore.sharedInstance().releaseKeyboard(keyCode)
+                return
+            }
         } else if let mappingKey = MappingOption(rawValue: input.stringValue) {
             if mappingKey == .fastForward2x ||
                 mappingKey == .fastForward3x ||
@@ -1363,11 +1382,28 @@ extension PlayViewController {
         }
     }
     
-    //更新外设控制器
+    /**
+     raw Keyboard input have two path.
+     1、isKeyboardInputEnabled == false, UIApplication -> pressesBegan -> LibretroCore (DOS Amiga C64 Symbian)
+     2、isKeyboardInputEnabled == true, GCKeyboardInput -> DeltaCore(RawKeyboard.keymapping) -> emu core (Flash)
+     
+     Non-raw keyboard input goes through the mapping route (most of the core)
+     isKeyboardInputEnabled == true, GCKeyboardInput -> DeltaCore(keymapping) -> emu core
+     */
     private func updateExternalGameController() {
         if let emulatorCore = self.emulatorCore {
             let realm = Database.realm
             for controler in ExternalGameControllerManager.shared.connectedControllers {
+                //flash uses the raw keyboard for input
+                if manicGame.gameType == .flash,
+                    controler is KeyboardGameController,
+                    let keymapping = try? String(contentsOfFile: R.Path.Resource.appendingPathComponent("RawKeyboard.keymapping")),
+                   let mapping = try? GameControllerInputMapping(mapping: keymapping) {
+                    controler.addReceiver(self, inputMapping: mapping)
+                    controler.addReceiver(emulatorCore, inputMapping: mapping)
+                    continue
+                }
+                
                 var mapping: GameControllerInputMapping? = nil
                 if let object = realm.objects(ControllerMapping.self).first(where: { $0.controllerName == controler.name && $0.gameType == manicGame.gameType && !$0.isDeleted }) {
                     mapping = try? GameControllerInputMapping(mapping: object.mapping)
@@ -1412,6 +1448,8 @@ extension PlayViewController {
             return jGenesisCore.isPaused
         } else if manicGame.isJ2MECore, let j2meCore {
             return j2meCore.isPaused
+        } else if manicGame.isRuffleCore, let ruffleCore {
+            return ruffleCore.isPaused
         }
         return false
     }
@@ -1434,6 +1472,10 @@ extension PlayViewController {
         } else if manicGame.isJ2MECore {
             j2meCore?.pause()
             didPause = true
+        } else if manicGame.isRuffleCore {
+            ruffleCore?.pause()
+            ruffleCore?.save(to: manicGame.gameSaveUrl.path)
+            didPause = true
         }
         if didPause {
             releaseHeldExternalCoreInputs()
@@ -1454,6 +1496,9 @@ extension PlayViewController {
             updateAudio()
         } else if manicGame.isJ2MECore {
             j2meCore?.resume()
+            updateAudio()
+        } else if manicGame.isRuffleCore {
+            ruffleCore?.resume()
             updateAudio()
         }
         PlayViewController.refreshExternalInputSink()
@@ -1492,6 +1537,7 @@ extension PlayViewController {
     }
     
     private func removeExternalGameControllerReceivers() {
+        ExternalGameControllerManager.shared.isKeyboardInputEnabled = true
         for controller in ExternalGameControllerManager.shared.connectedControllers {
             controller.removeReceiver(self)
             if let emulatorCore {
@@ -1528,6 +1574,12 @@ extension PlayViewController {
                 j2meCore?.setMute(true)
             } else {
                 j2meCore?.setMute(!manicGame.volume)
+            }
+        } else if manicGame.isRuffleCore {
+            if Settings.defalut.respectSilentMode, muteSwitchMonitor.isMonitoring, muteSwitchMonitor.isMuted {
+                ruffleCore?.setMute(true)
+            } else {
+                ruffleCore?.setMute(!manicGame.volume)
             }
         }
     }
@@ -1653,6 +1705,8 @@ extension PlayViewController {
             
         } else if manicGame.isJ2MECore {
             // J2ME does not support cheat codes
+        } else if manicGame.isRuffleCore {
+            // Ruffle does not support cheat codes
         }
     }
     
@@ -2462,6 +2516,7 @@ extension PlayViewController {
         updateJGenesisView()
         //更新J2ME画面
         updateJ2MEView()
+        updateRuffleView()
         
         if controllerView.isIncludeSwitch {
             controllerView.updateSwitchState(skinSwitchBindDatas)
@@ -2838,7 +2893,7 @@ extension PlayViewController {
         
         if manicGame.gameType.supportsKeyboardSkin {
             controllerView.allowTapThroughIfButtonNotHit = true
-            controllerView.allowKeyboardEvents = false
+            ExternalGameControllerManager.shared.isKeyboardInputEnabled = false
             if let skin = controllerView.controllerSkin,
                skin.identifier.hasSuffix(".keyboard") {
                 controllerView.activateButtonInputInterception = { input in
@@ -2866,6 +2921,7 @@ extension PlayViewController {
             }
         } else if manicGame.gameType == .symbian {
             controllerView.allowTapThroughIfButtonNotHit = true
+            ExternalGameControllerManager.shared.isKeyboardInputEnabled = false
         }
         
         if let gameMetalView {
@@ -3143,6 +3199,41 @@ extension PlayViewController {
         }
     }
     
+    private func updateRuffleView() {
+        guard manicGame.isRuffleCore else { return }
+        if let gameMetalView {
+            if gameMetalView.superview == view {
+                gameMetalView.snp.remakeConstraints { make in
+                    make.edges.equalTo(gameView)
+                }
+            }
+        } else {
+            controllerView.allowTapThroughIfButtonNotHit = true
+
+            FLASHEmulatorBridge.shared.reloadKeyMapping(from: manicGame)
+
+            let ruffleView = RuffleView()
+            gameMetalView = ruffleView
+            guard let gameMetalView else { return }
+            self.view.insertSubview(gameMetalView, belowSubview: controllerView)
+            gameMetalView.snp.makeConstraints { make in
+                make.edges.equalTo(self.gameView)
+            }
+            gameMetalView.isHidden = true
+
+            ruffleView.didFinishedInit = { [weak self] in
+                guard let self else { return }
+                self.ruffleCore?.openFile(filePath: self.manicGame.romUrl.path, savePath: self.manicGame.gameSaveUrl.path)
+                DispatchQueue.main.asyncAfter(delay: 1) {
+                    self.updateFastforward(speed: self.manicGame.speed)
+                    self.updateAudio()
+                }
+                self.gameMetalView?.isHidden = false
+                self.updateAirPlay()
+            }
+        }
+    }
+    
     private func updateDualScreenViews() {
         guard manicGame.gameType == .ds || manicGame.gameType == ._3ds else { return }
         let usingShaderPath = Prefference.defalut.getPrefference(kind: .shader,
@@ -3327,6 +3418,19 @@ extension PlayViewController {
             DispatchQueue.main.asyncAfter(delay: 0.5) {
                 self.dismiss(animated: true)
             }
+        } else if manicGame.isRuffleCore {
+            let finish = { [weak self] in
+                guard let self else { return }
+                self.gameMetalView = nil
+                DispatchQueue.main.asyncAfter(delay: 0.5) {
+                    self.dismiss(animated: true)
+                }
+            }
+            if let ruffleCore {
+                ruffleCore.save(to: manicGame.gameSaveUrl.path) { _ in finish() }
+            } else {
+                finish()
+            }
         }
     }
     
@@ -3474,6 +3578,8 @@ extension PlayViewController {
                     self.updateScreenScaling()
                 }
             }
+        } else if manicGame.isRuffleCore {
+            ruffleCore?.reset()
         }
     }
     
@@ -3515,6 +3621,12 @@ extension PlayViewController {
             }
         } else if manicGame.isJ2MECore {
             if let image = j2meCore?.snapShot() {
+                completion?([image])
+            } else {
+                completion?(nil)
+            }
+        } else if manicGame.isRuffleCore {
+            if let image = ruffleCore?.snapShot() {
                 completion?([image])
             } else {
                 completion?(nil)
@@ -4066,6 +4178,19 @@ extension PlayViewController {
             case .five:
                 j2meCore?.fastForward(speed: 7)
             }
+        } else if manicGame.isRuffleCore {
+            switch speed {
+            case .one:
+                ruffleCore?.fastForward(speed: 1.0)
+            case .two:
+                ruffleCore?.fastForward(speed: 1.5)
+            case .three:
+                ruffleCore?.fastForward(speed: 3)
+            case .four:
+                ruffleCore?.fastForward(speed: 5)
+            case .five:
+                ruffleCore?.fastForward(speed: 7)
+            }
         } else if manicGame.isCitra3DS {
             let bridge = ThreeDSEmulatorBridge.shared
             switch speed {
@@ -4382,6 +4507,23 @@ extension PlayViewController {
             return currentPlayViewController.j2meCore
         }
         return nil
+    }
+
+    static var ruffleView: RuffleView? {
+        if let currentPlayViewController {
+            return currentPlayViewController.ruffleCore
+        }
+        return nil
+    }
+
+    static func reloadRuffleKeyMapping(for game: Game) {
+        reloadRuffleKeyMapping(for: [game])
+    }
+
+    static func reloadRuffleKeyMapping(for games: [Game]) {
+        guard let currentPlayViewController,
+              let game = games.first(where: { $0.id == currentPlayViewController.manicGame.id }) else { return }
+        FLASHEmulatorBridge.shared.reloadKeyMapping(from: game)
     }
     
     static var currentGameType: GameType? {

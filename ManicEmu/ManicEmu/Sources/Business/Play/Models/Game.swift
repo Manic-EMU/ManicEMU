@@ -299,6 +299,8 @@ class Game: Object, ObjectUpdatable {
             return URL(fileURLWithPath: R.Path.PUAE.appendingPathComponent("\(name).nvr"))
         } else if gameType == .j2me {
             return URL(fileURLWithPath: R.Path.Data.appendingPathComponent("\(name).\(defaultCore == 0 ? EmulationCore.J2meJS.name : EmulationCore.freej2me.name).\(gameType.manicEmuCore?.gameSaveFileExtension ?? "")"))
+        } else if gameType == .flash {
+            return URL(fileURLWithPath: R.Path.RuffleSaves.appendingPathComponent("\(name).\(gameType.manicEmuCore?.gameSaveFileExtension ?? "json")"))
         } else if gameType == .dos {
             if let enumerator = FileManager.default.enumerator(at: URL(fileURLWithPath: R.Path.DOSBoxPure), includingPropertiesForKeys: [.isDirectoryKey]) {
                 for case let fileURL as URL in enumerator {
@@ -764,6 +766,9 @@ class Game: Object, ObjectUpdatable {
         if isJ2MECore {
             return false
         }
+        if isRuffleCore {
+            return false
+        }
         return true
     }
     
@@ -922,7 +927,7 @@ class Game: Object, ObjectUpdatable {
     }
     
     var isLibretroType: Bool {
-        if isCitra3DS || isJGenesisCore || isJ2MECore {
+        if isCitra3DS || isJGenesisCore || isJ2MECore || isRuffleCore {
             return false
         }
         return true
@@ -942,6 +947,10 @@ class Game: Object, ObjectUpdatable {
     
     var isJ2MECore: Bool {
         return gameType == .j2me
+    }
+
+    var isRuffleCore: Bool {
+        return gameType == .flash
     }
     
     var coreNameForMultiSupport: String {
@@ -1161,7 +1170,7 @@ class Game: Object, ObjectUpdatable {
             }
             //SS J2me的存档不切换
             let newSaveUrl = gameSaveUrl
-            if gameType != .ss, gameType != .j2me, FileManager.default.fileExists(atPath: oldSaveUrl.path) {
+            if gameType != .ss, gameType != .j2me, gameType != .flash, FileManager.default.fileExists(atPath: oldSaveUrl.path) {
                 try? FileManager.safeMoveItem(at: oldSaveUrl, to: newSaveUrl)
             }
             //处理DS的存档
@@ -1181,6 +1190,7 @@ class Game: Object, ObjectUpdatable {
             gameType == .dc ||
             isSegaArcade ||
             gameType == .j2me ||
+            gameType == .flash ||
             gameType == .dos ||
             gameType == .symbian ||
             isClownMDEmuCore ||
@@ -1286,6 +1296,7 @@ class Game: Object, ObjectUpdatable {
             (gameType == .mcd && defaultCore != 0) ||
             (gameType == ._32x && defaultCore != 0) ||
             gameType == .j2me ||
+            gameType == .flash ||
             (gameType == .n64 && !isN64ParaLLEl) ||
             gameType.externalType ||
             isUrlGame ||
@@ -1365,7 +1376,8 @@ class Game: Object, ObjectUpdatable {
     
     var supportScreenScaling: Bool {
         if (gameType == .mcd && defaultCore != 0) ||
-            (gameType == ._32x && defaultCore != 0) {
+            (gameType == ._32x && defaultCore != 0) ||
+            gameType == .flash {
             return false
         }
         return true
@@ -1382,7 +1394,7 @@ class Game: Object, ObjectUpdatable {
     }
     
     var supportSaveState: Bool {
-        if gameType == .jaguar || gameType == .j2me || gameType == .symbian {
+        if gameType == .jaguar || gameType == .j2me || gameType == .flash || gameType == .symbian {
             return false
         }
         return true

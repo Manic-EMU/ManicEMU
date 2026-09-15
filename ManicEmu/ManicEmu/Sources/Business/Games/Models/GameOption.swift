@@ -84,7 +84,8 @@ enum GameOption: Int, CaseIterable {
          dolphinCpuCore,
          slowMotion,
          ndsLidToggle,
-         editLink
+         editLink,
+         skinButtonBinding
         
     //When adding a new option, make sure to add it at the end; otherwise, it might affect the existing Prefference configurations
     
@@ -232,6 +233,8 @@ enum GameOption: Int, CaseIterable {
                 .symbol(.slowmo)
         case .ndsLidToggle:
                 .symbol(.squareTophalfFilled)
+        case .skinButtonBinding:
+                .symbolImage(R.image.keyboard_iconSymbols())
         }
     }
     
@@ -387,6 +390,8 @@ enum GameOption: Int, CaseIterable {
             R.string.localizable.wSwanRotateDisplay()
         case .ndsLidToggle:
             R.string.localizable.ndsLidToggle()
+        case .skinButtonBinding:
+            R.string.localizable.skinButtonBinding()
         }
     }
     
@@ -432,7 +437,6 @@ enum GameOption: Int, CaseIterable {
             return R.string.localizable.airPlayLayoutTips()
         case .language:
             return R.string.localizable.consoleLanguageDesc()
-            
         default:
             return nil
         }
@@ -515,6 +519,7 @@ enum GameOption: Int, CaseIterable {
             .dolphinCpuCore,
             .wswanRotation,
             .ndsLidToggle,
+            .skinButtonBinding,
             .coreSettings,
         ],
         [
@@ -1005,7 +1010,8 @@ enum GameOption: Int, CaseIterable {
                 .gameShortcut,
                 .coverScraping,
                 .ndsLidToggle,
-                .pspJitType:
+                .pspJitType,
+                .skinButtonBinding:
             break
         }
         return .chevron(nil)
@@ -1320,6 +1326,10 @@ enum GameOption: Int, CaseIterable {
             allOptions.remove(.ndsLidToggle)
         }
         
+        if game.gameType != .flash {
+            allOptions.remove(.skinButtonBinding)
+        }
+        
         allOptions.subtract(disableOptionsForScene(scene))
         
         return Array(allOptions)
@@ -1366,7 +1376,8 @@ enum GameOption: Int, CaseIterable {
                                                             .palette,
                                                             .triggerPro,
                                                             .gameShortcut,
-                                                            .symbianDevice],
+                                                            .symbianDevice,
+                                                            .skinButtonBinding],
                                                   condition: {
                 !games.allSatisfy({ $0.gameType == firstGame.gameType })
             })

@@ -25,7 +25,9 @@ class ManicApplication: UIApplication {
     
     
     override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if let event, PlayViewController.isGaming, PlayViewController.currentGameType == .dos {
+        if let event, PlayViewController.isGaming,
+            let gameType = PlayViewController.currentGameType,
+           (gameType.supportsKeyboardSkin || gameType == .symbian) {
             for press in presses {
                 LibretroCore.sharedInstance().handle(press, with: event, down: true)
             }
@@ -40,7 +42,9 @@ class ManicApplication: UIApplication {
     }
     
     override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        if let event, PlayViewController.isGaming, PlayViewController.currentGameType == .dos {
+        if let event, PlayViewController.isGaming,
+            let gameType = PlayViewController.currentGameType,
+           (gameType.supportsKeyboardSkin || gameType == .symbian) {
             for press in presses {
                 LibretroCore.sharedInstance().handle(press, with: event, down: false)
             }

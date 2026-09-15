@@ -11,6 +11,7 @@
 
 enum System: CaseIterable
 {
+    case flash
     case wsc
     case ps2
     case amiga
@@ -97,7 +98,8 @@ enum System: CaseIterable
                 NGP.core,
                 C64.core,
                 Amiga.core,
-                WSC.core]
+                WSC.core,
+                FLASH.core]
     }
     
     ///Returns all supported game types.
@@ -168,6 +170,7 @@ extension System {
         case .amiga: return .amiga
         case .ps2: return .ps2
         case .wsc: return .wsc
+        case .flash: return .flash
         }
     }
 }

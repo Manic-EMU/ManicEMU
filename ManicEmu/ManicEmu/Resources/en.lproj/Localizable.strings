@@ -1171,3 +1171,6 @@ Press the controller button to complete mapping...";
 "MultiDiscSupportedFormats" = "Supported formats: %@";
 "MultiDiscImportErrorConflict" = "Error: Cannot mix different disc image formats.";
 "MultiDiscImportErrorMissing" = "Error: No supported disc image found.";
+
+"SkinButtonBinding" = " Skin Button Binding";
+"SkinButtonBindingDesc" = "Bind skin buttons to keyboard keys";

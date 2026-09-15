@@ -9,13 +9,13 @@
 
 
 enum Manufacturer: Int, CaseIterable {
-    case nintendo, sony, sega, arcade, atari, sun, microsoft, modRetro, nokia, nec, snk, commodore, bandai
+    case nintendo, sony, sega, arcade, atari, sun, microsoft, modRetro, nokia, nec, snk, commodore, bandai, adobe
     
     static var allCases: [Manufacturer] {
         if Locale.prefersUS {
-            [.nintendo, .sony, .sega, .atari, .arcade, .sun, .microsoft, .modRetro, .nokia, .nec, .snk, .commodore, .bandai]
+            [.nintendo, .sony, .sega, .atari, .arcade, .sun, .microsoft, .modRetro, .nokia, .nec, .snk, .commodore, .bandai, .adobe]
         } else {
-            [.nintendo, .sony, .sega, .arcade, .atari, .sun, .microsoft, .modRetro, .nokia, .nec, .snk, .commodore, .bandai]
+            [.nintendo, .sony, .sega, .arcade, .atari, .sun, .microsoft, .modRetro, .nokia, .nec, .snk, .commodore, .bandai, .adobe]
         }
     }
     
@@ -55,6 +55,8 @@ enum Manufacturer: Int, CaseIterable {
             "Commodore"
         case .bandai:
             "Bandai"
+        case .adobe:
+            "Adobe"
         }
     }
     
@@ -93,6 +95,8 @@ enum Manufacturer: Int, CaseIterable {
             R.image.commodore_normal()!
         case .bandai:
             R.image.bandai_normal()!
+        case .adobe:
+            R.image.adobe_normal()!
         }
     }
     
@@ -124,6 +128,8 @@ enum Manufacturer: Int, CaseIterable {
             R.image.commodore_highlight()!
         case .bandai:
             R.image.bandai_highlight()!
+        case .adobe:
+            R.image.adobe_highlight()!
         }
     }
 }

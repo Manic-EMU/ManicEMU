@@ -8,19 +8,20 @@
 
 import Foundation
 
-/// 将游戏控制器与键盘事件统一转换为 FocusKey 输入的监听器。
+/// Converts game-controller and keyboard events into FocusKey input.
 ///
-/// 控制器与键盘事件均来自 DeltaCore 的 externalGameControllerDidPress/DidRelease 通知：
-/// 键盘由 DeltaCore 的 KeyboardGameController 通过 GCKeyboard（HID 原始按键状态）采集，
-/// 完全绕开 UIKit 的 UIKeyCommand/系统快捷键消费机制（系统保留组合如 ⌃⌘F 除外）。
+/// Both come from DeltaCore `externalGameControllerDidPress/DidRelease`.
+/// Keyboard is captured by KeyboardGameController via GCKeyboard (raw HID),
+/// bypassing UIKit UIKeyCommand / system shortcut consumption (except reserved chords such as ⌃⌘F).
 ///
-/// 仅在 ExternalInputDispatch.sink == .focusKit 时处理（未游戏或游戏已暂停）。
-/// 游戏运行中的按键由 PlayViewController 与模拟核心接收，不经过本类。
+/// Only handles events while `ExternalInputDispatch.sink == .focusKit` (not playing, or paused).
+/// In-game keys go to PlayViewController and the core, not this class.
 ///
-/// 本类只负责两件事：
-/// 1. 摇杆方向输入的按住去重；
-/// 2. 键盘修饰键组合成 chord，固定顺序 control → option → shift → command，
-///    与按下先后无关；释放修饰键时输出释放前按住的完整组合，保证 press/release 配套。
+/// This class only:
+/// 1. Deduplicates held stick directions
+/// 2. Combines keyboard modifiers into a chord in fixed order control → option → shift → command,
+///    independent of press order; releasing a modifier emits the full chord from before the release
+///    so press/release stay paired.
 class FocusKeyObserver {
     static let shared = FocusKeyObserver()
     
@@ -29,13 +30,19 @@ class FocusKeyObserver {
     private var externalGameControllerDidDisconnect: Any? = nil
     private var externalKeyboardDidDisconnect: Any? = nil
     
-    // MARK: - 键盘状态
+    // MARK: - Keyboard state
     
-    /// 修饰键的固定输出顺序（与按下的先后顺序无关）：control → option → shift → command
+    /// Canonical modifier order for chords, independent of press order.
     private static let modifierOrder = ["control", "option", "shift", "command"]
-    /// 当前按住的修饰键名（DeltaCore 已将左右同名修饰键合并为同一输入）
+    /// Left/right RETROK names fold into the same FocusKit modifier.
+    private static let modifierAliases: [String: String] = [
+        "control": "control", "ctrl": "control", "lctrl": "control", "rctrl": "control",
+        "option": "option", "alt": "option", "lalt": "option", "ralt": "option",
+        "shift": "shift", "lshift": "shift", "rshift": "shift",
+        "command": "command", "meta": "command", "lmeta": "command", "rmeta": "command"
+    ]
     private static var heldModifiers = Set<String>()
-    /// 非修饰键按下时记录的组合键名，释放时原样回放保证对称
+    /// Non-modifier key → composed chord at press time; replayed on release.
     private static var activeComposedKeys = [String: String]()
     
     func start() {
@@ -77,7 +84,7 @@ class FocusKeyObserver {
             }
         }
         
-        // 手柄或外接键盘断开：无剩余外设时清掉焦点高亮
+        // Controller or hardware keyboard disconnected: clear focus highlight when no devices remain.
         let onDisconnect: (Notification) -> Void = { notification in
             if notification.object is KeyboardGameController {
                 Self.resetKeyboardState()
@@ -98,7 +105,7 @@ class FocusKeyObserver {
         )
     }
     
-    // MARK: - 键盘处理
+    // MARK: - Keyboard handling
     
     func handleTextEditingDidBegin() {
         Self.resetKeyboardState()
@@ -110,13 +117,14 @@ class FocusKeyObserver {
     }
     
     private static func handleKeyboard(_ keyName: String, isPressed: Bool) {
+        let keyName = modifierAliases[keyName] ?? keyName
         let isModifier = modifierOrder.contains(keyName)
         
         if isPressed {
             if isModifier {
                 guard !heldModifiers.contains(keyName) else { return }
                 heldModifiers.insert(keyName)
-                // 修饰键按下：输出当前按住的全部修饰键组合（固定顺序）
+                // Modifier down: emit the full held-modifier chord in fixed order.
                 activateKey(composedChord())
             } else {
                 guard activeComposedKeys[keyName] == nil else { return }
@@ -127,9 +135,9 @@ class FocusKeyObserver {
         } else {
             if isModifier {
                 guard heldModifiers.contains(keyName) else { return }
-                // 修饰键释放：输出释放前按住的全部修饰键组合（含被释放的键，固定顺序），
-                // 与 activate 时的组合配套。例如按住 control+shift+command 依次释放：
-                // release: control+shift+command → control+command → command
+                // Modifier up: emit the chord from before the release so it pairs with activate.
+                // Holding control+shift+command and releasing one-by-one:
+                // control+shift+command → control+command → command
                 let composed = composedChord()
                 heldModifiers.remove(keyName)
                 deactivateKey(composed)
@@ -140,26 +148,26 @@ class FocusKeyObserver {
         }
     }
     
-    /// 当前按住的全部修饰键，按固定顺序组合（如 "control+shift+command"）
+    /// Held modifiers joined in fixed order, e.g. "control+shift+command".
     private static func composedChord() -> String {
         return modifierOrder.filter { heldModifiers.contains($0) }.joined(separator: "+")
     }
     
-    /// 普通键与当前按住的修饰键组合（如 "control+command+f"）
+    /// Non-modifier plus current modifiers, e.g. "control+command+f".
     private static func composedKey(with keyName: String) -> String {
         var parts = modifierOrder.filter { heldModifiers.contains($0) }
         parts.append(keyName)
         return parts.joined(separator: "+")
     }
     
-    // MARK: - 输出
+    // MARK: - Output
     
     private static func activateKey(_ key: String) {
         FocusSystem.shared.keyDown(mappingKey(key))
     }
     
     private static func deactivateKey(_ key: String) {
-        // 释放时走同样的映射，保证 keyDown/keyUp 配对
+        // Same mapping on release so keyDown/keyUp stay paired.
         FocusSystem.shared.keyUp(mappingKey(key))
     }
     

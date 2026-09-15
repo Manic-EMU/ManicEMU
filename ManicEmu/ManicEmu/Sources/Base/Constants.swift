@@ -85,6 +85,7 @@ extension _R {
                 case .ws: return 0.8063
                 case .c64: return 0.7146
                 case .amiga: return 0.7052
+                case .flash: return 1.375
                 default: return 1.0
                 }
             case .style2:
@@ -528,6 +529,8 @@ extension _R {
         static let RomPatcher = Resource.appendingPathComponent("RomPatcher")
         static let J2meJS = Resource.appendingPathComponent("j2mejs")
         static let Freej2meWeb = Resource.appendingPathComponent("freej2me")
+        static let Ruffle = Resource.appendingPathComponent("ruffle")
+        static let RuffleSaves = Document.appendingPathComponent("Ruffle")
         static let DOSBoxPure = Document.appendingPathComponent(EmulationCore.DOSBoxPure.name)
         static let DOSBoxPureSystem = DOSBoxPure.appendingPathComponent("system")
         static let EKA2L1 = Document.appendingPathComponent(EmulationCore.EKA2L1.name)

@@ -9,7 +9,7 @@ import GCDWebServer
 
 class LocalWebServer {
     enum ServerType {
-        case JGenesis, RomPatcher, J2meJS, freej2meWeb
+        case JGenesis, RomPatcher, J2meJS, freej2meWeb, Ruffle
     }
     
     private var server: GCDWebServer?
@@ -155,6 +155,74 @@ class LocalWebServer {
                 response?.cacheControlMaxAge = 0
                 response?.setValue("no-cache, no-store, must-revalidate", forAdditionalHeader: "Cache-Control")
                 response?.contentType = "application/java-archive"
+                return response
+            }
+
+        case .Ruffle:
+            port = 8084
+            resourcePath = R.Path.Ruffle
+
+            server?.addGETHandler(forBasePath: "/",
+                                  directoryPath: resourcePath,
+                                  indexFilename: nil,
+                                  cacheAge: 0,
+                                  allowRangeRequests: true)
+
+            server?.addHandler(forMethod: "GET", pathRegex: "/.*\\.html", request: GCDWebServerRequest.self) { request in
+                let htmlPath = resourcePath.appendingPathComponent(request.path)
+                guard FileManager.default.fileExists(atPath: htmlPath) else {
+                    return GCDWebServerResponse(statusCode: 404)
+                }
+                let response = GCDWebServerFileResponse(file: htmlPath)
+                response?.contentType = "text/html; charset=utf-8"
+                response?.setValue("same-origin", forAdditionalHeader: "Cross-Origin-Opener-Policy")
+                response?.setValue("require-corp", forAdditionalHeader: "Cross-Origin-Embedder-Policy")
+                return response
+            }
+
+            server?.addHandler(forMethod: "GET", pathRegex: "/.*\\.wasm", request: GCDWebServerRequest.self) { request in
+                let wasmPath = resourcePath.appendingPathComponent(request.path)
+                guard FileManager.default.fileExists(atPath: wasmPath) else {
+                    return GCDWebServerResponse(statusCode: 404)
+                }
+                let response = GCDWebServerFileResponse(file: wasmPath)
+                response?.contentType = "application/wasm"
+                response?.setValue("same-origin", forAdditionalHeader: "Cross-Origin-Opener-Policy")
+                response?.setValue("require-corp", forAdditionalHeader: "Cross-Origin-Embedder-Policy")
+                return response
+            }
+
+            server?.addHandler(forMethod: "GET", pathRegex: "/.*\\.js", request: GCDWebServerRequest.self) { request in
+                let jsPath = resourcePath.appendingPathComponent(request.path)
+                guard FileManager.default.fileExists(atPath: jsPath) else {
+                    return GCDWebServerResponse(statusCode: 404)
+                }
+                let response = GCDWebServerFileResponse(file: jsPath)
+                response?.contentType = "text/javascript"
+                response?.setValue("same-origin", forAdditionalHeader: "Cross-Origin-Opener-Policy")
+                response?.setValue("require-corp", forAdditionalHeader: "Cross-Origin-Embedder-Policy")
+                return response
+            }
+
+            server?.addHandler(forMethod: "GET", pathRegex: "/file/.*", request: GCDWebServerRequest.self) { [weak self] request in
+                guard let self else { return nil }
+                let fileId = request.path.lastPathComponent
+                guard let filePath = self.files[fileId] else {
+                    return GCDWebServerResponse(statusCode: 404)
+                }
+
+                guard FileManager.default.fileExists(atPath: filePath) else {
+                    return GCDWebServerResponse(statusCode: 404)
+                }
+
+                let response = GCDWebServerFileResponse(file: filePath)
+                response?.cacheControlMaxAge = 0
+                response?.setValue("no-cache, no-store, must-revalidate", forAdditionalHeader: "Cache-Control")
+                response?.setValue("no-cache", forAdditionalHeader: "Pragma")
+                response?.setValue("0", forAdditionalHeader: "Expires")
+                response?.setValue("same-origin", forAdditionalHeader: "Cross-Origin-Opener-Policy")
+                response?.setValue("require-corp", forAdditionalHeader: "Cross-Origin-Embedder-Policy")
+                response?.contentType = "application/x-shockwave-flash"
                 return response
             }
         }
