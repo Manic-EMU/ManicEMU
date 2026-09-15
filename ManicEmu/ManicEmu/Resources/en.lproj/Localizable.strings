@@ -1174,3 +1174,13 @@ Press the controller button to complete mapping...";
 
 "SkinButtonBinding" = " Skin Button Binding";
 "SkinButtonBindingDesc" = "Bind skin buttons to keyboard keys";
+
+"RommPasswordOrApiKey" = "Password or API Key";
+"RommPullFromService" = "Pull data from RomM";
+"RommPushToService" = "Push changes to RomM";
+"RommPullConfirmDetail" = "This will overwrite local covers, metadata, play time, battery saves, and matching save states for %d linked game(s). Continue?";
+"RommPushConfirmDetail" = "This will overwrite RomM covers, summaries, saves, and save states for %d linked game(s), and append play time. Continue?";
+"RommNoLinkedGames" = "No games imported from this RomM service.";
+"RommTransferSuccess" = "Finished. %d game(s) updated.";
+"RommTransferPartial" = "Finished. %d succeeded, %d failed.";
+"RommTransferFailed" = "Transfer failed. Check the server connection.";
