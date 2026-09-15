@@ -146,12 +146,36 @@ class Game: Object, ObjectUpdatable {
         FileManager.default.fileExists(atPath: gameSaveUrl.path)
     }
     
-    /// 文件名 包含名称和扩展名
+    /// File name including extension.
     var fileName: String {
         "\(name).\(fileExtension)"
     }
     
-    //游戏文件路径
+    var rommRomId: Int? {
+        get {
+            if let value = getExtraInt(key: ExtraKey.rommRomId.rawValue) { return value }
+            if let number = getExtra(key: ExtraKey.rommRomId.rawValue) as? NSNumber { return number.intValue }
+            return nil
+        }
+        set { updateExtra(key: ExtraKey.rommRomId.rawValue, value: newValue) }
+    }
+    
+    var rommServiceId: String? {
+        get { getExtraString(key: ExtraKey.rommServiceId.rawValue) }
+        set { updateExtra(key: ExtraKey.rommServiceId.rawValue, value: newValue) }
+    }
+    
+    var rommPlayDurationPushed: Double {
+        get {
+            if let value = getExtraDouble(key: ExtraKey.rommPlayDurationPushed.rawValue) { return value }
+            if let value = getExtraInt(key: ExtraKey.rommPlayDurationPushed.rawValue) { return Double(value) }
+            if let number = getExtra(key: ExtraKey.rommPlayDurationPushed.rawValue) as? NSNumber { return number.doubleValue }
+            return 0
+        }
+        set { updateExtra(key: ExtraKey.rommPlayDurationPushed.rawValue, value: newValue) }
+    }
+    
+    // ROM file path
     var romUrl: URL {
         if isMultiFileGame {
             return URL(fileURLWithPath: R.Path.Data.appendingPathComponent(fileName.deletingPathExtension).appendingPathComponent(fileName))

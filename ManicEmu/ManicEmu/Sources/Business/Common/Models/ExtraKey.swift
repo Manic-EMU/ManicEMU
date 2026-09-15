@@ -99,4 +99,10 @@ enum ExtraKey: String {
     case urlGameURL
     /// JSON recipe mapping FLASHSkinButton raw values to FLASHKey (KeyboardEvent.code) values.
     case skinButtonBinding
+    /// RomM ROM id for a game imported from that service.
+    case rommRomId
+    /// ImportService.id of the RomM instance that imported the game.
+    case rommServiceId
+    /// Play-time milliseconds already pushed to RomM; only the local delta is sent next time.
+    case rommPlayDurationPushed
 }

@@ -42,7 +42,8 @@ class RommServiceProvider: CloudServiceProvider {
                                  host: service.host ?? "",
                                  port: service.port,
                                  user: service.user,
-                                 password: service.password)
+                                 password: service.password,
+                                 path: service.path)
     }
 
     func contentsOfDirectory(_ directory: CloudServiceKit.CloudItem,

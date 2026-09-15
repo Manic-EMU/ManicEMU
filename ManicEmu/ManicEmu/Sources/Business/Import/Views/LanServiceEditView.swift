@@ -60,7 +60,7 @@ class LanServiceEditView: BaseView {
                     break
                 }
             } else if action.isBottom {
-                //点击连接处理
+                // Connect after the form validates.
                 self.listPageView.collectionView.endEditing(true)
                 UIView.makeLoading()
                 func handleServiceDetail() {
@@ -79,7 +79,7 @@ class LanServiceEditView: BaseView {
                     }
                 }
                 if self.service.type == .samba {
-                    //验证smaba服务是否可以连接
+                    // Verify the SMB service is reachable.
                     if let host = self.service.host {
                         let client = SMBClient(host: host, port: self.service.port ?? 445)
                         Task {
@@ -130,7 +130,38 @@ class LanServiceEditView: BaseView {
                                 }
                             } catch {
                                 await MainActor.run {
-                                    //发生错误
+                                    UIView.hideLoading()
+                                    UIView.makeToast(message: R.string.localizable.addLandServiceFailed(self.service.title))
+                                }
+                            }
+                        }
+                    } else {
+                        UIView.hideLoading()
+                        UIView.makeToast(message: R.string.localizable.errorUnknown())
+                    }
+                } else if self.service.type == .romm {
+                    if let host = service.host, let scheme = service.scheme,
+                       let client = RommClient(scheme: scheme,
+                                               host: host,
+                                               port: service.port,
+                                               user: service.user,
+                                               password: service.password,
+                                               path: service.path) {
+                        Task {
+                            do {
+                                _ = try await client.platforms()
+                                handleServiceDetail()
+                                ImportService.change { realm in
+                                    realm.add(self.service)
+                                }
+                                await MainActor.run {
+                                    self.hide()
+                                    self.successHandler?()
+                                    UIView.hideLoading()
+                                    UIView.makeToast(message: R.string.localizable.addLandServiceSuccess(self.service.title))
+                                }
+                            } catch {
+                                await MainActor.run {
                                     UIView.hideLoading()
                                     UIView.makeToast(message: R.string.localizable.addLandServiceFailed(self.service.title))
                                 }
@@ -149,7 +180,7 @@ class LanServiceEditView: BaseView {
         return view
     }()
     
-    private var editItems: [EditItem] = [
+    private lazy var editItems: [EditItem] = [
         EditItem(title: R.string.localizable.landServiceEditServerName(),
                  placeholderString: R.string.localizable.landServiceEditServerNamePlaceholder(),
                  keyboardType: .default,
@@ -169,7 +200,9 @@ class LanServiceEditView: BaseView {
                  type: .user,
                  returnKeyType: .next),
         EditItem(title: R.string.localizable.landServiceEditPassword(),
-                 placeholderString: R.string.localizable.landServiceEditOptionalPlaceholder(),
+                 placeholderString: service.type == .romm
+                    ? R.string.localizable.rommPasswordOrApiKey()
+                    : R.string.localizable.landServiceEditOptionalPlaceholder(),
                  keyboardType: .default,
                  requiredField: false,
                  type: .password,
@@ -222,18 +255,17 @@ class LanServiceEditView: BaseView {
                     if let components = inputUrl?.validateAndExtractURLComponents {
                         if service.type == .samba {
                             if let scheme = components.scheme, scheme.lowercased() != "smb" {
-                                //如果填写了scheme，但不是smb就不行
+                                // Reject a non-smb scheme when one is provided.
                                 isValid = false
                                 break
                             }
-                        } else if service.type == .webdav {
+                        } else if service.type == .webdav || service.type == .romm {
                             guard let scheme = components.scheme else {
-                                //webdav的scheme必须存在
+                                // WebDAV and RomM require http or https.
                                 isValid = false
                                 break
                             }
                             if scheme.lowercased() != "http" && scheme.lowercased() != "https" {
-                                //webdav的scheme必须是http或https
                                 isValid = false
                                 break
                             }

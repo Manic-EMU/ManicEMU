@@ -100,11 +100,17 @@ final class RommClient {
 
     var PaginationLimit: Int { 250 }
 
-    init?(scheme: String, host: String, port: Int?, user: String?, password: String?) {
+    init?(scheme: String, host: String, port: Int?, user: String?, password: String?, path: String? = nil) {
         var components = URLComponents()
         components.scheme = scheme
         components.host = host
         components.port = port
+        if let path, !path.isEmpty, path != "/" {
+            var normalized = path
+            if !normalized.hasPrefix("/") { normalized = "/" + normalized }
+            if normalized.hasSuffix("/") { normalized.removeLast() }
+            components.path = normalized
+        }
         guard let url = components.url else { return nil }
         self.baseURL = url
         self.authHeader = Self.makeAuthHeader(user: user, password: password)
@@ -124,8 +130,13 @@ final class RommClient {
     }
 
     func request(path: String, query: [URLQueryItem] = []) -> URLRequest? {
-        guard var components = URLComponents(url: baseURL.appendingPathComponent(path),
-                                             resolvingAgainstBaseURL: false) else { return nil }
+        guard var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false) else { return nil }
+        let api = path.hasPrefix("/") ? path : "/" + path
+        if components.path.isEmpty || components.path == "/" {
+            components.path = api
+        } else {
+            components.path += api
+        }
         if !query.isEmpty { components.queryItems = query }
         guard let url = components.url else { return nil }
         var req = URLRequest(url: url)
@@ -164,6 +175,17 @@ final class RommClient {
             throw URLError(.badURL)
         }
         return try Self.jsonDecoder.decode(T.self, from: await data(for: req))
+    }
+
+    private func getList<T: Decodable>(_ path: String, query: [URLQueryItem] = []) async throws -> [T] {
+        guard let req = request(path: path, query: query) else {
+            throw URLError(.badURL)
+        }
+        let payload = try await data(for: req)
+        if let page = try? Self.jsonDecoder.decode(RommPage<T>.self, from: payload) {
+            return page.items
+        }
+        return try Self.jsonDecoder.decode([T].self, from: payload)
     }
 
     func data(for request: URLRequest) async throws -> Data {
@@ -213,15 +235,15 @@ final class RommClient {
     }
 
     func saves(romID: Int) async throws -> [RommSave] {
-        try await get(SaveApiStub, query: [.init(name: "rom_id", value: "\(romID)")])
+        try await getList(SaveApiStub, query: [.init(name: "rom_id", value: "\(romID)")])
     }
 
     func states(romID: Int) async throws -> [RommState] {
-        try await get(StateApiStub, query: [.init(name: "rom_id", value: "\(romID)")])
+        try await getList(StateApiStub, query: [.init(name: "rom_id", value: "\(romID)")])
     }
 
     func playSessions(romID: Int) async throws -> [RommPlaySession] {
-        try await get(PlaySessionApiStub, query: [.init(name: "rom_id", value: "\(romID)")])
+        try await getList(PlaySessionApiStub, query: [.init(name: "rom_id", value: "\(romID)")])
     }
 
     func saveContentRequest(saveID: Int) -> URLRequest? {

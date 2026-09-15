@@ -387,7 +387,7 @@ class FileBrowserView: BaseView {
         let group = DispatchGroup()
         for item in items {
             if DownloadManager.shared.sessionManager.succeededTasks.contains(where: { $0.fileName == item.name })  {
-                //已经下载过了报错
+                // Skip files that are already in the download cache.
                 errors.append(ImportError.downloadExist(fileName: item.name))
                 continue
             } else {
@@ -447,6 +447,17 @@ class FileBrowserView: BaseView {
                     let request = provider.downloadableRequest(of: item)
                     if let url = request?.url {
                         downloadItems[item.name] = url
+                    }
+                    headers = request?.allHTTPHeaderFields
+                } else if let provider = provider as? RommServiceProvider {
+                    let request = provider.downloadableRequest(of: item)
+                    if let url = request?.url {
+                        downloadItems[item.name] = url
+                        if let romId = Int(item.id.split(separator: "/").first.map(String.init) ?? "") {
+                            RommLibrary.shared.registerDownloadedRom(fileName: item.name,
+                                                                    romId: romId,
+                                                                    serviceId: provider.serviceId)
+                        }
                     }
                     headers = request?.allHTTPHeaderFields
                 }
