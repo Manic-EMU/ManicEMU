@@ -503,6 +503,8 @@ final class RommClient {
         }
         Log.debug("[RomM HTTP] ← \(http.statusCode) DELETE /api/roms/\(romID)/manuals")
     }
+
+    func updateLastPlayed(romID: Int) async throws {
         guard var req = request(path: "\(RomApiStub)/\(romID)/props",
                                 query: [.init(name: "update_last_played", value: "true")]) else {
             throw URLError(.badURL)
