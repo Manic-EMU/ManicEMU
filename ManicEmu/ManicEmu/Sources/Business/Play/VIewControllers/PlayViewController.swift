@@ -176,8 +176,12 @@ class PlayViewController: GameViewController {
                     //Clear the image memory cache before starting the game.
                     KingfisherManager.shared.cache.clearMemoryCache()
                     
-                    //hide all alert
-                    UIView.hideAllAlert()
+                    let pretendoNetworkingViewHasShownInstance = PretendoNetworkingView.hasShownInstance
+                    
+                    if !pretendoNetworkingViewHasShownInstance {
+                        //hide all alert
+                        UIView.hideAllAlert()
+                    }
                     
                     FocusSystem.shared.isEnabled = false
                     
@@ -185,7 +189,7 @@ class PlayViewController: GameViewController {
                     if game.isLibretroType {
                         LibretroCore.sharedInstance().workspace = R.Path.Libretro
                     }
-                    if PretendoNetworkingView.hasShownInstance {
+                    if pretendoNetworkingViewHasShownInstance {
                         topViewController()?.present(PlayViewController(game: game, saveState: saveState), animated: true)
                     } else if let homeVC = ApplicationSceneDelegate.applicationWindow?.rootViewController as? HomeViewController {
                         if let vc = homeVC.presentedViewController {
@@ -488,7 +492,14 @@ class PlayViewController: GameViewController {
             if self.manicGame.gameType == .symbian {
                 UIView.makeToast(message: R.string.localizable.symbianAppGetKilled())
             }
-            UIView.hideAllAlert()
+            
+            if self.manicGame.isAzaharArticBase {
+                // Dismiss the PlayViewController without dismissing the PretendoNetworkingView
+                self.dismiss(animated: true)
+            } else {
+                UIView.hideAllAlert()
+            }
+            
             GameOption.quit.performAction(with: [self.manicGame])
         })
         notificationTokens.append(center.addObserver(forName: R.NotificationName.MotionShake, object: nil, queue: .main) { [weak self] notification in
@@ -870,8 +881,11 @@ class PlayViewController: GameViewController {
         
         //如果是Artic Base配置 离开这个页面的时候需要进行一些清理
         if manicGame.isAzaharArticBase {
-            Game.change { realm in
-                realm.delete(manicGame)
+            DispatchQueue.main.asyncAfter(delay: 1) {
+                let realm = Database.realm
+                if let game = realm.object(ofType: Game.self, forPrimaryKey: R.Strings.AzaharArticBaseGameID) {
+                    try? realm.write { realm.delete(game) }
+                }
             }
         }
         //If it's an operation on AzaharArticBase, note that manicGame has been deleted above 👆. Any further operations involving manicGame could cause serious issues.

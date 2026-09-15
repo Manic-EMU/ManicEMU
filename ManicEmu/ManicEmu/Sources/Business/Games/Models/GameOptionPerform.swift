@@ -1039,7 +1039,9 @@ extension GameOption {
 
         case .quit:
             PlayViewController.quit()
-            hideSheetInGaming()
+            if !game.isAzaharArticBase {
+                hideSheetInGaming()
+            }
             
         case .gameShortcut:
             pauseEmulationIfNeed()
