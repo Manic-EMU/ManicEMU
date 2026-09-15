@@ -471,6 +471,7 @@ extension FilesImporter {
                     guard let ciaPath = ciaInfo.contentPath else {
                         Log.debug("安装CIA出错，无法获取CIA的安装路径")
                         Self.removeCIA(ciaTitleUrl: ciaTitleUrl)
+                        Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                         completion?(nil, nil, .badFile(fileName: url.lastPathComponent.deletingPathExtension))
                         return
                     }
@@ -485,17 +486,20 @@ extension FilesImporter {
                             DispatchQueue.main.async {
                                 UIView.makeToast(message: R.string.localizable.threeDSUpdateInstallSuccess(), identifier: "threeDSUpdateInstallSuccess")
                             }
+                            Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                             completion?(nil, nil, nil)
                             return
                         }
                     case .errorEncrypted:
                         Log.debug("CIA加密了")
                         Self.removeCIA(ciaTitleUrl: ciaTitleUrl)
+                        Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                         completion?(nil, nil, .decryptFailed(fileName: url.lastPathComponent))
                         return
                     default:
                         Log.debug("CIA安装失败")
                         Self.removeCIA(ciaTitleUrl: ciaTitleUrl)
+                        Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                         completion?(nil, nil, .badFile(fileName: url.lastPathComponent))
                         return
                     }
@@ -506,6 +510,7 @@ extension FilesImporter {
                 } else {
                     Log.debug("无法获取3DS ROM信息")
                     Self.removeCIA(ciaTitleUrl: ciaTitleUrl)
+                    Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                     completion?(nil, nil, .badFile(fileName: url.lastPathComponent))
                     return
                 }
@@ -532,7 +537,8 @@ extension FilesImporter {
                 }
                 
                 if let game = realm.object(ofType: Game.self, forPrimaryKey: hash) {
-                    //游戏已经存在于数据库中
+                    // Already in the library: drop the pending RomM link so an old game is not rebound.
+                    Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                     if game.isRomExtsts {
                         //游戏文件也存在
                         Log.debug("导入游戏失败，游戏已经存在数据库")
@@ -720,7 +726,12 @@ extension FilesImporter {
                                 FilesSyncManager.shared.uploadROMFiles(for: game, extraFiles: items.map {
                                     URL(fileURLWithPath: game.romUrl.path.deletingLastPathComponent.appendingPathComponent($0.lastPathComponent))
                                 })
-                                OnlineCoverManager.shared.addCoverMatch(OnlineCoverManager.CoverMatch(game: game))
+                                if RommLibrary.shared.hasPendingLink(fileName: originalUrl.lastPathComponent)
+                                    || RommLibrary.shared.hasPendingLink(fileName: game.fileName) {
+                                    RommLibrary.shared.applyAfterImport(gameId: game.id, fileName: originalUrl.lastPathComponent)
+                                } else {
+                                    OnlineCoverManager.shared.addCoverMatch(OnlineCoverManager.CoverMatch(game: game))
+                                }
                                 completion?(game.id, game.gameType == ._3ds ? (game.displayName) : game.name, nil)
                                 
                                 return
@@ -730,6 +741,7 @@ extension FilesImporter {
                                 if let ciaTitleUrl {
                                     try? FileManager.safeRemoveItem(at: ciaTitleUrl)
                                 }
+                                Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                                 completion?(nil, nil, .writeDatabase(fileName: game.name))
                                 return
                             }
@@ -739,6 +751,7 @@ extension FilesImporter {
                             if let ciaTitleUrl {
                                 try? FileManager.safeRemoveItem(at: ciaTitleUrl)
                             }
+                            Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                             completion?(nil, nil, .badCopy(fileName: game.name))
                             return
                         }
@@ -746,6 +759,7 @@ extension FilesImporter {
                         //无法识别文件类型
                         Log.debug("导入游戏失败，后缀不正确\(game.fileName)")
                         Self.removeCIA(ciaTitleUrl: ciaTitleUrl)
+                        Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                         completion?(nil, nil, .badExtension(fileName: game.name))
                         return
                     }
@@ -754,10 +768,15 @@ extension FilesImporter {
                 //无法计算文件哈希
                 Log.debug("导入游戏失败，无法计算文件哈希")
                 Self.removeCIA(ciaTitleUrl: ciaTitleUrl)
+                Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                 completion?(nil, nil, .unableToHash(fileName: url.lastPathComponent))
                 return
             }
         }
+    }
+    
+    private static func discardRommPending(fileName: String) {
+        RommLibrary.shared.discardPendingLink(fileName: fileName)
     }
     
     private static func removeCIA(ciaTitleUrl: URL?) {
