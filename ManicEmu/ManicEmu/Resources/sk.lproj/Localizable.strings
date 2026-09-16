@@ -1020,7 +1020,6 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "BIOSCommondDesc" = "Niektoré hry nemusia bez BIOS fungovať správne.";
 "WiiKeysBinDesc" = "Na hranie hier Wii je potrebný keys.bin vo formáte BootMii.";
 "WiimoteSideways" = "Wiimote na šírku";
-"WiimoteDesc" = "V predvolenom skine mapovania Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Zatrasiť」\n「Pravý analóg」 -> 「Náklon」";
 "DolphinCoreWraning" = "Kvôli súčasným výkonnostným limitom jadra dolphin bez JIT sa zariadenie môže zahrievať a emulácia sekať s prepadmi snímok. V zákulisí však veľa hrdinov usilovne optimalizuje. Všetko sa postupne zlepší, však?";
 "DolphinSaveTips" = "Otvorte aplikáciu Súbory: Manic EMU - dolphin-emu - User a spravujte súbory uložení sami.";
 "AchievementsSubset" = "Sada achievementov";

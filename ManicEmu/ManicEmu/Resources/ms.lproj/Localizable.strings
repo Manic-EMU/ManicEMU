@@ -993,7 +993,6 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "BIOSCommondDesc" = "Sesetengah permainan mungkin tidak berjalan dengan baik tanpa BIOS.";
 "WiiKeysBinDesc" = "keys.bin format BootMii diperlukan untuk bermain permainan Wii.";
 "WiimoteSideways" = "Wiimote Melintang";
-"WiimoteDesc" = "Dalam kulit lalai, pemetaan Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Goncang」\n「Thumbstick Kanan」 -> 「Condong」";
 "DolphinCoreWraning" = "Disebabkan had prestasi JITless teras dolphin semasa, peranti mungkin panas dan tersekat-sekat dengan kejatuhan bingkai semasa emulasi, tetapi ramai wira sedang bekerja keras di sebalik tabir untuk mengoptimumkannya. Semuanya akan beransur lebih baik, kan?";
 "DolphinSaveTips" = "Sila gunakan aplikasi Fail untuk membuka: Manic EMU - dolphin-emu - User bagi mengurus fail simpanan anda sendiri.";
 "AchievementsSubset" = "Set Pencapaian";

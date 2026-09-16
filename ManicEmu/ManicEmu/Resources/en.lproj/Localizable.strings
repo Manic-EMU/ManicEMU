@@ -1039,7 +1039,6 @@ Press the controller button to complete mapping...";
 "BIOSCommondDesc" = "Some specific games may not run properly without a BIOS.";
 "WiiKeysBinDesc" = "BootMii format keys.bin is required to play Wii games.";
 "WiimoteSideways" = "Wiimote Sideways";
-"WiimoteDesc" = "In the default skin, Wiimote mappings:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Shake」\n「Right Thumbstick」 -> 「Tilt」";
 "DolphinCoreWraning" = "Due to the current JITless performance limits of the dolphin core, the device may heat up and stutter with frame drops during game emulation, but there are plenty of heroes working hard behind the scenes to optimize things. Everything will gradually get better, right?";
 "DolphinSaveTips" = "Please use the Files app to open: Manic EMU - dolphin-emu - User to manage your save files on your own.";
 
@@ -1185,3 +1184,6 @@ Press the controller button to complete mapping...";
 "RommTransferFailed" = "Transfer failed. Check the server connection.";
 "RommLanAddressOnly" = "RomM currently accepts LAN IP addresses only (such as 192.168.x.x, 10.x.x.x, or 169.254.x.x). Hostnames and public IPs are not supported yet.";
 "LandServiceEditServerNamePlaceholder" = "My Server";
+
+"WiimoteMotionPlusSideways" = "Wiimote+MotionPlus Sideways";
+"WiimoteDesc" = "In the default skin, Wiimote mappings:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Shake」\n「Right Thumbstick」 -> 「Tilt」\nGames that require MotionPlus (such as Skyward Sword) need a Wiimote+MotionPlus controller type.";

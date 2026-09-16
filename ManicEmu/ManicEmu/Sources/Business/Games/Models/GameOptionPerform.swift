@@ -1584,15 +1584,14 @@ extension GameOption {
                         let realm = Database.realm
                         if let currentSkinID = PlayViewController.currentSkinID,
                            let skin = realm.object(ofType: Skin.self, forPrimaryKey: currentSkinID) {
-                            if controllerType == .classicPro, skin.skinType != .default {
+                            if !controllerType.usesWiimoteSkin, skin.skinType != .default {
                                 PlayViewController.updateSkin()
-                            } else if controllerType != .classicPro, skin.skinType == .default {
+                            } else if controllerType.usesWiimoteSkin, skin.skinType == .default {
                                 PlayViewController.updateSkin()
                             }
                             
                         }
-                        LibretroCore.sharedInstance().setWiiController(controllerType)
-                        WiiEmulatorBridge.shared.controllerType = controllerType
+                        PlayViewController.updateWiiController()
                         resumeEmulationIfNeed()
                     }
                 } else if self == .dolphinCpuCore {

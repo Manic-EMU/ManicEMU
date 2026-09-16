@@ -198,6 +198,13 @@ struct ResourcesKit {
                             try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: R.Path.Assets.appendingPathComponent("iphone_background.png")))
                             try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: R.Path.Assets.appendingPathComponent("ipad_background.png")))
                         }
+                        
+                        //update psp fonts
+                        if systemCoreVersionNumber < 201 {
+                            try? FileManager.safeCopyItem(at: URL(fileURLWithPath: R.Path.Resource.appendingPathComponent("Libretro/system/PPSSPP/flash0/font/jpn0.pgf")),
+                                                          to: URL(fileURLWithPath: R.Path.Document.appendingPathComponent("PPSSPP/PSP/NAND/flash0/font/jpn0.pgf")),
+                                                          shouldReplace: true)
+                        }
                     }
                     
                     Log.info("资源解压成功!")

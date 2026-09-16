@@ -1013,7 +1013,6 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 "BIOSCommondDesc" = "Một số trò chơi cụ thể có thể không chạy đúng nếu thiếu BIOS.";
 "WiiKeysBinDesc" = "Cần keys.bin định dạng BootMii để chơi trò chơi Wii.";
 "WiimoteSideways" = "Wiimote ngang";
-"WiimoteDesc" = "Trong skin mặc định, ánh xạ Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Lắc」\n「Thumbstick phải」 -> 「Nghiêng」";
 "DolphinCoreWraning" = "Do giới hạn hiệu năng JITless hiện tại của lõi dolphin, máy có thể nóng và giật, tụt khung hình khi giả lập, nhưng nhiều người đang âm thầm tối ưu. Mọi thứ sẽ dần khá hơn, phải không?";
 "DolphinSaveTips" = "Hãy dùng ứng dụng Files để mở: Manic EMU - dolphin-emu - User và tự quản lý tệp lưu.";
 "AchievementsSubset" = "Bộ thành tựu";

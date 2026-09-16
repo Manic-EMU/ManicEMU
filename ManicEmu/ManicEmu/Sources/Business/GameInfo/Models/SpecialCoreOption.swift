@@ -197,6 +197,12 @@ enum SpecialCoreOption: String {
     case dolphin_wii_logi_microphone_enable
     case dolphin_bluetooth_passthrough
     case dolphin_language
+    /// 2 = mouse/pointer controls Wiimote IR (touch on the game image).
+    case dolphin_ir_mode
+    case dolphin_ir_yaw
+    case dolphin_ir_pitch
+    /// 0 portrait, 1 landscapeLeft, 2 upside down, 3 landscapeRight.
+    case dolphin_motion_rotation
     
     //pce
     case pce_default_joypad_type_p1
@@ -370,7 +376,11 @@ enum SpecialCoreOption: String {
                                                .dolphin_cheats_import,
                                                .dolphin_cpu_core,
                                                .dolphin_skip_gc_bios,
-                                               .dolphin_language]
+                                               .dolphin_language,
+                                               .dolphin_ir_mode,
+                                               .dolphin_ir_yaw,
+                                               .dolphin_ir_pitch,
+                                               .dolphin_motion_rotation]
             if game.gameType == .wii {
                 result += [.dolphin_gc_sp1,
                            .dolphin_enable_gamecube_mic,
@@ -571,6 +581,11 @@ enum SpecialCoreOption: String {
         // SoftGPU stays available; only its rasterizer JIT needs executable memory.
         if game.gameType == .psp, !LibretroCore.jitAvailable() || !game.jit {
             resolvedCoreConfigs[Self.ppsspp_software_rendering_jit.rawValue] = "disabled"
+        }
+        if game.gameType == .wii {
+            resolvedCoreConfigs[Self.dolphin_ir_mode.rawValue] = "2"
+            resolvedCoreConfigs[Self.dolphin_ir_yaw.rawValue] = "40"
+            resolvedCoreConfigs[Self.dolphin_ir_pitch.rawValue] = "30"
         }
         return resolvedCoreConfigs
     }

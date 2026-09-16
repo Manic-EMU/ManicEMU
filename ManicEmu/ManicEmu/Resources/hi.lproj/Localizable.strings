@@ -1021,7 +1021,6 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 "BIOSCommondDesc" = "कुछ खास गेम BIOS के बिना सही से नहीं चल सकते।";
 "WiiKeysBinDesc" = "Wii गेम खेलने के लिए BootMii फॉर्मेट की keys.bin आवश्यक है।";
 "WiimoteSideways" = "Wiimote साइडवेज़";
-"WiimoteDesc" = "डिफ़ॉल्ट स्किन में Wiimote मैपिंग:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「शेक」\n「राइट थंबस्टिक」 -> 「टिल्ट」";
 "DolphinCoreWraning" = "dolphin कोर की वर्तमान JITless परफ़ॉर्मेंस सीमा के कारण, गेम एमुलेशन के दौरान डिवाइस गर्म हो सकता है और फ्रेम ड्रॉप के साथ अटक सकता है, लेकिन पर्दे के पीछे कई हीरो कड़ी मेहनत से ऑप्टिमाइज़ कर रहे हैं। सब धीरे-धीरे बेहतर होगा, है ना?";
 "DolphinSaveTips" = "कृपया फ़ाइल ऐप से खोलें: Manic EMU - dolphin-emu - User और सेव फ़ाइलें स्वयं प्रबंधित करें।";
 "AchievementsSubset" = "उपलब्धि सेट";

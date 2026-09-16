@@ -1022,7 +1022,6 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "BIOSCommondDesc" = "Jotkin pelit eivät välttämättä toimi oikein ilman BIOS-tiedostoa.";
 "WiiKeysBinDesc" = "Wii-pelien pelaamiseen tarvitaan BootMii-muotoinen keys.bin.";
 "WiimoteSideways" = "Wiimote vaakasuunnassa";
-"WiimoteDesc" = "Oletusskinissä Wiimote-määritykset:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Ravistus」\n「Oikea tatti」 -> 「Kallistus」";
 "DolphinCoreWraning" = "dolphin-ytimen nykyisten JITless-suorituskykyrajojen vuoksi laite voi kuumentua ja nykiä kuvan pätkimisen kera emuloinnin aikana, mutta kulissien takana lukuisat sankarit tekevät töitä optimoinnin eteen. Kaikki paranee vähitellen, eikö?";
 "DolphinSaveTips" = "Avaa Tiedostot-sovelluksessa: Manic EMU - dolphin-emu - User ja hallitse tallennustiedostoja itse.";
 "AchievementsSubset" = "Saavutussarja";

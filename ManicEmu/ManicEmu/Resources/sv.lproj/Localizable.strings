@@ -1013,7 +1013,6 @@ Om du vill höja din upplevelse är PlayCase en perfekt match för detta skin.";
 "BIOSCommondDesc" = "Vissa specifika spel kanske inte fungerar ordentligt utan BIOS.";
 "WiiKeysBinDesc" = "keys.bin i BootMii-format krävs för att spela Wii-spel.";
 "WiimoteSideways" = "Wiimote i sidled";
-"WiimoteDesc" = "I standardskinnet gäller dessa Wiimote-mappningar:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Skaka」\n「Höger thumbstick」 -> 「Luta」";
 "DolphinCoreWraning" = "På grund av dolphin-kärnans nuvarande JITless-prestandagränser kan enheten bli varm och hakka med bildtapp under emulering. Bakom kulisserna jobbar dock många hjältar hårt med optimeringar. Allt blir stegvis bättre, eller hur?";
 "DolphinSaveTips" = "Öppna med appen Filer: Manic EMU - dolphin-emu - User för att hantera dina sparfiler själv.";
 "AchievementsSubset" = "Prestationsset";

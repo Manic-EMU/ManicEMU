@@ -141,7 +141,7 @@ class WiiEmulatorBridge : EmulatorBridgeBase {
         } else if input == WiiGameInput.rightThumbstickLeft || input == WiiGameInput.rightThumbstickRight {
             rightThumbstickPosition.x = input == WiiGameInput.rightThumbstickRight ? value : -value
             LibretroCore.sharedInstance().moveStick(false, x: rightThumbstickPosition.x, y: rightThumbstickPosition.y, playerIndex: UInt32(playerIndex))
-        }  else {
+        } else {
             if let gameInput = WiiGameInput(rawValue: input),
                 let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
 #if DEBUG
@@ -154,7 +154,7 @@ Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
     
     func gameInputToCoreInput(gameInput: WiiGameInput) -> LibretroButton? {
         switch controllerType {
-        case .wiimote:
+        case .wiimote, .wiimoteMotionPlus:
             if gameInput == .a { return .A }
             else if gameInput == .b { return .B }
             else if gameInput == .x { return .Y }
@@ -168,7 +168,7 @@ Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
             else if gameInput == .c { return .R2 } //shake
             else if gameInput == .z { return .R3 } //home
             
-        case .wiimoteSideways:
+        case .wiimoteSideways, .wiimoteMotionPlusSideways:
             if gameInput == .a { return .X }
             else if gameInput == .b { return .Y }
             else if gameInput == .x { return .A }
@@ -182,7 +182,7 @@ Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
             else if gameInput == .c { return .R2 } //shake
             else if gameInput == .z { return .R3 } //home
             
-        case .wiimoteNunchuk:
+        case .wiimoteNunchuk, .wiimoteMotionPlusNunchuk:
             if gameInput == .a { return .A }
             else if gameInput == .b { return .B }
             else if gameInput == .x { return .select }
@@ -198,6 +198,60 @@ Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
             else if gameInput == .l2 { return .L2 } //Shake Nunchuk
             else if gameInput == .r2 { return .R2 } //Shake Wiimote
             else if gameInput == .r3 { return .R3 } //home
+            
+        case .classic, .wiimoteMotionPlusClassic:
+            if gameInput == .a { return .A }
+            else if gameInput == .b { return .B }
+            else if gameInput == .x { return .X }
+            else if gameInput == .y { return .Y }
+            else if gameInput == .start { return .start }
+            else if gameInput == .select { return .select }
+            else if gameInput == .up { return .up }
+            else if gameInput == .down { return .down }
+            else if gameInput == .left { return .left }
+            else if gameInput == .right { return .right }
+            else if gameInput == .l1 { return .L2 }
+            else if gameInput == .r1 { return .R2 }
+            else if gameInput == .l2 { return .L1 }
+            else if gameInput == .r2 { return .R1 }
+            else if gameInput == .l3 { return .L3 }
+            else if gameInput == .r3 { return .R3 }
+            
+        case .classicPro, .wiimoteMotionPlusClassicPro:
+            if gameInput == .a { return .A }
+            else if gameInput == .b { return .B }
+            else if gameInput == .x { return .X }
+            else if gameInput == .y { return .Y }
+            else if gameInput == .start { return .start }
+            else if gameInput == .select { return .select }
+            else if gameInput == .up { return .up }
+            else if gameInput == .down { return .down }
+            else if gameInput == .left { return .left }
+            else if gameInput == .right { return .right }
+            else if gameInput == .l1 { return .L1 }
+            else if gameInput == .r1 { return .R1 }
+            else if gameInput == .l2 { return .L2 }
+            else if gameInput == .r2 { return .R2 }
+            else if gameInput == .l3 { return .L3 }
+            else if gameInput == .r3 { return .R3 }
+            
+        case .gameCube:
+            if gameInput == .a { return .A }
+            else if gameInput == .b { return .B }
+            else if gameInput == .x { return .X }
+            else if gameInput == .y { return .Y }
+            else if gameInput == .start { return .start }
+            else if gameInput == .select { return nil }
+            else if gameInput == .up { return .up }
+            else if gameInput == .down { return .down }
+            else if gameInput == .left { return .left }
+            else if gameInput == .right { return .right }
+            else if gameInput == .l1 { return .L2 }
+            else if gameInput == .r1 { return .R2 }
+            else if gameInput == .l2 { return .R1 }
+            else if gameInput == .r2 { return .R1 }
+            else if gameInput == .l3 { return .L3 }
+            else if gameInput == .r3 { return .R3 }
             
         default:
             if gameInput == .a { return .A }
@@ -239,6 +293,19 @@ Log.debug("🎮 \(objectInfo(self)) 点击了:\(gameInput)")
                 let libretroButton = gameInputToCoreInput(gameInput: gameInput) {
                 LibretroCore.sharedInstance().release(libretroButton, playerIndex: UInt32(playerIndex))
             }
+        }
+    }
+}
+
+extension LibretroWiiController {
+    /// Classic / GC pads keep the default Wii skin; Wiimote-style devices use the Wiimote skin.
+    var usesWiimoteSkin: Bool {
+        switch self {
+        case .wiimote, .wiimoteSideways, .wiimoteNunchuk,
+             .wiimoteMotionPlus, .wiimoteMotionPlusSideways, .wiimoteMotionPlusNunchuk:
+            return true
+        default:
+            return false
         }
     }
 }

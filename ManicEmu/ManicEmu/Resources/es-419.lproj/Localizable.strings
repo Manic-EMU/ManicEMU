@@ -1019,7 +1019,6 @@ Si quieres mejorar tu experiencia, PlayCase combina perfecto con esta funda.";
 "BIOSCommondDesc" = "Algunos juegos específicos pueden no funcionar bien sin un BIOS.";
 "WiiKeysBinDesc" = "Para jugar juegos de Wii se necesita un keys.bin en formato BootMii.";
 "WiimoteSideways" = "Wiimote horizontal";
-"WiimoteDesc" = "En la skin predeterminada, asignaciones del Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Agitar」\n「Stick derecho」 -> 「Inclinar」";
 "DolphinCoreWraning" = "Por los límites de rendimiento actuales sin JIT del núcleo dolphin, el dispositivo puede calentarse y perder fotogramas durante la emulación, pero hay un montón de héroes trabajando detrás de escena para optimizarlo. Todo irá mejorando de a poco, ¿verdad?";
 "DolphinSaveTips" = "Usa la app Archivos para abrir: Manic EMU - dolphin-emu - User y gestiona tus archivos de guardado por tu cuenta.";
 "AchievementsSubset" = "Conjunto de logros";

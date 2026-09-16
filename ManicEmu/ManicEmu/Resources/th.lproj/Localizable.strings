@@ -1009,7 +1009,6 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 "BIOSCommondDesc" = "เกมบางรายอาจทำงานไม่ถูกต้องหากไม่มี BIOS";
 "WiiKeysBinDesc" = "ต้องใช้ keys.bin รูปแบบ BootMii เพื่อเล่นเกม Wii";
 "WiimoteSideways" = "Wiimote แนวนอน";
-"WiimoteDesc" = "ใน Skin เริ่มต้น การแมป Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「เขย่า」\n「อนาล็อกขวา」 -> 「เอียง」";
 "DolphinCoreWraning" = "เนื่องจากขีดจำกัดประสิทธิภาพ JITless ของคอร์ dolphin ในตอนนี้ เครื่องอาจร้อนและกระตุกพร้อมเฟรมดรอประหว่างจำลอง แต่มีฮีโร่หลายคนกำลังเร่งเพิ่มประสิทธิภาพอยู่เบื้องหลัง ทุกอย่างจะค่อย ๆ ดีขึ้นใช่ไหม?";
 "DolphinSaveTips" = "โปรดใช้แอปไฟล์เปิด: Manic EMU - dolphin-emu - User เพื่อจัดการไฟล์เซฟด้วยตนเอง";
 "AchievementsSubset" = "ชุดความสำเร็จ";

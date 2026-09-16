@@ -1022,7 +1022,6 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "BIOSCommondDesc" = "משחקים מסוימים עלולים שלא לרוץ כראוי ללא BIOS.";
 "WiiKeysBinDesc" = "נדרש keys.bin בפורמט BootMii כדי לשחק במשחקי Wii.";
 "WiimoteSideways" = "Wiimote לרוחב";
-"WiimoteDesc" = "ב-skin ברירת המחדל, מיפויי Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「ניעור」\n「סטיק ימני」 -> 「הטיה」";
 "DolphinCoreWraning" = "בשל מגבלות הביצועים הנוכחיות של ליבת dolphin ללא JIT (JITless), המכשיר עלול להתחמם ולהיתקע עם נפילות פריימים במהלך האמולציה, אבל יש לא מעט גיבורים שעובדים קשה מאחורי הקלעים לייעול. הכל ישתפר בהדרגה, נכון?";
 "DolphinSaveTips" = "אנא השתמשו ביישום הקבצים כדי לפתוח: Manic EMU - dolphin-emu - User ולנהל את קבצי השמירה בעצמכם.";
 "AchievementsSubset" = "סט הישגים";

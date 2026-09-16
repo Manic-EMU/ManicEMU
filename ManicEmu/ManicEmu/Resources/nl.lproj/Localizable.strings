@@ -1020,7 +1020,6 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 "BIOSCommondDesc" = "Sommige specifieke games werken mogelijk niet goed zonder BIOS.";
 "WiiKeysBinDesc" = "Om Wii-games te spelen is keys.bin in BootMii-formaat vereist.";
 "WiimoteSideways" = "Wiimote dwars";
-"WiimoteDesc" = "In de standaardskin gelden deze Wiimote-toewijzingen:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Schudden」\n「Rechter thumbstick」 -> 「Kantelen」";
 "DolphinCoreWraning" = "Door de huidige JITless-prestatielimieten van de dolphin-kern kan het apparaat tijdens emulatie warm worden en stotteren. Achter de schermen werken echter veel helden hard aan optimalisaties. Alles wordt geleidelijk beter, toch?";
 "DolphinSaveTips" = "Open met de Bestanden-app: Manic EMU - dolphin-emu - User om je savebestanden zelf te beheren.";
 "AchievementsSubset" = "Achievementset";

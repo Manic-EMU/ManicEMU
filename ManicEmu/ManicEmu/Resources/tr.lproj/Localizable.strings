@@ -1019,7 +1019,6 @@ Kurulumunuzu bir üst seviyeye taşımak istiyorsanız, PlayCase bu kaplama içi
 "BIOSCommondDesc" = "Bazı oyunlar BIOS olmadan düzgün çalışmayabilir.";
 "WiiKeysBinDesc" = "Wii oyunlarını oynamak için BootMii formatında keys.bin gerekir.";
 "WiimoteSideways" = "Wiimote Yatay";
-"WiimoteDesc" = "Varsayılan skinde Wiimote eşlemeleri:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Salla」\n「Sağ Analog Çubuk」 -> 「Eğ」";
 "DolphinCoreWraning" = "dolphin çekirdeğinin şu anki JITless performans sınırları nedeniyle, oyun emülasyonu sırasında cihaz ısınabilir ve kare düşüşleriyle takılabilir; ancak perde arkasında birçok kahraman durmaksızın iyileştirme yapıyor. Her şey yavaş yavaş düzelecek, değil mi?";
 "DolphinSaveTips" = "Kayıt dosyalarını kendin yönetmek için Dosyalar uygulamasında şunu aç: Manic EMU - dolphin-emu - User.";
 "AchievementsSubset" = "Başarım Seti";

@@ -1025,7 +1025,6 @@ PlayCase 專注於製造高品質 iPhone 手機殼，設計時已充分考慮配
 "BIOSCommondDesc" = "某些特定遊戲在沒有 BIOS 的情況下可能無法正常運行";
 "WiiKeysBinDesc" = "運行 Wii 遊戲需要 BootMii 格式的 keys.bin。";
 "WiimoteSideways" = "Wiimote 橫握";
-"WiimoteDesc" = "預設皮膚中，Wiimote映射關係：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「搖晃」\n「右搖桿」 -> 「傾斜」";
 "DolphinCoreWraning" = "受限於現階段 dolphin 核心的 JITless 效能限制，遊戲模擬中裝置會發熱並卡頓掉幀，但是背後還有眾多英雄們在努力優化中，一切都會慢慢變好的，對吧！";
 "DolphinSaveTips" = "請使用「檔案」App 打開：Manic EMU - dolphin-emu - User，自行管理存檔檔案。";
 "AchievementsSubset" = "成就集";

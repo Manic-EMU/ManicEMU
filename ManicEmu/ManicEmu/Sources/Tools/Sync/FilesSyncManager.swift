@@ -72,6 +72,7 @@ final class FilesSyncManager {
     private var pathMonitor: NWPathMonitor?
     private var networkSatisfied = false
     private var intentToken: NotificationToken?
+    private let intentQueue = DispatchQueue(label: "com.aoshuang.manicemu.files-sync-intent", qos: .utility)
     
     private(set) var progress = FilesSyncProgress()
     
@@ -335,9 +336,12 @@ final class FilesSyncManager {
     }
     
     func handleAccountChange() {
-        guard Settings.iCloudSyncEnableValue else { return }
+        Log.debug("[iCloud Sync] Manager.handleAccountChange enabled=\(Settings.iCloudSyncEnableValue)")
+        engine.resetForAccountChange()
         stop()
-        start()
+        if Settings.iCloudSyncEnableValue {
+            start()
+        }
     }
     
     private func observeLifecycleIfNeeded() {
@@ -389,13 +393,14 @@ final class FilesSyncManager {
 #if SIDE_LOAD
         return
 #else
-        intentToken = Database.realm.objects(FilesSyncRecord.self).where { !$0.isDeleted }.observe { [weak self] changes in
+        intentToken = Database.realm.objects(FilesSyncRecord.self).where { !$0.isDeleted }.observe(on: intentQueue) { [weak self] changes in
             guard let self else { return }
             switch changes {
             case .initial:
                 break
             case .update(let collection, _, let insertions, let modifications):
                 var paths: [String] = []
+                paths.reserveCapacity(insertions.count + modifications.count)
                 for index in insertions + modifications where index < collection.count {
                     paths.append(collection[index].path)
                 }

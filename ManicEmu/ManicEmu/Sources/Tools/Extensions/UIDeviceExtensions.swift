@@ -284,7 +284,13 @@ enum OrientationLockPin {
     private static var lastDevicePortraitWhileHolding = false
     
     static var isPinned: Bool { holdingLandscape }
-    static var prefersLocked: Bool { holdingLandscape }
+    /// Only during Control Center portrait-lock fighting a landscape UI.
+    /// Returning true whenever we are in landscape locks iOS 26 and blocks rotating back.
+    static var prefersLocked: Bool {
+        guard holdingLandscape else { return false }
+        let device = UIDevice.current.orientation
+        return device.isPortrait || device.isFlat
+    }
     
     static func start() {
         guard !started else { return }
@@ -338,23 +344,18 @@ enum OrientationLockPin {
         }
     }
     
-    /// If Control Center already started a portrait transition, push landscape back.
+    /// Fight a Control Center snap to portrait only. A real portrait hold must go through.
     static func resistPortraitTransitionIfNeeded(to size: CGSize) {
         guard UIDevice.isPhone, !UIDevice.isMac else { return }
         guard size.height > size.width else { return }
-        guard physicalAttitude() != .flat else { return }
-        let before = holdingLandscape
+        guard physicalAttitude() == .landscape else { return }
         _ = resolvedMask(for: ApplicationSceneDelegate.applicationWindow)
-        if holdingLandscape || before {
+        if holdingLandscape {
             applyMaskChange()
         }
     }
     
     private static func handlePhysicalChange() {
-        let attitude = physicalAttitude()
-        if attitude == .flat || attitude == .unknown {
-            return
-        }
         let before = holdingLandscape
         _ = resolvedMask(for: ApplicationSceneDelegate.applicationWindow)
         let devicePortrait = UIDevice.current.orientation.isPortrait
@@ -374,21 +375,47 @@ enum OrientationLockPin {
     }
     
     private static func applyMaskChange() {
-        let window = ApplicationSceneDelegate.applicationWindow
-        let root = window?.rootViewController
+        notifyOrientationControllers()
         if #available(iOS 16.0, *) {
-            root?.setNeedsUpdateOfSupportedInterfaceOrientations()
-            if holdingLandscape, let scene = ApplicationSceneDelegate.applicationScene {
-                scene.requestGeometryUpdate(UIWindowScene.GeometryPreferences.iOS(interfaceOrientations: preferredLandscapeMask()))
+            if let scene = ApplicationSceneDelegate.applicationScene {
+                scene.requestGeometryUpdate(UIWindowScene.GeometryPreferences.iOS(interfaceOrientations: geometryTargetMask()))
             }
         } else if holdingLandscape {
             UIDevice.current.setValue(preferredInterfaceOrientation().rawValue, forKey: "orientation")
         }
-        if #available(iOS 26.0, *) {
-            root?.setNeedsUpdateOfPrefersInterfaceOrientationLocked()
-        }
         if !holdingLandscape {
             UIViewController.attemptRotationToDeviceOrientation()
+        }
+    }
+    
+    /// PlayViewController is presented on top of Home; iOS 26 reads the visible VC.
+    private static func notifyOrientationControllers() {
+        var vc = ApplicationSceneDelegate.applicationWindow?.rootViewController
+        while let current = vc {
+            if #available(iOS 16.0, *) {
+                current.setNeedsUpdateOfSupportedInterfaceOrientations()
+            }
+            if #available(iOS 26.0, *) {
+                current.setNeedsUpdateOfPrefersInterfaceOrientationLocked()
+            }
+            vc = current.presentedViewController
+        }
+    }
+    
+    private static func geometryTargetMask() -> UIInterfaceOrientationMask {
+        let allowed = AppDelegate.orientation
+        if holdingLandscape {
+            return preferredLandscapeMask()
+        }
+        switch physicalAttitude() {
+        case .portrait:
+            let portrait = allowed.intersection(.portrait)
+            return portrait.isEmpty ? allowed : portrait
+        case .landscape:
+            let landscape = allowed.intersection(.landscape)
+            return landscape.isEmpty ? allowed : landscape
+        default:
+            return allowed
         }
     }
     
@@ -407,7 +434,7 @@ enum OrientationLockPin {
         return interface.isLandscape
     }
     
-    /// Z-dominant = lying on a desk (x/y leftover from an unlevel surface is ignored).
+    /// Desk / face-up only. A reclined gaming grip must still count as portrait or landscape.
     private static func physicalAttitude() -> PhysicalAttitude {
         guard let acceleration = motion.accelerometerData?.acceleration else {
             return lastPhysicalLandscape.map { $0 ? .landscape : .portrait } ?? .unknown
@@ -415,7 +442,7 @@ enum OrientationLockPin {
         let ax = abs(acceleration.x)
         let ay = abs(acceleration.y)
         let az = abs(acceleration.z)
-        if az > 0.65 && az >= max(ax, ay) {
+        if az > 0.85 && ax < 0.35 && ay < 0.35 {
             return .flat
         }
         

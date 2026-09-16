@@ -1020,7 +1020,6 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "BIOSCommondDesc" = "Egyes játékok BIOS nélkül nem futnak megfelelően.";
 "WiiKeysBinDesc" = "A Wii játékokhoz BootMii formátumú keys.bin szükséges.";
 "WiimoteSideways" = "Wiimote fektetve";
-"WiimoteDesc" = "Az alapértelmezett skinben a Wiimote-leképezések:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Rázás」\n「Jobb hüvelykujjkar」 -> 「Döntés」";
 "DolphinCoreWraning" = "A dolphin mag jelenlegi JITless teljesítménykorlátai miatt a készülék felmelegedhet, és akadozhat képkockavesztéssel az emuláció során, de a kulisszák mögött rengeteg hős dolgozik az optimalizáláson. Minden fokozatosan jobb lesz, ugye?";
 "DolphinSaveTips" = "A Fájlok alkalmazással nyissa meg: Manic EMU - dolphin-emu - User, és kezelje a mentésfájlokat saját maga.";
 "AchievementsSubset" = "Teljesítménykészlet";

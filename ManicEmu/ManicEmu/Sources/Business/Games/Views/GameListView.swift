@@ -322,6 +322,7 @@ class GameListView: BaseView {
                         if self.isSelectionMode {
                             self.selectionMode = .normalMode
                         }
+                        self.needToStopManufacturerFilter?()
                     }
                 }
                 

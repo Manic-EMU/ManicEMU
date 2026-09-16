@@ -25,7 +25,7 @@ class PlayViewController: GameViewController {
     private let manicGame: Game
     //默认加载的即时存档
     private var loadSaveState: GameSaveState? = nil
-    /// Jitless Flycast (DC + Naomi/Atomiswave/SystemSP). Threaded rendering lets the SH4 thread run ahead.
+    /// Jitless Flycast (DC + Naomi/Atomiswave/SystemSP).
     private var isJitlessFlycast: Bool {
         (manicGame.gameType == .dc || manicGame.isSegaArcade)
             && !(LibretroCore.jitAvailable() && manicGame.jit)
@@ -293,7 +293,7 @@ class PlayViewController: GameViewController {
             FilesSyncManager.shared.ensureROM(for: game) { error in
                 UIView.hideLoading()
                 if error == nil, game.isRomExtsts {
-                    UIView.makeToast(message: R.string.localizable.loadRomSuccess(game.displayName))
+                    startGame(game: game, saveState: saveState)
                 } else if FilesSyncManager.shared.romAvailability(for: game) == .syncing {
                     if availability != .syncing {
                         UIView.makeToast(message: R.string.localizable.iCloudROMStillSyncing())
@@ -977,7 +977,7 @@ class PlayViewController: GameViewController {
             self.view.setNeedsLayout()
         }) { [weak self] _ in
             guard let self = self else { return }
-            self.update3DSMotionRotation()
+            self.updateMotionRotation()
             self.updateSkin()
             self.view.setNeedsLayout()
             self.resumeEmulationAndHandleAudio()
@@ -1937,7 +1937,7 @@ extension PlayViewController {
                         .citra_use_cpu_jit: "disabled",
                         .citra_use_default_aes_key: manicGame.isAzaharArticBase || manicGame.isArticBaseHomeMenu || manicGame.is3DSHomeMenuGame ? "enabled" : "disabled",
                         .citra_required_online_lle_modules: manicGame.isArticBaseHomeMenu ? "enabled" : "disabled",
-                        .citra_motion_rotation: Self.citraMotionRotationValue()
+                        .citra_motion_rotation: Self.motionRotationValue()
                     ], safeMode: true)
                     // Never start Azahar with fast-forward; it can crash on boot.
                     Game.change { realm in
@@ -1973,7 +1973,8 @@ extension PlayViewController {
                 ])
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
             } else if manicGame.isDolphinCore {
-                updateLibretroCoreConfigs(core: .Dolphin, configs: [.dolphin_language: "1"])
+                updateLibretroCoreConfigs(core: .Dolphin, configs: [.dolphin_language: "1",
+                                                                    .dolphin_motion_rotation: Self.motionRotationValue()])
             } else if manicGame.gameType == .amiga {
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
             } else if manicGame.gameType == .wsc {
@@ -2236,7 +2237,7 @@ extension PlayViewController {
                         .citra_use_cpu_jit: enableJIT ? "enabled" : "disabled",
                         .citra_use_default_aes_key: manicGame.isAzaharArticBase || manicGame.isArticBaseHomeMenu || manicGame.is3DSHomeMenuGame ? "enabled" : "disabled",
                         .citra_required_online_lle_modules: enableLLE ? "enabled" : "disabled",
-                        .citra_motion_rotation: Self.citraMotionRotationValue()
+                        .citra_motion_rotation: Self.motionRotationValue()
                     ])
                     // Never start Azahar with fast-forward; it can crash on boot.
                     Game.change { realm in
@@ -2290,12 +2291,11 @@ extension PlayViewController {
                 } else {
                     enableManicInterpreter = manicGame.getExtraBool(key: ExtraKey.dolphinManicInterpreter.rawValue) ?? true
                 }
-                //4: JITARM64 5: Cached Interpreter 6: Manic Interpreter
-                 
                 updateLibretroCoreConfigs(core: .Dolphin, configs: [
-                    .dolphin_cpu_core: enableJIT ? "4" : (enableManicInterpreter ? "6" : "5"),
+                    .dolphin_cpu_core: enableJIT ? "4" : (enableManicInterpreter ? "6" : "5"), //4: JITARM64 5: Cached Interpreter 6: Manic Interpreter
                     .dolphin_cheats_enabled: isHardcoreMode ? "disabled" : "enabled",
-                    .dolphin_language: "\(manicGame.region)"
+                    .dolphin_language: "\(manicGame.region)",
+                    .dolphin_motion_rotation: Self.motionRotationValue()
                 ])
             } else if manicGame.gameType == .amiga {
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
@@ -2467,7 +2467,7 @@ extension PlayViewController {
                 }
                 if manicGame.gameType == .wii,
                    let controllerType = LibretroWiiController(rawValue: manicGame.getExtraInt(key: ExtraKey.wiiController.rawValue) ?? 0),
-                   controllerType != .classicPro,
+                   controllerType.usesWiimoteSkin,
                    let wiimoteSkin = Database.realm.objects(Skin.self).where({
                        $0.identifier == R.Strings.WiimoteSkinIdentifier }).first,
                    let wiimoteControllerSkin = ControllerSkin(fileURL: wiimoteSkin.fileURL) {
@@ -2537,8 +2537,8 @@ extension PlayViewController {
         }
     }
     
-    /// Azahar / Citra motion rotation: 0 portrait, 1 landscapeLeft, 2 upside down, 3 landscapeRight.
-    private static func citraMotionRotationValue(
+    /// Azahar / Citra / Wii motion rotation: 0 portrait, 1 landscapeLeft, 2 upside down, 3 landscapeRight.
+    private static func motionRotationValue(
         for orientation: UIInterfaceOrientation = UIDevice.currentOrientation
     ) -> String {
         switch orientation {
@@ -2555,8 +2555,8 @@ extension PlayViewController {
         }
     }
 
-    private func update3DSMotionRotation() {
-        let value = Self.citraMotionRotationValue()
+    private func updateMotionRotation() {
+        let value = Self.motionRotationValue()
         if manicGame.isAzahar3DS {
             LibretroCore.sharedInstance().updateRunningCoreConfigs(
                 [SpecialCoreOption.citra_motion_rotation.rawValue: value],
@@ -2564,6 +2564,11 @@ extension PlayViewController {
             )
         } else if manicGame.isCitra3DS {
             citraCore?.applyCurrentMotionRotation()
+        } else if manicGame.gameType == .wii {
+            LibretroCore.sharedInstance().updateRunningCoreConfigs(
+                [SpecialCoreOption.dolphin_motion_rotation.rawValue: value],
+                flush: false
+            )
         }
     }
 
@@ -2936,6 +2941,9 @@ extension PlayViewController {
         } else if manicGame.gameType == .symbian {
             controllerView.allowTapThroughIfButtonNotHit = true
             ExternalGameControllerManager.shared.isKeyboardInputEnabled = false
+        } else if manicGame.gameType == .wii {
+            // Empty overlay falls through to CocoaView POINTER (Wii IR).
+            controllerView.allowTapThroughIfButtonNotHit = true
         }
         
         if let gameMetalView {
@@ -3061,7 +3069,7 @@ extension PlayViewController {
                     }
                     
                     DispatchQueue.main.asyncAfter(delay: 0.5) { [weak self] in
-                        guard let self = self else { return }
+                        guard let self else { return }
                         self.gameMetalView?.isHidden = false
                         self.updateFilter()
                         self.updateAirPlay()
@@ -3072,10 +3080,7 @@ extension PlayViewController {
                                 LibretroCore.sharedInstance().startWFCStatusMonitor()
                             }
                         } else if manicGame.gameType == .wii {
-                            let wiiController = manicGame.getExtraInt(key: ExtraKey.wiiController.rawValue) ?? 0
-                            let controllerType = LibretroWiiController(rawValue: wiiController) ?? .classicPro
-                            LibretroCore.sharedInstance().setWiiController(controllerType)
-                            WiiEmulatorBridge.shared.controllerType = controllerType
+                            self.updateWiiController()
                         }
                         DispatchQueue.main.asyncAfter(delay: 2.5) {
                             self.updateFastforward(speed: self.manicGame.speed)
@@ -3581,6 +3586,9 @@ extension PlayViewController {
         } else if manicGame.isLibretroType {
             LibretroCore.sharedInstance().reload()
             updateFilter()
+            if manicGame.gameType == .wii {
+               updateWiiController()
+            }
         } else if manicGame.isJGenesisCore {
             jGenesisCore?.reset()
         } else if manicGame.isJ2MECore {
@@ -4430,6 +4438,14 @@ extension PlayViewController {
             }
         }
     }
+    
+    private func updateWiiController() {
+        guard manicGame.gameType == .wii else { return }
+        let wiiController = manicGame.getExtraInt(key: ExtraKey.wiiController.rawValue) ?? 0
+        let controllerType = LibretroWiiController(rawValue: wiiController) ?? .classicPro
+        LibretroCore.sharedInstance().setWiiController(controllerType)
+        WiiEmulatorBridge.shared.controllerType = controllerType
+    }
 }
 
 //MARK: GameViewControllerDelegate代理
@@ -4730,6 +4746,12 @@ extension PlayViewController {
     static func ndsLidToggle() {
         if let currentPlayViewController {
             currentPlayViewController.ndsLidToggle()
+        }
+    }
+    
+    static func updateWiiController() {
+        if let currentPlayViewController {
+            currentPlayViewController.updateWiiController()
         }
     }
 }

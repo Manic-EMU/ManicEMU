@@ -31,7 +31,18 @@ final class FilesSyncIO {
         return (try? await cloudDrive.directoryExists(at: RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relativePath)))) ?? false
     }
     
+    enum FilesSyncIOError: Swift.Error {
+        case missingLocal
+    }
+    
+    func resetSession() {
+        cloudDrive = nil
+    }
+    
     func upload(localURL: URL, relativePath: String) async throws {
+        guard FileManager.default.fileExists(atPath: localURL.path) else {
+            throw FilesSyncIOError.missingLocal
+        }
         let startedAt = Date()
         Log.debug("[iCloud Sync] Upload begin \(relativePath) main=\(Thread.isMainThread) bytes=\(localFileSize(localURL))")
         let drive = try await resolvedDrive()
@@ -46,9 +57,19 @@ final class FilesSyncIO {
         let cloudPath = RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relativePath))
         if (try? await drive.fileExists(at: cloudPath)) == true {
             Log.debug("[iCloud Sync] Replace existing cloud file \(relativePath)")
-            try await drive.removeFile(at: cloudPath)
+            try await replaceCloudFile(drive: drive, from: localURL, at: cloudPath)
+        } else {
+            do {
+                try await drive.upload(from: localURL, to: cloudPath)
+            } catch {
+                if (try? await drive.fileExists(at: cloudPath)) == true {
+                    Log.debug("[iCloud Sync] Upload collided, replacing \(relativePath)")
+                    try await replaceCloudFile(drive: drive, from: localURL, at: cloudPath)
+                } else {
+                    throw error
+                }
+            }
         }
-        try await drive.upload(from: localURL, to: cloudPath)
         Log.debug("[iCloud Sync] Upload end \(relativePath) elapsed=\(String(format: "%.2f", Date().timeIntervalSince(startedAt)))s")
     }
     
@@ -76,23 +97,33 @@ final class FilesSyncIO {
         try await drive.removeDirectory(at: RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relativePath)))
     }
     
-    func removeCloudItem(relativePath: String, isDirectory: Bool) async {
+    func removeCloudItem(relativePath: String, isDirectory: Bool) async throws {
+        let drive = try await resolvedDrive()
+        let cloudPath = RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relativePath))
+        let fileExists = (try? await drive.fileExists(at: cloudPath)) ?? false
+        let directoryExists = (try? await drive.directoryExists(at: cloudPath)) ?? false
+        guard fileExists || directoryExists else { return }
         do {
-            if isDirectory {
-                try await removeDirectory(relativePath: relativePath)
+            if isDirectory || (directoryExists && !fileExists) {
+                try await drive.removeDirectory(at: cloudPath)
             } else {
-                try await removeFile(relativePath: relativePath)
+                try await drive.removeFile(at: cloudPath)
             }
         } catch {
-            Log.debug("[iCloud Sync] Failed to remove cloud item \(relativePath): \(error)")
+            let stillFile = (try? await drive.fileExists(at: cloudPath)) ?? false
+            let stillDirectory = (try? await drive.directoryExists(at: cloudPath)) ?? false
+            if stillFile || stillDirectory {
+                throw error
+            }
+            Log.debug("[iCloud Sync] Cloud item already gone \(relativePath)")
         }
     }
     
-    func listCloudFiles() async -> [String: FilesSyncFingerprint] {
+    func listCloudFiles() async -> [String: FilesSyncFingerprint]? {
         let startedAt = Date()
         guard let drive = try? await resolvedDrive() else {
             Log.debug("[iCloud Sync] listCloudFiles skipped: CloudDrive unavailable")
-            return [:]
+            return nil
         }
         var result: [String: FilesSyncFingerprint] = [:]
         await collectCloudFiles(at: RootRelativePath(path: "Documents"), drive: drive, into: &result)
@@ -178,6 +209,25 @@ final class FilesSyncIO {
         FileManager.default.url(forUbiquityContainerIdentifier: nil)?
             .appendingPathComponent("Documents", isDirectory: true)
             .appendingPathComponent(relativePath)
+    }
+    
+    private func replaceCloudFile(drive: CloudDrive, from localURL: URL, at cloudPath: RootRelativePath) async throws {
+        let staging = URL(fileURLWithPath: R.Path.Temp).appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: staging.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try FileManager.default.copyItem(at: localURL, to: staging)
+        defer { try? FileManager.default.removeItem(at: staging) }
+        try await drive.updateFile(at: cloudPath) { destURL in
+            if FileManager.default.fileExists(atPath: destURL.path) {
+                do {
+                    _ = try FileManager.default.replaceItemAt(destURL, withItemAt: staging)
+                } catch {
+                    try FileManager.default.removeItem(at: destURL)
+                    try FileManager.default.copyItem(at: staging, to: destURL)
+                }
+            } else {
+                try FileManager.default.copyItem(at: staging, to: destURL)
+            }
+        }
     }
     
     private func coordinateLocalReplace(from tempURL: URL, to localURL: URL) throws {

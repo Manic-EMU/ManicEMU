@@ -1019,7 +1019,6 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 "BIOSCommondDesc" = "Neke igre možda neće ispravno raditi bez BIOS-a.";
 "WiiKeysBinDesc" = "Za igranje Wii igara potreban je keys.bin u formatu BootMii.";
 "WiimoteSideways" = "Wiimote vodoravno";
-"WiimoteDesc" = "U zadanom skinu mapiranja Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Protresanje」\n「Desni analog」 -> 「Nagib」";
 "DolphinCoreWraning" = "Zbog trenutačnih ograničenja performansi jezgre dolphin bez JIT uređaj se može zagrijavati, a emulacija trzati uz padove sličica. Iza kulisa ipak mnogo heroja naporno optimizira. Sve će postupno biti bolje, zar ne?";
 "DolphinSaveTips" = "Otvorite aplikaciju Datoteke: Manic EMU - dolphin-emu - User i sami upravljajte datotekama spremanja.";
 "AchievementsSubset" = "Skup achievementa";

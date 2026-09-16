@@ -1011,7 +1011,6 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 "BIOSCommondDesc" = "Enkelte spill kjører kanskje ikke skikkelig uten BIOS.";
 "WiiKeysBinDesc" = "keys.bin i BootMii-format kreves for å spille Wii-spill.";
 "WiimoteSideways" = "Wiimote på tvers";
-"WiimoteDesc" = "I standard-skinnet gjelder disse Wiimote-tilordningene:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Rist」\n「Høyre thumbstick」 -> 「Vipp」";
 "DolphinCoreWraning" = "På grunn av dolphin-kjernens nåværende JITless-ytelsesgrenser kan enheten bli varm og hakke med framedrop under emulering. Bak kulissene jobber likevel mange helter hardt med optimalisering. Alt blir gradvis bedre, ikke sant?";
 "DolphinSaveTips" = "Åpne med appen Filer: Manic EMU - dolphin-emu - User for å administrere lagringsfilene dine selv.";
 "AchievementsSubset" = "Prestasjonssett";

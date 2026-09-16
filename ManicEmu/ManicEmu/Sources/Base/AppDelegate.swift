@@ -43,10 +43,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if !OrientationLockPin.isPinned {
                 UIViewController.attemptRotationToDeviceOrientation()
             }
-            if #available(iOS 26.0, *) {
-                let root = ApplicationSceneDelegate.applicationWindow?.rootViewController
-                root?.setNeedsUpdateOfSupportedInterfaceOrientations()
-                root?.setNeedsUpdateOfPrefersInterfaceOrientationLocked()
+            if #available(iOS 16.0, *) {
+                var vc = ApplicationSceneDelegate.applicationWindow?.rootViewController
+                while let current = vc {
+                    current.setNeedsUpdateOfSupportedInterfaceOrientations()
+                    if #available(iOS 26.0, *) {
+                        current.setNeedsUpdateOfPrefersInterfaceOrientationLocked()
+                    }
+                    vc = current.presentedViewController
+                }
             }
         }
     }

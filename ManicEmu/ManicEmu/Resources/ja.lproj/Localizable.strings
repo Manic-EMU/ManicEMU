@@ -1015,7 +1015,6 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "BIOSCommondDesc" = "一部のゲームは BIOS がないと正常に動作しない場合があります。";
 "WiiKeysBinDesc" = "Wii ゲームをプレイするには BootMii 形式の keys.bin が必要です。";
 "WiimoteSideways" = "Wiimote 横持ち";
-"WiimoteDesc" = "デフォルトスキンでの Wiimote マッピング：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「シェイク」\n「右スティック」 -> 「傾ける」";
 "DolphinCoreWraning" = "現在の dolphin コアは JITless の性能制限があるため、ゲームエミュレーション中に端末が発熱したり、カクつきやフレーム落ちが発生することがあります。とはいえ、舞台裏では多くのヒーローが最適化に取り組んでいます。すべては少しずつ良くなっていく、よね？";
 "DolphinSaveTips" = "ファイルアプリで Manic EMU - dolphin-emu - User を開き、セーブファイルをご自身で管理してください。";
 "AchievementsSubset" = "実績セット";

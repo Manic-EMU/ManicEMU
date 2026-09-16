@@ -942,7 +942,7 @@ enum GameOption: Int, CaseIterable {
             let firstGameValue = firstGame.getExtraInt(key: extraKey) ?? 0
             if games.allSatisfy({
                 ($0.getExtraInt(key: extraKey) ?? 0) == firstGameValue
-            }) {
+            }), R.Strings.WiiControllers.indices.contains(firstGameValue) {
                 return .chevron(R.Strings.WiiControllers[firstGameValue])
             }
         
@@ -975,9 +975,9 @@ enum GameOption: Int, CaseIterable {
                 ($0.getExtraInt(key: extraKey) ?? 0) == firstGameValue
             }) {
                 if firstGameValue == 0 {
-                    return .chevron(R.string.localizable.skinSegmentPortraitTitle())
-                } else {
                     return .chevron(R.string.localizable.skinSegmentLandscapeTitle())
+                } else {
+                    return .chevron(R.string.localizable.skinSegmentPortraitTitle())
                 }
             }
             

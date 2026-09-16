@@ -81,6 +81,14 @@ enum FilesSyncIndex {
         lock.unlock()
     }
     
+    static func reset() {
+        modify { $0 = FilesSyncIndexStore() }
+        try? FileManager.default.removeItem(atPath: R.Path.FilesSyncIndex)
+        try? FileManager.default.removeItem(atPath: R.Path.FilesSyncPending)
+        save()
+        Log.debug("[iCloud Sync] ledger reset")
+    }
+    
     static func load() {
         try? FileManager.default.createDirectory(atPath: R.Path.FilesSync, withIntermediateDirectories: true)
         if let data = try? Data(contentsOf: URL(fileURLWithPath: R.Path.FilesSyncIndex)),

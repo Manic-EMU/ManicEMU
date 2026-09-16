@@ -1020,7 +1020,6 @@ Se você deseja aprimorar sua configuração, a PlayCase é o complemento perfei
 "BIOSCommondDesc" = "Alguns jogos específicos podem não rodar corretamente sem um BIOS.";
 "WiiKeysBinDesc" = "É necessário um keys.bin no formato BootMii para jogar títulos Wii.";
 "WiimoteSideways" = "Wiimote na horizontal";
-"WiimoteDesc" = "Na skin padrão, mapeamentos do Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Agitar」\n「Analógico direito」 -> 「Inclinar」";
 "DolphinCoreWraning" = "Devido aos limites atuais de desempenho JITless do núcleo dolphin, o dispositivo pode esquentar e apresentar travamentos com queda de frames durante a emulação, mas há muitos heróis trabalhando nos bastidores para otimizar. Tudo vai melhorar aos poucos, certo?";
 "DolphinSaveTips" = "Use o app Arquivos para abrir: Manic EMU - dolphin-emu - User e gerenciar seus arquivos de save por conta própria.";
 "AchievementsSubset" = "Conjunto de conquistas";

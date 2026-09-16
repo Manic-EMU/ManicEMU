@@ -16,12 +16,56 @@ enum FilesSyncOpKind: String, Codable {
 }
 
 struct FilesSyncOp: Codable {
+    enum CodingKeys: String, CodingKey {
+        case relativePath, kind, tombstoneReason, isDirectory, isConflict, retries, token
+    }
+    
     var relativePath: String
     var kind: FilesSyncOpKind
     var tombstoneReason: FilesSyncTombstone.Reason?
-    var isDirectory: Bool = false
-    var isConflict: Bool = false
-    var retries: Int = 0
+    var isDirectory: Bool
+    var isConflict: Bool
+    var retries: Int
+    /// Unique id so drain completion cannot drop a newer op for the same path.
+    var token: Int
+    
+    init(relativePath: String,
+         kind: FilesSyncOpKind,
+         tombstoneReason: FilesSyncTombstone.Reason?,
+         isDirectory: Bool = false,
+         isConflict: Bool = false,
+         retries: Int = 0,
+         token: Int = 0) {
+        self.relativePath = relativePath
+        self.kind = kind
+        self.tombstoneReason = tombstoneReason
+        self.isDirectory = isDirectory
+        self.isConflict = isConflict
+        self.retries = retries
+        self.token = token
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        relativePath = try container.decode(String.self, forKey: .relativePath)
+        kind = try container.decode(FilesSyncOpKind.self, forKey: .kind)
+        tombstoneReason = try container.decodeIfPresent(FilesSyncTombstone.Reason.self, forKey: .tombstoneReason)
+        isDirectory = try container.decodeIfPresent(Bool.self, forKey: .isDirectory) ?? false
+        isConflict = try container.decodeIfPresent(Bool.self, forKey: .isConflict) ?? false
+        retries = try container.decodeIfPresent(Int.self, forKey: .retries) ?? 0
+        token = try container.decodeIfPresent(Int.self, forKey: .token) ?? 0
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(relativePath, forKey: .relativePath)
+        try container.encode(kind, forKey: .kind)
+        try container.encodeIfPresent(tombstoneReason, forKey: .tombstoneReason)
+        try container.encode(isDirectory, forKey: .isDirectory)
+        try container.encode(isConflict, forKey: .isConflict)
+        try container.encode(retries, forKey: .retries)
+        try container.encode(token, forKey: .token)
+    }
 }
 
 private enum FilesSyncDecideAction {
@@ -37,19 +81,25 @@ final class FilesSyncEngine {
     private let lock = NSLock()
     private var pending: [String: FilesSyncOp] = [:]
     private var deferred: [String: FilesSyncOp] = [:]
-    private var inFlight: [String: FilesSyncOpKind] = [:]
+    private var inFlight: [String: FilesSyncOp] = [:]
     private var drainTask: Task<Void, Never>?
     private var workTail = Task<Void, Never> {}
+    private var drainGeneration = 0
+    private var workGeneration = 0
+    private var nextOpToken = 0
     private let maxConcurrent = 3
     private let maxRetries = 5
     private var pausedForGameplay = false
     private var started = false
     private var latestCloudFiles: [String: FilesSyncFingerprint] = [:]
     private var notDownloaded = Set<String>()
+    private var cloudListingReady = false
     private var romExclusion = FilesSyncROMExclusion()
     private var pendingLocalNotes: [URL] = []
+    private var pendingLocalRemovals: [URL] = []
     private var pendingInventory: FilesSyncCloudInventory?
     private var repairInFlight = false
+    private var lastProgressPostedAt: TimeInterval = 0
     
     var onProgress: ((FilesSyncProgress) -> Void)?
     
@@ -60,7 +110,7 @@ final class FilesSyncEngine {
     var hasDownloadTask: Bool {
         withLock {
             pending.values.contains(where: { $0.kind == .download })
-                || inFlight.values.contains(where: { $0 == .download })
+                || inFlight.values.contains(where: { $0.kind == .download })
         }
     }
     
@@ -90,20 +140,49 @@ final class FilesSyncEngine {
     
     func stop() {
         Log.debug("[iCloud Sync] stop main=\(Thread.isMainThread) \(queueSummary())")
-        persistQueuedOps()
-        withLock {
+        let snapshot: [String: FilesSyncOp] = withLock {
             started = false
+            drainGeneration += 1
+            workGeneration += 1
+            workTail = Task {}
+            drainTask = nil
+            var all = deferred
+            for (path, op) in pending {
+                all[path] = op
+            }
             pending.removeAll()
             deferred.removeAll()
+            inFlight.removeAll()
             pendingLocalNotes.removeAll()
+            pendingLocalRemovals.removeAll()
             pendingInventory = nil
             repairInFlight = false
-            drainTask?.cancel()
-            drainTask = nil
+            return all
         }
+        FilesSyncIndex.savePending(snapshot)
         publish {
             $0 = FilesSyncProgress()
             $0.phase = .idle
+        }
+    }
+    
+    /// Drop Drive ledger and in-memory queues after an iCloud account switch.
+    func resetForAccountChange() {
+        Log.debug("[iCloud Sync] reset ledger for account change")
+        io.resetSession()
+        FilesSyncIndex.reset()
+        withLock {
+            pending.removeAll()
+            deferred.removeAll()
+            inFlight.removeAll()
+            latestCloudFiles.removeAll()
+            notDownloaded.removeAll()
+            pendingLocalNotes.removeAll()
+            pendingLocalRemovals.removeAll()
+            pendingInventory = nil
+            cloudListingReady = false
+            nextOpToken = 0
+            repairInFlight = false
         }
     }
     
@@ -216,8 +295,9 @@ final class FilesSyncEngine {
     }
     
     func noteLocalRemoval(at url: URL) {
-        guard isStarted else {
-            Log.debug("[iCloud Sync] noteLocalRemoval ignored (not started): \(url.path)")
+        if !isStarted {
+            withLock { pendingLocalRemovals.append(url) }
+            Log.debug("[iCloud Sync] noteLocalRemoval queued (not started): \(url.path)")
             return
         }
         Log.debug("[iCloud Sync] noteLocalRemoval \(url.path)")
@@ -298,6 +378,18 @@ final class FilesSyncEngine {
                 await processLocalChange(url)
             }
         }
+        let removals = withLock { () -> [URL] in
+            let queued = pendingLocalRemovals
+            pendingLocalRemovals.removeAll()
+            return queued
+        }
+        if !removals.isEmpty {
+            Log.debug("[iCloud Sync] flushing \(removals.count) local removals queued before bootstrap")
+            for url in removals {
+                guard isStarted else { return }
+                await processLocalRemoval(url)
+            }
+        }
         Log.debug("[iCloud Sync] bootstrap end elapsed=\(String(format: "%.2f", Date().timeIntervalSince(startedAt)))s \(queueSummary())")
 #endif
     }
@@ -322,8 +414,14 @@ final class FilesSyncEngine {
         var allCloud: [String: FilesSyncFingerprint]
         if let cloudFiles {
             allCloud = cloudFiles
+            withLock { cloudListingReady = true }
         } else if withLock({ latestCloudFiles.isEmpty }) {
-            allCloud = await io.listCloudFiles()
+            if let listed = await io.listCloudFiles() {
+                allCloud = listed
+                withLock { cloudListingReady = true }
+            } else {
+                allCloud = [:]
+            }
         } else {
             allCloud = withLock { latestCloudFiles }
         }
@@ -403,9 +501,7 @@ final class FilesSyncEngine {
             let inLedger = ledger[relative] != nil
             let inCloud = cloud[relative] != nil
             let intent = intents[relative]
-            Log.debug("[iCloud Sync] catch-up ROM \(relative) ledger=\(inLedger) cloud=\(inCloud) intent=\(intent?.intent.debugLabel ?? "nil") gen=\(intent?.generation ?? 0) applied=\(FilesSyncIndex.appliedGeneration(for: relative)) \(describe(localFp))")
             if romExclusion.contains(relative) {
-                Log.debug("[iCloud Sync] catch-up ROM sync off \(relative) intent=\(intent?.intent.debugLabel ?? "nil")")
                 _ = decide(relativePath: relative, local: localFp, cloud: cloudKnown ? cloud[relative] : nil)
                 continue
             }
@@ -423,7 +519,6 @@ final class FilesSyncEngine {
         for (relative, intent) in intents where FilesSyncPolicy.shouldSkipOnSaveScan(relativePath: relative) {
             if local[relative] != nil { continue }
             if FilesSyncPolicy.shouldNeverSync(relativePath: relative) { continue }
-            Log.debug("[iCloud Sync] catch-up remote ROM \(relative) intent=\(intent.intent.debugLabel) gen=\(intent.generation) cloud=\(cloud[relative] != nil) excluded=\(romExclusion.contains(relative))")
             _ = decide(relativePath: relative, local: nil, cloud: cloudKnown ? cloud[relative] : nil)
         }
         Log.debug("[iCloud Sync] catch-up content trees considered=\(considered) untracked=\(untracked) ledgerNotInCloud=\(missingOnCloud) cloudKnown=\(cloudKnown)")
@@ -449,6 +544,7 @@ final class FilesSyncEngine {
     }
     
     private func processLocalRemoval(_ url: URL) async {
+        guard isStarted else { return }
         guard let relative = FilesSyncPolicy.documentsRelativePath(from: url) else { return }
         let directory = isDirectory(url) || url.hasDirectoryPath
         // Local file may already be gone; still collect children from the ledger/intents.
@@ -461,7 +557,9 @@ final class FilesSyncEngine {
         Log.debug("[iCloud Sync] local removal \(relative) directory=\(directory) matching=\(paths.count)")
         for path in paths {
             FilesSyncIntentStore.markDeleted(relativePath: path)
-            enqueue(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .deleted, isDirectory: path == relative && directory))
+            let isDir = (path == relative && directory)
+                || paths.contains { $0 != path && $0.hasPrefix(path + "/") }
+            enqueue(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .deleted, isDirectory: isDir))
         }
         FilesSyncIndex.save()
         persistQueuedOps()
@@ -469,6 +567,7 @@ final class FilesSyncEngine {
     }
     
     private func processExcludeCloudCopies(_ urls: [URL]) async {
+        guard isStarted else { return }
         for url in urls {
             guard let relative = FilesSyncPolicy.documentsRelativePath(from: url) else { continue }
             let directory = isDirectory(url) || url.hasDirectoryPath
@@ -479,14 +578,14 @@ final class FilesSyncEngine {
                 paths.append(relative)
                 Log.debug("[iCloud Sync] exclude cloud directory \(relative) files=\(Set(paths).count)")
                 for path in Set(paths) {
-                    let generation = FilesSyncIntentStore.markExcluded(relativePath: path)
-                    FilesSyncIndex.setAppliedGeneration(path, generation)
-                    enqueue(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: path == relative && directory))
+                    FilesSyncIntentStore.markExcluded(relativePath: path)
+                    let isDir = (path == relative && directory)
+                        || paths.contains { $0 != path && $0.hasPrefix(path + "/") }
+                    enqueue(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: isDir))
                 }
             } else {
                 Log.debug("[iCloud Sync] exclude cloud file \(relative)")
-                let generation = FilesSyncIntentStore.markExcluded(relativePath: relative)
-                FilesSyncIndex.setAppliedGeneration(relative, generation)
+                FilesSyncIntentStore.markExcluded(relativePath: relative)
                 enqueue(FilesSyncOp(relativePath: relative, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: false))
             }
         }
@@ -541,13 +640,15 @@ final class FilesSyncEngine {
     }
     
     private func handleCloudInventory(_ inventory: FilesSyncCloudInventory) async {
-        let previous = withLock { () -> [String: FilesSyncFingerprint] in
+        let (previous, previousNotDownloaded) = withLock { () -> ([String: FilesSyncFingerprint], Set<String>) in
             let old = latestCloudFiles
+            let oldNotDownloaded = notDownloaded
             latestCloudFiles = inventory.files
             notDownloaded = inventory.notDownloaded
-            return old
+            cloudListingReady = true
+            return (old, oldNotDownloaded)
         }
-        if progress.isBusy {
+        if progress.isBusy || !inventory.uploading.isEmpty || !inventory.downloading.isEmpty {
             publish { progress in
                 progress.currentFileName = inventory.uploading.first ?? inventory.downloading.first ?? progress.currentFileName
                 progress.bytesTransferred = inventory.bytesTransferred
@@ -558,37 +659,48 @@ final class FilesSyncEngine {
             Log.debug("[iCloud Sync] cloud inventory stored, reconcile deferred started=\(isStarted) paused=\(withLock { pausedForGameplay })")
             return
         }
+        // Upload percent ticks keep size/mtime the same. Skip a full decide pass.
+        if previous == inventory.files, previousNotDownloaded == inventory.notDownloaded {
+            Log.debug("[iCloud Sync] cloud inventory progress-only files=\(inventory.files.count)")
+            return
+        }
         await reconcileCloudDelta(previous: previous, inventory: inventory)
     }
     
     private func reconcileCloudDelta(previous: [String: FilesSyncFingerprint], inventory: FilesSyncCloudInventory) async {
         refreshROMExclusion()
+        var changed = Set<String>()
+        if previous.isEmpty {
+            changed.formUnion(inventory.files.keys)
+        } else {
+            for (relative, cloud) in inventory.files where previous[relative] != cloud {
+                changed.insert(relative)
+            }
+        }
+        var missing = 0
+        for relative in previous.keys where inventory.files[relative] == nil {
+            changed.insert(relative)
+        }
         var decided = 0
-        for (relative, cloud) in inventory.files {
+        for relative in changed {
             if FilesSyncPolicy.shouldNeverSync(relativePath: relative) { continue }
+            let cloud = inventory.files[relative]
+            if cloud == nil {
+                guard let intent = FilesSyncIntentStore.snapshot(relativePath: relative),
+                      intent.intent == .deleted || intent.intent == .excluded,
+                      FilesSyncIndex.appliedGeneration(for: relative) < intent.generation else { continue }
+            }
             let localURL = FilesSyncPolicy.localURL(relativePath: relative)
             let localExists = FileManager.default.fileExists(atPath: localURL.path)
-            if inventory.notDownloaded.contains(relative), localExists {
+            if cloud != nil, inventory.notDownloaded.contains(relative), localExists {
                 continue
             }
             let local = localExists ? FilesSyncIndex.fingerprint(for: localURL, preferHash: false) : nil
+            if cloud == nil { missing += 1 }
             _ = decide(relativePath: relative, local: local, cloud: cloud)
             decided += 1
         }
-        // Listing gaps are unknown. Only apply an explicit newer delete/exclude intent.
-        var missing = 0
-        for relative in previous.keys where inventory.files[relative] == nil {
-            if FilesSyncPolicy.shouldNeverSync(relativePath: relative) { continue }
-            guard let intent = FilesSyncIntentStore.snapshot(relativePath: relative),
-                  intent.intent == .deleted || intent.intent == .excluded,
-                  FilesSyncIndex.appliedGeneration(for: relative) < intent.generation else { continue }
-            let localURL = FilesSyncPolicy.localURL(relativePath: relative)
-            let localExists = FileManager.default.fileExists(atPath: localURL.path)
-            let local = localExists ? FilesSyncIndex.fingerprint(for: localURL, preferHash: false) : nil
-            _ = decide(relativePath: relative, local: local, cloud: nil)
-            missing += 1
-        }
-        Log.debug("[iCloud Sync] cloud delta decided=\(decided) intentGaps=\(missing) \(queueSummary())")
+        Log.debug("[iCloud Sync] cloud delta decided=\(decided) intentGaps=\(missing) changed=\(changed.count) \(queueSummary())")
         persistQueuedOps()
         pump()
     }
@@ -759,7 +871,12 @@ final class FilesSyncEngine {
     }
     
     private func enqueue(_ op: FilesSyncOp) {
-        withLock { pending[op.relativePath] = op }
+        withLock {
+            nextOpToken += 1
+            var stamped = op
+            stamped.token = nextOpToken
+            pending[op.relativePath] = stamped
+        }
         Log.debug("[iCloud Sync] queue \(op.kind) \(op.relativePath) \(queueSummary())")
     }
     
@@ -781,47 +898,57 @@ final class FilesSyncEngine {
     }
     
     private func drain() async {
-        Log.debug("[iCloud Sync] drain begin \(queueSummary()) main=\(Thread.isMainThread)")
+        let generation = withLock { drainGeneration }
+        Log.debug("[iCloud Sync] drain begin gen=\(generation) \(queueSummary()) main=\(Thread.isMainThread)")
         while true {
-            if withLock({ pausedForGameplay }) {
-                withLock { drainTask = nil }
+            let state = withLock { (pausedForGameplay, started, drainGeneration) }
+            if state.2 != generation {
+                Log.debug("[iCloud Sync] drain superseded gen=\(generation)")
+                break
+            }
+            if state.0 {
+                withLock { if drainGeneration == generation { drainTask = nil } }
                 Log.debug("[iCloud Sync] drain paused for gameplay")
                 publish { $0.phase = .paused }
                 break
             }
-            if !isStarted {
-                withLock { drainTask = nil }
+            if !state.1 {
+                withLock { if drainGeneration == generation { drainTask = nil } }
                 Log.debug("[iCloud Sync] drain stopped")
                 break
             }
             let batch: [(key: String, value: FilesSyncOp)]
             let remaining: Int
             (batch, remaining) = withLock {
+                guard drainGeneration == generation else { return ([], pending.count) }
                 let ready = pending.filter { !inFlight.keys.contains($0.key) }
                 let next = Array(ready.prefix(maxConcurrent))
                 for item in next {
-                    inFlight[item.key] = item.value.kind
+                    inFlight[item.key] = item.value
                 }
                 return (next.map { (key: $0.key, value: $0.value) }, pending.count)
             }
             
             if batch.isEmpty {
                 let idle = withLock { () -> Bool in
+                    guard drainGeneration == generation else { return true }
                     let idle = inFlight.isEmpty && pending.isEmpty
                     if idle { drainTask = nil }
                     return idle
                 }
                 if idle {
                     Log.debug("[iCloud Sync] drain idle")
-                    persistQueuedOps()
-                    publish {
-                        $0.phase = .idle
-                        $0.completedCount = 0
-                        $0.totalCount = 0
-                        $0.currentFileName = nil
+                    if withLock({ drainGeneration == generation }) {
+                        persistQueuedOps()
+                        publish {
+                            $0.phase = .idle
+                            $0.completedCount = 0
+                            $0.totalCount = 0
+                            $0.currentFileName = nil
+                        }
                     }
+                    break
                 }
-                if idle { break }
                 Log.debug("[iCloud Sync] drain waiting for in-flight \(queueSummary())")
                 try? await Task.sleep(nanoseconds: 200_000_000)
                 continue
@@ -839,7 +966,7 @@ final class FilesSyncEngine {
             await withTaskGroup(of: (String, Bool).self) { group in
                 for item in batch {
                     group.addTask { [weak self] in
-                        let ok = await self?.run(item.value) ?? true
+                        let ok = await self?.run(item.value, drainGeneration: generation) ?? true
                         return (item.key, ok)
                     }
                 }
@@ -849,10 +976,11 @@ final class FilesSyncEngine {
             }
             
             let finished = withLock { () -> Int in
+                guard drainGeneration == generation else { return 0 }
                 var count = 0
                 for item in batch {
                     inFlight[item.key] = nil
-                    if completed[item.key] == true, pending[item.key]?.kind == item.value.kind {
+                    if completed[item.key] == true, pending[item.key]?.token == item.value.token {
                         pending[item.key] = nil
                         count += 1
                     }
@@ -862,13 +990,15 @@ final class FilesSyncEngine {
             Log.debug("[iCloud Sync] drain batch finished=\(finished)/\(batch.count) \(queueSummary())")
             publish { $0.completedCount += finished }
         }
-        FilesSyncIndex.save()
-        persistQueuedOps()
-        Log.debug("[iCloud Sync] drain end \(queueSummary())")
+        if withLock({ drainGeneration == generation }) {
+            FilesSyncIndex.save()
+            persistQueuedOps()
+        }
+        Log.debug("[iCloud Sync] drain end gen=\(generation) \(queueSummary())")
     }
     
     /// Returns false when the op should stay queued (e.g. paused during gameplay).
-    private func run(_ op: FilesSyncOp) async -> Bool {
+    private func run(_ op: FilesSyncOp, drainGeneration session: Int) async -> Bool {
         if withLock({ pausedForGameplay }), op.kind == .upload || op.kind == .download {
             Log.debug("[iCloud Sync] run deferred (gameplay) \(op.kind) \(op.relativePath)")
             return false
@@ -877,7 +1007,11 @@ final class FilesSyncEngine {
         switch op.kind {
         case .upload:
             guard FileManager.default.fileExists(atPath: localURL.path) else {
-                Log.debug("[iCloud Sync] upload skipped (missing local): \(op.relativePath)")
+                Log.debug("[iCloud Sync] upload missing local \(op.relativePath) retry=\(op.retries)")
+                if op.retries < 2 {
+                    try? await Task.sleep(nanoseconds: 300_000_000)
+                    return retryOrDrop(op, drainGeneration: session)
+                }
                 return true
             }
             do {
@@ -893,7 +1027,7 @@ final class FilesSyncEngine {
             } catch {
                 Log.debug("[iCloud Sync] Upload failed \(op.relativePath) retry=\(op.retries): \(error)")
                 try? await Task.sleep(nanoseconds: 400_000_000)
-                return retryOrDrop(op)
+                return retryOrDrop(op, drainGeneration: session)
             }
         case .download:
             do {
@@ -912,19 +1046,36 @@ final class FilesSyncEngine {
                 }
                 Log.debug("[iCloud Sync] Downloaded \(op.relativePath)")
             } catch {
+                let localExists = FileManager.default.fileExists(atPath: localURL.path)
+                let uploadInstead = withLock {
+                    cloudListingReady
+                        && latestCloudFiles[op.relativePath] == nil
+                        && !notDownloaded.contains(op.relativePath)
+                }
+                if localExists, uploadInstead {
+                    Log.debug("[iCloud Sync] download missing on cloud, upload local instead \(op.relativePath)")
+                    enqueue(FilesSyncOp(relativePath: op.relativePath, kind: .upload, tombstoneReason: nil, isConflict: op.isConflict))
+                    return true
+                }
                 Log.debug("[iCloud Sync] Download failed \(op.relativePath) retry=\(op.retries): \(error)")
                 try? await Task.sleep(nanoseconds: 400_000_000)
-                return retryOrDrop(op)
+                return retryOrDrop(op, drainGeneration: session)
             }
         case .deleteCloud:
-            await io.removeCloudItem(relativePath: op.relativePath, isDirectory: op.isDirectory)
-            if op.tombstoneReason == .deleted {
-                FilesSyncIndex.removeFile(op.relativePath)
+            do {
+                try await io.removeCloudItem(relativePath: op.relativePath, isDirectory: op.isDirectory)
+                if op.tombstoneReason == .deleted {
+                    FilesSyncIndex.removeFile(op.relativePath)
+                }
+                if let intent = FilesSyncIntentStore.snapshot(relativePath: op.relativePath) {
+                    FilesSyncIndex.setAppliedGeneration(op.relativePath, intent.generation)
+                }
+                Log.debug("[iCloud Sync] Deleted cloud \(op.relativePath)")
+            } catch {
+                Log.debug("[iCloud Sync] Delete cloud failed \(op.relativePath) retry=\(op.retries): \(error)")
+                try? await Task.sleep(nanoseconds: 400_000_000)
+                return retryOrDrop(op, drainGeneration: session)
             }
-            if let intent = FilesSyncIntentStore.snapshot(relativePath: op.relativePath) {
-                FilesSyncIndex.setAppliedGeneration(op.relativePath, intent.generation)
-            }
-            Log.debug("[iCloud Sync] Deleted cloud \(op.relativePath)")
         case .deleteLocal:
             try? FileManager.safeRemoveItem(at: localURL)
             FilesSyncIndex.removeFile(op.relativePath)
@@ -936,19 +1087,36 @@ final class FilesSyncEngine {
         return true
     }
     
-    private func retryOrDrop(_ op: FilesSyncOp) -> Bool {
-        if op.retries < maxRetries {
-            var retry = op
-            retry.retries += 1
-            withLock { pending[op.relativePath] = retry }
-            Log.debug("[iCloud Sync] will retry \(op.kind) \(op.relativePath) (\(retry.retries)/\(maxRetries))")
+    private func retryOrDrop(_ op: FilesSyncOp, drainGeneration session: Int) -> Bool {
+        let keepQueued = withLock { () -> Bool in
+            guard drainGeneration == session else { return false }
+            if let current = pending[op.relativePath], current.token != op.token {
+                return true
+            }
+            if op.retries < maxRetries {
+                var retry = op
+                retry.retries += 1
+                pending[op.relativePath] = retry
+                return true
+            }
+            var stored = op
+            stored.retries = 0
+            if pending[op.relativePath]?.token == op.token {
+                pending[op.relativePath] = nil
+            }
+            deferred[op.relativePath] = stored
             return false
         }
-        var stored = op
-        stored.retries = 0
-        withLock { deferred[op.relativePath] = stored }
-        persistQueuedOps()
-        Log.debug("[iCloud Sync] deferred \(op.kind) \(op.relativePath) after \(op.retries) retries")
+        if keepQueued {
+            if withLock({ pending[op.relativePath]?.token == op.token }) {
+                Log.debug("[iCloud Sync] will retry \(op.kind) \(op.relativePath) (\(op.retries + 1)/\(maxRetries))")
+            }
+            return false
+        }
+        if withLock({ drainGeneration == session && deferred[op.relativePath] != nil }) {
+            persistQueuedOps()
+            Log.debug("[iCloud Sync] deferred \(op.kind) \(op.relativePath) after \(op.retries) retries")
+        }
         return true
     }
     
@@ -1045,8 +1213,10 @@ final class FilesSyncEngine {
     private func enqueueWork(_ name: String, _ body: @escaping () async -> Void) {
         lock.lock()
         let previous = workTail
-        let next = Task.detached(priority: .utility) {
+        let generation = workGeneration
+        let next = Task.detached(priority: .utility) { [weak self] in
             await previous.value
+            guard let self, self.withLock({ self.started && self.workGeneration == generation }) else { return }
             Log.debug("[iCloud Sync] work begin: \(name) main=\(Thread.isMainThread)")
             await body()
             Log.debug("[iCloud Sync] work end: \(name)")
@@ -1075,10 +1245,20 @@ final class FilesSyncEngine {
     private func publish(_ update: (inout FilesSyncProgress) -> Void) {
         var next = progress
         update(&next)
-        if next.phase != progress.phase || next.currentFileName != progress.currentFileName || next.totalCount != progress.totalCount {
+        let phaseChanged = next.phase != progress.phase
+        if phaseChanged || next.currentFileName != progress.currentFileName || next.totalCount != progress.totalCount {
             Log.debug("[iCloud Sync] progress phase=\(next.phase.rawValue) file=\(next.currentFileName ?? "-") completed=\(next.completedCount)/\(next.totalCount)")
         }
         progress = next
+        let shouldPost = withLock { () -> Bool in
+            let now = Date().timeIntervalSince1970
+            if phaseChanged || next.phase == .idle || now - lastProgressPostedAt >= 0.25 {
+                lastProgressPostedAt = now
+                return true
+            }
+            return false
+        }
+        guard shouldPost else { return }
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: R.NotificationName.iCloudDriveSyncChange, object: next)
         }

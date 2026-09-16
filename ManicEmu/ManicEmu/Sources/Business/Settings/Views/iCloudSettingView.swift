@@ -23,6 +23,8 @@ class ICloudSettingView: BaseView {
     
     private let showClose: Bool
     private var iCloudDriveSyncChangeNotification: Any?
+    private static var cachedContainerSizeText: String?
+    private var containerSizeWorkItem: DispatchWorkItem?
     
     private lazy var listPageView: ASListPageView = {
         let view = ASListPageView(getListPage())
@@ -33,6 +35,7 @@ class ICloudSettingView: BaseView {
     }()
     
     deinit {
+        containerSizeWorkItem?.cancel()
         if let iCloudDriveSyncChangeNotification {
             NotificationCenter.default.removeObserver(iCloudDriveSyncChangeNotification)
         }
@@ -100,7 +103,7 @@ class ICloudSettingView: BaseView {
                           pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop))
     }
     
-    private func masterCell() -> ASListPage.Cell {
+    private func masterCell(refreshSize: Bool = true) -> ASListPage.Cell {
         let enabled = Settings.defalut.iCloudSyncEnable
         let state: ASSwitch.State
         if !PurchaseManager.isMember {
@@ -110,10 +113,9 @@ class ICloudSettingView: BaseView {
         }
         let detail: String
         if enabled && PurchaseManager.isMember {
-            if let iCloudPath = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.path {
-                detail = FileType.humanReadableFileSize(CacheManager.folderSize(atPath: iCloudPath)) ?? R.string.localizable.iCloudSynced()
-            } else {
-                detail = R.string.localizable.iCloudSynced()
+            detail = Self.cachedContainerSizeText ?? R.string.localizable.iCloudSynced()
+            if refreshSize {
+                refreshContainerSizeIfNeeded()
             }
         } else {
             detail = R.string.localizable.iCloudNotEnable()
@@ -123,6 +125,22 @@ class ICloudSettingView: BaseView {
                                           detail: detail,
                                           state: state,
                                           enablePressEffect: false)
+    }
+    
+    private func refreshContainerSizeIfNeeded() {
+        guard let iCloudPath = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.path else { return }
+        containerSizeWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            let text = FileType.humanReadableFileSize(CacheManager.folderSize(atPath: iCloudPath)) ?? R.string.localizable.iCloudSynced()
+            DispatchQueue.main.async {
+                guard let self else { return }
+                guard Self.cachedContainerSizeText != text else { return }
+                Self.cachedContainerSizeText = text
+                self.listPageView.updateCellData(self.masterCell(refreshSize: false), indexPath: IndexPath(row: 0, section: 0))
+            }
+        }
+        containerSizeWorkItem = work
+        DispatchQueue.global(qos: .utility).async(execute: work)
     }
     
     private func progressCell(_ progress: FilesSyncProgress) -> ASListPage.Cell {

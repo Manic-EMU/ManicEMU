@@ -992,7 +992,6 @@
 "BIOSCommondDesc" = "قد لا تعمل بعض الألعاب المحددة بشكل صحيح بدون BIOS.";
 "WiiKeysBinDesc" = "يلزم keys.bin بتنسيق BootMii لتشغيل ألعاب Wii.";
 "WiimoteSideways" = "Wiimote أفقي";
-"WiimoteDesc" = "في السكنة الافتراضية، تعيينات Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「هز」\n「العصا اليمنى」 -> 「إمالة」";
 "DolphinCoreWraning" = "نظرًا لحدود أداء JITless الحالية لنواة dolphin، قد يسخن الجهاز ويتلعثم مع انخفاض الإطارات أثناء المحاكاة، لكن هناك الكثير من الأبطال يعملون بجد خلف الكواليس للتحسين. كل شيء سيتحسن تدريجيًا، أليس كذلك؟";
 "DolphinSaveTips" = "يُرجى استخدام تطبيق الملفات لفتح: Manic EMU - dolphin-emu - User لإدارة ملفات الحفظ بنفسك.";
 "AchievementsSubset" = "مجموعة الإنجازات";

@@ -359,9 +359,6 @@
 		579093BB303C7D9100A53656 /* ASListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DAEF2FE413C70051F661 /* ASListPage.swift */; };
 		579093BC303C7D9100A53656 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577006822D438E2A00762E8F /* GamesViewController.swift */; };
 		579093BD303C7D9100A53656 /* WebDavServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632AC2D6FEC25007270E8 /* WebDavServiceProvider.swift */; };
-		68A011012026091500000002 /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
-		68A011012026091500000004 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
-		68A01101202609150000000A /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
 		579093BE303C7D9100A53656 /* ThemeColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590F2DC5BAF4007BFD92 /* ThemeColorCollectionViewCell.swift */; };
 		579093BF303C7D9100A53656 /* CheatTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECCC2D798419002E619C /* CheatTypeExtensions.swift */; };
 		579093C0303C7D9100A53656 /* ARMaxDecrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECD02D7984A0002E619C /* ARMaxDecrypt.swift */; };
@@ -1054,9 +1051,6 @@
 		57CDCDA92FD5CBD3005BA4C8 /* TransparentHoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579076EF2D8AAC2800ED90FB /* TransparentHoleView.swift */; };
 		57CDCDAA2FD5CBD3005BA4C8 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577006822D438E2A00762E8F /* GamesViewController.swift */; };
 		57CDCDAC2FD5CBD3005BA4C8 /* WebDavServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632AC2D6FEC25007270E8 /* WebDavServiceProvider.swift */; };
-		68A011012026091500000005 /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
-		68A011012026091500000006 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
-		68A01101202609150000000B /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
 		57CDCDAD2FD5CBD3005BA4C8 /* ThemeColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590F2DC5BAF4007BFD92 /* ThemeColorCollectionViewCell.swift */; };
 		57CDCDAE2FD5CBD3005BA4C8 /* CheatTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECCC2D798419002E619C /* CheatTypeExtensions.swift */; };
 		57CDCDAF2FD5CBD3005BA4C8 /* OnlinePlaySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5754D88A2E274AB9001EA5ED /* OnlinePlaySettingView.swift */; };
@@ -1550,9 +1544,6 @@
 		57F632A32D6F17AB007270E8 /* SMBClient in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632A22D6F17AB007270E8 /* SMBClient */; };
 		57F632AB2D6FEC0F007270E8 /* SMBServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632AA2D6FEBE7007270E8 /* SMBServiceProvider.swift */; };
 		57F632AD2D6FEC32007270E8 /* WebDavServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632AC2D6FEC25007270E8 /* WebDavServiceProvider.swift */; };
-		68A011012026091500000007 /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
-		68A011012026091500000008 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
-		68A01101202609150000000C /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
 		57F632E32D714E46007270E8 /* WebDavKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632E22D714E46007270E8 /* WebDavKit */; };
 		57F632FE2D718236007270E8 /* SettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632FD2D71822A007270E8 /* SettingsListView.swift */; };
 		57F633002D718366007270E8 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632FF2D718360007270E8 /* SettingItem.swift */; };
@@ -1574,6 +1565,15 @@
 		5F5353532F884986BF3BA407 /* ObjcExceptionBridging in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306B2D91AFE00043C28A /* ObjcExceptionBridging */; };
 		5F74DFC689D94836B20159EB /* mednafen.ngp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56A0D131A148448EA9816B /* mednafen.ngp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6606391530954FC29D88A93E /* MarqueeLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 578E24432FD3EEE300A2749A /* MarqueeLabel */; };
+		68A011012026091500000002 /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
+		68A011012026091500000004 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
+		68A011012026091500000005 /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
+		68A011012026091500000006 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
+		68A011012026091500000007 /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
+		68A011012026091500000008 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
+		68A01101202609150000000A /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
+		68A01101202609150000000B /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
+		68A01101202609150000000C /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
 		6FCEF6E3ACC94F29B594315F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759232FD42D960093A2B3 /* Kingfisher */; };
 		71ABA13BC5694ED39346ED6C /* SwifterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 578E246A2FD4017E00A2749A /* SwifterSwift */; };
 		75A984D24586436BA6AF31C9 /* Symbian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460B02C144024C2EAC5EAF21 /* Symbian.swift */; };
@@ -2056,7 +2056,6 @@
 		576F0E142D88208C00D2A1BA /* SettingsMembershipGiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMembershipGiftView.swift; sourceTree = "<group>"; };
 		576F0E162D8820AB00D2A1BA /* MembershipInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipInfoView.swift; sourceTree = "<group>"; };
 		577005542D3CC23A00762E8F /* FilesImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesImporter.swift; sourceTree = "<group>"; };
-		68A011012026091500000009 /* RommLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommLibrary.swift; sourceTree = "<group>"; };
 		577005572D3CC30400762E8F /* FileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileType.swift; sourceTree = "<group>"; };
 		577005592D3CC35500762E8F /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		5770055C2D3CC3D700762E8F /* GameSaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSaveState.swift; sourceTree = "<group>"; };
@@ -6705,8 +6704,6 @@
 		57F6328A2D6EB837007270E8 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		57F632AA2D6FEBE7007270E8 /* SMBServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMBServiceProvider.swift; sourceTree = "<group>"; };
 		57F632AC2D6FEC25007270E8 /* WebDavServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavServiceProvider.swift; sourceTree = "<group>"; };
-		68A011012026091500000001 /* RommClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommClient.swift; sourceTree = "<group>"; };
-		68A011012026091500000003 /* RommServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommServiceProvider.swift; sourceTree = "<group>"; };
 		57F632FD2D71822A007270E8 /* SettingsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsListView.swift; sourceTree = "<group>"; };
 		57F632FF2D718360007270E8 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		57F633032D718C45007270E8 /* LocaleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtensions.swift; sourceTree = "<group>"; };
@@ -6716,6 +6713,9 @@
 		57FD140F3011C71E007F211A /* ShaderPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShaderPreviewView.swift; sourceTree = "<group>"; };
 		57J2ME01F23397000EA24F1 /* J2ME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = J2ME.swift; sourceTree = "<group>"; };
 		6809D2DE31034EF5B9135498 /* FLASH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLASH.swift; sourceTree = "<group>"; };
+		68A011012026091500000001 /* RommClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommClient.swift; sourceTree = "<group>"; };
+		68A011012026091500000003 /* RommServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommServiceProvider.swift; sourceTree = "<group>"; };
+		68A011012026091500000009 /* RommLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RommLibrary.swift; sourceTree = "<group>"; };
 		691349DFB9FB4307A3151455 /* NGC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NGC.swift; sourceTree = "<group>"; };
 		6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vice.x64sc.libretro.framework; path = ../Cores/vice.x64sc.libretro.framework; sourceTree = SOURCE_ROOT; };
 		78D4867970474EB9B27D4D8D /* NGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NGP.swift; sourceTree = "<group>"; };
@@ -15856,7 +15856,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SIDE_LOAD";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -1033,7 +1033,6 @@
 "BIOSCommondDesc" = "某些特定游戏在没有 BIOS 的情况下可能无法正常运行";
 "WiiKeysBinDesc" = "运行 Wii 游戏需要 BootMii 格式的 keys.bin。";
 "WiimoteSideways" = "Wiimote 横握";
-"WiimoteDesc" = "默认皮肤中，Wiimote映射关系：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「摇晃」\n「右摇杆」 -> 「倾斜」";
 "DolphinCoreWraning" = "受限于现阶段 dolphin 核心的 JITless 性能限制，游戏模拟中设备会发烫并卡顿掉帧，但是背后还有众多英雄们在努力优化中，一切都会慢慢变好的，对吧!";
 "DolphinSaveTips" = "请使用 文件 App， 打开目录： Manic EMU - dolphin-emu - User 自行进行管理存档文件";
 
@@ -1179,3 +1178,6 @@
 "RommTransferFailed" = "同步失败，请检查服务器连接。";
 "RommLanAddressOnly" = "RomM 目前仅支持局域网 IP 地址（如 192.168.x.x、10.x.x.x 或 169.254.x.x），暂不支持主机名和公网 IP。";
 "LandServiceEditServerNamePlaceholder" = "我的服务器";
+
+"WiimoteMotionPlusSideways" = "Wiimote+MotionPlus 横握";
+"WiimoteDesc" = "默认皮肤中，Wiimote 映射关系：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「摇晃」\n「右摇杆」 -> 「倾斜」\n需要 MotionPlus 的游戏（如《天空之剑》）请选择 Wiimote+MotionPlus 控制器类型。";

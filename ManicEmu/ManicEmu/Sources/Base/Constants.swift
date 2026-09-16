@@ -634,7 +634,14 @@ extension _R {
             "Classic Controller Pro",
             "Wiimote",
             R.string.localizable.wiimoteSideways(),
-            "Wiimote+Nunchuk"
+            "Wiimote+Nunchuk",
+            "Classic Controller",
+            "Wiimote+MotionPlus",
+            R.string.localizable.wiimoteMotionPlusSideways(),
+            "Wiimote+MotionPlus+Nunchuk",
+            "Wiimote+MotionPlus+Classic Controller",
+            "Wiimote+MotionPlus+Classic Controller Pro",
+            "GameCube Controller"
         ]
         static let SymbianEdgeSkinIdentifier = "public.aoshuang.game.symbian.standard.edge"
         static let SymbianEdgeFlexSkinIdentifier = "public.aoshuang.game.symbian.edge.flex"

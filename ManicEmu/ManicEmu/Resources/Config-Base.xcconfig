@@ -11,7 +11,7 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 APP_BUNDLE_IDENTIFIER = com.aoshuang.manicemu
-APP_BUILD_VERSION = 8
+APP_BUILD_VERSION = 9
 APP_VERSION = 2.0.1
 
 // Prebuilt cores under ProjectManicEMU/Cores (Citra.framework, *.libretro.framework, …)

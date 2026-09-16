@@ -139,13 +139,20 @@ enum FilesSyncIntentStore {
             !$0.isDeleted && $0.intent == .deleted && $0.updatedAt < cutoff
         }
         guard !expired.isEmpty else { return }
-        let count = expired.count
+        var pruned = 0
         try? realm.write {
             for record in expired {
+                // Keep unapplied deletes so a later catch-up can still remove the Drive copy.
+                if FilesSyncIndex.appliedGeneration(for: record.path) < record.generation {
+                    continue
+                }
                 record.isDeleted = true
+                pruned += 1
             }
         }
-        Log.debug("[iCloud Sync] pruned \(count) expired delete intents")
+        if pruned > 0 {
+            Log.debug("[iCloud Sync] pruned \(pruned) expired delete intents")
+        }
     }
     
     private static func write(relativePath: String, intent: FilesSyncIntentKind, size: Int64, bump: Bool) -> Int {
