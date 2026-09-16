@@ -7,37 +7,32 @@
 	path = Dependencies/CollectionViewPagingLayout
 	url = https://github.com/Daiuno/CollectionViewPagingLayout.git
 	branch = master
-	ignore = all
 
 [submodule "Dependencies/DeltaCore"]
 	path = Dependencies/DeltaCore
 	url = https://github.com/Daiuno/DeltaCore.git
 	branch = manicemu
-	ignore = all
 
 [submodule "Dependencies/DNSPageView"]
 	path = Dependencies/DNSPageView
 	url = https://github.com/Daiuno/DNSPageView.git
 	branch = master
-	ignore = all
 
 [submodule "Dependencies/IceCream"]
 	path = Dependencies/IceCream
 	url = https://github.com/Daiuno/IceCream.git
 	branch = master
-	ignore = all
 
 [submodule "Dependencies/ProHUD"]
 	path = Dependencies/ProHUD
 	url = https://github.com/Daiuno/ProHUD.git
 	branch = main
-	ignore = all
+
 [submodule "StikJIT"]
 	path = StikJIT
 	url = https://github.com/StephenDev0/StikJIT.git
-	ignore = all
+
 [submodule "Dependencies/SwiftCloudDrive"]
 	path = Dependencies/SwiftCloudDrive
 	url = https://github.com/Daiuno/SwiftCloudDrive.git
 	branch = main
-	ignore = all
