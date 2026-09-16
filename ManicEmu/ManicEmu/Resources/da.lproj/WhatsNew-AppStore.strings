@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Understøttelse af WonderSwan tilføjet\n- Arkadeunderstøttelse til NAOMI, Atomiswave og System SP tilføjet\n- Understøttelse af Flash tilføjet\n  · Skin-knapbinding\n  · Input fra hardwaretastatur\n  · Input fra softwaretastatur\n  · Berøringsinput\n- Langsom afspilning tilføjet\n- iCloud-synkronisering bygget om\n  · Synkroniseringslogikken omdesignet\n  · Siden Indstillinger viser nu synkroniseringsforløbet, lader dig slå ROM-synkronisering fra pr. platform eller spil og kan reparere synkroniseringsfejl\n  · Når ROM-synkronisering slås fra, ryddes iCloud Drive for at frigøre plads\n- Ydelsen i GameCube og Wii forbedret\n- GameCube understøtter nu spil med flere diske\n- Wii-bevægelsesstyring forbedret\n- Simulér Wii-IR-markøren med berøring\n- Tilføj spil fra andre emulatorer via et link\n- Rettede visse arkadesystemer, der ikke ville køre\n- Rettede Dreamcast-spil, der kørte for hurtigt\n- Rettede PSP-nedbrud\n- Åbne/lukke NDS-låg tilføjet\n- Rotation forbedret: med retningslås slået til i Kontrolcenter hopper appen ikke længere tilbage til stående\n- Tips til spilgenveje i spillet kan nu slås fra\n- Liggende spilbibliotek kan slå karruselstil fra\n- Mere flydende rulning i den liggende karrusel\n- Multidisk-værktøj understøtter flere formater\n- Hardwaretastatur til Symbian, Amiga og C64\n- Understøttelse af RomM tilføjet\n  · Kun selvhostede LAN-servere\n  · Synkronisering kun for spil importeret fra RomM\n  · Kun manuel synkronisering via servicekortets langtryksmenu\n  · Hent ROM, covers, metadata, spilvejledninger og spilgemninger\n- Rettede en timeout ved start, der kunne lukke appen på ældre enheder\n- N64 understøtter nu ROM større end 64 MB";

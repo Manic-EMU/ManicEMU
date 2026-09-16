@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Dodano obsługę WonderSwan\n- Dodano obsługę automatów NAOMI, Atomiswave i System SP\n- Dodano obsługę Flash\n  · Przypisywanie przycisków skórki\n  · Wprowadzanie z klawiatury sprzętowej\n  · Wprowadzanie z klawiatury programowej\n  · Wprowadzanie dotykowe\n- Wbudowany samodzielny JIT — zewnętrzny debugger nie jest wymagany\n- Dodano spowolnienie\n- Poprawiono wydajność GameCube i Wii\n- GameCube obsługuje teraz gry wielopłytowe\n- Ulepszono sterowanie ruchem Wii\n- Symulacja wskaźnika IR Wii dotykiem\n- Dodawanie gier z innych emulatorów przez łącze\n- Naprawiono niektóre automaty, które się nie uruchamiały\n- Naprawiono zbyt szybkie działanie gier Dreamcast\n- Naprawiono awarie PSP\n- Dodano otwieranie i zamykanie klapki NDS\n- Ulepszono obrót: przy włączonej blokadzie orientacji w Centrum sterowania aplikacja nie wraca już do pionu\n- Wskazówki skrótów gry można teraz wyłączyć\n- W poziomej bibliotece gier można wyłączyć styl karuzeli\n- Płynniejsze przewijanie karuzeli w poziomie\n- Asystent multidysków obsługuje więcej formatów\n- Wprowadzanie z klawiatury sprzętowej dla Symbian, Amiga i C64\n- Dodano obsługę RomM\n  · Tylko samodzielnie hostowane serwery w sieci LAN\n  · Synchronizacja tylko dla gier zaimportowanych z RomM\n  · Tylko synchronizacja ręczna, z menu długiego naciśnięcia karty usługi\n  · Pobieranie ROM, okładek, metadanych, instrukcji i zapisów gry\n- Naprawiono przekroczenie limitu czasu uruchamiania, przez które aplikacja mogła się zamykać na starszych urządzeniach\n- N64 obsługuje teraz ROM większe niż 64 MB";

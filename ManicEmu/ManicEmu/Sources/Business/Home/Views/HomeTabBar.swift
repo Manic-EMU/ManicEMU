@@ -362,6 +362,28 @@ class HomeTabBar: BaseView {
             }
         }
     }
+    
+    func nextSelection() {
+        switch currentSelection {
+        case .games:
+            currentSelection = .imports
+        case .imports:
+            currentSelection = .settings
+        case .settings:
+            currentSelection = .games
+        }
+    }
+    
+    func previousSelection() {
+        switch currentSelection {
+        case .games:
+            currentSelection = .settings
+        case .imports:
+            currentSelection = .games
+        case .settings:
+            currentSelection = .imports
+        }
+    }
 }
 
 // MARK: - FocusContainer

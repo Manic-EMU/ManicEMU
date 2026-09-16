@@ -333,8 +333,29 @@ class HomeViewController: BaseViewController {
                 }),
                 FocusCommand(key: FocusKey("control+3"), title: R.string.localizable.tabbarTitleSettings(), action: { [weak self] in
                     self?.homeTabBar.currentSelection = .settings
+                }),
+                FocusCommand(key: FocusKey("l2"), title: R.string.localizable.nextTap(), action: { [weak self] in
+                    self?.homeTabBar.previousSelection()
+                }),
+                FocusCommand(key: FocusKey("r2"), title: R.string.localizable.previousTap(), action: { [weak self] in
+                    self?.homeTabBar.nextSelection()
                 })
             ])
+            
+            if self.homeTabBar.currentSelection == .games {
+                context.addCommands([
+                    FocusCommand(key: FocusKey("l1"), title: R.string.localizable.scrollToFirstGame(), action: { [weak self] in
+                        self?.gamesViewController.scrollToFirstGame()
+                    }),
+                    FocusCommand(key: FocusKey("r1"), title: R.string.localizable.scrollToLastGame(), action: { [weak self] in
+                        self?.gamesViewController.scrollToLastGame()
+                    })
+                ])
+            } else {
+                context.removeCommands(for: FocusKey("l1"))
+                context.removeCommands(for: FocusKey("r1"))
+            }
+            
             context.onFocusChange = { [weak self] focusView, attemptedDirection in
                 guard let self, focusView == nil, let attemptedDirection else { return }
                 self.handleTabFocusExit(attemptedDirection)

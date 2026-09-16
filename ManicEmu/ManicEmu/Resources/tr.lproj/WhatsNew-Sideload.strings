@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- WonderSwan desteği eklendi\n- NAOMI, Atomiswave ve System SP arcade desteği eklendi\n- Flash desteği eklendi\n  · Skin düğme ataması\n  · Donanım klavyesi girişi\n  · Yazılım klavyesi girişi\n  · Dokunmatik giriş\n- Yerleşik, kendi kendine yeten JIT — harici hata ayıklayıcı gerekmez\n- Ağır Çekim eklendi\n- GameCube ve Wii performansı iyileştirildi\n- GameCube artık çok diskli oyunları destekliyor\n- Wii hareket kontrolleri iyileştirildi\n- Wii IR işaretçisini dokunarak simüle etme\n- Bağlantı ile diğer emülatörlerden oyun ekleme\n- Çalışmayan bazı arcade sistemleri düzeltildi\n- Çok hızlı çalışan Dreamcast oyunları düzeltildi\n- PSP çökmeleri düzeltildi\n- NDS kapak açma/kapama eklendi\n- Döndürme iyileştirildi: Denetim Merkezi’nde yön kilidi açıkken uygulama artık dikeye dönmüyor\n- Oyun içi kısayol ipuçları artık kapatılabilir\n- Yatay oyun kütüphanesinde karusel stili kapatılabilir\n- Daha akıcı yatay karusel kaydırma\n- Çoklu Disk Yardımcısı daha fazla biçimi destekliyor\n- Symbian, Amiga ve C64 için donanım klavyesi girişi\n- RomM desteği eklendi\n  · Yalnızca LAN’da kendi barındırılan sunucular\n  · Senkronizasyon yalnızca RomM’den içe aktarılan oyunlar için\n  · Yalnızca manuel senkronizasyon, hizmet kartının uzun basma menüsünden\n  · ROM, kapak, metaveri, kılavuz ve oyun kaydı çekme\n- Eski cihazlarda uygulamayı kapatabilen bir başlatma zaman aşımı düzeltildi\n- N64 artık 64 MB’tan büyük ROM’ları destekliyor";

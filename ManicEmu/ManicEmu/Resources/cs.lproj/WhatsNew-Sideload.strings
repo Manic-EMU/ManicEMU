@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Přidána podpora WonderSwan\n- Přidána podpora arkád NAOMI, Atomiswave a System SP\n- Přidána podpora Flash\n  · Mapování tlačítek skinu\n  · Vstup z hardwarové klávesnice\n  · Vstup ze softwarové klávesnice\n  · Dotykové ovládání\n- Vestavěný samostatný JIT — externí debugger není potřeba\n- Přidáno zpomalení\n- Vylepšen výkon GameCube a Wii\n- GameCube nyní podporuje hry na více discích\n- Vylepšeno ovládání pohybem Wii\n- Simulace IR ukazatele Wii dotykem\n- Přidávání her z jiných emulátorů pomocí odkazu\n- Opraveny některé arkády, které se nespouštěly\n- Opravena příliš vysoká rychlost her Dreamcast\n- Opraveny pády PSP\n- Přidáno otevírání a zavírání víka NDS\n- Vylepšeno otáčení: při zapnutém zámku orientace v Ovládacím centru se aplikace už nevrací na výšku\n- Tipy herních zkratek lze nyní vypnout\n- Knihovna na šířku může vypnout styl karuselu\n- Plynulejší posouvání karuselu na šířku\n- Pomocník pro více disků podporuje více formátů\n- Vstup z hardwarové klávesnice pro Symbian, Amiga a C64\n- Přidána podpora RomM\n  · Pouze vlastní servery v síti LAN\n  · Synchronizace pouze pro hry importované z RomM\n  · Pouze ruční synchronizace z nabídky dlouhého stisknutí karty služby\n  · Stahování ROM, obalů, metadat, manuálů a herních uložení\n- Opraveno vypršení časového limitu při spuštění, kvůli kterému se aplikace mohla ukončit na starších zařízeních\n- N64 nyní podporuje ROM větší než 64 MB";

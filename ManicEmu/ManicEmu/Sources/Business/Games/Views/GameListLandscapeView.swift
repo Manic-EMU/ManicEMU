@@ -1625,6 +1625,29 @@ class GameListLandscapeView: BaseView {
         }
         return false
     }
+    
+    // MARK: - Others
+    func scrollToLastGame() {
+        guard games.count > 0 else { return }
+        if isCarouselEnabled {
+            carouselLayout.setCurrentPage(games.count - 1, animated: true)
+        } else {
+            let lastSection = listView.lastSection
+            let itemCounts = collectionView(listView, numberOfItemsInSection: lastSection)
+            if itemCounts > 0 {
+                listView.safeScrollToItem(at: IndexPath(row: itemCounts-1, section: lastSection), at: .bottom, animated: true)
+            }
+        }
+    }
+    
+    func scrollToFirstGame() {
+        guard games.count > 0 else { return }
+        if isCarouselEnabled {
+            carouselLayout.setCurrentPage(0, animated: true)
+        } else {
+            listView.safeScrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
+    }
 }
 
 //MARK: - UICollectionViewDataSource
@@ -1814,6 +1837,9 @@ extension GameListLandscapeView: CollectionViewPagingLayoutDelegate {
         updateInfoPanelPosition()
         syncCarouselFocusTargets()
         transferCarouselCardFocusIfNeeded()
+        if !FocusSystem.shared.hasExternalInput {
+            UIDevice.generateHaptic(style: .light)
+        }
     }
 }
 

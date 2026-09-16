@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Ondersteuning voor WonderSwan toegevoegd\n- Arcade-ondersteuning voor NAOMI, Atomiswave en System SP toegevoegd\n- Ondersteuning voor Flash toegevoegd\n  · Skin-knoptoewijzing\n  · Invoer via hardwaretoetsenbord\n  · Invoer via softwaretoetsenbord\n  · Aanraakinvoer\n- Ingebouwde, zelfstandige JIT — geen externe debugger vereist\n- Slow Motion toegevoegd\n- Prestaties van GameCube en Wii verbeterd\n- GameCube ondersteunt nu games met meerdere discs\n- Wii-bewegingsbesturing verbeterd\n- De Wii-IR-aanwijzer met aanraking simuleren\n- Games uit andere emulators via een link toevoegen\n- Sommige Arcade-systemen hersteld die niet startten\n- Dreamcast-games hersteld die te snel liepen\n- PSP-crashes verholpen\n- NDS-deksel openen/sluiten toegevoegd\n- Rotatie verbeterd: met standvergrendeling in het Bedieningspaneel springt de app niet meer terug naar staand\n- Tips voor gamesnelkoppelingen in het spel kunnen nu worden uitgeschakeld\n- Liggende bibliotheek kan carrouselstijl uitschakelen\n- Soepeler scrollen in de liggende carrousel\n- MultiDisc-hulpmiddel ondersteunt meer formaten\n- Hardwaretoetsenbordinvoer voor Symbian, Amiga en C64\n- Ondersteuning voor RomM toegevoegd\n  · Alleen zelf-gehoste LAN-servers\n  · Sync alleen voor games die vanuit RomM zijn geïmporteerd\n  · Alleen handmatige sync, via het langdrukmenu van de servicekaart\n  · ROM's, covers, metadata, spelhandleidingen en gameopslag ophalen\n- Time-out bij het opstarten verholpen die de app op oudere apparaten kon afsluiten\n- N64 ondersteunt nu ROM's groter dan 64 MB";

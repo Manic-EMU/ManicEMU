@@ -859,6 +859,10 @@
 		5796DB592FE41AE40051F661 /* ASInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB572FE41AE10051F661 /* ASInput.swift */; };
 		579C114B2D1D0B1900CFD1F5 /* ApplicationSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C114A2D1D0B1900CFD1F5 /* ApplicationSceneDelegate.swift */; };
 		579C114D2D1D0E0A00CFD1F5 /* UIWindowExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C114C2D1D0E0A00CFD1F5 /* UIWindowExtensions.swift */; };
+		579DDA0C305ABCBF003AB167 /* WhatsNew-AppStore.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA0A305ABCBF003AB167 /* WhatsNew-AppStore.strings */; };
+		579DDA0D305ABCBF003AB167 /* WhatsNew-AppStore.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA0A305ABCBF003AB167 /* WhatsNew-AppStore.strings */; };
+		579DDA4A305ABD8A003AB167 /* WhatsNew-Sideload.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */; };
+		579DDA4B305ABD8A003AB167 /* WhatsNew-Sideload.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */; };
 		579E54512FD4237B000F08E7 /* FluentDarkModeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 579E54502FD4237B000F08E7 /* FluentDarkModeKit */; };
 		57A480CC2E733B83001D4598 /* flycast-jitless.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A480CB2E733B77001D4598 /* flycast-jitless.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57A480E72E74030E001D4598 /* CheevosChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A480E62E740301001D4598 /* CheevosChallengeView.swift */; };
@@ -2214,6 +2218,80 @@
 		5796DB572FE41AE10051F661 /* ASInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASInput.swift; sourceTree = "<group>"; };
 		579C114A2D1D0B1900CFD1F5 /* ApplicationSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationSceneDelegate.swift; sourceTree = "<group>"; };
 		579C114C2D1D0E0A00CFD1F5 /* UIWindowExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowExtensions.swift; sourceTree = "<group>"; };
+		579DDA0B305ABCBF003AB167 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA14305ABCCA003AB167 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = "ar.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA1B305ABCD7003AB167 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = "ca.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA1C305ABCD9003AB167 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA22305ABCF6003AB167 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA23305ABCF8003AB167 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA24305ABCF9003AB167 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = "hr.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA25305ABCFB003AB167 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = "cs.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA26305ABCFD003AB167 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = "da.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA27305ABCFE003AB167 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "nl.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA28305ABD00003AB167 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = "fi.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA29305ABD06003AB167 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "fr.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA2A305ABD07003AB167 /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA2B305ABD08003AB167 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "de.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA2C305ABD09003AB167 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = "el.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA2D305ABD0A003AB167 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = "he.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA2E305ABD0B003AB167 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = "hi.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA2F305ABD0D003AB167 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = "hu.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA30305ABD0D003AB167 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = "id.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA31305ABD0F003AB167 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = "it.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA32305ABD10003AB167 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "ja.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA33305ABD11003AB167 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = "ko.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA34305ABD12003AB167 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = "ms.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA35305ABD13003AB167 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = "nb.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA36305ABD14003AB167 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "pl.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA37305ABD17003AB167 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA38305ABD18003AB167 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA39305ABD1C003AB167 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = "ro.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA3A305ABD1D003AB167 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "ru.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA3B305ABD1F003AB167 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = "sk.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA3C305ABD23003AB167 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "es.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA3D305ABD26003AB167 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA3E305ABD27003AB167 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "sv.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA3F305ABD28003AB167 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = "th.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA40305ABD2A003AB167 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "tr.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA41305ABD2B003AB167 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = "uk.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA42305ABD2C003AB167 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = "vi.lproj/WhatsNew-AppStore.strings"; sourceTree = "<group>"; };
+		579DDA48305ABD8A003AB167 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA54305ABDCC003AB167 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = "ar.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA55305ABDCE003AB167 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = "ca.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA56305ABDCF003AB167 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA57305ABDD1003AB167 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA58305ABDD2003AB167 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA59305ABDD3003AB167 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = "hr.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA5A305ABDD5003AB167 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = "cs.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA5B305ABDD8003AB167 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = "da.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA5C305ABDD9003AB167 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "nl.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA5D305ABDDB003AB167 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = "fi.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA5E305ABDDD003AB167 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "fr.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA5F305ABDDE003AB167 /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA60305ABDE0003AB167 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "de.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA61305ABDE1003AB167 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = "el.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA62305ABDE2003AB167 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = "he.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA63305ABDE4003AB167 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = "hi.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA64305ABDE6003AB167 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = "hu.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA65305ABDE7003AB167 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = "id.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA66305ABDEC003AB167 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = "it.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA67305ABDEE003AB167 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "ja.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA68305ABDEF003AB167 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = "ko.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA69305ABDF1003AB167 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = "ms.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA6A305ABDF4003AB167 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = "nb.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA6B305ABDF6003AB167 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "pl.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA6C305ABDF7003AB167 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA6D305ABDF9003AB167 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA6E305ABDFA003AB167 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = "ro.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA6F305ABDFC003AB167 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "ru.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA70305ABDFE003AB167 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = "sk.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA71305ABDFF003AB167 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "es.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA72305ABE02003AB167 /* es-419 */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-419"; path = "es-419.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA73305ABE04003AB167 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "sv.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA74305ABE06003AB167 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = "th.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA75305ABE08003AB167 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "tr.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA76305ABE0A003AB167 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = "uk.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
+		579DDA77305ABE0C003AB167 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = "vi.lproj/WhatsNew-Sideload.strings"; sourceTree = "<group>"; };
 		57A480CB2E733B77001D4598 /* flycast-jitless.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "flycast-jitless.libretro.framework"; path = "../Cores/flycast-jitless.libretro.framework"; sourceTree = SOURCE_ROOT; };
 		57A480E62E740301001D4598 /* CheevosChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheevosChallengeView.swift; sourceTree = "<group>"; };
 		57A481282E77F482001D4598 /* clownmdemu.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = clownmdemu.libretro.framework; path = ../Cores/clownmdemu.libretro.framework; sourceTree = SOURCE_ROOT; };
@@ -13182,6 +13260,8 @@
 				A5A0020024555A5F006E0F0E /* Info.plist */,
 				A5DE1F1A256BC78B0099425B /* InfoPlist.strings */,
 				A5DE1F21256BC7F10099425B /* Localizable.strings */,
+				579DDA0A305ABCBF003AB167 /* WhatsNew-AppStore.strings */,
+				579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */,
 				57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */,
 				57E8A110304A4A1100000002 /* JITEnablerExtension.xcconfig */,
 				57C7595C2FD451130093A2B3 /* System.core */,
@@ -13649,6 +13729,7 @@
 				57909556303C7D9100A53656 /* file_icon.png in Resources */,
 				57909557303C7D9100A53656 /* LaunchScreen.storyboard in Resources */,
 				57909558303C7D9100A53656 /* Localizable.strings in Resources */,
+				579DDA4A305ABD8A003AB167 /* WhatsNew-Sideload.strings in Resources */,
 				57909559303C7D9100A53656 /* InfoPlist.strings in Resources */,
 				5790955A303C7D9100A53656 /* Assets.xcassets in Resources */,
 				5790955B303C7D9100A53656 /* System.core in Resources */,
@@ -13676,8 +13757,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				57CDCF472FD5CBD3005BA4C8 /* file_icon.png in Resources */,
+				579DDA0D305ABCBF003AB167 /* WhatsNew-AppStore.strings in Resources */,
 				57CDCF482FD5CBD3005BA4C8 /* LaunchScreen.storyboard in Resources */,
 				57CDCF492FD5CBD3005BA4C8 /* Localizable.strings in Resources */,
+				579DDA4B305ABD8A003AB167 /* WhatsNew-Sideload.strings in Resources */,
 				57CDCF4A2FD5CBD3005BA4C8 /* InfoPlist.strings in Resources */,
 				57CDCF4B2FD5CBD3005BA4C8 /* Assets.xcassets in Resources */,
 				57CDCF4C2FD5CBD3005BA4C8 /* System.core in Resources */,
@@ -13698,6 +13781,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57E0CCC72D9075110027FB8C /* file_icon.png in Resources */,
+				579DDA0C305ABCBF003AB167 /* WhatsNew-AppStore.strings in Resources */,
 				A5A001FF24555A5F006E0F0E /* LaunchScreen.storyboard in Resources */,
 				A5DE1F1F256BC7F10099425B /* Localizable.strings in Resources */,
 				A5DE1F18256BC78B0099425B /* InfoPlist.strings in Resources */,
@@ -15148,6 +15232,94 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		579DDA0A305ABCBF003AB167 /* WhatsNew-AppStore.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				579DDA0B305ABCBF003AB167 /* en */,
+				579DDA14305ABCCA003AB167 /* ar */,
+				579DDA1B305ABCD7003AB167 /* ca */,
+				579DDA1C305ABCD9003AB167 /* zh-HK */,
+				579DDA22305ABCF6003AB167 /* zh-Hans */,
+				579DDA23305ABCF8003AB167 /* zh-Hant */,
+				579DDA24305ABCF9003AB167 /* hr */,
+				579DDA25305ABCFB003AB167 /* cs */,
+				579DDA26305ABCFD003AB167 /* da */,
+				579DDA27305ABCFE003AB167 /* nl */,
+				579DDA28305ABD00003AB167 /* fi */,
+				579DDA29305ABD06003AB167 /* fr */,
+				579DDA2A305ABD07003AB167 /* fr-CA */,
+				579DDA2B305ABD08003AB167 /* de */,
+				579DDA2C305ABD09003AB167 /* el */,
+				579DDA2D305ABD0A003AB167 /* he */,
+				579DDA2E305ABD0B003AB167 /* hi */,
+				579DDA2F305ABD0D003AB167 /* hu */,
+				579DDA30305ABD0D003AB167 /* id */,
+				579DDA31305ABD0F003AB167 /* it */,
+				579DDA32305ABD10003AB167 /* ja */,
+				579DDA33305ABD11003AB167 /* ko */,
+				579DDA34305ABD12003AB167 /* ms */,
+				579DDA35305ABD13003AB167 /* nb */,
+				579DDA36305ABD14003AB167 /* pl */,
+				579DDA37305ABD17003AB167 /* pt-BR */,
+				579DDA38305ABD18003AB167 /* pt-PT */,
+				579DDA39305ABD1C003AB167 /* ro */,
+				579DDA3A305ABD1D003AB167 /* ru */,
+				579DDA3B305ABD1F003AB167 /* sk */,
+				579DDA3C305ABD23003AB167 /* es */,
+				579DDA3D305ABD26003AB167 /* es-419 */,
+				579DDA3E305ABD27003AB167 /* sv */,
+				579DDA3F305ABD28003AB167 /* th */,
+				579DDA40305ABD2A003AB167 /* tr */,
+				579DDA41305ABD2B003AB167 /* uk */,
+				579DDA42305ABD2C003AB167 /* vi */,
+			);
+			name = "WhatsNew-AppStore.strings";
+			sourceTree = "<group>";
+		};
+		579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				579DDA48305ABD8A003AB167 /* en */,
+				579DDA54305ABDCC003AB167 /* ar */,
+				579DDA55305ABDCE003AB167 /* ca */,
+				579DDA56305ABDCF003AB167 /* zh-HK */,
+				579DDA57305ABDD1003AB167 /* zh-Hans */,
+				579DDA58305ABDD2003AB167 /* zh-Hant */,
+				579DDA59305ABDD3003AB167 /* hr */,
+				579DDA5A305ABDD5003AB167 /* cs */,
+				579DDA5B305ABDD8003AB167 /* da */,
+				579DDA5C305ABDD9003AB167 /* nl */,
+				579DDA5D305ABDDB003AB167 /* fi */,
+				579DDA5E305ABDDD003AB167 /* fr */,
+				579DDA5F305ABDDE003AB167 /* fr-CA */,
+				579DDA60305ABDE0003AB167 /* de */,
+				579DDA61305ABDE1003AB167 /* el */,
+				579DDA62305ABDE2003AB167 /* he */,
+				579DDA63305ABDE4003AB167 /* hi */,
+				579DDA64305ABDE6003AB167 /* hu */,
+				579DDA65305ABDE7003AB167 /* id */,
+				579DDA66305ABDEC003AB167 /* it */,
+				579DDA67305ABDEE003AB167 /* ja */,
+				579DDA68305ABDEF003AB167 /* ko */,
+				579DDA69305ABDF1003AB167 /* ms */,
+				579DDA6A305ABDF4003AB167 /* nb */,
+				579DDA6B305ABDF6003AB167 /* pl */,
+				579DDA6C305ABDF7003AB167 /* pt-BR */,
+				579DDA6D305ABDF9003AB167 /* pt-PT */,
+				579DDA6E305ABDFA003AB167 /* ro */,
+				579DDA6F305ABDFC003AB167 /* ru */,
+				579DDA70305ABDFE003AB167 /* sk */,
+				579DDA71305ABDFF003AB167 /* es */,
+				579DDA72305ABE02003AB167 /* es-419 */,
+				579DDA73305ABE04003AB167 /* sv */,
+				579DDA74305ABE06003AB167 /* th */,
+				579DDA75305ABE08003AB167 /* tr */,
+				579DDA76305ABE0A003AB167 /* uk */,
+				579DDA77305ABE0C003AB167 /* vi */,
+			);
+			name = "WhatsNew-Sideload.strings";
+			sourceTree = "<group>";
+		};
 		57B591DF2FD06473003C4235 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -15473,7 +15645,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_VERSION)";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UU52N52JLD;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -15856,7 +16028,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SIDE_LOAD";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -16222,7 +16394,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(APP_BUILD_VERSION)";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UU52N52JLD;
 				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;

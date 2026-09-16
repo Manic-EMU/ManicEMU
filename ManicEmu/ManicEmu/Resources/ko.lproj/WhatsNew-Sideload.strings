@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- WonderSwan 지원 추가\n- NAOMI, Atomiswave, System SP 아케이드 지원 추가\n- Flash 지원 추가\n  · 스킨 버튼 매핑\n  · 하드웨어 키보드 입력\n  · 소프트웨어 키보드 입력\n  · 터치 입력\n- 내장된 자체 완결형 JIT 지원, 외부 디버거 없이 JIT 사용 가능\n- 슬로우 모션 추가\n- GameCube 및 Wii 성능 개선\n- GameCube에서 멀티디스크 게임 지원\n- Wii 모션 컨트롤 개선\n- 터치로 Wii IR 포인터를 시뮬레이션\n- 링크로 다른 에뮬레이터의 게임 추가\n- 실행되지 않던 일부 아케이드 시스템 문제 수정\n- Dreamcast 게임이 너무 빠르게 실행되던 문제 수정\n- PSP 게임 충돌 수정\n- NDS 뚜껑 열고 닫기 추가\n- 화면 회전 개선: 제어 센터에서 방향 잠금을 켜도 세로 모드로 돌아가지 않음\n- 게임 중 바로가기 기능 안내를 끌 수 있음\n- 가로 모드 게임 라이브러리에서 캐러셀 스타일을 끌 수 있음\n- 가로 모드 캐러셀 스크롤을 더 부드럽게\n- 멀티디스크 도우미가 더 많은 형식 지원\n- Symbian, Amiga, C64 하드웨어 키보드 입력 지원\n- RomM 지원 추가\n  · LAN 자체 호스팅 서버만 지원\n  · RomM에서 가져온 게임에만 동기화\n  · 수동 동기화만 지원(서비스 카드의 길게 누르기 메뉴)\n  · ROM, 커버, 메타데이터, 설명서, 게임 세이브 가져오기\n- 구형 기기에서 시작 시 로딩 시간 초과로 앱이 종료되던 문제 수정\n- N64에서 64MB를 초과하는 ROM 지원";

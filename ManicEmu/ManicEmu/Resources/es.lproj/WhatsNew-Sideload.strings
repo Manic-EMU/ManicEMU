@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Añadida compatibilidad con WonderSwan\n- Añadida compatibilidad arcade con NAOMI, Atomiswave y System SP\n- Añadida compatibilidad con Flash\n  · Asignación de botones de la skin\n  · Entrada por teclado físico\n  · Entrada por teclado de software\n  · Entrada táctil\n- JIT integrado y autónomo: no se necesita un depurador externo\n- Añadida la cámara lenta\n- Mejorado el rendimiento de GameCube y Wii\n- GameCube ahora admite juegos multidisco\n- Mejorados los controles de movimiento de Wii\n- Simulación táctil del puntero IR de Wii\n- Añadir juegos de otros emuladores mediante un enlace\n- Corregidos algunos sistemas arcade que no se ejecutaban\n- Corregidos los juegos de Dreamcast que iban demasiado rápido\n- Corregidos cierres inesperados de PSP\n- Añadida la apertura y el cierre de la tapa de NDS\n- Mejorada la rotación: con el bloqueo de orientación activado en el Centro de control, la app ya no vuelve sola a vertical\n- Los consejos de los accesos del juego ya se pueden desactivar\n- La biblioteca de juegos en horizontal puede desactivar el estilo carrusel\n- Desplazamiento más fluido del carrusel en horizontal\n- El Asistente multidisco admite más formatos\n- Entrada por teclado físico para Symbian, Amiga y C64\n- Añadida compatibilidad con RomM\n  · Solo servidores autohospedados en LAN\n  · La sincronización solo aplica a los juegos importados desde RomM\n  · Solo sincronización manual, desde el menú de pulsación larga de la tarjeta del servicio\n  · Obtiene ROM, carátulas, metadatos, manuales y partidas\n- Corregido un tiempo de espera al iniciar que podía cerrar la app en dispositivos antiguos\n- N64 ahora admite ROM de más de 64 MB";

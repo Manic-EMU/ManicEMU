@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Thêm hỗ trợ WonderSwan\n- Thêm hỗ trợ arcade NAOMI, Atomiswave và System SP\n- Thêm hỗ trợ Flash\n  · Gán nút skin\n  · Nhập từ bàn phím phần cứng\n  · Nhập từ bàn phím mềm\n  · Nhập bằng cảm ứng\n- JIT tích hợp, tự chứa — không cần trình gỡ lỗi bên ngoài\n- Thêm chuyển động chậm\n- Cải thiện hiệu năng GameCube và Wii\n- GameCube nay hỗ trợ trò chơi nhiều đĩa\n- Cải thiện điều khiển chuyển động Wii\n- Mô phỏng con trỏ IR của Wii bằng cảm ứng\n- Thêm trò chơi từ trình giả lập khác qua liên kết\n- Sửa một số hệ thống arcade không chạy được\n- Sửa trò chơi Dreamcast chạy quá nhanh\n- Sửa crash PSP\n- Thêm mở/đóng nắp NDS\n- Cải thiện xoay: khi khóa hướng bật trong Trung tâm điều khiển, ứng dụng không còn nhảy về dọc\n- Mẹo lối tắt trong trò chơi nay có thể tắt\n- Thư viện ngang có thể tắt kiểu băng chuyền\n- Vuốt băng chuyền ngang mượt hơn\n- Trợ lý đa đĩa hỗ trợ thêm định dạng\n- Nhập bàn phím phần cứng cho Symbian, Amiga và C64\n- Thêm hỗ trợ RomM\n  · Chỉ máy chủ tự lưu trữ trên LAN\n  · Đồng bộ chỉ cho trò chơi đã nhập từ RomM\n  · Chỉ đồng bộ thủ công, từ menu nhấn giữ trên thẻ dịch vụ\n  · Kéo ROM, bìa, siêu dữ liệu, sách hướng dẫn và dữ liệu lưu\n- Sửa lỗi hết thời gian khởi chạy có thể thoát ứng dụng trên thiết bị cũ\n- N64 nay hỗ trợ ROM lớn hơn 64 MB";

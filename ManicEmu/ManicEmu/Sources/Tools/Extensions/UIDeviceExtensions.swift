@@ -267,8 +267,13 @@ extension Device {
 }
 
 #if os(iOS)
-/// iPhone Control Center lock is a portrait lock. While the app interface is
-/// landscape and the phone is still held landscape, omit portrait so UIKit cannot snap back.
+/// iPhone-only. Control Center lock is portrait-only; iPad already locks the current
+/// orientation and must not use this path.
+///
+/// Unlocked: return the app mask and do not touch geometry.
+/// Control Center visible in landscape: omit portrait and prefer lock so a lock tap
+/// cannot snap to portrait.
+/// Lock engaged in landscape: freeze until UIDevice reports landscape again (lock off).
 enum OrientationLockPin {
     private enum PhysicalAttitude {
         case landscape
@@ -279,34 +284,40 @@ enum OrientationLockPin {
     
     private static let motion = CMMotionManager()
     private static var started = false
-    private static var holdingLandscape = false
-    private static var lastPhysicalLandscape: Bool?
-    private static var lastDevicePortraitWhileHolding = false
+    /// User turned on Control Center lock while the UI was landscape.
+    private static var lockedInLandscape = false
+    /// Scene is inactive (Control Center / switcher) and the UI was landscape.
+    private static var controlCenterOpenInLandscape = false
     
-    static var isPinned: Bool { holdingLandscape }
-    /// Only during Control Center portrait-lock fighting a landscape UI.
-    /// Returning true whenever we are in landscape locks iOS 26 and blocks rotating back.
-    static var prefersLocked: Bool {
-        guard holdingLandscape else { return false }
-        let device = UIDevice.current.orientation
-        return device.isPortrait || device.isFlat
+    static var isPinned: Bool { lockedInLandscape }
+    static var prefersLocked: Bool { lockedInLandscape || controlCenterOpenInLandscape }
+    
+    static func handleSceneWillResignActive() {
+        beginControlCenterIfLandscape()
     }
     
     static func start() {
         guard !started else { return }
         started = true
-        guard UIDevice.isPhone, !UIDevice.isMac else { return }
+        guard shouldHandle else { return }
         
         UIDevice.current.beginGeneratingDeviceOrientationNotifications()
         startAccelerometerIfNeeded()
         
         let center = NotificationCenter.default
         center.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: .main) { _ in
-            handlePhysicalChange()
+            handleDeviceOrientationNotification()
+        }
+        center.addObserver(forName: UIApplication.willResignActiveNotification, object: nil, queue: .main) { _ in
+            beginControlCenterIfLandscape()
+        }
+        center.addObserver(forName: UIScene.willDeactivateNotification, object: nil, queue: .main) { note in
+            guard note.object as? UIWindowScene === ApplicationSceneDelegate.applicationScene else { return }
+            beginControlCenterIfLandscape()
         }
         center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { _ in
             startAccelerometerIfNeeded()
-            handlePhysicalChange()
+            handleDidBecomeActive()
         }
         center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { _ in
             if motion.isAccelerometerActive {
@@ -318,77 +329,106 @@ enum OrientationLockPin {
         }
     }
     
-    /// `window` is ignored for attitude. Overlay windows (toast / alert / sheet) are often
-    /// wider than tall and must not flip the app-wide hold.
     static func resolvedMask(for window: UIWindow?) -> UIInterfaceOrientationMask {
         let allowed = AppDelegate.orientation
-        guard UIDevice.isPhone, !UIDevice.isMac else { return allowed }
+        guard shouldHandle else { return allowed }
         
         let landscapeAllowed = allowed.intersection(.landscape)
         guard !landscapeAllowed.isEmpty else {
-            holdingLandscape = false
+            lockedInLandscape = false
+            controlCenterOpenInLandscape = false
             return allowed
         }
         
-        switch physicalAttitude() {
-        case .portrait:
-            holdingLandscape = false
-            return allowed
-        case .landscape:
-            if isAppInterfaceLandscape() {
-                holdingLandscape = true
-            }
-            return holdingLandscape ? landscapeAllowed : allowed
-        case .flat, .unknown:
-            return holdingLandscape ? landscapeAllowed : allowed
+        if lockedInLandscape {
+            let current = currentLandscapeMask()
+            return allowed.contains(current) ? current : landscapeAllowed
         }
+        if controlCenterOpenInLandscape {
+            return landscapeAllowed
+        }
+        return allowed
     }
     
-    /// Fight a Control Center snap to portrait only. A real portrait hold must go through.
     static func resistPortraitTransitionIfNeeded(to size: CGSize) {
-        guard UIDevice.isPhone, !UIDevice.isMac else { return }
-        guard size.height > size.width else { return }
-        guard physicalAttitude() == .landscape else { return }
-        _ = resolvedMask(for: ApplicationSceneDelegate.applicationWindow)
-        if holdingLandscape {
-            applyMaskChange()
-        }
+        guard shouldHandle, lockedInLandscape, size.height > size.width else { return }
+        reassertLockedLandscape()
     }
     
-    private static func handlePhysicalChange() {
-        let before = holdingLandscape
-        _ = resolvedMask(for: ApplicationSceneDelegate.applicationWindow)
-        let devicePortrait = UIDevice.current.orientation.isPortrait
-        if before != holdingLandscape {
-            lastDevicePortraitWhileHolding = holdingLandscape && devicePortrait
-            applyMaskChange()
-            return
-        }
-        if holdingLandscape, devicePortrait, !lastDevicePortraitWhileHolding {
-            lastDevicePortraitWhileHolding = true
-            applyMaskChange()
-            return
-        }
-        if UIDevice.current.orientation.isLandscape {
-            lastDevicePortraitWhileHolding = false
-        }
+    private static var shouldHandle: Bool {
+        UIDevice.isPhone && !UIDevice.isMac
     }
     
-    private static func applyMaskChange() {
+    private static func beginControlCenterIfLandscape() {
+        guard shouldHandle, isAppInterfaceLandscape() else { return }
+        controlCenterOpenInLandscape = true
         notifyOrientationControllers()
-        if #available(iOS 16.0, *) {
-            if let scene = ApplicationSceneDelegate.applicationScene {
-                scene.requestGeometryUpdate(UIWindowScene.GeometryPreferences.iOS(interfaceOrientations: geometryTargetMask()))
+    }
+    
+    private static func handleDidBecomeActive() {
+        controlCenterOpenInLandscape = false
+        let before = lockedInLandscape
+        if lockedInLandscape {
+            if UIDevice.current.orientation.isLandscape {
+                lockedInLandscape = false
             }
-        } else if holdingLandscape {
-            UIDevice.current.setValue(preferredInterfaceOrientation().rawValue, forKey: "orientation")
+        } else if isControlCenterPortraitLockAgainstLandscape() {
+            lockedInLandscape = true
         }
-        if !holdingLandscape {
+        if before != lockedInLandscape {
+            applyLockChange()
+        } else {
+            notifyOrientationControllers()
+        }
+    }
+    
+    private static func handleDeviceOrientationNotification() {
+        guard shouldHandle else { return }
+        let device = UIDevice.current.orientation
+        let before = lockedInLandscape
+        
+        if lockedInLandscape, device.isLandscape {
+            lockedInLandscape = false
+        } else if !lockedInLandscape, isControlCenterPortraitLockAgainstLandscape() {
+            lockedInLandscape = true
+        }
+        
+        if before != lockedInLandscape {
+            applyLockChange()
+        } else if lockedInLandscape, device.isPortrait || device.isFlat {
+            reassertLockedLandscape()
+        }
+    }
+    
+    /// Portrait lock reports portrait while the phone is still held landscape.
+    private static func isControlCenterPortraitLockAgainstLandscape() -> Bool {
+        guard isAppInterfaceLandscape() else { return false }
+        let device = UIDevice.current.orientation
+        guard device.isPortrait || device.isFlat else { return false }
+        return physicalAttitude() != .portrait
+    }
+    
+    private static func applyLockChange() {
+        notifyOrientationControllers()
+        if lockedInLandscape {
+            reassertLockedLandscape()
+        } else {
             UIViewController.attemptRotationToDeviceOrientation()
         }
     }
     
-    /// PlayViewController is presented on top of Home; iOS 26 reads the visible VC.
+    private static func reassertLockedLandscape() {
+        notifyOrientationControllers()
+        let mask = currentLandscapeMask()
+        if #available(iOS 16.0, *) {
+            ApplicationSceneDelegate.applicationScene?.requestGeometryUpdate(
+                UIWindowScene.GeometryPreferences.iOS(interfaceOrientations: mask)
+            )
+        } else {
+            UIDevice.current.setValue(currentInterfaceOrientation().rawValue, forKey: "orientation")
+        }
+    }
+    
     private static func notifyOrientationControllers() {
         var vc = ApplicationSceneDelegate.applicationWindow?.rootViewController
         while let current = vc {
@@ -402,87 +442,39 @@ enum OrientationLockPin {
         }
     }
     
-    private static func geometryTargetMask() -> UIInterfaceOrientationMask {
-        let allowed = AppDelegate.orientation
-        if holdingLandscape {
-            return preferredLandscapeMask()
-        }
-        switch physicalAttitude() {
-        case .portrait:
-            let portrait = allowed.intersection(.portrait)
-            return portrait.isEmpty ? allowed : portrait
-        case .landscape:
-            let landscape = allowed.intersection(.landscape)
-            return landscape.isEmpty ? allowed : landscape
-        default:
-            return allowed
-        }
-    }
-    
     private static func startAccelerometerIfNeeded() {
-        guard motion.isAccelerometerAvailable, !motion.isAccelerometerActive else { return }
-        motion.accelerometerUpdateInterval = 0.1
-        motion.startAccelerometerUpdates(to: .main) { _, _ in
-            handlePhysicalChange()
-        }
+        guard shouldHandle, motion.isAccelerometerAvailable, !motion.isAccelerometerActive else { return }
+        motion.accelerometerUpdateInterval = 0.2
+        motion.startAccelerometerUpdates()
     }
     
     private static func isAppInterfaceLandscape() -> Bool {
-        let interface = ApplicationSceneDelegate.applicationScene?.interfaceOrientation
-            ?? ApplicationSceneDelegate.applicationWindow?.windowScene?.interfaceOrientation
-            ?? UIDevice.currentOrientation
-        return interface.isLandscape
+        currentInterfaceOrientation().isLandscape
     }
     
-    /// Desk / face-up only. A reclined gaming grip must still count as portrait or landscape.
-    private static func physicalAttitude() -> PhysicalAttitude {
-        guard let acceleration = motion.accelerometerData?.acceleration else {
-            return lastPhysicalLandscape.map { $0 ? .landscape : .portrait } ?? .unknown
+    private static func currentInterfaceOrientation() -> UIInterfaceOrientation {
+        ApplicationSceneDelegate.applicationScene?.interfaceOrientation
+            ?? ApplicationSceneDelegate.applicationWindow?.windowScene?.interfaceOrientation
+            ?? UIDevice.currentOrientation
+    }
+    
+    private static func currentLandscapeMask() -> UIInterfaceOrientationMask {
+        switch currentInterfaceOrientation() {
+        case .landscapeLeft: return .landscapeLeft
+        case .landscapeRight: return .landscapeRight
+        default: return .landscape
         }
+    }
+    
+    private static func physicalAttitude() -> PhysicalAttitude {
+        guard let acceleration = motion.accelerometerData?.acceleration else { return .unknown }
         let ax = abs(acceleration.x)
         let ay = abs(acceleration.y)
         let az = abs(acceleration.z)
         if az > 0.85 && ax < 0.35 && ay < 0.35 {
             return .flat
         }
-        
-        let hysteresis: Double = 0.2
-        let now: Bool
-        if let last = lastPhysicalLandscape {
-            now = last ? ax + hysteresis > ay : ax > ay + hysteresis
-        } else {
-            now = ax > ay
-        }
-        lastPhysicalLandscape = now
-        return now ? .landscape : .portrait
-    }
-    
-    private static func preferredLandscapeMask() -> UIInterfaceOrientationMask {
-        preferredInterfaceOrientation().interfaceMask
-    }
-    
-    private static func preferredInterfaceOrientation() -> UIInterfaceOrientation {
-        let interface = ApplicationSceneDelegate.applicationScene?.interfaceOrientation
-            ?? ApplicationSceneDelegate.applicationWindow?.windowScene?.interfaceOrientation
-            ?? UIDevice.currentOrientation
-        if interface.isLandscape { return interface }
-        if let acceleration = motion.accelerometerData?.acceleration {
-            return acceleration.x > 0 ? .landscapeLeft : .landscapeRight
-        }
-        return .landscapeRight
-    }
-}
-
-private extension UIInterfaceOrientation {
-    var interfaceMask: UIInterfaceOrientationMask {
-        switch self {
-        case .portrait: return .portrait
-        case .portraitUpsideDown: return .portraitUpsideDown
-        case .landscapeLeft: return .landscapeLeft
-        case .landscapeRight: return .landscapeRight
-        default: return []
-        }
+        return ax > ay ? .landscape : .portrait
     }
 }
 #endif
-

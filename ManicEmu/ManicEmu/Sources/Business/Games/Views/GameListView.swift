@@ -322,8 +322,8 @@ class GameListView: BaseView {
                         if self.isSelectionMode {
                             self.selectionMode = .normalMode
                         }
-                        self.needToStopManufacturerFilter?()
                     }
+                    self.needToStopManufacturerFilter?()
                 }
                 
                 //如果被修改了则更新视图
@@ -814,6 +814,19 @@ class GameListView: BaseView {
         return Set<GameOption>([.genHomeMenu, .delete]).contains(item)
     }
     
+    func scrollToLastGame() {
+        guard isGamesExist else { return }
+        let lastSection = collectionView.lastSection
+        let itemCounts = collectionView(collectionView, numberOfItemsInSection: lastSection)
+        if itemCounts > 0 {
+            collectionView.safeScrollToItem(at: IndexPath(row: itemCounts-1, section: lastSection), at: .bottom, animated: true)
+        }
+    }
+    
+    func scrollToFirstGame() {
+        guard isGamesExist else { return }
+        collectionView.safeScrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
 }
 
 extension GameListView: UICollectionViewDataSource {

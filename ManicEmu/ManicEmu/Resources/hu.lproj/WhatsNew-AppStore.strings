@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- WonderSwan-támogatás\n- NAOMI, Atomiswave és System SP arcade-támogatás\n- Flash-támogatás\n  · Skin gombhozzárendelés\n  · Hardveres billentyűzet\n  · Szoftveres billentyűzet\n  · Érintéses vezérlés\n- Lassítás\n- Újraépített iCloud-szinkronizálás\n  · Áttervezett szinkronizálási logika\n  · A Beállítások oldalon látható a szinkronizálás folyamata, platformonként vagy játékonként kikapcsolható a ROM-szinkronizálás, és javítható a szinkronizálás\n  · A ROM-szinkronizálás kikapcsolása törli az iCloud Drive tartalmát, hogy helyet szabadítson fel\n- Javított GameCube- és Wii-teljesítmény\n- A GameCube mostantól támogatja a többlemezes játékokat\n- Javított Wii mozgásvezérlés\n- A Wii IR mutató érintéses szimulációja\n- Játékok hozzáadása más emulátorokból hivatkozással\n- Javítva néhány arcade rendszer, amely nem indult\n- Javítva a túl gyorsan futó Dreamcast-játékok\n- Javítva a PSP összeomlások\n- NDS fedél nyitása/csukása\n- Javított elforgatás: ha a Vezérlőközpontban be van kapcsolva az álló tájolás zárolása, az app nem ugrik vissza álló módba\n- A játékon belüli parancsikon-tippek mostantól kikapcsolhatók\n- Fekvő játékkönyvtárban kikapcsolható a körhinta stílus\n- Simaabb körhinta-görgetés fekvő módban\n- A MultiDisc segéd több formátumot támogat\n- Hardveres billentyűzet a Symbian, Amiga és C64 rendszerekhez\n- RomM-támogatás\n  · Csak LAN-on saját üzemeltetésű szerverek\n  · Szinkronizálás csak a RomM-ből importált játékokhoz\n  · Csak kézi szinkronizálás, a szolgáltatáskártya hosszan nyomva tartott menüjéből\n  · ROM-ok, borítók, metaadatok, kézikönyvek és játékmentések lekérése\n- Javítva egy indítási időtúllépés, amely kiléphetett az appból régebbi eszközökön\n- Az N64 mostantól támogatja a 64 MB-nál nagyobb ROM-okat";

@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Dodana podrška za WonderSwan\n- Dodana podrška za arkadne sustave NAOMI, Atomiswave i System SP\n- Dodana podrška za Flash\n  · Mapiranje gumba skina\n  · Unos s hardverske tipkovnice\n  · Unos sa softverske tipkovnice\n  · Dodirni unos\n- Dodano usporenje\n- Prerađena iCloud sinkronizacija\n  · Redizajnirana logika sinkronizacije\n  · Stranica Postavke prikazuje napredak sinkronizacije, omogućuje isključivanje sinkronizacije ROM po platformi ili igri te popravak pogrešaka sinkronizacije\n  · Isključivanje sinkronizacije ROM briše iCloud Drive i oslobađa prostor\n- Poboljšana izvedba GameCube i Wii\n- GameCube sada podržava igre s više diskova\n- Poboljšano upravljanje pokretom Wii\n- Simulacija IR pokazivača Wii dodirom\n- Dodavanje igara iz drugih emulatora putem poveznice\n- Popravljeni neki arkadni sustavi koji se nisu pokretali\n- Popravljena pretjerana brzina igara Dreamcast\n- Popravljena rušenja PSP\n- Dodano otvaranje i zatvaranje poklopca NDS\n- Poboljšana rotacija: kada je u Centru za upravljanje uključeno zaključavanje orijentacije, aplikacija se više ne vraća u portret\n- Savjeti prečaca u igri sada se mogu isključiti\n- Biblioteka u pejzažu može isključiti stil karusela\n- Tečnije pomicanje karusela u pejzažu\n- MultiDisc pomoćnik podržava više formata\n- Unos s hardverske tipkovnice za Symbian, Amiga i C64\n- Dodana podrška za RomM\n  · Samo samostalno hostirani poslužitelji u LAN-u\n  · Sinkronizacija samo za igre uvezene iz RomM\n  · Samo ručna sinkronizacija, iz izbornika dugog dodira na kartici usluge\n  · Dohvaćanje ROM, naslovnica, metapodataka, priručnika i spremanja igara\n- Popravljen istek vremena pri pokretanju zbog kojeg se aplikacija mogla zatvoriti na starijim uređajima\n- N64 sada podržava ROM veće od 64 MB";

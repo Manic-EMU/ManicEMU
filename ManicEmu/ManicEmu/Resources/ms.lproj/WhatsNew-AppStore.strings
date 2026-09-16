@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Sokongan WonderSwan\n- Sokongan Arcade NAOMI, Atomiswave dan System SP\n- Sokongan Flash\n  · Ikatan butang skin\n  · Input papan kekunci perkakasan\n  · Input papan kekunci perisian\n  · Input sentuhan\n- Gerakan perlahan\n- Sync iCloud dibina semula\n  · Logik sync direka semula\n  · Halaman Tetapan memaparkan kemajuan sync, membolehkan anda mematikan sync ROM mengikut platform atau permainan, dan boleh baiki sync\n  · Mematikan sync ROM membersihkan iCloud Drive untuk membebaskan ruang\n- Prestasi GameCube dan Wii ditambah baik\n- GameCube kini menyokong permainan berbilang cakera\n- Kawalan gerakan Wii ditambah baik\n- Simulasikan penunjuk IR Wii dengan sentuhan\n- Tambah permainan dari emulator lain melalui pautan\n- Dibaiki beberapa sistem Arcade yang tidak dapat dijalankan\n- Dibaiki permainan Dreamcast yang berjalan terlalu laju\n- Dibaiki kerosakan PSP\n- Buka/tutup penutup NDS\n- Putaran ditambah baik: dengan kunci orientasi di Pusat Kawalan, apl tidak lagi kembali ke potret\n- Petua pintasan dalam permainan kini boleh dimatikan\n- Pustaka Permainan landskap boleh mematikan gaya karusel\n- Tatal karusel landskap lebih lancar\n- Pembantu MultiDisc menyokong lebih banyak format\n- Input papan kekunci perkakasan untuk Symbian, Amiga dan C64\n- Sokongan RomM\n  · Pelayan hos sendiri LAN sahaja\n  · Sync hanya untuk permainan yang diimport dari RomM\n  · Sync manual sahaja, dari menu tekan lama kad perkhidmatan\n  · Tarik ROM, kulit, metadata, manual dan simpanan\n- Dibaiki tamat masa pelancaran yang boleh menutup apl pada peranti lama\n- N64 kini menyokong ROM lebih besar daripada 64 MB";

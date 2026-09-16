@@ -16,12 +16,12 @@ class GamesNavigationView: BaseView {
     }()
     
     var controllerButton: ASButtonView = {
-        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.controller_iconSymbols())))
+        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.controller_iconSymbols())).enableGlass(true))
         return view
     }()
     
     var historyButton: ASButtonView = {
-        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.history_iconSymbols())))
+        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.history_iconSymbols())).enableGlass(true))
         return view
     }()
     

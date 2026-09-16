@@ -1187,3 +1187,9 @@ Press the controller button to complete mapping...";
 
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus Sideways";
 "WiimoteDesc" = "In the default skin, Wiimote mappings:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Shake」\n「Right Thumbstick」 -> 「Tilt」\nGames that require MotionPlus (such as Skyward Sword) need a Wiimote+MotionPlus controller type.";
+
+"NextTap" = "Next Tab";
+"PreviousTap" = "Previous Tab";
+"ScrollToLastGame" = "Scroll to Last Game";
+"ScrollToFirstGame" = "Scroll to First Game";
+"WhatsNew" = "What’s New in v%@";

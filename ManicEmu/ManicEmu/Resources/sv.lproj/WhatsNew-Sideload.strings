@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Stöd för WonderSwan tillagt\n- Arkadstöd för NAOMI, Atomiswave och System SP tillagt\n- Stöd för Flash tillagt\n  · Knapptilldelning för skin\n  · Inmatning med hårdvarutangentbord\n  · Inmatning med skärmtangentbord\n  · Pekinmatning\n- Inbyggd, fristående JIT — ingen extern avlusare krävs\n- Långsam uppspelning tillagd\n- Prestanda för GameCube och Wii förbättrad\n- GameCube stöder nu spel med flera skivor\n- Wii-rörelsestyrning förbättrad\n- Simulera Wii-IR-pekaren med pekskärm\n- Lägg till spel från andra emulatorer via en länk\n- Åtgärdat vissa arkadsystem som inte startade\n- Åtgärdat Dreamcast-spel som körde för snabbt\n- Åtgärdat PSP-krascher\n- Öppna/stäng NDS-lock tillagt\n- Rotation förbättrad: med orienteringslås i Kontrollcenter hoppar appen inte längre tillbaka till stående\n- Tips för spelgenvägar i spelet kan nu stängas av\n- Liggande spelbibliotek kan stänga av karusellstil\n- Mjukare rullning i liggande karusell\n- Multidiskhjälpare stöder fler format\n- Hårdvarutangentbord för Symbian, Amiga och C64\n- Stöd för RomM tillagt\n  · Endast självhostade LAN-servrar\n  · Synk endast för spel importerade från RomM\n  · Endast manuell synk, från servicekortets långtrycksmeny\n  · Hämta ROM, omslag, metadata, spelmanualer och spelsparningar\n- Åtgärdade en timeout vid start som kunde stänga appen på äldre enheter\n- N64 stöder nu ROM större än 64 MB";

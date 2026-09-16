@@ -192,6 +192,18 @@ class FocusKeyObserver {
             return .a
         } else if key == "escape" {
             return .b
+        } else if key == "leftShoulder" {
+            return FocusKey("l1")
+        } else if key == "rightShoulder" {
+            return FocusKey("r1")
+        } else if key == "leftTrigger" {
+            return FocusKey("l2")
+        } else if key == "rightTrigger" {
+            return FocusKey("r2")
+        } else if key == "leftThumbstickButton" {
+            return FocusKey("l3")
+        } else if key == "rightThumbstickButton" {
+            return FocusKey("r3")
         }
         return FocusKey(key)
     }

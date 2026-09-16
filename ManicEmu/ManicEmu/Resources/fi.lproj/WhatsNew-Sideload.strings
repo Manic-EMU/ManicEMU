@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Lisätty WonderSwan-tuki\n- Lisätty NAOMI-, Atomiswave- ja System SP -arcade-tuki\n- Lisätty Flash-tuki\n  · Skin-painikkeiden sidonta\n  · Laitenäppäimistön syöttö\n  · Ohjelmistonäppäimistön syöttö\n  · Kosketussyöttö\n- Sisäänrakennettu, itsenäinen JIT — ulkoista virheenkorjaajaa ei tarvita\n- Lisätty hidastus\n- Parannettu GameCube- ja Wii-suorituskykyä\n- GameCube tukee nyt monilevyisiä pelejä\n- Parannettu Wii-liikeohjausta\n- Wii IR -osoitinta voi simuloida kosketuksella\n- Lisää pelejä muista emulaattoreista linkillä\n- Korjattu arcade-järjestelmiä, jotka eivät käynnistyneet\n- Korjattu Dreamcast-pelien liian nopea toisto\n- Korjattu PSP-kaatumisia\n- Lisätty NDS-kannen avaus ja sulku\n- Parannettu kiertoa: kun suunnan lukitus on päällä Ohjauskeskuksessa, sovellus ei enää palaa pystyasentoon\n- Pelin pikakuvakkeiden vinkit voi nyt poistaa käytöstä\n- Vaakasuuntaisessa pelikirjastossa karusellityylin voi poistaa käytöstä\n- Sujuvampi karusellin vieritys vaaka-asennossa\n- Monilevyavustin tukee useampia muotoja\n- Laitenäppäimistön syöttö Symbianille, Amigalle ja C64:lle\n- Lisätty RomM-tuki\n  · Vain LAN-verkossa itse isännöidyt palvelimet\n  · Synkronointi vain RomM:stä tuoduille peleille\n  · Vain manuaalinen synkronointi, palvelukortin pitkään painamisen valikosta\n  · Vedä ROM:t, kansikuvat, metatiedot, peliohjeet ja pelitallennukset\n- Korjattu käynnistysajan ylitys, joka saattoi sulkea sovelluksen vanhemmilla laitteilla\n- N64 tukee nyt yli 64 MB:n ROM-tiedostoja";

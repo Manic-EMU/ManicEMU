@@ -13,7 +13,7 @@ class ImportNavigationView: BaseView {
     }()
     
     var addServiceButton: ASButtonView = {
-        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.addRegular_iconSymbols())))
+        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.addRegular_iconSymbols())).enableGlass(true))
         return view
     }()
     

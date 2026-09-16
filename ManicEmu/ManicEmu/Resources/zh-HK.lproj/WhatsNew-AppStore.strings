@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- 新增 WonderSwan 支援\n- 新增 NAOMI、Atomiswave、System SP 街機支援\n- 新增 Flash 支援\n  · 支援皮膚按鍵綁定\n  · 支援硬件鍵盤輸入\n  · 支援軟件鍵盤輸入\n  · 支援觸控操作\n- 新增慢放\n- 重構 iCloud 同步\n  · 重新設計同步邏輯\n  · 設定頁可查看同步進度，可按平台或遊戲關閉 ROM 同步，並支援修復同步錯誤\n  · 關閉 ROM 同步時會清理 iCloud 雲碟，釋放空間\n- 優化 NGC / Wii 效能\n- NGC 現已支援多碟遊戲\n- 優化 Wii 體感操作\n- Wii 可用觸控模擬 IR 指針\n- 支援透過連結加入其他模擬器中的遊戲\n- 修復部分街機機型無法運行的問題\n- 修復 Dreamcast 遊戲速度過快的問題\n- 修復 PSP 遊戲閃退\n- 新增 NDS 上蓋開合\n- 優化界面旋轉：控制中心開啟方向鎖定後，不再預設回到直屏\n- 遊戲中快捷功能提示現可關閉\n- 橫屏遊戲庫可關閉輪播樣式\n- 優化橫屏輪播滑動體驗\n- 多光碟助手支援更多格式\n- Symbian、Amiga、C64 現已支援硬件鍵盤輸入\n- 新增 RomM 支援\n  · 僅支援區域網絡自行託管服務\n  · 同步僅適用於從 RomM 導入的遊戲\n  · 僅支援手動同步（長按服務卡片選單）\n  · 可抓取 ROM、封面、元數據、說明書和遊戲存檔\n- 修復舊裝置啟動時因載入逾時而退出的問題\n- N64 現已支援超過 64MB 的 ROM";

@@ -115,6 +115,10 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
             || !FileManager.default.fileExists(atPath: R.Path.ExtrasDB)
     }
     
+    func sceneWillResignActive(_ scene: UIScene) {
+        OrientationLockPin.handleSceneWillResignActive()
+    }
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
         FilesSyncManager.shared.handleDidBecomeActive()
     }

@@ -1,0 +1,9 @@
+/* 
+  WhatsNew-Sideload.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- 新增 WonderSwan 支持\n- 新增 NAOMI、Atomiswave、System SP 街机支持\n- 新增 Flash 支持\n  · 支持皮肤按键绑定\n  · 支持硬件键盘输入\n  · 支持软件键盘输入\n  · 支持触控操作\n- 集成自包含的 JIT 支持，无需外部调试器即可使用 JIT\n- 新增慢放\n- 优化 NGC / Wii 性能\n- NGC 现已支持多碟游戏\n- 优化 Wii 体感操作\n- Wii 可用触摸模拟 IR 指针\n- 支持通过链接添加其他模拟器中的游戏\n- 修复部分街机机型无法运行的问题\n- 修复 Dreamcast 游戏速度过快的问题\n- 修复 PSP 游戏闪退\n- 新增 NDS 上盖开合\n- 优化界面旋转：控制中心开启方向锁定后，不再默认回到竖屏\n- 游戏中快捷功能提示现可关闭\n- 横屏游戏库可关闭轮播样式\n- 优化横屏轮播滑动体验\n- 多碟助手支持更多格式\n- Symbian、Amiga、C64 现已支持硬件键盘输入\n- 新增 RomM 支持\n  · 仅支持局域网自托管服务\n  · 同步仅适用于从 RomM 导入的游戏\n  · 仅支持手动同步（长按服务卡片菜单）\n  · 可拉取 ROM、封面、元数据、手册和游戏存档\n- 修复旧设备启动时因加载超时而退出的问题\n- N64 现已支持超过 64MB 的 ROM";

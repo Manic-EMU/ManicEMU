@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Added WonderSwan support\n- Added NAOMI, Atomiswave, and System SP arcade support\n- Added Flash support\n  · Skin button binding\n  · Hardware keyboard input\n  · Software keyboard input\n  · Touch input\n- Added Slow Motion\n- Rebuilt iCloud sync\n  · Redesigned sync logic\n  · The settings page now shows sync progress, lets you turn off ROM sync per platform or game, and can repair sync errors\n  · Turning off ROM sync clears iCloud Drive to free space\n- Improved GameCube and Wii performance\n- GameCube now supports multi-disc games\n- Improved Wii motion controls\n- Simulate the Wii IR pointer by touch\n- Add games from other emulators via a link\n- Fixed some arcade systems that wouldn’t run\n- Fixed Dreamcast games running too fast\n- Fixed PSP crashes\n- Added NDS lid open/close\n- Improved rotation: with orientation lock on in Control Center, the app no longer snaps back to portrait\n- In-game shortcut tips can now be turned off\n- Landscape library can disable carousel style\n- Smoother landscape carousel scrolling\n- MultiDisc Helper supports more formats\n- Hardware keyboard input for Symbian, Amiga, and C64\n- Added RomM support\n  · LAN self-hosted servers only\n  · Sync only for games imported from RomM\n  · Manual sync only, from the service card’s long-press menu\n  · Pull ROMs, covers, metadata, manuals, and game saves\n- Fixed a launch timeout that could quit the app on older devices\n- N64 now supports ROMs larger than 64 MB";

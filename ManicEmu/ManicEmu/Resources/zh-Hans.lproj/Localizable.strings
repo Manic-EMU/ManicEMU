@@ -1181,3 +1181,9 @@
 
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus 横握";
 "WiimoteDesc" = "默认皮肤中，Wiimote 映射关系：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「摇晃」\n「右摇杆」 -> 「倾斜」\n需要 MotionPlus 的游戏（如《天空之剑》）请选择 Wiimote+MotionPlus 控制器类型。";
+
+"NextTap" = "下一个标签";
+"PreviousTap" = "上一个标签";
+"ScrollToLastGame" = "滚动到最后一个游戏";
+"ScrollToFirstGame" = "滚动到第一个游戏";
+"WhatsNew" = "v%@ 有什么新内容";

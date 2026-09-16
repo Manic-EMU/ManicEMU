@@ -1,0 +1,9 @@
+/* 
+  whatsNew-AppStore.strings
+  ManicEmu
+
+  Created by Daiuno on 2026/9/16.
+  Copyright © 2026 Manic EMU. All rights reserved.
+*/
+
+"WhatsNewDetail" = "- Dukungan WonderSwan\n- Dukungan arcade NAOMI, Atomiswave, dan System SP\n- Dukungan Flash\n  · Pengikatan tombol skin\n  · Input keyboard perangkat keras\n  · Input keyboard perangkat lunak\n  · Input sentuh\n- Gerak lambat\n- Sinkronisasi iCloud dibangun ulang\n  · Logika sinkronisasi didesain ulang\n  · Halaman Pengaturan menampilkan progres sinkronisasi, memungkinkan menonaktifkan sinkronisasi ROM per platform atau game, dan dapat perbaiki sinkronisasi\n  · Menonaktifkan sinkronisasi ROM membersihkan iCloud Drive untuk mengosongkan ruang\n- Performa GameCube dan Wii ditingkatkan\n- GameCube kini mendukung game multi-disk\n- Kontrol gerakan Wii ditingkatkan\n- Simulasikan penunjuk IR Wii dengan sentuhan\n- Tambah game dari emulator lain lewat tautan\n- Diperbaiki beberapa sistem arcade yang tidak bisa dijalankan\n- Diperbaiki game Dreamcast yang berjalan terlalu cepat\n- Diperbaiki crash PSP\n- Buka/tutup lid NDS\n- Rotasi ditingkatkan: dengan kunci orientasi aktif di Pusat Kontrol, aplikasi tidak lagi kembali ke potret\n- Tips pintasan dalam game kini dapat dimatikan\n- Pustaka Game landscape dapat menonaktifkan gaya korsel\n- Gulir korsel landscape lebih halus\n- Pembantu MultiDisc mendukung lebih banyak format\n- Input keyboard perangkat keras untuk Symbian, Amiga, dan C64\n- Dukungan RomM\n  · Hanya server swakelola LAN\n  · Sinkronisasi hanya untuk game yang diimpor dari RomM\n  · Hanya sinkronisasi manual, dari menu tekan lama pada kartu layanan\n  · Tarik ROM, sampul, metadata, panduan, dan simpanan\n- Diperbaiki batas waktu peluncuran yang bisa menutup aplikasi di perangkat lama\n- N64 kini mendukung ROM lebih besar dari 64 MB";

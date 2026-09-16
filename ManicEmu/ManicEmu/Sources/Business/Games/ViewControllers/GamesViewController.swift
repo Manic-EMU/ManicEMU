@@ -162,6 +162,25 @@ class GamesViewController: BaseViewController {
             if let game = realm.object(ofType: Game.self, forPrimaryKey: launchGameID) {
                 game.handleTapAction(forceQuick: true)
             }
+        } else {
+            DispatchQueue.main.asyncAfter(delay: 5, execute: {
+                //show changelog view
+                let appVersion = R.Config.AppVersion
+                let defaultKey = appVersion + "Updation"
+                if !UserDefaults.standard.bool(forKey: defaultKey) {
+                    let detail: String
+#if SIDE_LOAD
+                    detail = R.string.whatsNewSideload.whatsNewDetail()
+#else
+                    detail = R.string.whatsNewAppStore.whatsNewDetail()
+#endif
+                    ASSheetView.show(.init(style: .updation(title: R.string.localizable.whatsNew(appVersion), detail: detail)),
+                                     action: { _, _ in
+                        return .dismiss()
+                    })
+                    UserDefaults.standard.setValue(true, forKey: defaultKey)
+                }
+            })
         }
     }
     
@@ -351,5 +370,21 @@ class GamesViewController: BaseViewController {
     func updateLandscapeBackgroundIfNeed() {
         guard UIDevice.isLandscape else { return }
         gameListLandscapeView?.updateFocusedGameInfo()
+    }
+    
+    func scrollToLastGame() {
+        if UIDevice.isLandscape {
+            gameListLandscapeView?.scrollToLastGame()
+        } else {
+            gamesListView?.scrollToLastGame()
+        }
+    }
+    
+    func scrollToFirstGame() {
+        if UIDevice.isLandscape {
+            gameListLandscapeView?.scrollToFirstGame()
+        } else {
+            gamesListView?.scrollToFirstGame()
+        }
     }
 }
