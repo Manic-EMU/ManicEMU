@@ -1159,3 +1159,9 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "ScrollToLastGame" = "Posunúť na poslednú hru";
 "ScrollToFirstGame" = "Posunúť na prvú hru";
 "WhatsNew" = "Čo je nové vo v%@";
+
+"ICloudROMWiFiOnly" = "Synchronizovať ROM len cez Wi-Fi";
+"ICloudROMSizeLimit" = "Limit veľkosti ROM";
+"ICloudROMSizeLimitUnlimited" = "Bez limitu";
+"ICloudROMSizeLimitDesc" = "ROM väčšie ako táto veľkosť ostanú len na tomto zariadení, aby jediný veľký obraz disku nezaplnil iCloud Drive. Uloženia hier, okamžité uloženia, skiny a nastavenia nie sú nikdy ovplyvnené.";
+"ICloudROMTransferLimitDesc" = "Tieto dva limity platia len pre súbory ROM. Uloženia hier, okamžité uloženia, skiny a nastavenia sa ďalej synchronizujú v akejkoľvek sieti a pri akejkoľvek veľkosti. Otvorenie hry vždy stiahne ROM, aj keď by limit synchronizáciu inak zadržal.";

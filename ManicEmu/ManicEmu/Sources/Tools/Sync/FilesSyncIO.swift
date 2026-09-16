@@ -9,16 +9,27 @@
 import Foundation
 import SwiftCloudDrive
 
+/// One pass over the Drive tree. `notDownloaded` matters because placeholders report a
+/// misleading on-disk size, which would otherwise look like a conflict.
+struct FilesSyncCloudListing {
+    var files: [String: FilesSyncFingerprint] = [:]
+    var notDownloaded: Set<String> = []
+}
+
 final class FilesSyncIO {
+    /// A drain transfers a batch concurrently, so every access goes through `stateLock`.
+    private let stateLock = NSLock()
     private var cloudDrive: CloudDrive?
+    private var lastAccountCheckAt: TimeInterval = 0
+    
+    /// The drive must never pull files on its own: the engine decides what to fetch, and a
+    /// ROM library would otherwise be materialized in full regardless of the user's settings.
+    private static let driveOptions = CloudDrive.Options(downloadsAllFilesAutomatically: false)
+    /// The token lookup reaches the iCloud daemon, so it is not worth doing per transfer.
+    private static let accountCheckInterval: TimeInterval = 5
     
     func prepare() async throws {
-        if cloudDrive == nil {
-            Log.debug("[iCloud Sync] CloudDrive init begin main=\(Thread.isMainThread)")
-            let startedAt = Date()
-            cloudDrive = try await CloudDrive()
-            Log.debug("[iCloud Sync] CloudDrive init end elapsed=\(String(format: "%.2f", Date().timeIntervalSince(startedAt)))s")
-        }
+        _ = try await resolvedDrive()
     }
     
     func fileExists(relativePath: String) async -> Bool {
@@ -33,10 +44,14 @@ final class FilesSyncIO {
     
     enum FilesSyncIOError: Swift.Error {
         case missingLocal
+        case notSignedIn
     }
     
     func resetSession() {
-        cloudDrive = nil
+        withStateLock {
+            cloudDrive = nil
+            lastAccountCheckAt = 0
+        }
     }
     
     func upload(localURL: URL, relativePath: String) async throws {
@@ -78,6 +93,8 @@ final class FilesSyncIO {
         Log.debug("[iCloud Sync] Download begin \(relativePath) main=\(Thread.isMainThread)")
         let drive = try await resolvedDrive()
         let cloudPath = RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relativePath))
+        // Nothing materializes files for us any more, so pull this one before copying it out.
+        try await drive.ensureDownloaded(at: cloudPath)
         let tempURL = URL(fileURLWithPath: R.Path.Temp.appendingPathComponent(UUID().uuidString + "-" + localURL.lastPathComponent))
         try await drive.download(from: cloudPath, toURL: tempURL)
         try FileManager.default.createDirectory(at: localURL.deletingLastPathComponent(), withIntermediateDirectories: true)
@@ -119,29 +136,57 @@ final class FilesSyncIO {
         }
     }
     
-    func listCloudFiles() async -> [String: FilesSyncFingerprint]? {
+    func listCloudFiles() async -> FilesSyncCloudListing? {
         let startedAt = Date()
         guard let drive = try? await resolvedDrive() else {
             Log.debug("[iCloud Sync] listCloudFiles skipped: CloudDrive unavailable")
             return nil
         }
-        var result: [String: FilesSyncFingerprint] = [:]
-        await collectCloudFiles(at: RootRelativePath(path: "Documents"), drive: drive, into: &result)
-        Log.debug("[iCloud Sync] listCloudFiles count=\(result.count) elapsed=\(String(format: "%.2f", Date().timeIntervalSince(startedAt)))s main=\(Thread.isMainThread)")
-        return result
+        var listing = FilesSyncCloudListing()
+        await collectCloudFiles(at: RootRelativePath(path: "Documents"), drive: drive, into: &listing)
+        Log.debug("[iCloud Sync] listCloudFiles count=\(listing.files.count) notDownloaded=\(listing.notDownloaded.count) elapsed=\(String(format: "%.2f", Date().timeIntervalSince(startedAt)))s main=\(Thread.isMainThread)")
+        return listing
     }
     
     private func resolvedDrive() async throws -> CloudDrive {
-        if let cloudDrive { return cloudDrive }
-        let drive = try await CloudDrive()
-        cloudDrive = drive
-        return drive
+        // A sign-out leaves the cached drive pointing at a container we can no longer use, so
+        // re-validate the account periodically instead of trusting the cache forever.
+        let (cached, needsAccountCheck) = withStateLock { () -> (CloudDrive?, Bool) in
+            let now = Date().timeIntervalSince1970
+            guard cloudDrive != nil, now - lastAccountCheckAt < Self.accountCheckInterval else {
+                lastAccountCheckAt = now
+                return (cloudDrive, true)
+            }
+            return (cloudDrive, false)
+        }
+        if needsAccountCheck, FileManager.default.ubiquityIdentityToken == nil {
+            resetSession()
+            throw FilesSyncIOError.notSignedIn
+        }
+        if let cached { return cached }
+        Log.debug("[iCloud Sync] CloudDrive init begin main=\(Thread.isMainThread)")
+        let startedAt = Date()
+        let drive = try await CloudDrive(options: Self.driveOptions)
+        Log.debug("[iCloud Sync] CloudDrive init end elapsed=\(String(format: "%.2f", Date().timeIntervalSince(startedAt)))s")
+        // Another task may have won the race; keep its instance so only one file monitor lives.
+        return withStateLock { () -> CloudDrive in
+            if let existing = cloudDrive { return existing }
+            cloudDrive = drive
+            return drive
+        }
+    }
+    
+    private func withStateLock<T>(_ body: () -> T) -> T {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        return body()
     }
     
     private func collectCloudFiles(at path: RootRelativePath,
                                    drive: CloudDrive,
-                                   into result: inout [String: FilesSyncFingerprint]) async {
-        let keys: [URLResourceKey] = [.isRegularFileKey, .isDirectoryKey, .contentModificationDateKey, .fileSizeKey]
+                                   into listing: inout FilesSyncCloudListing) async {
+        let keys: [URLResourceKey] = [.isRegularFileKey, .isDirectoryKey, .contentModificationDateKey,
+                                      .fileSizeKey, .totalFileSizeKey, .ubiquitousItemDownloadingStatusKey]
         guard let items = try? await drive.contentsOfDirectory(at: path, includingPropertiesForKeys: keys, options: [.skipsHiddenFiles]) else {
             return
         }
@@ -152,11 +197,18 @@ final class FilesSyncIO {
                 continue
             }
             if values.isDirectory == true {
-                await collectCloudFiles(at: RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relative)), drive: drive, into: &result)
+                await collectCloudFiles(at: RootRelativePath(path: FilesSyncPolicy.cloudRootPath(relativePath: relative)), drive: drive, into: &listing)
             } else if values.isRegularFile == true {
-                let size = Int64(values.fileSize ?? 0)
+                // A placeholder's fileSize is its on-disk stub, not the real payload. Using it
+                // would look like a size conflict and trigger a pointless transfer.
+                let isPlaceholder = values.ubiquitousItemDownloadingStatus == .notDownloaded
+                if isPlaceholder {
+                    listing.notDownloaded.insert(relative)
+                }
+                let logical = values.totalFileSize ?? values.fileSize ?? 0
+                let size = Int64(isPlaceholder ? logical : (values.fileSize ?? logical))
                 let mtime = values.contentModificationDate?.timeIntervalSince1970 ?? 0
-                result[relative] = FilesSyncFingerprint(size: size, mtime: mtime, hash: nil)
+                listing.files[relative] = FilesSyncFingerprint(size: size, mtime: mtime, hash: nil)
             }
         }
     }

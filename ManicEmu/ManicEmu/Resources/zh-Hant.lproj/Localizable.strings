@@ -1164,3 +1164,9 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "ScrollToLastGame" = "捲動到最後一個遊戲";
 "ScrollToFirstGame" = "捲動到第一個遊戲";
 "WhatsNew" = "v%@ 有什麼新內容";
+
+"ICloudROMWiFiOnly" = "僅限 Wi-Fi 同步 ROM";
+"ICloudROMSizeLimit" = "ROM 大小限制";
+"ICloudROMSizeLimitUnlimited" = "不限制";
+"ICloudROMSizeLimitDesc" = "超過此大小的 ROM 只會保留在本機，避免單一大型光碟映像檔佔滿 iCloud 雲碟。遊戲存檔、即時存檔、皮膚和設定不受影響。";
+"ICloudROMTransferLimitDesc" = "這兩項限制僅作用於 ROM 檔案。遊戲存檔、即時存檔、皮膚和設定會在任意網路、任意大小下繼續同步。開啟遊戲時始終會下載對應 ROM，即使限制本會阻止同步。";

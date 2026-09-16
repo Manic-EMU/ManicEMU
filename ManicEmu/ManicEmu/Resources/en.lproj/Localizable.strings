@@ -1141,6 +1141,11 @@ Press the controller button to complete mapping...";
 "ICloudRepairSyncResult" = "Repair finished. Uploaded %d, downloaded %d.";
 "ICloudRepairSyncResultPending" = "Repair finished. Uploaded %d, downloaded %d. %d files will retry later.";
 "ICloudROMStillSyncing" = "This ROM is still downloading from iCloud. Try again in a moment.";
+"ICloudROMWiFiOnly" = "Sync ROMs on Wi-Fi Only";
+"ICloudROMSizeLimit" = "ROM Size Limit";
+"ICloudROMSizeLimitUnlimited" = "No Limit";
+"ICloudROMSizeLimitDesc" = "ROMs larger than this are kept on this device only, so a single large disc image does not fill up iCloud Drive. Saves, save states, skins, and settings are never affected.";
+"ICloudROMTransferLimitDesc" = "These two limits apply to ROM files only. Saves, save states, skins, and settings keep syncing over any network and at any size. Opening a game always downloads its ROM, even when a limit would otherwise keep it from syncing.";
 
 "WSwanRotateDisplay" = "Rotate Display";
 "NDSLidToggle" = "Toggle Lid";

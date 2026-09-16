@@ -1154,3 +1154,9 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "ScrollToLastGame" = "最後のゲームへスクロール";
 "ScrollToFirstGame" = "最初のゲームへスクロール";
 "WhatsNew" = "v%@の新機能";
+
+"ICloudROMWiFiOnly" = "Wi-Fi のみで ROM を同期";
+"ICloudROMSizeLimit" = "ROMサイズ制限";
+"ICloudROMSizeLimitUnlimited" = "制限なし";
+"ICloudROMSizeLimitDesc" = "このサイズを超える ROM はこのデバイスにのみ保持され、大きなディスクイメージ 1 本で iCloud Drive がいっぱいになるのを防ぎます。セーブデータ、セーブステート、スキン、設定には影響しません。";
+"ICloudROMTransferLimitDesc" = "この 2 つの制限は ROM ファイルにのみ適用されます。セーブデータ、セーブステート、スキン、設定は、ネットワークの種類やサイズに関係なく同期を続けます。ゲームを開くと、制限で同期が止まっていても ROM は必ずダウンロードされます。";

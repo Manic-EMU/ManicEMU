@@ -18,6 +18,8 @@ class ICloudSettingView: BaseView {
         case progress
         case platform
         case games
+        case romWiFiOnly
+        case romSizeLimit
         case repair
     }
     
@@ -86,9 +88,12 @@ class ICloudSettingView: BaseView {
                 .iconTitleDetailChevronCell(icon: .symbolImage(R.image.category_iconSymbols()),
                                             title: R.string.localizable.iCloudROMPlatformConfig()),
                 .iconTitleDetailChevronCell(icon: .symbolImage(R.image.games_iconSymbols()),
-                                            title: R.string.localizable.iCloudROMGameConfig())
+                                            title: R.string.localizable.iCloudROMGameConfig()),
+                romWiFiOnlyCell(),
+                romSizeLimitCell()
             ], header: .defaultHeader(title: R.string.localizable.iCloudROMSyncSetting()),
-               footer: .texts([.smallText(R.string.localizable.iCloudROMSyncDesc(), numberOfLines: 0)], pin: false)))
+               footer: .texts([.smallText(R.string.localizable.iCloudROMSyncDesc(), numberOfLines: 0),
+                               .smallText(R.string.localizable.iCloudROMTransferLimitDesc(), numberOfLines: 0)], pin: false)))
             sections.append(ASListPage.Section(cells: [
                 .iconTitleDetailChevronCell(icon: .symbolImage(R.image.refresh_iconSymbols()),
                                             title: R.string.localizable.iCloudRepairSync())
@@ -127,6 +132,56 @@ class ICloudSettingView: BaseView {
                                           enablePressEffect: false)
     }
     
+    private func romWiFiOnlyCell() -> ASListPage.Cell {
+        .iconTitleDetailSwitchCell(icon: .symbolImage(R.image.online_iconSymbols()),
+                                   title: R.string.localizable.iCloudROMWiFiOnly(),
+                                   state: FilesSyncPolicy.isROMWiFiOnly ? .on : .off,
+                                   enablePressEffect: false)
+    }
+    
+    private func romSizeLimitCell() -> ASListPage.Cell {
+        .iconTitleDetailChevronCell(icon: .symbolImage(R.image.disc_iconSymbols()),
+                                    title: R.string.localizable.iCloudROMSizeLimit(),
+                                    chevronTitle: Self.romSizeLimitTitle(FilesSyncPolicy.romSizeLimit))
+    }
+    
+    /// Units read the same in every locale, so only the unlimited case is localized.
+    private static func romSizeLimitTitle(_ bytes: Int64) -> String {
+        guard bytes > 0 else { return R.string.localizable.iCloudROMSizeLimitUnlimited() }
+        let gigabyte: Int64 = 1024 * 1024 * 1024
+        if bytes % gigabyte == 0 {
+            return "\(bytes / gigabyte) GB"
+        }
+        return "\(bytes / (1024 * 1024)) MB"
+    }
+    
+    private func showROMSizeLimitConfig() {
+        let options = FilesSyncPolicy.romSizeLimitOptions
+        let current = FilesSyncPolicy.romSizeLimit
+        let cells: [[ASListPage.Cell]] = options.map { limit in
+            [.iconTitleDetailRadioCell(title: Self.romSizeLimitTitle(limit),
+                                       isSelected: limit == current)]
+        }
+        let sheetStyle: ASSheet.Style = .simpleList(icon: .symbolImage(R.image.disc_iconSymbols()),
+                                                    title: R.string.localizable.iCloudROMSizeLimit(),
+                                                    detail: .smallText(R.string.localizable.iCloudROMSizeLimitDesc(), numberOfLines: 0),
+                                                    options: cells)
+        ASSheetView.show(.init(style: sheetStyle), action: { [weak self] action, _ in
+            guard let index = action.listPageValue?.normalItemValue?.indexPath.section,
+                  index < options.count else {
+                return .dismiss()
+            }
+            let limit = options[index]
+            return .dismiss(completion: {
+                guard limit != FilesSyncPolicy.romSizeLimit else { return }
+                FilesSyncPolicy.setROMSizeLimit(limit)
+                self?.reloadList()
+                // A larger ceiling can release ROMs that were previously held back.
+                FilesSyncManager.shared.handleROMTransferLimitsChange()
+            })
+        })
+    }
+    
     private func refreshContainerSizeIfNeeded() {
         guard let iCloudPath = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.path else { return }
         containerSizeWorkItem?.cancel()
@@ -159,8 +214,6 @@ class ICloudSettingView: BaseView {
                 title = R.string.localizable.iCloudSyncing()
             }
         }
-        let total = max(progress.totalCount, 0)
-        let completed = min(progress.completedCount, total)
         return .iconTitleProgressCell(icon: .symbolImage(R.image.icloudsync_iconSymbols()),
                                       title: title,
                                       progress: .init(value: progress.fraction,
@@ -182,7 +235,13 @@ class ICloudSettingView: BaseView {
         if !isSyncEnabled { return nil }
         if indexPath.section == 1 { return .progress }
         if indexPath.section == 2 {
-            return indexPath.row == 0 ? .platform : .games
+            switch indexPath.row {
+            case 0: return .platform
+            case 1: return .games
+            case 2: return .romWiFiOnly
+            case 3: return .romSizeLimit
+            default: return nil
+            }
         }
         if indexPath.section == 3 { return .repair }
         return nil
@@ -228,6 +287,15 @@ class ICloudSettingView: BaseView {
             showPlatformConfig()
         case .games:
             showGameConfig()
+        case .romWiFiOnly:
+            guard let isOn = value.subActions?.extraValue as? Bool else { return }
+            FilesSyncPolicy.setROMWiFiOnly(isOn)
+            listPageView.updateCellData(value.cellData.updateNormalSwitch(state: isOn ? .on : .off),
+                                        indexPath: value.indexPath)
+            // Leaving Wi-Fi-only can release ROMs that were held back on cellular.
+            FilesSyncManager.shared.handleROMTransferLimitsChange()
+        case .romSizeLimit:
+            showROMSizeLimitConfig()
         case .repair:
             repairSync()
         }

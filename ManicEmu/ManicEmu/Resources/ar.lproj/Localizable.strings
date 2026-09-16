@@ -1131,3 +1131,9 @@
 "ScrollToLastGame" = "التمرير إلى آخر لعبة";
 "ScrollToFirstGame" = "التمرير إلى أول لعبة";
 "WhatsNew" = "ما الجديد في v%@";
+
+"ICloudROMWiFiOnly" = "مزامنة ROM عبر Wi-Fi فقط";
+"ICloudROMSizeLimit" = "حد حجم ROM";
+"ICloudROMSizeLimitUnlimited" = "بلا حد";
+"ICloudROMSizeLimitDesc" = "تبقى ملفات ROM الأكبر من هذا على هذا الجهاز فقط، حتى لا تملأ صورة قرص كبيرة واحدة مساحة iCloud Drive. حفظ اللعبة والحفظ الفوري والسكين والإعدادات لا تتأثر أبدًا.";
+"ICloudROMTransferLimitDesc" = "ينطبق هذان الحدان على ملفات ROM فقط. يستمر حفظ اللعبة والحفظ الفوري والسكين والإعدادات بالمزامنة عبر أي شبكة وبأي حجم. فتح لعبة ينزّل ROM دائمًا، حتى إذا كان الحد سيمنع المزامنة.";

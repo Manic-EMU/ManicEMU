@@ -1152,3 +1152,9 @@ Om du vill höja din upplevelse är PlayCase en perfekt match för detta skin.";
 "ScrollToLastGame" = "Scrolla till sista spelet";
 "ScrollToFirstGame" = "Scrolla till första spelet";
 "WhatsNew" = "Nyheter i v%@";
+
+"ICloudROMWiFiOnly" = "Synka ROM endast via Wi-Fi";
+"ICloudROMSizeLimit" = "Storleksgräns för ROM";
+"ICloudROMSizeLimitUnlimited" = "Ingen gräns";
+"ICloudROMSizeLimitDesc" = "ROM-filer större än så här stannar bara på den här enheten, så att en enda stor skivavbildning inte fyller iCloud Drive. Sparningar, snabbsparningar, skins och inställningar påverkas aldrig.";
+"ICloudROMTransferLimitDesc" = "De här två gränserna gäller bara ROM-filer. Sparningar, snabbsparningar, skins och inställningar fortsätter synkas över alla nätverk och oavsett storlek. När du öppnar ett spel laddas ROM-filen alltid ner, även om en gräns annars skulle hindra synken.";

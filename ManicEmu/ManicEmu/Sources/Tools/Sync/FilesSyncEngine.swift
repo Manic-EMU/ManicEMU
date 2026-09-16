@@ -28,6 +28,9 @@ struct FilesSyncOp: Codable {
     var retries: Int
     /// Unique id so drain completion cannot drop a newer op for the same path.
     var token: Int
+    /// Payload size known at enqueue time, used for the ROM size limit. Not persisted:
+    /// a restored op re-reads the size instead.
+    var payloadBytes: Int64
     
     init(relativePath: String,
          kind: FilesSyncOpKind,
@@ -35,7 +38,8 @@ struct FilesSyncOp: Codable {
          isDirectory: Bool = false,
          isConflict: Bool = false,
          retries: Int = 0,
-         token: Int = 0) {
+         token: Int = 0,
+         payloadBytes: Int64 = 0) {
         self.relativePath = relativePath
         self.kind = kind
         self.tombstoneReason = tombstoneReason
@@ -43,6 +47,7 @@ struct FilesSyncOp: Codable {
         self.isConflict = isConflict
         self.retries = retries
         self.token = token
+        self.payloadBytes = payloadBytes
     }
     
     init(from decoder: Decoder) throws {
@@ -54,6 +59,7 @@ struct FilesSyncOp: Codable {
         isConflict = try container.decodeIfPresent(Bool.self, forKey: .isConflict) ?? false
         retries = try container.decodeIfPresent(Int.self, forKey: .retries) ?? 0
         token = try container.decodeIfPresent(Int.self, forKey: .token) ?? 0
+        payloadBytes = 0
     }
     
     func encode(to encoder: Encoder) throws {
@@ -94,17 +100,34 @@ final class FilesSyncEngine {
     private var latestCloudFiles: [String: FilesSyncFingerprint] = [:]
     private var notDownloaded = Set<String>()
     private var cloudListingReady = false
+    /// Guarded by `lock`: mutated from the work chain and from `ensureLocal`, which runs
+    /// outside it.
     private var romExclusion = FilesSyncROMExclusion()
+    /// Default matches Settings: 1 GB, not unlimited. A 0 here would let a huge ROM
+    /// slip into the queue before the first Realm snapshot.
+    private var romLimits = FilesSyncROMTransferLimits(wifiOnly: false, sizeLimit: FilesSyncPolicy.defaultROMSizeLimit)
+    /// Cellular and hotspot count as metered. Only ROM transfers care.
+    private var networkUnmetered = true
     private var pendingLocalNotes: [URL] = []
     private var pendingLocalRemovals: [URL] = []
     private var pendingInventory: FilesSyncCloudInventory?
     private var repairInFlight = false
     private var lastProgressPostedAt: TimeInterval = 0
+    private var persistWorkItem: DispatchWorkItem?
+    /// Buffered `present` intents. Written in one Realm transaction so IceCream emits a
+    /// single CloudKit operation instead of one long-lived operation per file.
+    private var pendingIntentMarks: [String: Int64] = [:]
+    private let persistQueue = DispatchQueue(label: "com.aoshuang.manicemu.files-sync-persist", qos: .utility)
+    private let intentFlushThreshold = 64
+    /// How long after a successful transfer the cloud listing may still miss the item.
+    private static let listingLagWindow: TimeInterval = 10 * 60
     
     var onProgress: ((FilesSyncProgress) -> Void)?
     
-    private(set) var progress = FilesSyncProgress() {
-        didSet { onProgress?(progress) }
+    private var _progress = FilesSyncProgress()
+    
+    var progress: FilesSyncProgress {
+        withLock { _progress }
     }
     
     var hasDownloadTask: Bool {
@@ -140,6 +163,9 @@ final class FilesSyncEngine {
     
     func stop() {
         Log.debug("[iCloud Sync] stop main=\(Thread.isMainThread) \(queueSummary())")
+        // A debounced write must not land after the snapshot below and blank it out.
+        cancelScheduledPersist()
+        flushIntentMarks()
         let snapshot: [String: FilesSyncOp] = withLock {
             started = false
             drainGeneration += 1
@@ -180,6 +206,7 @@ final class FilesSyncEngine {
             pendingLocalNotes.removeAll()
             pendingLocalRemovals.removeAll()
             pendingInventory = nil
+            pendingIntentMarks.removeAll()
             cloudListingReady = false
             nextOpToken = 0
             repairInFlight = false
@@ -257,7 +284,7 @@ final class FilesSyncEngine {
                 return
             }
             self.flushDeferredOps(reason: "repair")
-            let stats = await self.reconcile(full: true)
+            let stats = await self.reconcile(full: true, forceCloudListing: true)
             Log.debug("[iCloud Sync] repair scan uploads=\(stats.uploads) downloads=\(stats.downloads) deletes=\(stats.deletes)")
             DispatchQueue.main.async { handler(.scanFinished(stats)) }
             if stats.queued > 0 {
@@ -394,8 +421,13 @@ final class FilesSyncEngine {
 #endif
     }
     
+    /// - Parameter forceCloudListing: Re-enumerate the Drive tree even when a cached listing
+    ///   exists. Only the user-triggered repair needs this; the enumeration is expensive.
     @discardableResult
-    func reconcile(full: Bool, cloudFiles: [String: FilesSyncFingerprint]? = nil, saveRootsOnly: Bool = false) async -> FilesSyncRepairStats {
+    func reconcile(full: Bool,
+                   cloudFiles: [String: FilesSyncFingerprint]? = nil,
+                   saveRootsOnly: Bool = false,
+                   forceCloudListing: Bool = false) async -> FilesSyncRepairStats {
 #if SIDE_LOAD
         return FilesSyncRepairStats()
 #else
@@ -414,21 +446,24 @@ final class FilesSyncEngine {
         var allCloud: [String: FilesSyncFingerprint]
         if let cloudFiles {
             allCloud = cloudFiles
-            withLock { cloudListingReady = true }
-        } else if withLock({ latestCloudFiles.isEmpty }) {
-            if let listed = await io.listCloudFiles() {
-                allCloud = listed
-                withLock { cloudListingReady = true }
-            } else {
-                allCloud = [:]
+            withLock {
+                latestCloudFiles = cloudFiles
+                cloudListingReady = true
+            }
+        } else if withLock({ cloudListingReady }), !forceCloudListing {
+            // Trust the cached listing. Keying off emptiness instead re-enumerated the whole
+            // Drive tree on every pass whenever the cloud was legitimately empty, and each
+            // directory level costs an NSFileCoordinator round trip.
+            allCloud = withLock { latestCloudFiles }
+        } else if let listed = await io.listCloudFiles() {
+            allCloud = listed.files
+            withLock {
+                latestCloudFiles = listed.files
+                notDownloaded = listed.notDownloaded
+                cloudListingReady = true
             }
         } else {
-            allCloud = withLock { latestCloudFiles }
-        }
-        withLock {
-            if !allCloud.isEmpty {
-                latestCloudFiles = allCloud
-            }
+            allCloud = [:]
         }
         let cloudForDecide: [String: FilesSyncFingerprint]
         if saveRootsOnly, !full {
@@ -501,7 +536,7 @@ final class FilesSyncEngine {
             let inLedger = ledger[relative] != nil
             let inCloud = cloud[relative] != nil
             let intent = intents[relative]
-            if romExclusion.contains(relative) {
+            if isROMExcluded(relative) {
                 _ = decide(relativePath: relative, local: localFp, cloud: cloudKnown ? cloud[relative] : nil)
                 continue
             }
@@ -516,7 +551,7 @@ final class FilesSyncEngine {
                 _ = decide(relativePath: relative, local: localFp, cloud: nil)
             }
         }
-        for (relative, intent) in intents where FilesSyncPolicy.shouldSkipOnSaveScan(relativePath: relative) {
+        for (relative, _) in intents where FilesSyncPolicy.shouldSkipOnSaveScan(relativePath: relative) {
             if local[relative] != nil { continue }
             if FilesSyncPolicy.shouldNeverSync(relativePath: relative) { continue }
             _ = decide(relativePath: relative, local: nil, cloud: cloudKnown ? cloud[relative] : nil)
@@ -555,19 +590,25 @@ final class FilesSyncEngine {
             paths.append(relative)
         }
         Log.debug("[iCloud Sync] local removal \(relative) directory=\(directory) matching=\(paths.count)")
+        // One transaction for the whole subtree: deleting a multi-disc game otherwise emits a
+        // separate CloudKit operation per file.
+        FilesSyncIntentStore.markDeletedBatch(paths)
         for path in paths {
-            FilesSyncIntentStore.markDeleted(relativePath: path)
             let isDir = (path == relative && directory)
                 || paths.contains { $0 != path && $0.hasPrefix(path + "/") }
             enqueue(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .deleted, isDirectory: isDir))
         }
         FilesSyncIndex.save()
-        persistQueuedOps()
+        schedulePersistQueuedOps()
         pump()
     }
     
     private func processExcludeCloudCopies(_ urls: [URL]) async {
         guard isStarted else { return }
+        // Collect first, then write all intents in one transaction: excluding a platform can
+        // touch hundreds of files, and one CloudKit operation each would swamp the daemon.
+        var excluded: [String] = []
+        var operations: [FilesSyncOp] = []
         for url in urls {
             guard let relative = FilesSyncPolicy.documentsRelativePath(from: url) else { continue }
             let directory = isDirectory(url) || url.hasDirectoryPath
@@ -576,28 +617,34 @@ final class FilesSyncEngine {
                 var paths = Array(localFiles.keys)
                 paths.append(contentsOf: FilesSyncIntentStore.paths(matchingPrefix: relative))
                 paths.append(relative)
-                Log.debug("[iCloud Sync] exclude cloud directory \(relative) files=\(Set(paths).count)")
-                for path in Set(paths) {
-                    FilesSyncIntentStore.markExcluded(relativePath: path)
+                let unique = Set(paths)
+                Log.debug("[iCloud Sync] exclude cloud directory \(relative) files=\(unique.count)")
+                for path in unique {
+                    excluded.append(path)
                     let isDir = (path == relative && directory)
                         || paths.contains { $0 != path && $0.hasPrefix(path + "/") }
-                    enqueue(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: isDir))
+                    operations.append(FilesSyncOp(relativePath: path, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: isDir))
                 }
             } else {
                 Log.debug("[iCloud Sync] exclude cloud file \(relative)")
-                FilesSyncIntentStore.markExcluded(relativePath: relative)
-                enqueue(FilesSyncOp(relativePath: relative, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: false))
+                excluded.append(relative)
+                operations.append(FilesSyncOp(relativePath: relative, kind: .deleteCloud, tombstoneReason: .excluded, isDirectory: false))
             }
         }
+        guard !operations.isEmpty else { return }
+        FilesSyncIntentStore.markExcludedBatch(excluded)
+        for op in operations {
+            enqueue(op)
+        }
         FilesSyncIndex.save()
-        persistQueuedOps()
+        schedulePersistQueuedOps()
         pump()
     }
     
     private func performEnsureLocal(_ url: URL) async -> Error? {
         guard let relative = FilesSyncPolicy.documentsRelativePath(from: url) else { return nil }
         refreshROMExclusion()
-        if romExclusion.contains(relative) {
+        if isROMExcluded(relative) {
             Log.debug("[iCloud Sync] ensureLocal skipped (ROM excluded): \(relative)")
             return NSError(domain: "FilesSync", code: 1, userInfo: [NSLocalizedDescriptionKey: "ROM sync disabled"])
         }
@@ -701,7 +748,7 @@ final class FilesSyncEngine {
             decided += 1
         }
         Log.debug("[iCloud Sync] cloud delta decided=\(decided) intentGaps=\(missing) changed=\(changed.count) \(queueSummary())")
-        persistQueuedOps()
+        schedulePersistQueuedOps()
         pump()
     }
     
@@ -710,21 +757,30 @@ final class FilesSyncEngine {
             Log.debug("[iCloud Sync] skip local change (never sync): \(relativePath)")
             return
         }
-        if romExclusion.contains(relativePath) {
+        if isROMExcluded(relativePath) {
             Log.debug("[iCloud Sync] skip local change (ROM sync off, leave cloud): \(relativePath)")
             return
         }
         Log.debug("[iCloud Sync] enqueue upload \(relativePath)")
         enqueue(FilesSyncOp(relativePath: relativePath, kind: .upload, tombstoneReason: nil))
-        persistQueuedOps()
+        schedulePersistQueuedOps()
         pump()
+    }
+    
+    /// A just-uploaded file is absent from the listing for a while: `bird` publishes the item
+    /// asynchronously. Only inside that window do we trust the ledger over the listing, so a
+    /// cloud copy that really was removed elsewhere still gets pushed again later.
+    private func isListingLagging(_ entry: FilesSyncLedgerEntry?) -> Bool {
+        guard let entry else { return false }
+        return Date().timeIntervalSince1970 - entry.lastSyncedAt < Self.listingLagWindow
     }
     
     @discardableResult
     private func decide(relativePath: String, local: FilesSyncFingerprint?, cloud: FilesSyncFingerprint?) -> FilesSyncDecideAction {
         let intent = FilesSyncIntentStore.snapshot(relativePath: relativePath)
         let applied = FilesSyncIndex.appliedGeneration(for: relativePath)
-        let ledger = FilesSyncIndex.store.files[relativePath]?.fingerprint
+        let ledgerEntry = FilesSyncIndex.store.files[relativePath]
+        let ledger = ledgerEntry?.fingerprint
         
         // Exclude/delete intents win over "ROM sync off". Turning sync off keeps
         // Drive copies; deleting the game or confirming evict must still remove them.
@@ -760,7 +816,7 @@ final class FilesSyncEngine {
         
         // Policy off only stops upload/download. Cloud copies stay until the user
         // confirms excludeCloudCopies or deletes the game.
-        if romExclusion.contains(relativePath) {
+        if isROMExcluded(relativePath) {
             Log.debug("[iCloud Sync] decide \(relativePath) -> skip (ROM sync off)")
             return .skip
         }
@@ -770,21 +826,25 @@ final class FilesSyncEngine {
             case .excluded, .deleted:
                 return .skip
             case .present:
-                if applied >= intent.generation, local != nil {
+                if let local, let cloud {
                     return compareReplicas(relativePath: relativePath, local: local, cloud: cloud, ledger: ledger, intent: intent)
                 }
-                if local == nil {
+                guard let local else {
                     Log.debug("[iCloud Sync] decide \(relativePath) -> download (intent present gen=\(intent.generation) applied=\(applied) cloud=\(cloud != nil))")
-                    enqueue(FilesSyncOp(relativePath: relativePath, kind: .download, tombstoneReason: nil))
+                    enqueue(FilesSyncOp(relativePath: relativePath, kind: .download, tombstoneReason: nil,
+                                        payloadBytes: cloud?.size ?? intent.size))
                     return .download
                 }
-                if cloud == nil {
-                    // Newer remote generation: wait for the blob instead of re-uploading our older copy.
-                    Log.debug("[iCloud Sync] decide \(relativePath) -> download (wait for present gen=\(intent.generation) blob) applied=\(applied)")
-                    enqueue(FilesSyncOp(relativePath: relativePath, kind: .download, tombstoneReason: nil))
-                    return .download
+                // Local file is here, Drive listing is not. Re-upload after the lag window;
+                // downloading a missing blob would fail and Repair would keep reporting done.
+                if let ledger, local.matches(ledger), isListingLagging(ledgerEntry) {
+                    Log.debug("[iCloud Sync] decide \(relativePath) -> skip (synced content, cloud listing lagging)")
+                    return .skip
                 }
-                return compareReplicas(relativePath: relativePath, local: local, cloud: cloud, ledger: ledger, intent: intent)
+                Log.debug("[iCloud Sync] decide \(relativePath) -> upload (present, cloud listing missing) applied=\(applied)")
+                enqueue(FilesSyncOp(relativePath: relativePath, kind: .upload, tombstoneReason: nil,
+                                    payloadBytes: local.size))
+                return .upload
             }
         }
         
@@ -793,8 +853,13 @@ final class FilesSyncEngine {
             return compareReplicas(relativePath: relativePath, local: local, cloud: cloud, ledger: ledger, intent: nil)
         }
         if let local, cloud == nil {
+            if let ledger, local.matches(ledger), isListingLagging(ledgerEntry) {
+                // Already pushed this exact content; the cloud listing has not caught up yet.
+                Log.debug("[iCloud Sync] decide \(relativePath) -> skip (synced content, awaiting listing)")
+                return .skip
+            }
             Log.debug("[iCloud Sync] decide \(relativePath) -> upload (local only, no intent) \(describe(local))")
-            enqueue(FilesSyncOp(relativePath: relativePath, kind: .upload, tombstoneReason: nil))
+            enqueue(FilesSyncOp(relativePath: relativePath, kind: .upload, tombstoneReason: nil, payloadBytes: local.size))
             return .upload
         }
         if local == nil, cloud != nil {
@@ -826,12 +891,12 @@ final class FilesSyncEngine {
                 return .skip
             }
             Log.debug("[iCloud Sync] decide \(relativePath) -> download (cloud changed) local=\(describe(local)) cloud=\(describe(cloud))")
-            enqueue(FilesSyncOp(relativePath: relativePath, kind: .download, tombstoneReason: nil))
+            enqueue(FilesSyncOp(relativePath: relativePath, kind: .download, tombstoneReason: nil, payloadBytes: cloud.size))
             return .download
         }
         if let ledger, cloud.matches(ledger), !local.matches(ledger) {
             Log.debug("[iCloud Sync] decide \(relativePath) -> upload (local changed) local=\(describe(local)) cloud=\(describe(cloud))")
-            enqueue(FilesSyncOp(relativePath: relativePath, kind: .upload, tombstoneReason: nil))
+            enqueue(FilesSyncOp(relativePath: relativePath, kind: .upload, tombstoneReason: nil, payloadBytes: local.size))
             return .upload
         }
         if local.matches(cloud) {
@@ -852,7 +917,8 @@ final class FilesSyncEngine {
         enqueue(FilesSyncOp(relativePath: relativePath,
                             kind: localWins ? .upload : .download,
                             tombstoneReason: nil,
-                            isConflict: true))
+                            isConflict: true,
+                            payloadBytes: localWins ? local.size : cloud.size))
         return localWins ? .upload : .download
     }
     
@@ -866,11 +932,20 @@ final class FilesSyncEngine {
             let local = localExists ? FilesSyncIndex.fingerprint(for: localURL, preferHash: false) : nil
             _ = decide(relativePath: relative, local: local, cloud: cloud[relative])
         }
-        persistQueuedOps()
+        schedulePersistQueuedOps()
         pump()
     }
     
-    private func enqueue(_ op: FilesSyncOp) {
+    @discardableResult
+    private func enqueue(_ op: FilesSyncOp) -> Bool {
+        if op.kind == .upload || op.kind == .download, let block = romTransferBlockReason(for: op) {
+            // Park both cases: dropping size-blocked ops made "No Limit" and Repair
+            // unable to find them again, and Repair reported them as uploaded.
+            deferForLater(op)
+            Log.debug("[iCloud Sync] hold \(op.kind) \(op.relativePath) (\(block.label))")
+            schedulePersistQueuedOps()
+            return false
+        }
         withLock {
             nextOpToken += 1
             var stamped = op
@@ -878,6 +953,27 @@ final class FilesSyncEngine {
             pending[op.relativePath] = stamped
         }
         Log.debug("[iCloud Sync] queue \(op.kind) \(op.relativePath) \(queueSummary())")
+        return true
+    }
+    
+    /// Parks an op without consuming a retry. A queued delete for the same path wins, since
+    /// transferring a file that is about to disappear is pointless.
+    private func deferForLater(_ op: FilesSyncOp) {
+        let parked = withLock { () -> Bool in
+            if let current = pending[op.relativePath],
+               current.kind == .deleteCloud || current.kind == .deleteLocal {
+                return false
+            }
+            nextOpToken += 1
+            var stored = op
+            stored.token = nextOpToken
+            stored.retries = 0
+            pending[op.relativePath] = nil
+            deferred[op.relativePath] = stored
+            return true
+        }
+        guard parked else { return }
+        Log.debug("[iCloud Sync] defer \(op.kind) \(op.relativePath)")
     }
     
     private func pump() {
@@ -939,6 +1035,7 @@ final class FilesSyncEngine {
                 if idle {
                     Log.debug("[iCloud Sync] drain idle")
                     if withLock({ drainGeneration == generation }) {
+                        flushIntentMarks()
                         persistQueuedOps()
                         publish {
                             $0.phase = .idle
@@ -991,6 +1088,7 @@ final class FilesSyncEngine {
             publish { $0.completedCount += finished }
         }
         if withLock({ drainGeneration == generation }) {
+            flushIntentMarks()
             FilesSyncIndex.save()
             persistQueuedOps()
         }
@@ -1002,6 +1100,12 @@ final class FilesSyncEngine {
         if withLock({ pausedForGameplay }), op.kind == .upload || op.kind == .download {
             Log.debug("[iCloud Sync] run deferred (gameplay) \(op.kind) \(op.relativePath)")
             return false
+        }
+        // The network or the user's limits can change mid-drain, so re-check before transferring.
+        if op.kind == .upload || op.kind == .download, let block = romTransferBlockReason(for: op) {
+            Log.debug("[iCloud Sync] run held \(op.kind) \(op.relativePath) (\(block.label))")
+            deferForLater(op)
+            return true
         }
         let localURL = FilesSyncPolicy.localURL(relativePath: op.relativePath)
         switch op.kind {
@@ -1020,8 +1124,10 @@ final class FilesSyncEngine {
                 }
                 try await io.upload(localURL: localURL, relativePath: op.relativePath)
                 if let fingerprint = FilesSyncIndex.fingerprint(for: localURL, preferHash: false) {
-                    let generation = FilesSyncIntentStore.markPresent(relativePath: op.relativePath, size: fingerprint.size)
-                    FilesSyncIndex.recordSynced(relativePath: op.relativePath, fingerprint: fingerprint, generation: generation)
+                    // Ledger first so a re-scan sees the content as synced, then buffer the
+                    // CloudKit intent so a whole batch travels as one operation.
+                    FilesSyncIndex.recordSynced(relativePath: op.relativePath, fingerprint: fingerprint)
+                    queueIntentMark(relativePath: op.relativePath, size: fingerprint.size)
                 }
                 Log.debug("[iCloud Sync] Uploaded \(op.relativePath)")
             } catch {
@@ -1114,7 +1220,7 @@ final class FilesSyncEngine {
             return false
         }
         if withLock({ drainGeneration == session && deferred[op.relativePath] != nil }) {
-            persistQueuedOps()
+            schedulePersistQueuedOps()
             Log.debug("[iCloud Sync] deferred \(op.kind) \(op.relativePath) after \(op.retries) retries")
         }
         return true
@@ -1148,10 +1254,11 @@ final class FilesSyncEngine {
             op.retries = 0
             enqueue(op)
         }
-        persistQueuedOps()
+        schedulePersistQueuedOps()
     }
     
     private func persistQueuedOps() {
+        cancelScheduledPersist()
         let snapshot: [String: FilesSyncOp] = withLock {
             var all = deferred
             for (path, op) in pending {
@@ -1160,6 +1267,69 @@ final class FilesSyncEngine {
             return all
         }
         FilesSyncIndex.savePending(snapshot)
+    }
+    
+    /// The queue is re-encoded in full on every save, so writing once per enqueue is O(N²)
+    /// across a large import. Coalesce into one write per second instead.
+    private func schedulePersistQueuedOps() {
+        let work: DispatchWorkItem? = withLock {
+            if persistWorkItem != nil { return nil }
+            let item = DispatchWorkItem { [weak self] in
+                guard let self else { return }
+                self.withLock { self.persistWorkItem = nil }
+                self.persistQueuedOps()
+            }
+            persistWorkItem = item
+            return item
+        }
+        guard let work else { return }
+        persistQueue.asyncAfter(deadline: .now() + 1, execute: work)
+    }
+    
+    /// Buffers a `present` intent. Flushed as one Realm transaction so IceCream pushes a
+    /// single CloudKit operation for the batch.
+    private func queueIntentMark(relativePath: String, size: Int64) {
+        let shouldFlush = withLock { () -> Bool in
+            pendingIntentMarks[relativePath] = size
+            return pendingIntentMarks.count >= intentFlushThreshold
+        }
+        if shouldFlush {
+            flushIntentMarks()
+        }
+    }
+    
+    private func flushIntentMarks() {
+        let batch = withLock { () -> [String: Int64] in
+            let value = pendingIntentMarks
+            pendingIntentMarks = [:]
+            return value
+        }
+        guard !batch.isEmpty else { return }
+        let generations = FilesSyncIntentStore.markPresentBatch(batch)
+        guard !generations.isEmpty else {
+            // The write failed; keep the intents so the next flush retries them.
+            withLock {
+                for (path, size) in batch where pendingIntentMarks[path] == nil {
+                    pendingIntentMarks[path] = size
+                }
+            }
+            return
+        }
+        FilesSyncIndex.modify { store in
+            for (path, generation) in generations {
+                store.appliedGenerations[path] = generation
+            }
+        }
+        FilesSyncIndex.save()
+    }
+    
+    private func cancelScheduledPersist() {
+        let item = withLock { () -> DispatchWorkItem? in
+            let value = persistWorkItem
+            persistWorkItem = nil
+            return value
+        }
+        item?.cancel()
     }
     
     private func waitUntilIdle() async {
@@ -1202,11 +1372,83 @@ final class FilesSyncEngine {
         return FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) && isDir.boolValue
     }
     
+    /// Rebuilds the ROM snapshot and limits from Realm. Callers must be off the main thread.
     private func refreshROMExclusion() {
-        romExclusion = FilesSyncPolicy.romExclusionSnapshot()
-        Log.debug("[iCloud Sync] ROM exclusion files=\(romExclusion.files.count) prefixes=\(romExclusion.prefixes.count)")
-        if !romExclusion.files.isEmpty {
-            Log.debug("[iCloud Sync] ROM excluded files: \(romExclusion.files.sorted().prefix(10).joined(separator: ", "))")
+        let snapshot = FilesSyncPolicy.romExclusionSnapshot()
+        let limits = FilesSyncPolicy.romTransferLimits()
+        withLock {
+            romExclusion = snapshot
+            romLimits = limits
+        }
+        Log.debug("[iCloud Sync] ROM exclusion files=\(snapshot.files.count) prefixes=\(snapshot.prefixes.count) wifiOnly=\(limits.wifiOnly) sizeLimit=\(limits.sizeLimit)")
+        if !snapshot.files.isEmpty {
+            Log.debug("[iCloud Sync] ROM excluded files: \(snapshot.files.sorted().prefix(10).joined(separator: ", "))")
+        }
+    }
+    
+    private func isROMExcluded(_ relativePath: String) -> Bool {
+        withLock { romExclusion.contains(relativePath) }
+    }
+    
+    // MARK: - ROM Transfer Limits
+    
+    private enum ROMTransferBlock {
+        case metered
+        case sizeLimit
+        
+        var label: String {
+            switch self {
+            case .metered: return "ROM sync limited to Wi-Fi"
+            case .sizeLimit: return "ROM over size limit"
+            }
+        }
+    }
+    
+    /// ROM-only gate. Saves, skins and settings are never held back, and an explicit
+    /// `ensureLocal` bypasses this because it does not go through the queue.
+    private func romTransferBlockReason(for op: FilesSyncOp) -> ROMTransferBlock? {
+        let (exclusion, limits, unmetered) = withLock { (romExclusion, romLimits, networkUnmetered) }
+        guard exclusion.isROM(op.relativePath) else { return nil }
+        if limits.wifiOnly, !unmetered { return .metered }
+        guard limits.sizeLimit > 0 else { return nil }
+        return limits.exceedsSize(payloadBytes(for: op)) ? .sizeLimit : nil
+    }
+    
+    private func payloadBytes(for op: FilesSyncOp) -> Int64 {
+        if op.payloadBytes > 0 { return op.payloadBytes }
+        if op.kind == .download, let cloud = withLock({ latestCloudFiles[op.relativePath] }) {
+            return cloud.size
+        }
+        let url = FilesSyncPolicy.localURL(relativePath: op.relativePath)
+        return (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize).flatMap { Int64($0) } ?? 0
+    }
+    
+    /// Metered state from the path monitor. Only ROM transfers react to it.
+    func updateNetworkMetering(unmetered: Bool) {
+        let becameUnmetered = withLock { () -> Bool in
+            let changed = networkUnmetered != unmetered
+            networkUnmetered = unmetered
+            return changed && unmetered
+        }
+        guard becameUnmetered, isStarted else { return }
+        Log.debug("[iCloud Sync] network became unmetered, releasing held ROM transfers")
+        enqueueWork("unmetered") { [weak self] in
+            self?.flushDeferredOps(reason: "unmetered")
+            self?.pump()
+        }
+    }
+    
+    /// The user changed the Wi-Fi-only switch or the size ceiling. Held ROM transfers
+    /// must be re-evaluated with the new snapshot; a full local scan catches files that
+    /// were dropped by older builds which did not park size-blocked ops.
+    func handleROMLimitsChange() {
+        guard isStarted else { return }
+        Log.debug("[iCloud Sync] ROM transfer limits changed")
+        enqueueWork("romLimits") { [weak self] in
+            guard let self else { return }
+            self.refreshROMExclusion()
+            self.flushDeferredOps(reason: "romLimits")
+            await self.reconcile(full: true)
         }
     }
     
@@ -1242,23 +1484,31 @@ final class FilesSyncEngine {
         return "size=\(fingerprint.size) mtime=\(Int(fingerprint.mtime))"
     }
     
+    /// Single writer for `_progress`. Drain and the metadata work chain run concurrently,
+    /// so the read-modify-write must happen under the lock.
     private func publish(_ update: (inout FilesSyncProgress) -> Void) {
-        var next = progress
-        update(&next)
-        let phaseChanged = next.phase != progress.phase
-        if phaseChanged || next.currentFileName != progress.currentFileName || next.totalCount != progress.totalCount {
-            Log.debug("[iCloud Sync] progress phase=\(next.phase.rawValue) file=\(next.currentFileName ?? "-") completed=\(next.completedCount)/\(next.totalCount)")
-        }
-        progress = next
-        let shouldPost = withLock { () -> Bool in
+        let result = withLock { () -> (next: FilesSyncProgress, describe: Bool, post: Bool) in
+            var next = _progress
+            update(&next)
+            let phaseChanged = next.phase != _progress.phase
+            let describe = phaseChanged
+                || next.currentFileName != _progress.currentFileName
+                || next.totalCount != _progress.totalCount
+            _progress = next
             let now = Date().timeIntervalSince1970
+            var post = false
             if phaseChanged || next.phase == .idle || now - lastProgressPostedAt >= 0.25 {
                 lastProgressPostedAt = now
-                return true
+                post = true
             }
-            return false
+            return (next, describe, post)
         }
-        guard shouldPost else { return }
+        if result.describe {
+            Log.debug("[iCloud Sync] progress phase=\(result.next.phase.rawValue) file=\(result.next.currentFileName ?? "-") completed=\(result.next.completedCount)/\(result.next.totalCount)")
+        }
+        guard result.post else { return }
+        let next = result.next
+        onProgress?(next)
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: R.NotificationName.iCloudDriveSyncChange, object: next)
         }

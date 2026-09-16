@@ -132,6 +132,68 @@ enum FilesSyncIntentStore {
         write(relativePath: relativePath, intent: .excluded, size: 0, bump: true)
     }
     
+    /// Batch variants exist because IceCream turns every Realm notification into its own
+    /// long-lived `CKModifyRecordsOperation`. Writing one path at a time leaves `cloudd`
+    /// juggling thousands of operations during an import, which drags down the whole system.
+    @discardableResult
+    static func markPresentBatch(_ sizes: [String: Int64]) -> [String: Int] {
+        writeBatch(sizes.map { (path: $0.key, size: $0.value) }, intent: .present)
+    }
+    
+    @discardableResult
+    static func markDeletedBatch(_ paths: [String]) -> [String: Int] {
+        writeBatch(paths.map { (path: $0, size: Int64(0)) }, intent: .deleted)
+    }
+    
+    @discardableResult
+    static func markExcludedBatch(_ paths: [String]) -> [String: Int] {
+        writeBatch(paths.map { (path: $0, size: Int64(0)) }, intent: .excluded)
+    }
+    
+    private static func writeBatch(_ items: [(path: String, size: Int64)],
+                                   intent: FilesSyncIntentKind) -> [String: Int] {
+        guard !items.isEmpty else { return [:] }
+        let realm = Database.realm
+        let now = Date()
+        let device = Device.version().rawValue
+        var generations: [String: Int] = [:]
+        generations.reserveCapacity(items.count)
+        do {
+            try realm.write {
+                for item in items {
+                    let id = FilesSyncRecord.objectId(forPath: item.path)
+                    if let existing = realm.object(ofType: FilesSyncRecord.self, forPrimaryKey: id), !existing.isDeleted {
+                        let generation = existing.generation + 1
+                        existing.generation = generation
+                        existing.intent = intent
+                        existing.size = item.size
+                        existing.updatedAt = now
+                        existing.device = device
+                        existing.path = item.path
+                        generations[item.path] = generation
+                    } else {
+                        let record = FilesSyncRecord()
+                        record.id = id
+                        record.path = item.path
+                        record.generation = 1
+                        record.size = item.size
+                        record.intent = intent
+                        record.updatedAt = now
+                        record.device = device
+                        record.isDeleted = false
+                        realm.add(record, update: .modified)
+                        generations[item.path] = 1
+                    }
+                }
+            }
+        } catch {
+            Log.debug("[iCloud Sync] intent batch \(intentLabel(intent)) failed count=\(items.count): \(error)")
+            return [:]
+        }
+        Log.debug("[iCloud Sync] intent batch \(intentLabel(intent)) count=\(items.count)")
+        return generations
+    }
+    
     static func pruneExpiredDeleted() {
         let cutoff = Date().addingTimeInterval(-pruneAfter)
         let realm = Database.realm

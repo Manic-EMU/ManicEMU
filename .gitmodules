@@ -36,3 +36,8 @@
 	path = StikJIT
 	url = https://github.com/StephenDev0/StikJIT.git
 	ignore = all
+[submodule "Dependencies/SwiftCloudDrive"]
+	path = Dependencies/SwiftCloudDrive
+	url = https://github.com/Daiuno/SwiftCloudDrive.git
+	branch = main
+	ignore = all

@@ -1151,3 +1151,9 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 "ScrollToLastGame" = "Gulir ke Permainan Terakhir";
 "ScrollToFirstGame" = "Gulir ke Permainan Pertama";
 "WhatsNew" = "Yang Baru di v%@";
+
+"ICloudROMWiFiOnly" = "Sinkronkan ROM hanya lewat Wi-Fi";
+"ICloudROMSizeLimit" = "Batas ukuran ROM";
+"ICloudROMSizeLimitUnlimited" = "Tanpa batas";
+"ICloudROMSizeLimitDesc" = "ROM yang lebih besar dari ini hanya disimpan di perangkat ini, agar satu image cakram besar tidak memenuhi iCloud Drive. Simpanan, simpanan instan, skin, dan pengaturan tidak pernah terpengaruh.";
+"ICloudROMTransferLimitDesc" = "Kedua batas ini hanya berlaku untuk file ROM. Simpanan, simpanan instan, skin, dan pengaturan tetap tersinkron di jaringan apa pun dan ukuran apa pun. Membuka game selalu mengunduh ROM-nya, meski batas seharusnya menahan sinkronisasi.";

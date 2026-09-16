@@ -1148,3 +1148,9 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 "ScrollToLastGame" = "เลื่อนไปเกมสุดท้าย";
 "ScrollToFirstGame" = "เลื่อนไปเกมแรก";
 "WhatsNew" = "มีอะไรใหม่ใน v%@";
+
+"ICloudROMWiFiOnly" = "ซิงค์ ROM เฉพาะ Wi-Fi";
+"ICloudROMSizeLimit" = "จำกัดขนาด ROM";
+"ICloudROMSizeLimitUnlimited" = "ไม่จำกัด";
+"ICloudROMSizeLimitDesc" = "ROM ที่ใหญ่กว่านี้จะเก็บไว้บนอุปกรณ์นี้เท่านั้น เพื่อไม่ให้ไฟล์อิมเมจแผ่นใหญ่ไฟล์เดียวเต็ม iCloud Drive เซฟเกม เซฟทันที สกิน และการตั้งค่าไม่ได้รับผลกระทบ";
+"ICloudROMTransferLimitDesc" = "ข้อจำกัดสองข้อนี้ใช้กับไฟล์ ROM เท่านั้น เซฟเกม เซฟทันที สกิน และการตั้งค่ายังซิงค์ได้ทุกเครือข่ายและทุกขนาด การเปิดเกมจะดาวน์โหลด ROM เสมอ แม้ข้อจำกัดจะกันไม่ให้ซิงค์";

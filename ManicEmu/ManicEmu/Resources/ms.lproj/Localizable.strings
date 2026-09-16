@@ -1132,3 +1132,9 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "ScrollToLastGame" = "Tatal ke Permainan Terakhir";
 "ScrollToFirstGame" = "Tatal ke Permainan Pertama";
 "WhatsNew" = "Yang Baharu dalam v%@";
+
+"ICloudROMWiFiOnly" = "Sync ROM melalui Wi-Fi sahaja";
+"ICloudROMSizeLimit" = "Had saiz ROM";
+"ICloudROMSizeLimitUnlimited" = "Tiada had";
+"ICloudROMSizeLimitDesc" = "ROM lebih besar daripada ini kekal pada peranti ini sahaja, supaya satu imej cakera besar tidak memenuhi iCloud Drive. Simpanan, simpanan segera, kulit dan tetapan tidak terjejas.";
+"ICloudROMTransferLimitDesc" = "Kedua-dua had ini hanya untuk fail ROM. Simpanan, simpanan segera, kulit dan tetapan terus disegerakkan pada mana-mana rangkaian dan saiz. Membuka permainan sentiasa memuat turun ROM, walaupun had sepatutnya menahan sync.";

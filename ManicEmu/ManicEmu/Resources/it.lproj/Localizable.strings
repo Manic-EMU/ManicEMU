@@ -1162,3 +1162,9 @@ Se vuoi migliorare il tuo setup, PlayCase è l’abbinamento perfetto per questa
 "ScrollToLastGame" = "Vai all'ultimo gioco";
 "ScrollToFirstGame" = "Vai al primo gioco";
 "WhatsNew" = "Novità della v%@";
+
+"ICloudROMWiFiOnly" = "Sincronizza i ROM solo via Wi-Fi";
+"ICloudROMSizeLimit" = "Limite dimensione ROM";
+"ICloudROMSizeLimitUnlimited" = "Nessun limite";
+"ICloudROMSizeLimitDesc" = "I ROM più grandi di questa soglia restano solo su questo dispositivo, così una singola immagine disco di grandi dimensioni non riempie iCloud Drive. Salvataggi, save state, skin e impostazioni non vengono mai interessati.";
+"ICloudROMTransferLimitDesc" = "Questi due limiti si applicano solo ai file ROM. Salvataggi, save state, skin e impostazioni continuano a sincronizzarsi su qualsiasi rete e con qualsiasi dimensione. Aprendo un gioco il ROM viene sempre scaricato, anche se un limite ne impedirebbe altrimenti la sincronizzazione.";

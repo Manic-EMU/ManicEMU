@@ -1160,3 +1160,9 @@ Si voleu millorar la vostra configuració, PlayCase és el complement perfecte p
 "ScrollToLastGame" = "Vés a l'últim joc";
 "ScrollToFirstGame" = "Vés al primer joc";
 "WhatsNew" = "Novetats de la v%@";
+
+"ICloudROMWiFiOnly" = "Sincronitza els ROM només per Wi-Fi";
+"ICloudROMSizeLimit" = "Límit de mida de ROM";
+"ICloudROMSizeLimitUnlimited" = "Sense límit";
+"ICloudROMSizeLimitDesc" = "Els ROM més grans que aquesta mida es queden només en aquest dispositiu, perquè una sola imatge de disc gran no ompli iCloud Drive. Les partides, els estats desats, les skins i la configuració no es veuen afectats.";
+"ICloudROMTransferLimitDesc" = "Aquests dos límits s'apliquen només als fitxers ROM. Les partides, els estats desats, les skins i la configuració continuen sincronitzant-se en qualsevol xarxa i amb qualsevol mida. En obrir un joc sempre es baixa el ROM, encara que un límit n'impedeixi la sincronització.";

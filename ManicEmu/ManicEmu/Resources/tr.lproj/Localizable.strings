@@ -1158,3 +1158,9 @@ Kurulumunuzu bir üst seviyeye taşımak istiyorsanız, PlayCase bu kaplama içi
 "ScrollToLastGame" = "Son Oyuna Kaydır";
 "ScrollToFirstGame" = "İlk Oyuna Kaydır";
 "WhatsNew" = "v%@ sürümünde neler yeni";
+
+"ICloudROMWiFiOnly" = "ROM’ları yalnızca Wi-Fi üzerinden senkronize et";
+"ICloudROMSizeLimit" = "ROM boyut sınırı";
+"ICloudROMSizeLimitUnlimited" = "Sınırsız";
+"ICloudROMSizeLimitDesc" = "Bu boyuttan büyük ROM’lar yalnızca bu cihazda tutulur, böylece tek bir büyük disk görüntüsü iCloud Drive’ı doldurmaz. Oyun kayıtları, anlık kayıtlar, skin’ler ve ayarlar etkilenmez.";
+"ICloudROMTransferLimitDesc" = "Bu iki sınır yalnızca ROM dosyalarına uygulanır. Oyun kayıtları, anlık kayıtlar, skin’ler ve ayarlar her ağda ve her boyutta senkron olmaya devam eder. Bir oyunu açmak, sınır senkronu engelleyecek olsa bile ROM’u her zaman indirir.";

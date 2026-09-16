@@ -1162,3 +1162,9 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 "ScrollToLastGame" = "마지막 게임으로 스크롤";
 "ScrollToFirstGame" = "첫 게임으로 스크롤";
 "WhatsNew" = "v%@의 새로운 기능";
+
+"ICloudROMWiFiOnly" = "Wi-Fi에서만 ROM 동기화";
+"ICloudROMSizeLimit" = "ROM 크기 제한";
+"ICloudROMSizeLimitUnlimited" = "제한 없음";
+"ICloudROMSizeLimitDesc" = "이 크기보다 큰 ROM은 이 기기에만 보관되어, 용량이 큰 디스크 이미지 하나가 iCloud Drive를 채우지 않습니다. 게임 세이브, 세이브 스테이트, 스킨, 설정에는 영향을 주지 않습니다.";
+"ICloudROMTransferLimitDesc" = "이 두 제한은 ROM 파일에만 적용됩니다. 게임 세이브, 세이브 스테이트, 스킨, 설정은 네트워크 종류와 크기에 관계없이 계속 동기화됩니다. 게임을 열면 제한 때문에 동기화되지 않았더라도 ROM을 항상 다운로드합니다.";

@@ -90,6 +90,10 @@ enum ExtraKey: String {
     case slowMotionSpeed
     case iCloudSyncROM
     case iCloudSyncROMPlatforms
+    /// Restrict ROM transfers to Wi-Fi. Saves and other small data ignore this.
+    case iCloudSyncROMWiFiOnly
+    /// Largest ROM, in bytes, allowed to reach iCloud Drive. 0 means no limit.
+    case iCloudSyncROMSizeLimit
     case wswanRotation
     case wswanPalette
     case arcadeType//naomi=1 atomiswave=2 segasp=3

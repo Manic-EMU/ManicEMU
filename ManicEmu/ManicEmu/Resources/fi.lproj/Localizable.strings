@@ -1161,3 +1161,9 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "ScrollToLastGame" = "Vieritä viimeiseen peliin";
 "ScrollToFirstGame" = "Vieritä ensimmäiseen peliin";
 "WhatsNew" = "Uutta versiossa v%@";
+
+"ICloudROMWiFiOnly" = "Synkronoi ROM-tiedostot vain Wi-Fin kautta";
+"ICloudROMSizeLimit" = "ROM-kokorajoitus";
+"ICloudROMSizeLimitUnlimited" = "Ei rajaa";
+"ICloudROMSizeLimitDesc" = "Tätä suuremmat ROM-tiedostot jäävät vain tälle laitteelle, jotta yksi suuri levykuva ei täytä iCloud Drivea. Pelitallennuksiin, pikatallennuksiin, skineihin ja asetuksiin tällä ei ole vaikutusta.";
+"ICloudROMTransferLimitDesc" = "Nämä kaksi rajoitusta koskevat vain ROM-tiedostoja. Pelitallennukset, pikatallennukset, skinit ja asetukset synkronoituvat edelleen kaikissa verkoissa ja kaikenkokoisina. Pelin avaaminen lataa ROM-tiedoston aina, vaikka rajoitus muuten estäisi synkronoinnin.";

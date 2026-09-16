@@ -1152,3 +1152,9 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 "ScrollToLastGame" = "Cuộn tới trò chơi cuối";
 "ScrollToFirstGame" = "Cuộn tới trò chơi đầu";
 "WhatsNew" = "Có gì mới trong v%@";
+
+"ICloudROMWiFiOnly" = "Chỉ đồng bộ ROM qua Wi-Fi";
+"ICloudROMSizeLimit" = "Giới hạn dung lượng ROM";
+"ICloudROMSizeLimitUnlimited" = "Không giới hạn";
+"ICloudROMSizeLimitDesc" = "ROM lớn hơn mức này chỉ giữ trên thiết bị này, để một ảnh đĩa lớn không làm đầy iCloud Drive. Bản lưu, lưu trữ tức thời, skin và cài đặt không bị ảnh hưởng.";
+"ICloudROMTransferLimitDesc" = "Hai giới hạn này chỉ áp dụng cho tệp ROM. Bản lưu, lưu trữ tức thời, skin và cài đặt vẫn đồng bộ trên mọi mạng và mọi dung lượng. Mở trò chơi luôn tải ROM, dù giới hạn lẽ ra sẽ chặn đồng bộ.";

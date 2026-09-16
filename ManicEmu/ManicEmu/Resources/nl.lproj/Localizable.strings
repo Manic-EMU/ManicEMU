@@ -1159,3 +1159,9 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 "ScrollToLastGame" = "Scroll naar laatste game";
 "ScrollToFirstGame" = "Scroll naar eerste game";
 "WhatsNew" = "Wat is er nieuw in v%@";
+
+"ICloudROMWiFiOnly" = "ROM's alleen via Wi-Fi synchroniseren";
+"ICloudROMSizeLimit" = "ROM-groottebeperking";
+"ICloudROMSizeLimitUnlimited" = "Geen limiet";
+"ICloudROMSizeLimitDesc" = "ROM's groter dan dit blijven alleen op dit apparaat, zodat één groot schijfimage iCloud Drive niet volloopt. Gameopslag, savestates, skins en instellingen worden nooit beïnvloed.";
+"ICloudROMTransferLimitDesc" = "Deze twee limieten gelden alleen voor ROM-bestanden. Gameopslag, savestates, skins en instellingen blijven synchroniseren via elk netwerk en bij elke grootte. Als je een game opent, wordt de ROM altijd gedownload, ook als een limiet de synchronisatie anders zou tegenhouden.";

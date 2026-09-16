@@ -90,8 +90,10 @@ final class FilesSyncManager {
     }
     
     private init() {
+        // `progress` feeds `syncState`, which the UI reads on the main thread, so keep the
+        // assignment there instead of writing it from the engine's worker threads.
         engine.onProgress = { [weak self] progress in
-            self?.progress = progress
+            DispatchQueue.main.async { self?.progress = progress }
         }
         watchers.onCloudInventory = { [weak self] inventory in
             self?.engine.applyCloudInventory(inventory)
@@ -289,6 +291,16 @@ final class FilesSyncManager {
 #endif
     }
     
+    /// The user changed the Wi-Fi-only switch or the ROM size ceiling.
+    func handleROMTransferLimitsChange() {
+#if SIDE_LOAD
+        return
+#else
+        guard FilesSyncPolicy.isDriveSyncAvailable else { return }
+        engine.handleROMLimitsChange()
+#endif
+    }
+    
     /// Upload or evict Drive copies after the user assigns or changes GameType.
     func applyROMSyncAfterGameTypeChange(for games: [Game]) {
 #if SIDE_LOAD
@@ -371,8 +383,11 @@ final class FilesSyncManager {
             let satisfied = path.status == .satisfied
             let becameSatisfied = satisfied && !self.networkSatisfied
             self.networkSatisfied = satisfied
+            // Hotspots report as Wi-Fi but bill like cellular, so trust the system's own
+            // expensive/constrained flags rather than the interface type.
+            self.engine.updateNetworkMetering(unmetered: satisfied && !path.isExpensive && !path.isConstrained)
             if becameSatisfied {
-                Log.debug("[iCloud Sync] network became satisfied")
+                Log.debug("[iCloud Sync] network became satisfied expensive=\(path.isExpensive) constrained=\(path.isConstrained)")
                 self.engine.handleNetworkSatisfied()
             } else if !satisfied {
                 Log.debug("[iCloud Sync] network unsatisfied")

@@ -32,7 +32,6 @@
 		3C1B9BAFB4C4403B92AD40D6 /* BlurUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5706B0BD2DFDE4570066122E /* BlurUIKit */; };
 		3CC0A81B407547FBA1CF0693 /* C64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C004DF500A40988FE64A18 /* C64.swift */; };
 		3DD4E96091F64806BA370918 /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E209D2FD1B8CB00A2749A /* CollectionViewPagingLayout */; };
-		3E00CA4429104FD6937382A8 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 57F0D84A2DE2E7A600760F57 /* SwiftCloudDrive */; };
 		478A7D3ED65840479AA36B1F /* Libretro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE172DD32F7700AABF98 /* Libretro.framework */; };
 		4C03A073F6DB40669F022100 /* FLASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809D2DE31034EF5B9135498 /* FLASH.swift */; };
 		54CDF4E1512F4F639EE3CDC2 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
@@ -750,7 +749,6 @@
 		57909543303C7D9100A53656 /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D82FD41E1200A2749A /* SideMenu */; };
 		57909544303C7D9100A53656 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 5726FF452D741F5C00041AD5 /* ColorfulX */; };
 		57909545303C7D9100A53656 /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 576060282D24E8BD00A98B0C /* RswiftLibrary */; };
-		57909546303C7D9100A53656 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 57F0D84A2DE2E7A600760F57 /* SwiftCloudDrive */; };
 		57909547303C7D9100A53656 /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759142FD42CB70093A2B3 /* BetterSegmentedControl */; };
 		57909548303C7D9100A53656 /* ProHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20A92FD1C40700A2749A /* ProHUD */; };
 		57909549303C7D9100A53656 /* DeltaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23DF2FD30F1100A2749A /* DeltaCore */; };
@@ -863,6 +861,9 @@
 		579DDA0D305ABCBF003AB167 /* WhatsNew-AppStore.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA0A305ABCBF003AB167 /* WhatsNew-AppStore.strings */; };
 		579DDA4A305ABD8A003AB167 /* WhatsNew-Sideload.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */; };
 		579DDA4B305ABD8A003AB167 /* WhatsNew-Sideload.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */; };
+		579DDAD8305AE990003AB167 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 579DDAD7305AE990003AB167 /* SwiftCloudDrive */; };
+		579DDADE305AE9BB003AB167 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 579DDADD305AE9BB003AB167 /* SwiftCloudDrive */; };
+		579DDAE0305AE9E5003AB167 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 579DDADF305AE9E5003AB167 /* SwiftCloudDrive */; };
 		579E54512FD4237B000F08E7 /* FluentDarkModeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 579E54502FD4237B000F08E7 /* FluentDarkModeKit */; };
 		57A480CC2E733B83001D4598 /* flycast-jitless.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A480CB2E733B77001D4598 /* flycast-jitless.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57A480E72E74030E001D4598 /* CheevosChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A480E62E740301001D4598 /* CheevosChallengeView.swift */; };
@@ -1512,7 +1513,6 @@
 		57F0D81A2DE1C2D700760F57 /* GameListStyleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0D8192DE1C2C200760F57 /* GameListStyleCollectionViewCell.swift */; };
 		57F0D83E2DE2C5AE00760F57 /* nestopia.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57F0D8422DE2CD8D00760F57 /* NES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0D8412DE2CD8B00760F57 /* NES.swift */; };
-		57F0D84B2DE2E7A600760F57 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 57F0D84A2DE2E7A600760F57 /* SwiftCloudDrive */; };
 		57F1A9182D7D25B900D0CC93 /* GameInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9172D7D25B600D0CC93 /* GameInfoView.swift */; };
 		57F1A9252D7D36D200D0CC93 /* GameViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9242D7D36CD00D0CC93 /* GameViewExtensions.swift */; };
 		57F1A9342D7D6D7D00D0CC93 /* ExternalSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9332D7D6D7C00D0CC93 /* ExternalSceneDelegate.swift */; };
@@ -6890,9 +6890,9 @@
 				57909541303C7D9100A53656 /* UniversalDetector in Frameworks */,
 				57909542303C7D9100A53656 /* Closures in Frameworks */,
 				57909543303C7D9100A53656 /* SideMenu in Frameworks */,
+				579DDAE0305AE9E5003AB167 /* SwiftCloudDrive in Frameworks */,
 				57909544303C7D9100A53656 /* ColorfulX in Frameworks */,
 				57909545303C7D9100A53656 /* RswiftLibrary in Frameworks */,
-				57909546303C7D9100A53656 /* SwiftCloudDrive in Frameworks */,
 				57909547303C7D9100A53656 /* BetterSegmentedControl in Frameworks */,
 				57909548303C7D9100A53656 /* ProHUD in Frameworks */,
 				57909549303C7D9100A53656 /* DeltaCore in Frameworks */,
@@ -6945,6 +6945,7 @@
 				3C1B9BAFB4C4403B92AD40D6 /* BlurUIKit in Frameworks */,
 				CB40A54BC3524226B63A8972 /* DNSPageView in Frameworks */,
 				1EADD4E491B048A4A3E448B1 /* SMBClient in Frameworks */,
+				579DDADE305AE9BB003AB167 /* SwiftCloudDrive in Frameworks */,
 				3DD4E96091F64806BA370918 /* CollectionViewPagingLayout in Frameworks */,
 				C6A3B47603E14D269F8A697C /* ChromaColorPicker in Frameworks */,
 				EAE31C39F6FF42DE8F5BA497 /* Schedule in Frameworks */,
@@ -6980,7 +6981,6 @@
 				851B5B08F99A452A91D3DC9D /* SideMenu in Frameworks */,
 				568CCBBFAD4A4409BB9E3CCB /* ColorfulX in Frameworks */,
 				F262CBA4C54F440BBEF25093 /* RswiftLibrary in Frameworks */,
-				3E00CA4429104FD6937382A8 /* SwiftCloudDrive in Frameworks */,
 				B866FD09ADDF4F39949809EE /* BetterSegmentedControl in Frameworks */,
 				5832261697984FE3A7919D8A /* ProHUD in Frameworks */,
 				5742E1CD2FDA9FA10031A726 /* AttributedString in Frameworks */,
@@ -7060,9 +7060,9 @@
 				57C7596F2FD455AA0093A2B3 /* UniversalDetector in Frameworks */,
 				578E23202FD288C600A2749A /* Closures in Frameworks */,
 				578E26D92FD41E1200A2749A /* SideMenu in Frameworks */,
+				579DDAD8305AE990003AB167 /* SwiftCloudDrive in Frameworks */,
 				5726FF462D741F5C00041AD5 /* ColorfulX in Frameworks */,
 				576060292D24E8BD00A98B0C /* RswiftLibrary in Frameworks */,
-				57F0D84B2DE2E7A600760F57 /* SwiftCloudDrive in Frameworks */,
 				57C759152FD42CB70093A2B3 /* BetterSegmentedControl in Frameworks */,
 				578E20AA2FD1C40700A2749A /* ProHUD in Frameworks */,
 				578E23E02FD30F1100A2749A /* DeltaCore in Frameworks */,
@@ -13661,7 +13661,6 @@
 				571BB9382DA44D6B00830134 /* XCRemoteSwiftPackageReference "SwiftSDL2" */,
 				575A39CA2DCCFA6B00B28FC2 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				570A27FE2DCF03CF001249C6 /* XCRemoteSwiftPackageReference "PLzmaSDK" */,
-				57F0D8492DE2E7A600760F57 /* XCRemoteSwiftPackageReference "SwiftCloudDrive" */,
 				5706B0BC2DFDE4570066122E /* XCRemoteSwiftPackageReference "BlurUIKit" */,
 				57B5923A2FD072C3003C4235 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				57B5923E2FD07394003C4235 /* XCRemoteSwiftPackageReference "SwifterSwift" */,
@@ -13706,6 +13705,7 @@
 				57F1D5162FFF962400FC5B2A /* XCLocalSwiftPackageReference "../Dependencies/DeltaCore" */,
 				576C8C5A3032B57A00AEB08F /* XCLocalSwiftPackageReference "../Dependencies/IceCream" */,
 				579096CF303F0B4C00A53656 /* XCRemoteSwiftPackageReference "HXPhotoPicker" */,
+				579DDAD6305AE990003AB167 /* XCLocalSwiftPackageReference "../Dependencies/SwiftCloudDrive" */,
 			);
 			productRefGroup = A5A001F024555A5F006E0F0E /* Products */;
 			projectDirPath = "";
@@ -16518,6 +16518,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Dependencies/ProHUD;
 		};
+		579DDAD6305AE990003AB167 /* XCLocalSwiftPackageReference "../Dependencies/SwiftCloudDrive" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Dependencies/SwiftCloudDrive;
+		};
 		57ABFAC82FE98443001C1425 /* XCLocalSwiftPackageReference "../Dependencies/CollectionViewPagingLayout" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../Dependencies/CollectionViewPagingLayout;
@@ -16941,14 +16945,6 @@
 				revision = 9ae5bc2ce2149980884d4612321c3a266d6bf82c;
 			};
 		};
-		57F0D8492DE2E7A600760F57 /* XCRemoteSwiftPackageReference "SwiftCloudDrive" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/drewmccormack/SwiftCloudDrive.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.4.4;
-			};
-		};
 		57F632A12D6F17AB007270E8 /* XCRemoteSwiftPackageReference "SMBClient" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/SMBClient.git";
@@ -17162,6 +17158,20 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ProHUD;
 		};
+		579DDAD7305AE990003AB167 /* SwiftCloudDrive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftCloudDrive;
+		};
+		579DDADD305AE9BB003AB167 /* SwiftCloudDrive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 579DDAD6305AE990003AB167 /* XCLocalSwiftPackageReference "../Dependencies/SwiftCloudDrive" */;
+			productName = SwiftCloudDrive;
+		};
+		579DDADF305AE9E5003AB167 /* SwiftCloudDrive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 579DDAD6305AE990003AB167 /* XCLocalSwiftPackageReference "../Dependencies/SwiftCloudDrive" */;
+			productName = SwiftCloudDrive;
+		};
 		579E54502FD4237B000F08E7 /* FluentDarkModeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 579E544F2FD4237B000F08E7 /* XCRemoteSwiftPackageReference "FluentDarkModeKit" */;
@@ -17299,11 +17309,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 57E48D8F2D8D736B008000A3 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
 			productName = ConfettiSwiftUI;
-		};
-		57F0D84A2DE2E7A600760F57 /* SwiftCloudDrive */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 57F0D8492DE2E7A600760F57 /* XCRemoteSwiftPackageReference "SwiftCloudDrive" */;
-			productName = SwiftCloudDrive;
 		};
 		57F1D3E12FF1437F00FC5B2A /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

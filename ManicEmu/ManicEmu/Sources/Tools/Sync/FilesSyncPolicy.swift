@@ -7,13 +7,30 @@
 //
 
 import Foundation
+import CoreFoundation
 import RealmSwift
 
 struct FilesSyncROMExclusion {
     var files: Set<String> = []
     var prefixes: Set<String> = []
+    /// Every game's ROM paths, regardless of their sync flag. Lets ROM-only transfer
+    /// limits apply without touching saves, skins and other small data.
+    var romFiles: Set<String> = []
+    var romPrefixes: Set<String> = []
     
+    /// ROM sync is off for this path, so uploads and downloads are skipped.
     func contains(_ relativePath: String) -> Bool {
+        Self.matches(relativePath, files: files, prefixes: prefixes)
+    }
+    
+    /// The path belongs to a game's ROM payload rather than to small app data.
+    func isROM(_ relativePath: String) -> Bool {
+        if FilesSyncPolicy.isROMContentTree(relativePath: relativePath) { return true }
+        if FilesSyncPolicy.isInstalled3DSContent(relativePath: relativePath) { return true }
+        return Self.matches(relativePath, files: romFiles, prefixes: romPrefixes)
+    }
+    
+    private static func matches(_ relativePath: String, files: Set<String>, prefixes: Set<String>) -> Bool {
         if files.contains(relativePath) { return true }
         for prefix in prefixes {
             if relativePath == prefix || relativePath.hasPrefix(prefix + "/") {
@@ -21,6 +38,17 @@ struct FilesSyncROMExclusion {
             }
         }
         return false
+    }
+}
+
+/// ROM-only transfer limits, snapshotted so the engine avoids per-path Realm reads.
+struct FilesSyncROMTransferLimits {
+    var wifiOnly: Bool = false
+    var sizeLimit: Int64 = 0
+    
+    /// ROM exceeds the configured ceiling, so it must not reach iCloud Drive.
+    func exceedsSize(_ bytes: Int64) -> Bool {
+        sizeLimit > 0 && bytes > sizeLimit
     }
 }
 
@@ -205,12 +233,92 @@ enum FilesSyncPolicy {
 #else
         let games = Database.realm.objects(Game.self).where { !$0.isDeleted }
         for game in games {
+            collectROMPaths(game: game, files: &snapshot.romFiles, prefixes: &snapshot.romPrefixes)
             guard !shouldSyncROM(game) else { continue }
             collectROMPaths(game: game, files: &snapshot.files, prefixes: &snapshot.prefixes)
         }
-        Log.debug("[iCloud Sync] ROM exclusion snapshot games=\(games.count) files=\(snapshot.files.count) prefixes=\(snapshot.prefixes.count)")
+        Log.debug("[iCloud Sync] ROM exclusion snapshot games=\(games.count) files=\(snapshot.files.count) prefixes=\(snapshot.prefixes.count) romFiles=\(snapshot.romFiles.count) romPrefixes=\(snapshot.romPrefixes.count)")
         return snapshot
 #endif
+    }
+    
+    // MARK: - ROM Transfer Limits
+    
+    /// Selectable ceilings for a single ROM reaching iCloud Drive. 0 means no limit.
+    static let romSizeLimitOptions: [Int64] = [
+        100 * 1024 * 1024,
+        200 * 1024 * 1024,
+        500 * 1024 * 1024,
+        1024 * 1024 * 1024,
+        0
+    ]
+    
+    static let defaultROMSizeLimit: Int64 = 1024 * 1024 * 1024
+    
+    /// Transfer ROM payloads only on unmetered networks. Off by default so ROM sync
+    /// works out of the box; saves and other small data ignore this entirely.
+    static var isROMWiFiOnly: Bool {
+#if SIDE_LOAD
+        return false
+#else
+        guard let raw = threadLocalSettings()?.getExtra(key: ExtraKey.iCloudSyncROMWiFiOnly.rawValue) else {
+            return false
+        }
+        if let flag = raw as? Bool { return flag }
+        if let number = raw as? NSNumber { return number.boolValue }
+        return false
+#endif
+    }
+    
+    static func setROMWiFiOnly(_ enabled: Bool) {
+#if SIDE_LOAD
+        return
+#else
+        threadLocalSettings()?.updateExtra(key: ExtraKey.iCloudSyncROMWiFiOnly.rawValue, value: enabled)
+#endif
+    }
+    
+    /// Largest ROM allowed to reach iCloud Drive, in bytes. 0 means no limit.
+    static var romSizeLimit: Int64 {
+#if SIDE_LOAD
+        return 0
+#else
+        guard let raw = threadLocalSettings()?.getExtra(key: ExtraKey.iCloudSyncROMSizeLimit.rawValue) else {
+            return defaultROMSizeLimit
+        }
+        return extraInt64(raw) ?? defaultROMSizeLimit
+#endif
+    }
+    
+    static func setROMSizeLimit(_ bytes: Int64) {
+#if SIDE_LOAD
+        return
+#else
+        // Persist as NSNumber so JSON 0 (No Limit) does not disappear or become a Bool.
+        threadLocalSettings()?.updateExtra(key: ExtraKey.iCloudSyncROMSizeLimit.rawValue, value: NSNumber(value: bytes))
+#endif
+    }
+    
+    /// JSON extras type-erase numbers. NSNumber 0 also bridges to `false`, which must
+    /// still mean "No Limit" rather than falling back to the 1 GB default.
+    private static func extraInt64(_ raw: Any) -> Int64? {
+        if let number = raw as? NSNumber {
+            if CFGetTypeID(number) == CFBooleanGetTypeID() {
+                return number.boolValue ? 1 : 0
+            }
+            return number.int64Value
+        }
+        if let value = raw as? Int64 { return value }
+        if let value = raw as? Int { return Int64(value) }
+        if let value = raw as? Double { return Int64(value) }
+        if let value = raw as? String { return Int64(value) }
+        if let value = raw as? Bool { return value ? 1 : 0 }
+        return nil
+    }
+    
+    /// Snapshot of both ROM limits, so the engine reads Realm once per scan.
+    static func romTransferLimits() -> FilesSyncROMTransferLimits {
+        FilesSyncROMTransferLimits(wifiOnly: isROMWiFiOnly, sizeLimit: romSizeLimit)
     }
     
     static func collectROMPaths(game: Game, files: inout Set<String>, prefixes: inout Set<String>) {

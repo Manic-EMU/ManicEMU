@@ -1159,3 +1159,9 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "ScrollToLastGame" = "Görgetés az utolsó játékhoz";
 "ScrollToFirstGame" = "Görgetés az első játékhoz";
 "WhatsNew" = "Újdonságok a v%@ verzióban";
+
+"ICloudROMWiFiOnly" = "ROM-ok szinkronizálása csak Wi-Fi-n";
+"ICloudROMSizeLimit" = "ROM méretkorlát";
+"ICloudROMSizeLimitUnlimited" = "Nincs korlát";
+"ICloudROMSizeLimitDesc" = "Az ennél nagyobb ROM-ok csak ezen az eszközön maradnak, hogy egyetlen nagy lemezkép ne töltse fel az iCloud Drive-ot. A játékmentések, azonnali mentések, skinek és beállítások soha nem érintettek.";
+"ICloudROMTransferLimitDesc" = "Ez a két korlát csak a ROM-fájlokra vonatkozik. A játékmentések, azonnali mentések, skinek és beállítások bármely hálózaton és bármilyen méretben tovább szinkronizálódnak. A játék megnyitásakor a ROM mindig letöltődik, még akkor is, ha a korlát egyébként megakadályozná a szinkronizálást.";

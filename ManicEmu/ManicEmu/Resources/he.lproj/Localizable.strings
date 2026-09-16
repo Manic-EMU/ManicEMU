@@ -1161,3 +1161,9 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "ScrollToLastGame" = "גלילה למשחק האחרון";
 "ScrollToFirstGame" = "גלילה למשחק הראשון";
 "WhatsNew" = "מה חדש בגרסה v%@";
+
+"ICloudROMWiFiOnly" = "סנכרון ROM ב-Wi-Fi בלבד";
+"ICloudROMSizeLimit" = "מגבלת גודל ROM";
+"ICloudROMSizeLimitUnlimited" = "ללא הגבלה";
+"ICloudROMSizeLimitDesc" = "קבצי ROM גדולים מזה נשארים במכשיר זה בלבד, כדי שתמונת דיסק גדולה אחת לא תמלא את iCloud Drive. שמירות משחק, שמירות מיידיות, skin והגדרות אינם מושפעים.";
+"ICloudROMTransferLimitDesc" = "שתי המגבלות האלה חלות על קבצי ROM בלבד. שמירות משחק, שמירות מיידיות, skin והגדרות ממשיכים להסתנכרן בכל רשת ובכל גודל. פתיחת משחק תמיד מורידה את ה-ROM, גם אם מגבלה הייתה מונעת סנכרון.";

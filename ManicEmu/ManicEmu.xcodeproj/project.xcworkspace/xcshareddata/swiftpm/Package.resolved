@@ -1,5 +1,5 @@
 {
-  "originHash" : "61d86f378064e763dfc2be709f822f7c0843e1020a59ba89eceea25dcb46265e",
+  "originHash" : "5032f210fe15fb4a7a035a7e3bbd65cfadd94b6e5c55ddc5f5526be889b95aa9",
   "pins" : [
     {
       "identity" : "attributedstring",
@@ -520,15 +520,6 @@
       "state" : {
         "revision" : "6a52f3251125d74daf04fcbd5e6f08a75d074382",
         "version" : "1.8.2"
-      }
-    },
-    {
-      "identity" : "swiftclouddrive",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/drewmccormack/SwiftCloudDrive.git",
-      "state" : {
-        "revision" : "4f2f38724d6a8724f727c1bc10d9cddd17fbb9e8",
-        "version" : "1.4.4"
       }
     },
     {
