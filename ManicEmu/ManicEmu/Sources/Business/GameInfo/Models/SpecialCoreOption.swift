@@ -123,6 +123,7 @@ enum SpecialCoreOption: String {
     case reicast_renderer
     case reicast_threaded_rendering
     case reicast_dynamic_cpu_ratio
+    case reicast_sh4clock
     //arcade
     case mame_cheats_enable
     //isAzahar3DS

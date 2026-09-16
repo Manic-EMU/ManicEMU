@@ -2213,7 +2213,11 @@ extension PlayViewController {
                 updateLibretroCoreConfigs(core: .Flycast, configs: [
                     .reicast_language : R.Strings.DCConsoleLanguage[manicGame.region],
                     .reicast_threaded_rendering: isJitlessFlycast ? "disabled" : "enabled",
-                    .reicast_dynamic_cpu_ratio: "disabled"
+                    .reicast_dynamic_cpu_ratio: "disabled",
+                    // Jitless starves the guest CPU, so it skips rendering and packs 2-3 guest
+                    // frames into one retro_run. Overclocking buys the guest enough cycles to
+                    // present every frame, which keeps the frontend's pacing quantum at 1.
+                    .reicast_sh4clock: isJitlessFlycast ? "300" : "200"
                 ])
                 LibretroCore.sharedInstance().setLibretroLogMonitor(true)
                 if manicGame.gameType == .arcade {
@@ -2349,8 +2353,7 @@ extension PlayViewController {
                 // Jitless Flycast underruns below 90ms; 90 is the floor that still boots smoothly.
                 "audio_latency": isJitlessFlycast ? "90" : "200",
                 "audio_sync": "true",
-                "input_auto_game_focus": "1",
-                "vrr_runloop_enable": isJitlessFlycast ? "true" : "false"
+                "input_auto_game_focus": "1"
             ])
             if manicGame.isN64ParaLLEl {
                 LibretroCore.sharedInstance().setReloadDelay(1)
@@ -3055,7 +3058,6 @@ extension PlayViewController {
                     }
                     self.updateDualScreenViews()
                     LibretroCore.sharedInstance().setCustomSaveExtension(customSaveExtension)
-                    applyLibretroFrontendRuntimeConfigs()
                     if self.manicGame.isNDSHomeMenuGame || self.manicGame.isDSiHomeMenuGame || self.manicGame.isDOSHomeMenuGame {
                         LibretroCore.sharedInstance().loadWithoutContent(corePath)
                     } else {
@@ -4357,16 +4359,6 @@ extension PlayViewController {
                 }
             }
         })
-    }
-    
-    /// Apply frontend pacing before loadGame so this session (not just the next) picks them up.
-    /// Jitless Flycast needs VRR on iOS; latency below 90ms underruns during boot.
-    private func applyLibretroFrontendRuntimeConfigs() {
-        LibretroCore.sharedInstance().updateRuningLibretroConfigs([
-            "audio_latency": isJitlessFlycast ? "90" : "200",
-            "audio_sync": "true",
-            "vrr_runloop_enable": isJitlessFlycast ? "true" : "false"
-        ])
     }
     
     private func updateLibretroCoreConfigs(core: EmulationCore,
