@@ -1170,6 +1170,8 @@ extension _R {
         static let HideGameRating = NSNotification.Name(rawValue: "HideGameRating")
         //GameMetadataChange
         static let GameMetadataChange = NSNotification.Name(rawValue: "GameMetadataChange")
+        //show filter view for landscape mode
+        static let ShowFilterForLandscapeMode = NSNotification.Name(rawValue: "ShowFilterForLandscapeMode")
     }
     
     struct _URLs {

@@ -299,7 +299,7 @@ class GameCoverView: BaseView {
                 } else if gameTypeCategory == 2 {
                     image = style == .style2 ? R.image.win98_cover_v() : R.image.win98_cover_h()
                 }   
-            } else if gameType == .xbox360 {
+            } else if gameType == .xbox {
                 image = style == .style2 ? R.image.xbox_cover_v() : R.image.xbox_cover_h()
             } else if gameType == .symbian {
                 image = style == .style2 ? R.image.symbian_cover_v() : R.image.symbian_cover_h()

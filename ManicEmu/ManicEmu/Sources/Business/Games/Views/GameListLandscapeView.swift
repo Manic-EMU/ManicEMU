@@ -424,7 +424,7 @@ class GameListLandscapeView: BaseView {
         })
         
         notificationTokens.append(center.addObserver(forName: R.NotificationName.GameMetadataChange, object: nil, queue: .main) { [weak self] notification in
-            guard let self = self, !R.Style.GameHideRating else { return }
+            guard let self, !R.Style.GameHideRating else { return }
             guard let gameId = notification.object as? String else { return }
             if self.isCarouselEnabled,
                let row = self.displayGames.firstIndex(where: { $0.id == gameId }) {
@@ -441,6 +441,11 @@ class GameListLandscapeView: BaseView {
         notificationTokens.append(center.addObserver(forName: .externalGameControllerDidDisconnect, object: nil, queue: .main, using: inputChange))
         notificationTokens.append(center.addObserver(forName: .externalKeyboardDidConnect, object: nil, queue: .main, using: inputChange))
         notificationTokens.append(center.addObserver(forName: .externalKeyboardDidDisconnect, object: nil, queue: .main, using: inputChange))
+        
+        notificationTokens.append(center.addObserver(forName: R.NotificationName.ShowFilterForLandscapeMode, object: nil, queue: .main) { [weak self] notification in
+            guard let self else { return }
+            self.showManufacturerFilterSheet()
+        })
     }
 
     /// Hide when nothing is connected; Command glyph for keyboard-only, Select glyph when a gamepad is present.
@@ -1601,7 +1606,7 @@ class GameListLandscapeView: BaseView {
     private func shiftCarouselPage(_ offset: Int) -> Bool {
         let count = carouselView.numberOfItems(inSection: 0)
         let next = carouselLayout.currentPage + offset
-        guard count > 0, next >= 0, next < count else { return false }
+        guard count > 0, next >= 0, next < count else { return true }
         focusCarouselPage(next, animated: true)
         return true
     }

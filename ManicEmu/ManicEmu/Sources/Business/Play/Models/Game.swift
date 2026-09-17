@@ -1690,6 +1690,13 @@ class Game: Object, ObjectUpdatable {
     var isDolphinCore: Bool {
         gameType == .ngc || gameType == .wii
     }
+
+    /// RC_CONSOLE_GAMECUBE (16) / RC_CONSOLE_WII (19) for Dolphin only; 0 keeps default hashing.
+    var retroAchievementsConsoleId: UInt {
+        if gameType == .ngc { return 16 }
+        if gameType == .wii { return 19 }
+        return 0
+    }
     
     var supportSlowMotion: Bool {
         if isLibretroType && gameType != .symbian {

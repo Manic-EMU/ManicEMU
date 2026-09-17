@@ -84,7 +84,9 @@ class RetroAchievementListView: BaseView {
             didShowLoading = true
         }
         
-        CheevosBridge.getCheevosGameInfo(gamePath, reuseInGameClient: PlayViewController.isGaming) { [weak self] result, cheevosGame in
+        CheevosBridge.getCheevosGameInfo(gamePath,
+                                         consoleId: game.retroAchievementsConsoleId,
+                                         reuseInGameClient: PlayViewController.isGaming) { [weak self] result, cheevosGame in
             guard let self else { return }
             if didShowLoading {
                 UIView.hideLoading()
