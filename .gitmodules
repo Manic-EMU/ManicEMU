@@ -28,8 +28,8 @@
 	url = https://github.com/Daiuno/ProHUD.git
 	branch = main
 
-[submodule "StikJIT"]
-	path = StikJIT
+[submodule "Dependencies/StikJIT"]
+	path = Dependencies/StikJIT
 	url = https://github.com/StephenDev0/StikJIT.git
 
 [submodule "Dependencies/SwiftCloudDrive"]

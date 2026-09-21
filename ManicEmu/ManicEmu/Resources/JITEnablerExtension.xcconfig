@@ -31,8 +31,8 @@ SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) DEBUG
 INFOPLIST_FILE = ManicEmu/Sources/Tools/JIT/JITEnablerExtension/Info.plist
 CODE_SIGN_ENTITLEMENTS = ManicEmu/Sources/Tools/JIT/JITEnablerExtension/JITEnablerExtension.entitlements
 
-LIBRARY_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../StikJIT/idevice"
-HEADER_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../StikJIT/idevice" "$(SRCROOT)/../StikJIT/iokit"
-SWIFT_INCLUDE_PATHS = $(inherited) "$(SRCROOT)/../StikJIT/idevice" "$(SRCROOT)/../StikJIT/iokit"
-OTHER_LDFLAGS = $(inherited) -force_load "$(SRCROOT)/../StikJIT/idevice/libidevice_ffi.a"
+LIBRARY_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../Dependencies/StikJIT/idevice"
+HEADER_SEARCH_PATHS = $(inherited) "$(SRCROOT)/../Dependencies/StikJIT/idevice" "$(SRCROOT)/../Dependencies/StikJIT/iokit"
+SWIFT_INCLUDE_PATHS = $(inherited) "$(SRCROOT)/../Dependencies/StikJIT/idevice" "$(SRCROOT)/../Dependencies/StikJIT/iokit"
+OTHER_LDFLAGS = $(inherited) -force_load "$(SRCROOT)/../Dependencies/StikJIT/idevice/libidevice_ffi.a"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
