@@ -16547,10 +16547,10 @@
 		};
 		570A27FE2DCF03CF001249C6 /* XCRemoteSwiftPackageReference "PLzmaSDK" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/OlehKulykov/PLzmaSDK.git";
+			repositoryURL = "https://github.com/Daiuno/PLzmaSDK.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.5.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 		5713306A2D91AFE00043C28A /* XCRemoteSwiftPackageReference "XCGLogger" */ = {

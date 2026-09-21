@@ -1,5 +1,5 @@
 {
-  "originHash" : "5032f210fe15fb4a7a035a7e3bbd65cfadd94b6e5c55ddc5f5526be889b95aa9",
+  "originHash" : "ec95bb03af22f560bff8bd2e9a95a848d31e15ea12c4e78e7916a3d26780376e",
   "pins" : [
     {
       "identity" : "attributedstring",
@@ -381,10 +381,10 @@
     {
       "identity" : "plzmasdk",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/OlehKulykov/PLzmaSDK.git",
+      "location" : "https://github.com/Daiuno/PLzmaSDK.git",
       "state" : {
-        "revision" : "d42ec415ffa0fa45bafd09b9e36e7bf8dfc6c136",
-        "version" : "1.5.0"
+        "branch" : "master",
+        "revision" : "bf5378f2256fec18799f98efb74a1ff6dcec07a6"
       }
     },
     {
@@ -402,7 +402,7 @@
       "location" : "https://github.com/Daiuno/realm-core.git",
       "state" : {
         "branch" : "manicemu",
-        "revision" : "51524f01d0a84c51fe09ab5808830e2f39093d57"
+        "revision" : "c78e4707b7dd19a2f0a20b4d10aed09f0bae8a8d"
       }
     },
     {
