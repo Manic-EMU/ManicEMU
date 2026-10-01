@@ -389,28 +389,13 @@ class OnlineCoverManager {
                 }
                 
                 
-                let content = """
-                    Given the retro game title: "\(name)", detect its language.  
-                    If it's English, return:{"isEN": true}  
-                    If not, try to find out the official title to accurate English (ignore comments/special characters) and return:{"isEN": false, "name": "TRANSLATION"}  
-                    Return JSON only, no explanations.
-                    """
-                var request = URLRequest(url: URL(string: "https://api.deepseek.com/chat/completions")!)
+                var request = URLRequest(url: R.URLs.CoverTranslate)
                 request.timeoutInterval = 10
                 request.httpMethod = "POST"
-                request.addValue("Bearer \(R.Cipher.DeepSeek)", forHTTPHeaderField: "Authorization")
+                request.addValue(R.Cipher.CoverTranslate, forHTTPHeaderField: "X-Cover-Token")
                 request.addValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.addValue("application/json", forHTTPHeaderField: "Accept")
-                // Flash thinks by default; disable it so a short JSON title does not burn reasoning tokens.
-                request.httpBody = [
-                    "model": "deepseek-flash",
-                    "max_tokens": 128,
-                    "stream": false,
-                    "temperature": 1.3,
-                    "thinking": ["type": "disabled"],
-                    "response_format": ["type": "json_object"],
-                    "messages": [["content": content, "role": "user"]]
-                ].jsonData()
+                request.httpBody = ["name": name].jsonData()
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
                     if let _ = error {
                         completion?(name)
@@ -420,42 +405,25 @@ class OnlineCoverManager {
                         completion?(name)
                         return
                     }
-                    if let response = try? data?.jsonObject() as? [String: Any] {
-                        //返回数据成功
-                        Log.debug("deepseek返回:\(response.jsonString() ?? "json解析失败")")
-                        if let firstChoices = (response["choices"] as? [[String: Any]])?.first,
-                           let message = firstChoices["message"] as? [String: Any],
-                           let responeJsonData = (message["content"] as? String)?.data(using: .utf8),
-                           let responeJson = try? JSONSerialization.jsonObject(with: responeJsonData) as? [String: Any],
-                           let isEN = responeJson["isEN"] as? Bool {
-                            //数据返回成功
-                            var resultName = name
-                            if !isEN, let translatedName = responeJson["name"] as? String {
-                                //返回翻译结果
-                                Log.debug("获取翻译结果:\(translatedName)")
-                                resultName = translatedName
-                            }
-                            completion?(resultName)
-                            if let gameID {
-                                let realm = Database.realm
-                                if let game = realm.object(ofType: Game.self, forPrimaryKey: gameID) {
-                                    var extras = (try? game.extras?.jsonObject() as? [String: Any]) ?? [String: Any]()
-                                    extras["translatedName"] = resultName
-                                    if let extrasData = extras.jsonData() {
-                                        try? realm.write {
-                                            game.extras = extrasData
-                                        }
+                    if let response = try? data?.jsonObject() as? [String: Any],
+                       let translatedName = response["name"] as? String,
+                       !translatedName.isEmpty {
+                        Log.debug("获取翻译结果:\(translatedName)")
+                        completion?(translatedName)
+                        if let gameID {
+                            let realm = Database.realm
+                            if let game = realm.object(ofType: Game.self, forPrimaryKey: gameID) {
+                                var extras = (try? game.extras?.jsonObject() as? [String: Any]) ?? [String: Any]()
+                                extras["translatedName"] = translatedName
+                                if let extrasData = extras.jsonData() {
+                                    try? realm.write {
+                                        game.extras = extrasData
                                     }
                                 }
                             }
-                        } else {
-                            //数据返回失败
-                            Log.debug("解析deepseek失败2")
-                            completion?(name)
                         }
                     } else {
-                        //数据返回失败
-                        Log.debug("解析deepseek失败1")
+                        Log.debug("解析封面翻译失败")
                         completion?(name)
                     }
                 }

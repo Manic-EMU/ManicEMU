@@ -1181,6 +1181,7 @@ extension _R {
         static let ManicEMU = "https://manicemu.site/"
 #endif
         static let ManicHome = URL(string: ManicEMU)!
+        static let CoverTranslate = URL(string: "https://cover.manicemu.site/v1/cover-translate")!
         static let AppReview = URL(string: "itms-apps://itunes.apple.com/app/id6743335790?action=write-review")!
         static let AppStoreUrl = URL(string: "https://apps.apple.com/app/id6743335790")!
         static let TermsOfUse = URL(string: ManicEMU + "terms-of-use")!
