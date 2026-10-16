@@ -231,7 +231,7 @@ class BIOSCollectionViewCell: UICollectionViewCell {
                     itemView.isHidden = false
                     itemView.button.onTap {
                         func importFromFiles() {
-                            FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: true) {  urls in
+                            FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: true, manualHandle: {  urls in
                                 UIView.makeLoading()
                                 DispatchQueue.global().async {
                                     var matchs = [(url: URL, fileName: String)]()
@@ -289,7 +289,7 @@ class BIOSCollectionViewCell: UICollectionViewCell {
                                         }
                                     }
                                 }
-                            }
+                            }, in: self.hostingWindowScene)
                         }
                         
                         if gameType == ._3ds {
@@ -353,7 +353,7 @@ class BIOSCollectionViewCell: UICollectionViewCell {
         if path.pathExtension.lowercased() == "app", let tid = pathToTid(path) {
             if R.Numbers.ThreeDSHomeMenuIdentifiers.contains(where: { $0 == tid }) {
                 //识别到了3dS的home menu
-                FilesImporter.importFiles(urls: [URL(fileURLWithPath: path)], silentMode: true)
+                FilesImporter.importFiles(urls: [URL(fileURLWithPath: path)], silentMode: true, in: hostingWindowScene)
             }
         }
         

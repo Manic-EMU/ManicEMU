@@ -161,7 +161,7 @@ class ArticBaseCollectionCell: UICollectionViewCell {
                             game.importDate = Date()
                             game.defaultCore = 1
                             try? realm.write { realm.add(game) }
-                            game.handleTapAction(forceQuick: true)
+                            game.handleTapAction(forceQuick: true, in: self.hostingWindowScene)
                         }
                     })
                 })

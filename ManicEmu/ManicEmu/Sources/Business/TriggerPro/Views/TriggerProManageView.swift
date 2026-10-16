@@ -125,6 +125,7 @@ class TriggerProManageView: BaseView {
     }
     
     private func handleAction(_ action: ASListPage.Action) {
+        guard let hostingWindow else { return }
         if let navigationValue = action.navigationValue {
             //navigation action
             if navigationValue.isTapClose {
@@ -180,10 +181,11 @@ class TriggerProManageView: BaseView {
                         
                     } else if index == 1 {
                         //edit
-                        topViewController()?.present(TriggerProPreviewController(gameType: trigger.gameType,
+                        topViewController(in: hostingWindowScene)?.present(TriggerProPreviewController(gameType: trigger.gameType,
                                                                                  trigger: trigger,
                                                                                  preferredSkinID: PlayViewController.currentSkinID,
-                                                                                 hideControls: PlayViewController.isHideControls),
+                                                                                                       hideControls: PlayViewController.isHideControls,
+                                                                                                       window: hostingWindow),
                                                      animated: true)
                     } else if index == 2 {
                         //set up for more games
@@ -297,16 +299,17 @@ class TriggerProManageView: BaseView {
                     selectedItems.insert(indexPath)
                 }
             } else {
-                topViewController()?.present(TriggerProPreviewController(gameType: trigger.gameType,
-                                                                         trigger: trigger,
-                                                                         preferredSkinID: PlayViewController.currentSkinID,
-                                                                         hideControls: PlayViewController.isHideControls),
-                                             animated: true)
+                topViewController(in: hostingWindowScene)?.present(TriggerProPreviewController(gameType: trigger.gameType,
+                                                                                               trigger: trigger,
+                                                                                               preferredSkinID: PlayViewController.currentSkinID,
+                                                                                               hideControls: PlayViewController.isHideControls,
+                                                                                               window: hostingWindow),
+                                                                   animated: true)
             }
         } else  if action.isBottom {
             //add trigger
             if !PurchaseManager.isMember, allTriggers.count >= R.Numbers.NonMemberTriggerProCount {
-                topViewController()?.present(PurchaseViewController(), animated: true)
+                topViewController(in: hostingWindowScene)?.present(PurchaseViewController(), animated: true)
                 return
             }
             
@@ -314,12 +317,14 @@ class TriggerProManageView: BaseView {
             ChevronSheetView.show(icon: .symbolImage(R.image.category_iconSymbols()),
                                   title: R.string.localizable.platformSelectionTitle(),
                                   stringOptions: allGameTypes.map({ $0.localizedShortName }),
-                                  completion: { index in
+                                  completion: { [weak self] index in
+                guard let self else { return }
                 guard let index else { return }
-                topViewController()?.present(TriggerProPreviewController(gameType: allGameTypes[index],
-                                                                         preferredSkinID: PlayViewController.currentSkinID,
-                                                                         hideControls: PlayViewController.isHideControls),
-                                             animated: true)
+                topViewController(in: self.hostingWindowScene)?.present(TriggerProPreviewController(gameType: allGameTypes[index],
+                                                                                                    preferredSkinID: PlayViewController.currentSkinID,
+                                                                                                    hideControls: PlayViewController.isHideControls,
+                                                                                                    window: hostingWindow),
+                                                                        animated: true)
             })
         } else if let indexPath = action.longPressValue {
             guard !isEditMode else { return }
@@ -364,7 +369,7 @@ class TriggerProManageView: BaseView {
     }
     
     private func getListPage() -> ASListPage {
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
         
         return ASListPage(navigation: getNavigation(),
                           sections: getSections(),
@@ -375,7 +380,7 @@ class TriggerProManageView: BaseView {
                           blankSlate: .init(),
                           backgroundColor: .clear,
                           listInsets: .insets(bottom: listInsetBottom),
-                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop),
+                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow)),
                           enableLongPress: true)
     }
     

@@ -176,7 +176,7 @@ class SaveStateListView: BaseView {
                                         self?.updateContents()
                                     })
                                 }
-                            })
+                            }, in: self.hostingWindowScene)
                         }
                     })
                 }
@@ -207,7 +207,7 @@ class SaveStateListView: BaseView {
                         cacheUrls.append(cacheUrl)
                         try? FileManager.safeCopyItem(at: $0, to: cacheUrl, shouldReplace: true)
                     })
-                    ShareManager.shareFiles(fileUrls: cacheUrls)
+                    ShareManager.shareFiles(fileUrls: cacheUrls, in: hostingWindowScene)
                 })
                 
             } else if let _ = toolValue.tapOthersValue {
@@ -258,7 +258,7 @@ class SaveStateListView: BaseView {
                                 self.hideCompletion?(state)
                                 self.hasCallHideCompletion = true
                             } else {
-                                self.game.handleTapAction(forceQuick: true)
+                                self.game.handleTapAction(forceQuick: true, in: self.hostingWindowScene)
                             }
                         })
                     } else {
@@ -266,7 +266,7 @@ class SaveStateListView: BaseView {
                             self.hideCompletion?(state)
                             self.hasCallHideCompletion = true
                         } else {
-                            self.game.handleTapAction(forceQuick: true, saveState: state)
+                            self.game.handleTapAction(forceQuick: true, saveState: state, in: self.hostingWindowScene)
                         }
                     }
                 }
@@ -372,7 +372,7 @@ class SaveStateListView: BaseView {
             R.Size.ItemHeightExtraSmall -
             R.Size.ContentSpaceLarge -
             R.Size.ContentSpaceLarge -
-            R.Size.ContentInsetBottom
+            R.Size.ContentInsetBottom(window: hostingWindow)
             
             return .init(cells: [.custom(ASBlankSlateView(.init(title: R.string.localizable.readyGameSaveStatesEmpty())))],
                          decoration: .init(enable: false),

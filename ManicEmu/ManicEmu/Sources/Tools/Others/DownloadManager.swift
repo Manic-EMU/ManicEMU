@@ -91,7 +91,7 @@ class DownloadManager {
             }
             
             if succeededTasks.count > 0 {
-                FilesImporter.importFiles(urls: succeededTasks.map({ URL(fileURLWithPath: $0.filePath) })) {
+                FilesImporter.importFiles(urls: succeededTasks.map({ URL(fileURLWithPath: $0.filePath) }), in: nil) {
                     succeededTasks.forEach { manager.remove($0.url) }
                 }
             }

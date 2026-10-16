@@ -123,7 +123,7 @@ class GamesCollectionReusableView: UICollectionReusableView {
         
         gamesCountButton.setTitleString("\(gamesCount) \(R.string.localizable.tabbarTitleGames())")
         gamesCountButton.isUserInteractionEnabled = allowsFold
-        if !allowsFold || (UIDevice.isPhone && UIDevice.isLandscape) {
+        if !allowsFold || (UIDevice.isPhone && self.prefferedLayoutStyle == .landscape) {
             gamesCountButton.setIcon(nil)
         } else {
             gamesCountButton.setIcon(.symbol(isFolded ? .chevronDown : .chevronUp, colors: [R.Color.LabelSecondary]))

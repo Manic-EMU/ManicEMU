@@ -147,7 +147,7 @@ class SymbianFirmwareView: BaseView {
         guard devices.count == 0 else { return nil }
         return .init(title: R.string.localizable.noFirmware(),
                      detail: R.string.localizable.symbianOSFirmwareDesc(),
-                     layoutInsets: .insets(bottom: R.Size.ContentInsetBottom + R.Size.ButtonExtraLarge))
+                     layoutInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ButtonExtraLarge))
     }
     
     private func getNavigation() -> ASListPage.Navigation {
@@ -273,7 +273,8 @@ class SymbianFirmwareView: BaseView {
                                        updation: ASSheetView.ASSheetViewUpdation?) {
         guard let utType = UTType(filenameExtension: fileExtension) else { return }
         FilesImporter.shared.presentImportController(supportedTypes: [utType],
-                                                     allowsMultipleSelection: false) { [weak self] urls in
+                                                     allowsMultipleSelection: false,
+                                                     manualHandle: { [weak self] urls in
             guard let self, let url = urls.first else { return }
             let previous = fileExtension == "rom" ? self.pendingRomURL : self.pendingRpkgURL
             guard let copied = self.copyImportFile(url, replacing: previous) else {
@@ -286,7 +287,7 @@ class SymbianFirmwareView: BaseView {
                 self.pendingRpkgURL = copied
             }
             updation?(.listPage(self.makeAddFirmwareListPage()))
-        }
+        }, in: hostingWindowScene)
     }
     
     private func handleInstallFirmware() -> ASSheetView.ActionResult {

@@ -215,7 +215,7 @@ class RomPatcherView: BaseView {
         view.isOpaque = false
         view.backgroundColor = R.Color.BackgroundPrimary
         view.scrollView.backgroundColor = R.Color.BackgroundPrimary
-        view.scrollView.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.scrollView.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         
         return view
     }()
@@ -336,10 +336,10 @@ extension RomPatcherView: WKScriptMessageHandler {
             DispatchQueue.main.async {
                 UIView.makeAlert(title: R.string.localizable.downloadCompletion(), detail: fileName, cancelTitle: R.string.localizable.gamesShareRom(), confirmTitle: isPatch ? nil : R.string.localizable.m3uFileImport(), cancelAction: {
                     //分享
-                    ShareManager.shareFile(fileUrl: fileUrl)
+                    ShareManager.shareFile(fileUrl: fileUrl, in: self.hostingWindowScene)
                 }, confirmAction: {
                     //导入
-                    FilesImporter.importFiles(urls: [fileUrl])
+                    FilesImporter.importFiles(urls: [fileUrl], in: self.hostingWindowScene)
                 })
             }
         } catch {

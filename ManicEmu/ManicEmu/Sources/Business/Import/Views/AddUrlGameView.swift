@@ -292,7 +292,7 @@ class AddUrlGameView: BaseView {
             sources.append(.delete)
         }
         
-        ImageFetcher.showCommonFetcher(sources: sources) { [weak self] image, source in
+        ImageFetcher.showCommonFetcher(sources: sources, in: hostingWindowScene) { [weak self] image, source in
             guard let self else { return }
             if case .delete = source {
                 self.coverRemoved = true

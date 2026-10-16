@@ -165,7 +165,7 @@ class SettingsAdventureCardView: BaseView {
         if let data = Settings.defalut.avatar?.storedData(), let image = UIImage(data: data) {
             sources.append(.editImage(image))
         }
-        ImageFetcher.showCommonFetcher(sources: sources) { [weak self] image, _ in
+        ImageFetcher.showCommonFetcher(sources: sources, in: hostingWindowScene) { [weak self] image, _ in
             guard let self, let image else { return }
             self.persistAvatar(image)
         }

@@ -118,7 +118,7 @@ class MultiDiscBuilderView: BaseView {
                 guard let self else { return }
                 if let index {
                     if let url = self.generateM3uFile() {
-                        ShareManager.shareFile(fileUrl: url)
+                        ShareManager.shareFile(fileUrl: url, in: self.hostingWindowScene)
                     } else {
                         UIView.makeToast(message: R.string.localizable.generateM3uFailed())
                     }
@@ -143,7 +143,7 @@ class MultiDiscBuilderView: BaseView {
         view.dragInteractionEnabled = true
         view.dragDelegate = self
         view.dropDelegate = self
-        let bottom = (UIDevice.isPad ? (R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge) : R.Size.ContentInsetBottom) + R.Size.ItemHeightMedium + R.Size.ContentSpaceMedium
+        let bottom = (UIDevice.isPad ? (R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge) : R.Size.ContentInsetBottom(window: hostingWindow)) + R.Size.ItemHeightMedium + R.Size.ContentSpaceMedium
         view.contentInset = .insets(top: R.Size.ContentSpaceSmall,
                                     bottom: bottom)
         return view
@@ -186,7 +186,7 @@ class MultiDiscBuilderView: BaseView {
         addToLibraryButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(R.Size.ContentSpaceHuge)
             make.height.equalTo(R.Size.ItemHeightMedium)
-            make.bottom.equalToSuperview().offset(-R.Size.ContentInsetBottom-R.Size.ContentSpaceMedium)
+            make.bottom.equalToSuperview().offset(-R.Size.ContentInsetBottom(window: hostingWindow)-R.Size.ContentSpaceMedium)
         }
     }
     
@@ -227,7 +227,7 @@ class MultiDiscBuilderView: BaseView {
                     urls.append(subItem)
                 }
             }
-            FilesImporter.importFiles(urls: urls)
+            FilesImporter.importFiles(urls: urls, in: hostingWindowScene)
             hasAddToLibrary = true
         } else {
             UIView.makeToast(message: R.string.localizable.generateM3uFailed())
@@ -340,7 +340,7 @@ extension MultiDiscBuilderView: UICollectionViewDelegate {
         if indexPath.section == datas.count + 1 {
             let supportedTypes = contentTypes(for: playlistFormat.pickerExtensions)
             guard !supportedTypes.isEmpty else { return }
-            FilesImporter.shared.presentImportController(supportedTypes: supportedTypes) { [weak self] urls in
+            FilesImporter.shared.presentImportController(supportedTypes: supportedTypes, manualHandle: { [weak self] urls in
                 guard let self else { return }
                 let urls = urls.sorted(by: { $0.path < $1.path })
                 let selectedExts = Set(urls.map { $0.pathExtension.lowercased() }.filter { !$0.isEmpty })
@@ -403,7 +403,7 @@ extension MultiDiscBuilderView: UICollectionViewDelegate {
                 } else {
                     UIView.makeToast(message: R.string.localizable.multiDiscImportErrorMissing())
                 }
-            }
+            }, in: hostingWindowScene)
         }
     }
 }

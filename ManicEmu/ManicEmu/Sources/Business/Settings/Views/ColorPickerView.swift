@@ -10,13 +10,13 @@
 import ChromaColorPicker
 
 class ColorPickerView: BaseView {
-    private static var colorPickerSize: CGSize {
-        if UIDevice.isPhone, UIDevice.isLandscape {
+    private var colorPickerSize: CGSize {
+        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
             return CGSize(150)
         }
         return CGSize(290)
     }
-    private let colorPicker = ChromaColorPicker(frame: CGRect(origin: .zero, size: ColorPickerView.colorPickerSize))
+    private let colorPicker = ChromaColorPicker(frame: CGRect(origin: .zero, size: CGSize(290)))
     private let brightnessSlider = ChromaBrightnessSlider()
     private let colorView = ThemeColorCollectionViewCell.ColorView()
     private var textField: UITextField = {
@@ -51,7 +51,7 @@ class ColorPickerView: BaseView {
         colorPicker.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.size.equalTo(ColorPickerView.colorPickerSize)
+            make.size.equalTo(colorPickerSize)
         }
         
         view.addSubview(brightnessSlider)
@@ -189,18 +189,18 @@ class ColorPickerView: BaseView {
         colorPickerContainerView.snp.makeConstraints { make in
             make.top.equalTo(navigationView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom + R.Size.ButtonExtraLarge + R.Size.ContentSpaceLarge)
+            make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ButtonExtraLarge + R.Size.ContentSpaceLarge)
         }
         
         addSubview(saveButton)
         saveButton.snp.makeConstraints { make in
-            if UIDevice.isPad || (UIDevice.isPhone && UIDevice.isLandscape) {
+            if UIDevice.isPad || (UIDevice.isPhone && proHUDLayoutStyle() == .landscape) {
                 make.width.equalTo(R.Size.ButtonMaxWidth)
                 make.centerX.equalToSuperview()
             } else {
                 make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(R.Size.ContentSpaceHuge)
             }
-            make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+            make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
             make.height.equalTo(R.Size.ButtonExtraLarge)
         }
     }
@@ -232,7 +232,7 @@ extension ColorPickerView: ShowableView {
     }
     
     var prefferdConstraintHeight: CGFloat? {
-        if UIDevice.isPhone, UIDevice.isPortrait {
+        if UIDevice.isPhone, proHUDLayoutStyle() == .portrait {
             return 582
         }
         return R.Size.SheetWindowMaxSize.height
@@ -249,11 +249,11 @@ extension ColorPickerView: ViewTransition {
     func viewAlongsideTransition() {
         if UIDevice.isPhone {
             colorPicker.snp.updateConstraints { make in
-                make.size.equalTo(ColorPickerView.colorPickerSize)
+                make.size.equalTo(colorPickerSize)
             }
             
             saveButton.snp.updateConstraints { make in
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
             }
         }
         

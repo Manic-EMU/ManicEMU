@@ -39,11 +39,11 @@ class PlayHistoryView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.contentInset = .insets(top: R.Size.ContentSpaceSmall,
-                                    bottom: R.Size.ContentInsetBottom)
+                                    bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         view.blankSlateView = PlayHistoryBlankSlateView(tapAction: { [weak self] type in
             guard let self = self else { return }
             if type == .importGame {
-                FilesImporter.shared.presentImportController(supportedTypes: UTType.gameTypes)
+                FilesImporter.shared.presentImportController(supportedTypes: UTType.gameTypes, in: self.hostingWindowScene)
             } else if type == .startGame {
                 if self.showAsSheet {
                     self.hide()
@@ -64,7 +64,7 @@ class PlayHistoryView: BaseView {
     
     required init?(parameters: Any...) {
         self.asSideMenu = parameters.compactMap({ $0 as? Bool }).first ?? false
-        super.init(frame: CGRect(origin: .zero, size: R.Size.WindowSize))
+        super.init(frame: CGRect(origin: .zero, size: R.Size.ApplicationWindowSize))
         
         addSubview(navigationView)
         navigationView.snp.makeConstraints { make in

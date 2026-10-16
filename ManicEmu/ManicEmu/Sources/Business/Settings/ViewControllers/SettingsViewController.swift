@@ -50,32 +50,62 @@ class SettingsViewController: BaseViewController {
                     make.edges.equalToSuperview()
                 }
             }
-            settingsListView.snp.makeConstraints { make in
-                make.leading.top.bottom.equalToSuperview()
-                make.width.equalTo(R.Size.SideMenuWidth*1.2)
-            }
-            
-            view.addSubview(cornerMaskViewForiPad)
-            cornerMaskViewForiPad.snp.makeConstraints { make in
-                make.edges.equalTo(settingsListView)
-            }
-            
-            view.addSubview(detailContentView)
-            detailContentView.snp.makeConstraints { make in
-                make.top.trailing.bottom.equalToSuperview()
-                make.leading.equalTo(settingsListView.snp.trailing).offset(R.Size.ContentSpaceMedium)
-            }
-            
-            view.addSubview(detailMaskViewForiPad)
-            detailMaskViewForiPad.snp.makeConstraints { make in
-                make.edges.equalTo(detailContentView)
-            }
             
             let themeView = ThemeSettingView(showClose: false)
             detailContentView.addSubview(themeView)
             themeView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.isPad, hostingWindow != nil {
+            updateViewsForIpad()
+        }
+    }
+    
+    private func updateViewsForIpad() {
+        guard UIDevice.isPad else { return }
+        guard let hostingWindow else { return }
+        if view.isWindowHasEnoughSpaceforIpadMultiColumnLayout {
+            let sideMenuWidth = R.Size.SideMenuWidth(window: hostingWindow)*1.2
+            settingsListView.snp.remakeConstraints { make in
+                make.leading.top.bottom.equalToSuperview()
+                if sideMenuWidth <= hostingWindow.width/2 {
+                    make.width.equalTo(sideMenuWidth)
+                } else {
+                    make.width.equalTo(hostingWindow.width/2)
+                }
+            }
+            
+            cornerMaskViewForiPad.removeFromSuperview()
+            view.addSubview(cornerMaskViewForiPad)
+            cornerMaskViewForiPad.snp.remakeConstraints { make in
+                make.edges.equalTo(settingsListView)
+            }
+            
+            detailContentView.removeFromSuperview()
+            view.addSubview(detailContentView)
+            detailContentView.snp.remakeConstraints { make in
+                make.top.trailing.bottom.equalToSuperview()
+                make.leading.equalTo(settingsListView.snp.trailing).offset(R.Size.ContentSpaceMedium)
+            }
+            
+            detailMaskViewForiPad.removeFromSuperview()
+            view.addSubview(detailMaskViewForiPad)
+            detailMaskViewForiPad.snp.remakeConstraints { make in
+                make.edges.equalTo(detailContentView)
+            }
+        } else {
+            settingsListView.snp.remakeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            }
+            cornerMaskViewForiPad.removeFromSuperview()
+            detailContentView.removeFromSuperview()
+            detailMaskViewForiPad.removeFromSuperview()
         }
     }
 }

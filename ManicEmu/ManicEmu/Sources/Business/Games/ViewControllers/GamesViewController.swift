@@ -16,18 +16,19 @@ class GamesViewController: BaseViewController {
     private lazy var gamesNavigationView: GamesNavigationView = {
         let view = GamesNavigationView()
         view.controllerButton.didTapButton = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.showSideMenu(leftSide: true)
         }
         
         view.historyButton.didTapButton = { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.showSideMenu(leftSide: false)
         }
         
         view.scrollToTopView.addTapGesture { [weak self] gesture in
-            if UIDevice.isPhone && UIDevice.isLandscape {
-                self?.gamesListView?.scrollToTop()
+            guard let self else { return }
+            if UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape {
+                self.gamesListView?.scrollToTop()
             }
         }
         
@@ -94,7 +95,7 @@ class GamesViewController: BaseViewController {
         view.needsUpdateToolViewVisible = { [weak self] show in
             guard let self = self,
                   UIDevice.isPhone,
-                  !UIDevice.isLandscape,
+                  self.view.prefferedLayoutStyle == .portrait,
                   self.gamesToolView.isHidden != !show else { return }
             
             self.gamesListView?.snp.updateConstraints { make in
@@ -120,7 +121,7 @@ class GamesViewController: BaseViewController {
             if empty {
                 self.gamesToolView.stopSearch()
             }
-            if UIDevice.isPhone && UIDevice.isLandscape {
+            if UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape {
                 self.gamesToolView.isHidden = true
             } else {
                 self.gamesToolView.isHidden = empty
@@ -154,13 +155,13 @@ class GamesViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.updateViews()
+        self.updateViews(isLandscape: view.prefferedLayoutStyle == .landscape)
         //处理Launch Link
         if let launchGameID = ApplicationSceneDelegate.launchGameID {
             ApplicationSceneDelegate.launchGameID = nil
             let realm = Database.realm
             if let game = realm.object(ofType: Game.self, forPrimaryKey: launchGameID) {
-                game.handleTapAction(forceQuick: true)
+                game.handleTapAction(forceQuick: true, in: hostingWindowScene)
             }
         } else {
             DispatchQueue.main.asyncAfter(delay: 5, execute: {
@@ -188,9 +189,7 @@ class GamesViewController: BaseViewController {
         super.viewWillTransition(to: size, with: coordinator)
         //侧栏关闭不阻塞视图交接 否则横屏视图会先被压到竖屏宽度再卸载
         hideSideMenu()
-        
-        let isTargetLandscape = size.width > size.height
-        if isTargetLandscape {
+        if size.IsRelativelyWideRectangle {
             //竖→横：等父容器已经是横屏尺寸后再挂上横屏视图 避免导航栏在430宽度下约束冲突
             coordinator.animate(alongsideTransition: { [weak self] _ in
                 self?.updateViews(isLandscape: true)
@@ -206,7 +205,7 @@ class GamesViewController: BaseViewController {
     }
     
     override func handleScreenPanGesture(edges: UIRectEdge, gesture: UIScreenEdgePanGestureRecognizer) {
-        if UIDevice.isPhone || (UIDevice.isPad && !UIDevice.isLandscape) {
+        if UIDevice.isPhone || (UIDevice.isPad && view.prefferedLayoutStyle == .portrait) {
             if edges == .left {
                 showSideMenu(leftSide: true)
             } else if edges == .right {
@@ -241,7 +240,7 @@ class GamesViewController: BaseViewController {
                 guard let self = self else { return }
                 if Settings.defalut.quickGame {
                     self.hideSideMenu(completion: {
-                        game.handleTapAction(forceQuick: true)
+                        game.handleTapAction(forceQuick: true, in: self.hostingWindowScene)
                     })
                 } else {
                     // Wait for side menu dismiss before presenting GameInfo; overlapping
@@ -263,10 +262,10 @@ class GamesViewController: BaseViewController {
         menu.presentDuration = R.Numbers.LongAnimationDuration
         menu.dismissDuration = R.Numbers.LongAnimationDuration
         menu.leftSide = leftSide
-        menu.menuWidth = R.Size.SideMenuWidth
+        menu.menuWidth = R.Size.SideMenuWidth(window: hostingWindow)
         menu.presentationStyle = SideMenuShowStyle()
         sideMenu = menu
-        topViewController()?.present(menu, animated: true)
+        topViewController(in: hostingWindowScene)?.present(menu, animated: true)
     }
     
     private func hideSideMenu(completion: (()->Void)? = nil) {
@@ -278,7 +277,7 @@ class GamesViewController: BaseViewController {
     }
     
     ///按目标方向交接横竖屏列表 先挂上新视图再卸掉旧视图 避免露出底层背景
-    private func updateViews(isLandscape: Bool = UIDevice.isLandscape) {
+    private func updateViews(isLandscape: Bool) {
         if isLandscape {
             if gameListLandscapeView?.superview != nil { return }
             
@@ -305,7 +304,7 @@ class GamesViewController: BaseViewController {
                 view.addSubview(gamesNavigationView)
             }
             gamesNavigationView.snp.remakeConstraints { make in
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
                 make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
                 make.height.equalTo(R.Size.ItemHeightMedium)
             }
@@ -368,12 +367,12 @@ class GamesViewController: BaseViewController {
     }
     
     func updateLandscapeBackgroundIfNeed() {
-        guard UIDevice.isLandscape else { return }
+        guard view.prefferedLayoutStyle == .landscape else { return }
         gameListLandscapeView?.updateFocusedGameInfo()
     }
     
     func scrollToLastGame() {
-        if UIDevice.isLandscape {
+        if view.prefferedLayoutStyle == .landscape {
             gameListLandscapeView?.scrollToLastGame()
         } else {
             gamesListView?.scrollToLastGame()
@@ -381,7 +380,7 @@ class GamesViewController: BaseViewController {
     }
     
     func scrollToFirstGame() {
-        if UIDevice.isLandscape {
+        if view.prefferedLayoutStyle == .landscape {
             gameListLandscapeView?.scrollToFirstGame()
         } else {
             gamesListView?.scrollToFirstGame()

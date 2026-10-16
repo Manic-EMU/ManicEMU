@@ -154,7 +154,7 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
             Self.launchGameID = nil
             let realm = Database.realm
             if let game = realm.object(ofType: Game.self, forPrimaryKey: launchGameID) {
-                game.handleTapAction(forceQuick: true)
+                game.handleTapAction(forceQuick: true, in: nil)
             }
         }
         
@@ -187,11 +187,33 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
                 DispatchQueue.main.asyncAfter(delay: 1.5) {
                     if newFileUrls.count > 0 {
-                        FilesImporter.importFiles(urls: newFileUrls)
+                        FilesImporter.importFiles(urls: newFileUrls, in: nil)
                     }
                 }
             }
         }
+    }
+    
+    func windowScene(_ windowScene: UIWindowScene, didUpdate previousCoordinateSpace: any UICoordinateSpace, interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation, traitCollection previousTraitCollection: UITraitCollection) {
+        if #available(iOS 26.0, tvOS 26.0, *) {
+            return
+        }
+        //Use this method to handle the following geometry changes in iOS26 and below.
+    }
+    
+    @available(iOS 26.0, tvOS 26.0, *)
+    func windowScene(_ windowScene: UIWindowScene, didUpdateEffectiveGeometry previousEffectiveGeometry: UIWindowScene.Geometry) {
+        //Use this method to handle the following geometry changes above iOS26.
+    }
+    
+    @available(iOS 27.0, tvOS 27.0, *)
+    func supportedInterfaceOrientations(for windowScene: UIWindowScene) -> UIInterfaceOrientationMask {
+        return OrientationLockPin.resolvedMask(for: window)
+    }
+    
+    @available(iOS 26.0, tvOS 26.0, *)
+    func preferredWindowingControlStyle(for windowScene: UIWindowScene) -> UIWindowScene.WindowingControlStyle {
+        return .minimal
     }
 }
 
@@ -257,7 +279,7 @@ extension ApplicationSceneDelegate: UIDropInteractionDelegate {
             // 所有操作完成后刷新UI
             dispatchGroup.notify(queue: .main) {
                 if urls.count > 0 {
-                    FilesImporter.importFiles(urls: urls, preErrors: errors)
+                    FilesImporter.importFiles(urls: urls, preErrors: errors, in: nil)
                 } else {
                     UIView.hideLoading()
                     UIView.makeToast(message: R.string.localizable.dropErrorLoadFailed())

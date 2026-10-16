@@ -45,12 +45,12 @@ extension ShareManager: UIActivityItemSource {
         return metadata
     }
     
-    static func shareApp(senderForIpad: UIView? = nil) {
+    static func shareApp(senderForIpad: UIView? = nil, in scene: UIWindowScene?) {
         let activityViewController = UIActivityViewController(activityItems: [ShareManager.shared], applicationActivities: nil)
         //分享App的链接
         activityViewController.excludedActivityTypes = [.saveToCameraRoll, .airDrop, .copyToPasteboard, .print]
         DispatchQueue.main.async {
-            if let topVc = topViewController() {
+            if let topVc = topViewController(in: scene) {
                 if let ppvc = activityViewController.popoverPresentationController {
                     ppvc.sourceView = senderForIpad
                 }
@@ -61,7 +61,7 @@ extension ShareManager: UIActivityItemSource {
 }
 
 extension ShareManager {
-    static func shareFiles(games: [Game], shareFileType: ShareFileType) {
+    static func shareFiles(games: [Game], shareFileType: ShareFileType, in scene: UIWindowScene?) {
         guard games.count > 0 else {
             UIView.makeToast(message: {
                 switch shareFileType {
@@ -107,7 +107,7 @@ extension ShareManager {
                 }
             }
             
-            if let topVc = topViewController() {
+            if let topVc = topViewController(in: scene) {
                 let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
                 if let ppvc = activityViewController.popoverPresentationController {
                     ppvc.sourceView = topVc.view
@@ -157,7 +157,7 @@ extension ShareManager {
                 return
             }
             
-            if let topVc = topViewController() {
+            if let topVc = topViewController(in: scene) {
                 let activityViewController = UIActivityViewController(activityItems: urls, applicationActivities: nil)
                 if let ppvc = activityViewController.popoverPresentationController {
                     ppvc.sourceView = topVc.view
@@ -167,17 +167,17 @@ extension ShareManager {
         }
     }
     
-    static func shareFile(fileUrl: URL) {
+    static func shareFile(fileUrl: URL, in scene: UIWindowScene?) {
         guard FileManager.default.fileExists(atPath: fileUrl.path) else {
             UIView.makeToast(message: R.string.localizable.shareFileFailedMissing())
             return
         }
         
-        shareFiles(fileUrls: [fileUrl])
+        shareFiles(fileUrls: [fileUrl], in: scene)
     }
     
-    static func shareFiles(fileUrls: [URL]) {
-        if let topVc = topViewController() {
+    static func shareFiles(fileUrls: [URL], in scene: UIWindowScene?) {
+        if let topVc = topViewController(in: scene) {
             let activityViewController = UIActivityViewController(activityItems: fileUrls, applicationActivities: nil)
             if let ppvc = activityViewController.popoverPresentationController {
                 ppvc.sourceView = topVc.view
@@ -186,7 +186,7 @@ extension ShareManager {
         }
     }
     
-    static func shareImage(image: UIImage) {
+    static func shareImage(image: UIImage, in scene: UIWindowScene?) {
         // 1. 保存图片到临时目录
         guard let data = image.pngData() else { return }
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("shared.png")
@@ -198,7 +198,7 @@ extension ShareManager {
         } catch {
             return
         }
-        shareFile(fileUrl: tempURL)
+        shareFile(fileUrl: tempURL, in: scene)
     }
     
     private static func create3DSGameSave(urls: [String: URL]) -> URL? {

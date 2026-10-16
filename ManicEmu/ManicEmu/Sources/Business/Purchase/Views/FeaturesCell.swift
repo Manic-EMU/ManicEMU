@@ -10,7 +10,6 @@
 import Device
 
 class FeaturesCell: UICollectionViewCell {
-    private var viewAlongsideTransitionNotification: Any? = nil
     
     private var titleLabel: UILabel = {
         let view = UILabel()
@@ -28,11 +27,6 @@ class FeaturesCell: UICollectionViewCell {
     private var iconImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .center
-        if Device.size().rawValue < Size.screen5_8Inch.rawValue {
-            view.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        } else if UIDevice.isPad, UIDevice.isLandscape {
-            view.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
-        }
         return view
     }()
     
@@ -70,17 +64,24 @@ class FeaturesCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        if Device.size().rawValue < Size.screen5_8Inch.rawValue {
+            if prefferedLayoutStyle == .landscape {
+                iconImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            } else {
+                iconImageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            }
+        } else if UIDevice.isPad {
+            if prefferedLayoutStyle == .landscape {
+                iconImageView.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
+            } else {
+                iconImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }
+        }
         gradientMaskLayer.frame = self.bounds
         if enableAnimation {
             startAnimation()
         } else {
             stopAnimation()
-        }
-    }
-    
-    deinit {
-        if let viewAlongsideTransitionNotification {
-            NotificationCenter.default.removeObserver(viewAlongsideTransitionNotification)
         }
     }
     
@@ -151,27 +152,6 @@ class FeaturesCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-R.Size.ItemHeightMicro)
         }
-        
-        viewAlongsideTransitionNotification = NotificationCenter.default.addObserver(forName: R.NotificationName.ViewAlongsideTransition,
-                                                                                     object: nil,
-                                                                                     queue: .main,
-                                                                                     using: { [weak self] _ in
-            guard let self else { return }
-            if Device.size().rawValue < Size.screen5_8Inch.rawValue {
-                if UIDevice.isLandscape {
-                    self.iconImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                } else {
-                    self.iconImageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-                }
-            } else if UIDevice.isPad {
-                if UIDevice.isLandscape {
-                    self.iconImageView.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
-                } else {
-                    self.iconImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                }
-            }
-        })
-        
     }
     
     required init?(coder: NSCoder) {
@@ -242,13 +222,14 @@ class FeaturesCell: UICollectionViewCell {
         stopAnimation()
         var offset: CGFloat
         let animation = CABasicAnimation(keyPath: "position.x")
+        let windowSize = hostingWindow?.size ?? R.Size.ApplicationWindowSize
         if UIDevice.isPad {
-            offset = (UIDevice.isLandscape ? R.Size.WindowHeight * 0.9 * 9 / 16 : R.Size.WindowWidth * 0.6)  - iconImageView.width
+            offset = (prefferedLayoutStyle == .landscape ? windowSize.height * 0.9 * 9 / 16 : windowSize.width * 0.6)  - iconImageView.width
         } else {
-            if UIDevice.isLandscape {
-                offset = R.Size.WindowWidth/2 - iconImageView.width
+            if prefferedLayoutStyle == .landscape {
+                offset = windowSize.width/2 - iconImageView.width
             } else {
-                offset = R.Size.WindowWidth - iconImageView.width
+                offset = windowSize.width - iconImageView.width
             }
         }
         

@@ -165,13 +165,13 @@ class BIOSSelectionView: BaseView {
                                                                  titleIcon: .symbolImage(R.image.bios_iconSymbols()))
         navigation.enableClose = showClose
         
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
         
         return ASListPage(navigation: navigation,
                           sections: sections,
                           backgroundColor: .clear,
                           listInsets: .insets(bottom: listInsetBottom),
-                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop))
+                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow)))
     }
     
     private func getCell(item: BIOSItem) -> ASListPage.Cell {
@@ -301,7 +301,7 @@ class BIOSSelectionView: BaseView {
             if let indexPath = action.listPageValue?.normalItemValue?.indexPath,
                indexPath.section < regions.count {
                 let region = regions[indexPath.section]
-                FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: false) { urls in
+                FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: false, manualHandle: { urls in
                     UIView.makeLoading()
                     DispatchQueue.global().async {
                         // Match IPL.bin case-insensitively; always write as IPL.bin.
@@ -336,7 +336,7 @@ class BIOSSelectionView: BaseView {
                             }
                         }
                     }
-                }
+                }, in: self?.hostingWindowScene)
                 return .none
             }
             return .dismiss()
@@ -345,7 +345,8 @@ class BIOSSelectionView: BaseView {
     
     private func importBios(gameType: GameType) {
         func importFromFiles() {
-            FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: true) {  urls in
+            FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: true, manualHandle: { [weak self] urls in
+                guard let self else { return }
                 UIView.makeLoading()
                 DispatchQueue.global().async { [weak self] in
                     guard let self else { return }
@@ -442,7 +443,7 @@ class BIOSSelectionView: BaseView {
                         }
                     }
                 }
-            }
+            }, in: hostingWindowScene)
         }
         
         if gameType == ._3ds {
@@ -500,7 +501,7 @@ class BIOSSelectionView: BaseView {
         if path.pathExtension.lowercased() == "app", let tid = pathToTid(path) {
             if R.Numbers.ThreeDSHomeMenuIdentifiers.contains(where: { $0 == tid }) {
                 //识别到了3dS的home menu
-                FilesImporter.importFiles(urls: [URL(fileURLWithPath: path)], silentMode: true)
+                FilesImporter.importFiles(urls: [URL(fileURLWithPath: path)], silentMode: true, in: hostingWindowScene)
             }
         }
         

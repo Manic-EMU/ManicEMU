@@ -22,7 +22,7 @@ class RetroAchievementListView: BaseView {
         view.showsVerticalScrollIndicator = false
         view.dataSource = self
         view.contentInset = .insets(top: 90,
-                                    bottom: R.Size.ContentInsetBottom)
+                                    bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         let blankView = BlankSlateEmptyView(image: .symbolImage(.gamecontrollerFill).applySymbolConfig(size: 70, color: R.Color.LabelSecondary), title: R.string.localizable.achievementsNotSupport(game.displayName))
         blankView.label.isHidden = true
         view.blankSlateView = blankView

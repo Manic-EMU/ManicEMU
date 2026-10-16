@@ -272,7 +272,7 @@ class GamehackingView: BaseView {
         view.allowsBackForwardNavigationGestures = false
         view.isOpaque = false
         view.backgroundColor = R.Color.BackgroundPrimary
-        view.scrollView.contentInset = .insets(bottom: R.Size.ContentInsetBottom + R.Size.ButtonExtraLarge + R.Size.ContentSpaceLarge)
+        view.scrollView.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ButtonExtraLarge + R.Size.ContentSpaceLarge)
         
         return view
     }()
@@ -309,13 +309,13 @@ class GamehackingView: BaseView {
         }
         addSubview(saveButton)
         saveButton.snp.makeConstraints { make in
-            if UIDevice.isPad || (UIDevice.isPhone && UIDevice.isLandscape) {
+            if UIDevice.isPad || (UIDevice.isPhone && proHUDLayoutStyle() == .landscape) {
                 make.width.equalTo(R.Size.ButtonMaxWidth)
                 make.centerX.equalToSuperview()
             } else {
                 make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(R.Size.ContentSpaceHuge)
             }
-            make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+            make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
             make.height.equalTo(R.Size.ButtonExtraLarge)
         }
         

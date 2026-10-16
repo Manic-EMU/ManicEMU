@@ -205,7 +205,7 @@ class ControllerMappingView: BaseView {
         
         addSubview(navigationView)
         navigationView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(R.Size.SafeArea.top)
+            make.top.equalTo(safeAreaLayoutGuide)
             make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(R.Size.ContentSpaceHuge)
             make.height.equalTo(R.Size.NavigationHeight)
         }
@@ -220,7 +220,8 @@ class ControllerMappingView: BaseView {
     
     private func updateDatas() {
         if let controlerSkin = ControllerSkin.standardControllerSkin(for: gameType),
-            let frames = controlerSkin.getFrames() {
+           let hostingWindow,
+            let frames = controlerSkin.getFrames(window: hostingWindow) {
             controllerView.controllerSkin = controlerSkin
             controllerView.snp.remakeConstraints { make in
                 make.center.equalToSuperview()
@@ -432,7 +433,7 @@ class ControllerMappingView: BaseView {
     
     private func setupMappingBubble() {
         inputPopupView.subviews.forEach { $0.removeFromSuperview() }
-        let traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.WindowSize)))
+        let traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.ApplicationWindowSize)))
         if let items = controllerView.controllerSkin?.items(for: traits) {
             for item in items {
                 let scaledFrame = item.frame.applying(.init(scaleX: inputPopupView.width, y: inputPopupView.height))

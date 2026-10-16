@@ -36,7 +36,7 @@ class PretendoNetworkingView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.isFocusable = true
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     
@@ -223,7 +223,7 @@ extension PretendoNetworkingView: UICollectionViewDataSource {
                     }).filter({
                         $0.isArticBaseHomeMenu
                     }).first {
-                        game.handleTapAction(forceQuick: true)
+                        game.handleTapAction(forceQuick: true, in: self.hostingWindowScene)
                         return true
                     } else {
                         return false

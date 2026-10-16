@@ -39,7 +39,7 @@ class AddCheatCodeView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.isFocusable = true
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom + R.Size.ButtonExtraLarge + R.Size.ContentSpaceMedium)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ButtonExtraLarge + R.Size.ContentSpaceMedium)
         return view
     }()
     
@@ -47,7 +47,7 @@ class AddCheatCodeView: BaseView {
         let view = UIView()
         view.addSubview(saveButton)
         saveButton.snp.makeConstraints { make in
-            if UIDevice.isPad || (UIDevice.isPhone && UIDevice.isLandscape) {
+            if UIDevice.isPad || (UIDevice.isPhone && proHUDLayoutStyle() == .landscape) {
                 make.width.equalTo(R.Size.ButtonMaxWidth)
                 make.centerX.equalToSuperview()
             } else {

@@ -155,9 +155,9 @@ class PlayViewController: GameViewController {
     //皮肤中的Switch绑定数据
     private var skinSwitchBindDatas = [String: Bool]()
     
-    static func startGame(game: Game, saveState: GameSaveState? = nil) {
+    static func startGame(game: Game, saveState: GameSaveState? = nil, in scene: UIWindowScene?) {
         if game.isUrlGame {
-            game.handleTapAction(forceQuick: true)
+            game.handleTapAction(forceQuick: true, in: scene)
             return
         }
         if game.gameType == .ns {
@@ -204,17 +204,17 @@ class PlayViewController: GameViewController {
                         LibretroCore.sharedInstance().workspace = R.Path.Libretro
                     }
                     if pretendoNetworkingViewHasShownInstance {
-                        topViewController()?.present(PlayViewController(game: game, saveState: saveState), animated: true)
-                    } else if let homeVC = ApplicationSceneDelegate.applicationWindow?.rootViewController as? HomeViewController {
+                        topViewController(in: scene)?.present(PlayViewController(game: game, saveState: saveState), animated: true)
+                    } else if let homeVC = UIWindow.applicationWindow?.rootViewController as? HomeViewController {
                         if let vc = homeVC.presentedViewController {
                             vc.dismiss(animated: true) {
-                                topViewController(appController: true)?.present(PlayViewController(game: game, saveState: saveState), animated: true)
+                                topApplicationViewController()?.present(PlayViewController(game: game, saveState: saveState), animated: true)
                             }
                         } else {
-                            topViewController(appController: true)?.present(PlayViewController(game: game, saveState: saveState), animated: true)
+                            topApplicationViewController()?.present(PlayViewController(game: game, saveState: saveState), animated: true)
                         }
                     } else {
-                        topViewController(appController: true)?.present(PlayViewController(game: game, saveState: saveState), animated: true)
+                        topApplicationViewController()?.present(PlayViewController(game: game, saveState: saveState), animated: true)
                     }
                 }
                 if game.gameType == ._3ds, !UIDevice.current.hasA11ProcessorOrBetter, !UserDefaults.standard.bool(forKey: R.DefaultKey.HasShow3DSNotSupportAlert) {
@@ -293,7 +293,7 @@ class PlayViewController: GameViewController {
             FilesSyncManager.shared.ensureROM(for: game) { error in
                 UIView.hideLoading()
                 if error == nil, game.isRomExtsts {
-                    startGame(game: game, saveState: saveState)
+                    startGame(game: game, saveState: saveState, in: scene)
                 } else if FilesSyncManager.shared.romAvailability(for: game) == .syncing {
                     if availability != .syncing {
                         UIView.makeToast(message: R.string.localizable.iCloudROMStillSyncing())
@@ -519,7 +519,7 @@ class PlayViewController: GameViewController {
                 UIView.hideAllAlert()
             }
             
-            GameOption.quit.performAction(with: [self.manicGame])
+            GameOption.quit.performAction(with: [self.manicGame], in: self.hostingWindowScene)
         })
         notificationTokens.append(center.addObserver(forName: R.NotificationName.MotionShake, object: nil, queue: .main) { [weak self] notification in
             //设备晃动通知
@@ -702,7 +702,7 @@ class PlayViewController: GameViewController {
             //重置游戏通知
             guard let self else { return }
             UIView.hideAllAlert()
-            GameOption.reload.performAction(with: [self.manicGame])
+            GameOption.reload.performAction(with: [self.manicGame], in: self.hostingWindowScene)
         }))
         notificationTokens.append(center.addObserver(forName: R.NotificationName.SkinChange, object: nil, queue: .main, using: { [weak self] notification in
             //皮肤变更
@@ -723,7 +723,7 @@ class PlayViewController: GameViewController {
             DispatchQueue.main.asyncAfter(delay: 3) { [weak self] in
                 guard let self else { return }
                 UIView.hideAllAlert()
-                GameOption.quit.performAction(with: [self.manicGame])
+                GameOption.quit.performAction(with: [self.manicGame], in: self.hostingWindowScene)
             }
         })
         notificationTokens.append(center.addObserver(forName: Notification.Name(rawValue: "AmigaBiosMissingNotification"), object: nil, queue: .main) { notification in
@@ -932,7 +932,7 @@ class PlayViewController: GameViewController {
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if #available(iOS 26.0, *) {
-            return OrientationLockPin.resolvedMask(for: view.window)
+            return OrientationLockPin.resolvedMask(for: hostingWindow)
         }
         return super.supportedInterfaceOrientations
     }
@@ -954,7 +954,7 @@ class PlayViewController: GameViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         OrientationLockPin.resistPortraitTransitionIfNeeded(to: size)
-        let fromSize = R.Size.WindowSize
+        let fromSize = R.Size.ApplicationWindowSize
         let toSize = size
         if manicGame.orientation == .portrait {
             // Portrait lock: ignore landscape-bound transitions.
@@ -1135,7 +1135,8 @@ extension PlayViewController {
             }
             
         } else if manicGame.isLibretroType {
-            LibretroCore.sharedInstance().snapshot { snapshot in
+            LibretroCore.sharedInstance().snapshot { [weak self] snapshot in
+                guard let self else { return }
                 var image = snapshot
                 if (self.manicGame.gameType == .ds || self.manicGame.isAzahar3DS), let i = image {
                     image = self.snapShotForDualScreen(topOnly: true, source: i)?.first
@@ -1240,9 +1241,9 @@ extension PlayViewController {
                 }
             } else {
                 pauseEmulationIfNeed()
-                if UIDevice.isPhone && UIDevice.isPortrait {
+                if UIDevice.isPhone && view.prefferedLayoutStyle == .portrait {
                     var prefferedMenuHeight = view.height - gameView.frame.maxY
-                    if prefferedMenuHeight < R.Size.WindowHeight/3 {
+                    if prefferedMenuHeight < R.Size.ApplicationWindowSize.height/3 {
                         prefferedMenuHeight = R.Size.SheetWindowMaxSize.height/2
                     }
                     GameOptionsView.MaxHeightForGaming = max(prefferedMenuHeight, R.Size.SheetWindowMinSize.height)
@@ -1292,7 +1293,7 @@ extension PlayViewController {
                         
                         self.resumeEmulationAndHandleAudio()
                     }
-                    topViewController()?.present(vc, animated: true)
+                    topViewController(in: hostingWindowScene)?.present(vc, animated: true)
                 }
             }
             
@@ -1308,9 +1309,12 @@ extension PlayViewController {
             guard MappingOption.availableOptions(games: [manicGame]).contains(where: { $0 == mappingKey }) else { return }
             
             if let gameOption = mappingKey.gameOption {
-                gameOption.performAction(with: [manicGame], performImmediately: true)
+                gameOption.performAction(with: [manicGame],
+                                         in: hostingWindowScene,
+                                         performImmediately: true)
             } else if mappingKey == .j2meSettings || mappingKey == .dosSettings {
-                GameOption.coreSettings.performAction(with: [manicGame])
+                GameOption.coreSettings.performAction(with: [manicGame],
+                                                      in: hostingWindowScene)
             } else if mappingKey == .fastForward2x ||
                         mappingKey == .fastForward3x ||
                         mappingKey == .fastForward4x ||
@@ -2454,7 +2458,7 @@ extension PlayViewController {
             }
             
             if let result = Prefference.defalut.getPrefference(kind: .skin,
-                                                               storeKey: .orientationKey(gameId: manicGame.id, isLandScape: UIDevice.isLandscape),
+                                                               storeKey: .orientationKey(gameId: manicGame.id, isLandScape: view.prefferedLayoutStyle == .landscape),
                                                                bestEfforts: true),
                let skinId = result.skinValue?.skinId,
                let skin = Database.realm.object(ofType: Skin.self, forPrimaryKey: skinId),
@@ -2678,8 +2682,8 @@ extension PlayViewController {
                 if manicGame.gameType == .ds || manicGame.gameType == ._3ds {
                     dimensions.height = dimensions.height/2
                 }
-                if manicGame.isCitra3DS {
-                    dimensions = dimensions.applying(CGAffineTransform(scaleX: UIScreen.main.scale, y: UIScreen.main.scale))
+                if manicGame.isCitra3DS, let hostingWindow {
+                    dimensions = dimensions.applying(CGAffineTransform(scaleX: hostingWindow.screen.scale, y: hostingWindow.screen.scale))
                 }
                 aiplayScaledDimensions = airPlayViewController.addLibretroView(gameMetalView, dimensions: dimensions, scalingType: Settings.defalut.airPlayScaling)
                 updateDualScreenViews()
@@ -2701,6 +2705,9 @@ extension PlayViewController {
         if (manicGame.gameType == ._3ds && UIDevice.isPad) || manicGame.isAzaharArticBase {
             return
         }
+        if let hostingWindow, UIDevice.isWindowAppIPad(window: hostingWindow) {
+            return 
+        }
         if let controllerSkin = controllerView.controllerSkin {
             if let skin = Database.realm.objects(Skin.self).first(where: { $0.identifier == controllerSkin.identifier }) {
                 if skin.supportShortcut {
@@ -2719,7 +2726,7 @@ extension PlayViewController {
                         if (manicGame.gameType == .ds && UIDevice.isPad) ||
                             manicGame.gameType == .wii ||
                             manicGame.gameType == .ngc ||
-                            (manicGame.gameType == .pce && !UIDevice.isLandscape) ||
+                            (manicGame.gameType == .pce && view.prefferedLayoutStyle == .portrait) ||
                             manicGame.gameType.usesDOSSkinLayout ||
                             manicGame.gameType == .wsc {
                             iconColor = .black.withAlphaComponent(0.25)
@@ -2730,7 +2737,9 @@ extension PlayViewController {
                         button.didTapButton = { [weak self] in
                             guard let self, shortcut != .rewind else { return }
                             shortcut.showSecondPromptIfNeed(continued: {
-                                shortcut.performAction(with: [self.manicGame], performImmediately: true)
+                                shortcut.performAction(with: [self.manicGame],
+                                                       in: self.hostingWindowScene,
+                                                       performImmediately: true)
                             })
                         }
                         button.didLongPressButton = { [weak self] state in
@@ -2817,7 +2826,7 @@ extension PlayViewController {
             shortcutsButtonContainer.snp.remakeConstraints { make in
                 if gameViews.count > 1 {
                     //iPhone ds布局比较特殊
-                    if UIDevice.isLandscape {
+                    if view.prefferedLayoutStyle == .landscape {
                         make.leading.equalTo(gameViews[0]).inset(-33)
                         make.trailing.equalTo(gameViews[1]).inset(-33)
                         make.top.equalToSuperview()
@@ -2835,7 +2844,7 @@ extension PlayViewController {
                             make.height.equalTo(96)
                         }
                     } else {
-                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard, !UIDevice.isLandscape {
+                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard, view.prefferedLayoutStyle == .portrait {
                             make.height.equalTo(87)
                         } else {
                             make.height.equalTo(113)
@@ -2845,15 +2854,15 @@ extension PlayViewController {
             }
         } else if manicGame.gameType.usesDOSSkinLayout, UIDevice.isPad {
             shortcutsButtonContainer.snp.updateConstraints { make in
-                make.top.equalTo(gameView.snp.bottom).offset(UIDevice.isLandscape ? 30 : 40)
+                make.top.equalTo(gameView.snp.bottom).offset(view.prefferedLayoutStyle == .landscape ? 30 : 40)
             }
         } else if manicGame.gameType == .ds, UIDevice.isPad {
             shortcutsButtonContainer.snp.updateConstraints { make in
-                make.top.equalTo(gameView.snp.bottom).offset(UIDevice.isLandscape ? 25 : 40)
+                make.top.equalTo(gameView.snp.bottom).offset(view.prefferedLayoutStyle == .landscape ? 25 : 40)
             }
-        } else if manicGame.gameType == .pm && !UIDevice.isLandscape {
+        } else if manicGame.gameType == .pm && view.prefferedLayoutStyle == .portrait {
             shortcutsButtonContainer.snp.updateConstraints { make in
-                make.leading.trailing.equalTo(gameView).inset(UIDevice.isLandscape ? 0 : 50)
+                make.leading.trailing.equalTo(gameView).inset(50)
             }
         }
     }
@@ -2861,7 +2870,7 @@ extension PlayViewController {
     private func updateCitra3DSViews() {
         guard manicGame.isCitra3DS else { return }
         guard let controllerSkin = controllerView.controllerSkin as? ControllerSkin else { return }
-        guard let frames = controllerSkin.getFrames() else { return }
+        guard let hostingWindow, let frames = controllerSkin.getFrames(window: hostingWindow) else { return }
         guard let touchGameViewFrame = frames.touchGameViewFrame else { return }
         
         Log.debug("更新3DS视图 frames:\(frames)")
@@ -3167,7 +3176,7 @@ extension PlayViewController {
             
             j2meView.onExit = { [weak self] in
                 guard let self = self else { return }
-                GameOption.quit.performAction(with: [self.manicGame])
+                GameOption.quit.performAction(with: [self.manicGame], in: self.hostingWindowScene)
             }
             
             var loadSuccess = false
@@ -3264,13 +3273,14 @@ extension PlayViewController {
         let isOriginalShader = usingShaderPath == nil || usingShaderPath == ""
         
         if ExternalSceneDelegate.isAirPlaying {
+            guard let hostingWindow else { return }
             let layoutType = Settings.defalut.airPlayLayout
             var layout: String = ""
             let ratio = 0.3
             
-            let scale = isOriginalShader ? UIScreen.main.scale : 1.25
+            let scale = isOriginalShader ? hostingWindow.screen.scale : 1.25
             let dimensions = aiplayScaledDimensions.applying(CGAffineTransform(scaleX: scale, y: scale))
-            let bufferSize = "\(dimensions.width),\(dimensions.height)"
+            let bufferSize = "\(dimensions.width.rounded1()),\(dimensions.height.rounded1())"
             let bottomRatio = 0.75 //NDS和3DS的bottom屏幕都是3:4
             switch layoutType {
             case .embeddedTopLeft, .embeddedTopRight, .embeddedBottomLeft, .embeddedBottomRight:
@@ -3319,9 +3329,9 @@ extension PlayViewController {
                 } else if layoutType == .largeSmallBottomRight {
                     bottomOrigin = CGPoint(x: dimensions.width*(1-ratio), y: topY + topHeight - bottomHeight)
                 }
-                layout = "\(topX),\(topY),\(topWidth),\(topHeight),\(bottomOrigin.x),\(bottomOrigin.y),\(bottomWidth),\(bottomHeight),\(bufferSize)"
+                layout = "\(topX.rounded1()),\(topY.rounded1()),\(topWidth.rounded1()),\(topHeight.rounded1()),\(bottomOrigin.x.rounded1()),\(bottomOrigin.y.rounded1()),\(bottomWidth.rounded1()),\(bottomHeight.rounded1()),\(bufferSize)"
             case .singleScreen:
-                layout = "\(0),\(0),\(dimensions.width),\(dimensions.height),\(0),\(0),\(0),\(0),\(bufferSize)"
+                layout = "\(0),\(0),\(dimensions.width.rounded1()),\(dimensions.height.rounded1()),\(0),\(0),\(0),\(0),\(bufferSize)"
                 
             }
             
@@ -3361,7 +3371,7 @@ extension PlayViewController {
         } else {
             //屏幕需要跟随gameViews的更新而更新
             guard let controllerSkin = controllerView.controllerSkin as? ControllerSkin else { return }
-            guard let frames = controllerSkin.getFrames() else { return }
+            guard let hostingWindow, let frames = controllerSkin.getFrames(window: hostingWindow) else { return }
             guard let libretroViewFrame = getDualScreenViewFrame() else { return }
             
             if manicGame.isCitra3DS {
@@ -3376,7 +3386,7 @@ extension PlayViewController {
             var layout = ""
             let absX = abs(skinframe.minX - libretroViewFrame.minX)
             let absY = abs(skinframe.minY - libretroViewFrame.minY)
-            let scale = isOriginalShader ? UIScreen.main.scale : 1.25
+            let scale = isOriginalShader ? hostingWindow.screen.scale : 1.25
             let scaleTransform = CGAffineTransform(scaleX: scale, y: scale)
             var touchGameViewFrame = CGRect.zero
             if var bottomFrame = frames.touchGameViewFrame {
@@ -3389,20 +3399,20 @@ extension PlayViewController {
                 let scaleTopFrame = topFrame.applying(scaleTransform)
                 let scaleBottomFrame = bottomFrame.applying(scaleTransform)
                 
-                if !isOriginalShader, manicGame.gameType == ._3ds, UIDevice.isLandscape {
+                if !isOriginalShader, manicGame.gameType == ._3ds, view.prefferedLayoutStyle == .landscape {
                     //fix 3DS Scale
-                    let fixScale = UIScreen.main.scale-scale
-                    layout = "\(scaleTopFrame.minX),\(scaleTopFrame.minY),\(scaleTopFrame.width),\(scaleTopFrame.height*fixScale),\(scaleBottomFrame.minX),\(scaleBottomFrame.minY),\(scaleBottomFrame.width),\(scaleBottomFrame.height*fixScale),\(bufferframe.width),\(bufferframe.height*fixScale)"
+                    let fixScale = hostingWindow.screen.scale-scale
+                    layout = "\(scaleTopFrame.minX.rounded1()),\(scaleTopFrame.minY.rounded1()),\(scaleTopFrame.width.rounded1()),\((scaleTopFrame.height*fixScale).rounded1()),\((scaleBottomFrame.minX).rounded1()),\(scaleBottomFrame.minY.rounded1()),\(scaleBottomFrame.width.rounded1()),\((scaleBottomFrame.height*fixScale).rounded1()),\(bufferframe.width.rounded1()),\((bufferframe.height*fixScale).rounded1())"
                 } else {
-                    layout = "\(scaleTopFrame.minX),\(scaleTopFrame.minY),\(scaleTopFrame.width),\(scaleTopFrame.height),\(scaleBottomFrame.minX),\(scaleBottomFrame.minY),\(scaleBottomFrame.width),\(scaleBottomFrame.height),\(bufferframe.width),\(bufferframe.height)"
+                    layout = "\(scaleTopFrame.minX.rounded1()),\(scaleTopFrame.minY.rounded1()),\(scaleTopFrame.width.rounded1()),\(scaleTopFrame.height.rounded1()),\(scaleBottomFrame.minX.rounded1()),\(scaleBottomFrame.minY.rounded1()),\(scaleBottomFrame.width.rounded1()),\(scaleBottomFrame.height.rounded1()),\(bufferframe.width.rounded1()),\(bufferframe.height.rounded1())"
                 }
-                Log.debug("更新双屏的layout libretroViewFrame:\(libretroViewFrame) top:\(topFrame) bottom:\(bottomFrame) layout: \(layout)")
+                Log.debug("[updateDualScreenViews]\n skinframes: \(frames)\n libretroViewFrame: \(libretroViewFrame)\n topFrame: \(topFrame)\n bottomFrame: \(bottomFrame)\n absX: \(absX)\n absY: \(absY)\n scale: \(scale)\n scaleTopFrame: \(scaleTopFrame)\n scaleBottomFrame: \(scaleBottomFrame)\n layout:  \(layout)")
             } else {
                 //单屏幕
                 let bufferframe = libretroViewFrame.applying(scaleTransform)
                 
-                layout = "\(max(bufferframe.minX, 0)),\(max(bufferframe.minY, 0)),\(bufferframe.width),\(bufferframe.height),\(0),\(0),\(0),\(0),\(bufferframe.width),\(bufferframe.height)"
-                Log.debug("更新单屏的layout libretroViewFrame:\(libretroViewFrame) layout: \(layout)")
+                layout = "\(max(bufferframe.minX, 0).rounded1()),\(max(bufferframe.minY, 0).rounded1()),\(bufferframe.width.rounded1()),\(bufferframe.height.rounded1()),\(0),\(0),\(0),\(0),\(bufferframe.width.rounded1()),\(bufferframe.height.rounded1())"
+                Log.debug("[updateDualScreenViews]\n skinframes: \(frames)\n libretroViewFrame: \(libretroViewFrame)\n scale: \(scale)\n bufferframe: \(bufferframe)\n layout: \(layout)")
             }
             
             if manicGame.gameType == .ds {
@@ -3530,7 +3540,7 @@ extension PlayViewController {
                     pauseEmulationIfNeed()
                 }
                 Log.debug("amiibo正在搜索中")
-                FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: false) { [weak self] urls in
+                FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: false, manualHandle: { [weak self] urls in
                     guard let self = self else { return }
                     self.resumeEmulationAndHandleAudio()
                     UIView.hideAllAlert { [weak self] in
@@ -3546,7 +3556,7 @@ extension PlayViewController {
                             }
                         }
                     }
-                }
+                }, in: hostingWindowScene)
             } else {
                 Log.debug("amiibo没有搜索")
                 UIView.makeToast(message: R.string.localizable.amiiboNotSearching())
@@ -3662,7 +3672,7 @@ extension PlayViewController {
     
     private func snapShotFor3DS(topOnly: Bool = false) -> [UIImage]? {
         guard let controllerSkin = controllerView.controllerSkin as? ControllerSkin else { return nil }
-        guard let frames = controllerSkin.getFrames() else { return nil }
+        guard let hostingWindow, let frames = controllerSkin.getFrames(window: hostingWindow) else { return nil }
         guard let touchGameViewFrame = frames.touchGameViewFrame else { return nil }
         let skinFrame = frames.skinFrame
         let mainGameViewFrame = frames.mainGameViewFrame
@@ -3678,11 +3688,11 @@ extension PlayViewController {
     
     private func snapShotForDualScreen(topOnly: Bool = false, source: UIImage) -> [UIImage]? {
         guard let controllerSkin = controllerView.controllerSkin as? ControllerSkin else { return nil }
-        guard let frames = controllerSkin.getFrames() else { return nil }
+        guard let hostingWindow, let frames = controllerSkin.getFrames(window: hostingWindow) else { return nil }
         guard let libretroViewFrame = getDualScreenViewFrame() else { return nil }
         
         var screenImage = source
-        if screenImage.scale != UIScreen.main.scale, let imageData = screenImage.pngData(), let scaleImage = UIImage(data: imageData, scale: UIScreen.main.scale) {
+        if screenImage.scale != hostingWindow.screen.scale, let imageData = screenImage.pngData(), let scaleImage = UIImage(data: imageData, scale: hostingWindow.screen.scale) {
             screenImage = scaleImage
         }
         
@@ -3861,7 +3871,7 @@ extension PlayViewController {
             guard let self else { return }
             toast.config.cardEdgeInsets = .zero
             toast.config.cardCornerRadius = R.Size.CornerRadiusMedium
-            toast.config.cardMaxWidth = (R.Size.WindowSize.minDimension - 2*R.Size.ContentSpaceHuge) * scale
+            toast.config.cardMaxWidth = (R.Size.ApplicationWindowSize.minDimension - 2*R.Size.ContentSpaceHuge) * scale
             toast.config.cardMaxHeight = 64 * scale
             toast.contentView.layerBorderColor = R.Color.Border
             toast.contentView.layerBorderWidth = 1
@@ -4234,7 +4244,7 @@ extension PlayViewController {
     
     private func getDualScreenViewFrame() -> CGRect? {
         guard let controllerSkin = controllerView.controllerSkin as? ControllerSkin else { return nil }
-        guard let frames = controllerSkin.getFrames() else { return nil }
+        guard let hostingWindow, let frames = controllerSkin.getFrames(window: hostingWindow) else { return nil }
         let skinframe = frames.skinFrame
         let topFrame = frames.mainGameViewFrame
         if let bottomFrame = frames.touchGameViewFrame {
@@ -4274,7 +4284,7 @@ extension PlayViewController {
         }
         
         if let result = Prefference.defalut.getPrefference(kind: .flexBackground,
-                                                           storeKey: .orientationKey(gameId: manicGame.id, isLandScape: UIDevice.isLandscape),
+                                                           storeKey: .orientationKey(gameId: manicGame.id, isLandScape: view.prefferedLayoutStyle == .landscape),
                                                            bestEfforts: true),
            case let .flexBackground(bg) = result {
             backgroundImageView?.image = bg.image

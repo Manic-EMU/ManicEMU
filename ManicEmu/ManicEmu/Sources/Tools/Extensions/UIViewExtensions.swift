@@ -118,7 +118,7 @@ extension UIView {
             toast.onViewDidDisappear { _ in
                 hideCompletion?()
             }
-            let maxWidth = R.Size.WindowWidth - 2*R.Size.ContentSpaceLarge
+            let maxWidth = (AppContext.appWindow?.size ?? R.Size.ApplicationWindowSize).width - 2*R.Size.ContentSpaceLarge
             let insets = UIEdgeInsets(horizontal: R.Size.ContentSpaceHuge*2, vertical: 14*2)
             toast.config.cardEdgeInsets = insets
             let font = R.Font.Headline(emphasis: true)
@@ -366,7 +366,7 @@ extension UIView {
     
     func asImage() -> UIImage {
         let format = UIGraphicsImageRendererFormat.default()
-        format.scale = UIScreen.main.scale
+        format.scale = traitCollection.displayScale
         format.opaque = isOpaque
         
         let renderer = UIGraphicsImageRenderer(size: bounds.size, format: format)
@@ -377,5 +377,39 @@ extension UIView {
     
     var windowSafeArea: UIEdgeInsets {
         window?.safeAreaInsets ?? .zero
+    }
+    
+    var hostingWindow: UIWindow? {
+        window
+    }
+    
+    var hostingWindowScene: UIWindowScene? {
+        hostingWindow?.windowScene
+    }
+    
+    enum LayoutStyle {
+        case landscape
+        case portrait
+    }
+    
+    var prefferedLayoutStyle: LayoutStyle {
+        let w = hostingWindow ?? ApplicationSceneDelegate.applicationWindow
+        if let w, w.size != .zero {
+            if w.size.IsRelativelyWideRectangle {
+                return .landscape
+            } else {
+                return .portrait
+            }
+        } else {
+            return UIDevice.isLandscape ? .landscape : .portrait
+        }
+    }
+    
+    var isWindowHasEnoughSpaceforIpadMultiColumnLayout: Bool {
+        guard UIDevice.isPad else { return false }
+        if let w = hostingWindow {
+            return w.width > 600
+        }
+        return false
     }
 }

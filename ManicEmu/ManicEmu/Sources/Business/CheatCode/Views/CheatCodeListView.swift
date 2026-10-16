@@ -205,10 +205,10 @@ class CheatCodeListView: BaseView {
                     }
                     ChevronSheetView.show(stringOptions: [R.string.localizable.tabbarTitleImport() + " \(cheatFileExtension)"], completion: { [weak self] optionIndex in
                         guard let self, optionIndex != nil else { return }
-                        FilesImporter.shared.presentImportController(supportedTypes: supportFileExtensions) { [weak self] urls in
+                        FilesImporter.shared.presentImportController(supportedTypes: supportFileExtensions, manualHandle: { [weak self] urls in
                             guard let self else { return }
                             self.parseImportCheatFiles(urls: urls)
-                        }
+                        }, in: self.hostingWindowScene)
                     })
                 }
             } else if navigationValue.isTapEdit {
@@ -271,7 +271,7 @@ class CheatCodeListView: BaseView {
             }
         } else  if action.isBottom {
             if !PurchaseManager.isMember, datas.count >= R.Numbers.NonMemberCheatCodeCount {
-                topViewController()?.present(PurchaseViewController(), animated: true)
+                topViewController(in: hostingWindowScene)?.present(PurchaseViewController(), animated: true)
                 return
             }
             AddCheatCodeView.show(game: game)
@@ -328,7 +328,7 @@ class CheatCodeListView: BaseView {
             return .init(icon: .image(R.image.cheatcode_empty_icon()),
                          title: R.string.localizable.cheatCodeEmptyTitle(),
                          detail: R.string.localizable.addCheatCodesDesc(),
-                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom + R.Size.ButtonExtraLarge))
+                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ButtonExtraLarge))
         }
     }
     

@@ -1660,7 +1660,9 @@ class Game: Object, ObjectUpdatable {
         return .S60v3
     }
     
-    func handleTapAction(forceQuick: Bool = false, saveState: GameSaveState? = nil) {
+    func handleTapAction(forceQuick: Bool = false,
+                         saveState: GameSaveState? = nil,
+                         in scene: UIWindowScene?) {
         if isNDSHomeMenuGame {
             let biosCompletion = gameType.isNDSBiosComplete()
             if (id == Game.DsHomeMenuPrimaryKey && !biosCompletion.isDSComplete) ||
@@ -1668,7 +1670,7 @@ class Game: Object, ObjectUpdatable {
                 // Prompt BIOS import when Home Menu BIOS files are missing.
                 BIOSSelectionView.show(gameType: gameType)
             } else {
-                PlayViewController.startGame(game: self, saveState: saveState)
+                PlayViewController.startGame(game: self, saveState: saveState, in: scene)
             }
         } else if isSymbianHomeMenu {
             SymbianFirmwareView.show()
@@ -1676,7 +1678,7 @@ class Game: Object, ObjectUpdatable {
             if isUrlGame {
                 EmulatorInteractionKit.openExternalGameURL(urlGameLaunchURL)
             } else {
-                PlayViewController.startGame(game: self, saveState: saveState)
+                PlayViewController.startGame(game: self, saveState: saveState, in: scene)
             }
         } else {
             if gameType == .unknown {

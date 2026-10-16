@@ -122,7 +122,7 @@ final class FocusShortcutsTipsView: BaseView, ViewTransition {
     }
 
     private func present(source: Source) {
-        guard let window = UIWindow.topWindow else { return }
+        guard let window = UIWindow.topWindow(in: FocusSystem.shared.currentContext?.rootView?.hostingWindowScene) else { return }
         self.source = source
         reloadItems()
         if superview !== window {

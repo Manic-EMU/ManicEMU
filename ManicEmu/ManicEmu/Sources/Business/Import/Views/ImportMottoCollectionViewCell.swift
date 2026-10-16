@@ -8,10 +8,6 @@
 
 class ImportMottoCollectionViewCell: UICollectionViewCell {
     
-    private var cellHeight: CGFloat {
-        UIDevice.isLandscape ? 100 : 220
-    }
-    
     private let imageView = ASIconView(.image(R.image.import_ip()!))
     private let labelView = {
         var text = ASText.mediumText(R.string.localizable.importTopHintTitle(),
@@ -19,14 +15,6 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
                                      numberOfLines: 0)
         text.attributes?.alignment = .center
         return ASLabelView(text: text)
-        
-//        let label = UILabel()
-//        label.text = R.string.localizable.importTopHintTitle()
-//        label.font = R.Font.Body2()
-//        label.textColor = R.Color.LabelSecondary
-//        label.numberOfLines = 0
-//        label.textAlignment = .center
-//        return label
     }()
     private let backgroundGradientView = GradientView()
     
@@ -43,7 +31,7 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
         
         keepCellHeightView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.height.equalTo(cellHeight).priority(.high)
+            make.height.equalTo(220).priority(.high)
         }
         
         let bg = R.Color.BackgroundPrimary
@@ -61,7 +49,7 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(R.Size.ItemHeightSmall)
         }
-        updateViews()
+        updateViews(isLandscape: false)
     }
     
     required init?(coder: NSCoder) {
@@ -76,7 +64,7 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
                                                                   height: backgroundGradientView.height*2))).cgPath
         backgroundGradientView.layer.mask = ovalLayer
         
-        if UIDevice.isPhone, UIDevice.isLandscape {
+        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
             keepCellHeightView.backgroundColor = R.Color.BackgroundSecondary
             backgroundGradientView.isHidden = true
         } else {
@@ -85,8 +73,8 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func updateViews() {
-        if UIDevice.isLandscape {
+    func updateViews(isLandscape: Bool) {
+        if isLandscape {
             imageView.snp.remakeConstraints { make in
                 make.trailing.equalToSuperview().offset(R.Size.ContentSpaceSmall)
                 make.bottom.equalToSuperview().offset(R.Size.ContentSpaceHuge)
@@ -99,7 +87,7 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
             }
             
             keepCellHeightView.snp.updateConstraints { make in
-                make.height.equalTo(cellHeight).priority(.high)
+                make.height.equalTo(100).priority(.high)
             }
         } else {
             imageView.snp.remakeConstraints { make in
@@ -115,7 +103,7 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
             }
             
             keepCellHeightView.snp.updateConstraints { make in
-                make.height.equalTo(cellHeight).priority(.high)
+                make.height.equalTo(220).priority(.high)
             }
         }
     }

@@ -76,7 +76,7 @@ class PurchaseView: BaseView {
                     guard let self else { return }
                     if isMember {
                         self.didTapClose?()
-                        CheersView.makePurchaseCheers()
+                        CheersView.makePurchaseCheers(in: self.hostingWindowScene)
                     } else if isCompleted {
                         Log.debug("兑换优惠成功")
                     } else {
@@ -119,12 +119,11 @@ class PurchaseView: BaseView {
         addSubview(featureView)
         featureView.featuresType = featuresType
         addSubview(priceView)
-        
-        updateViewsConstraits()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        updateViewsConstraits()
         imageLayer.contents = R.image.game_cover_bg()?.scaled(toWidth: backgroundGradientView.width)?.cropped(to: backgroundGradientView.bounds).cgImage
         imageLayer.frame = CGRect(origin: .zero, size: backgroundGradientView.size)
     }
@@ -135,7 +134,7 @@ class PurchaseView: BaseView {
     
     private func updateViewsConstraits() {
         backgroundGradientView.snp.remakeConstraints { make in
-            if UIDevice.isPhone, UIDevice.isLandscape {
+            if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
                 make.top.equalToSuperview()
                 make.leading.bottom.trailing.equalTo(featureView)
             } else {
@@ -145,7 +144,7 @@ class PurchaseView: BaseView {
         }
         
         featureView.snp.remakeConstraints { make in
-            if UIDevice.isPhone, UIDevice.isLandscape {
+            if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
                 make.top.equalToSuperview().offset(R.Size.NavigationHeight)
                 make.leading.bottom.equalToSuperview()
                 make.width.equalToSuperview().dividedBy(2)
@@ -156,7 +155,7 @@ class PurchaseView: BaseView {
         }
         
         priceView.snp.remakeConstraints { make in
-            if UIDevice.isPhone, UIDevice.isLandscape {
+            if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
                 make.top.equalToSuperview().offset(R.Size.NavigationHeight)
                 make.bottom.trailing.equalToSuperview()
                 make.leading.equalTo(featureView.snp.trailing)
@@ -166,12 +165,5 @@ class PurchaseView: BaseView {
                 make.height.equalTo(447)
             }
         }
-    }
-}
-
-extension PurchaseView: ViewTransition {
-    func viewAlongsideTransition() {
-        guard UIDevice.isPhone else { return }
-        updateViewsConstraits()
     }
 }

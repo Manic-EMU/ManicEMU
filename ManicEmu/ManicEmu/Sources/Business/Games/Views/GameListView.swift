@@ -22,7 +22,7 @@ class GameListView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.allowsMultipleSelection = true
-        let bottom = R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
+        let bottom = R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         view.contentInset = .insets(bottom: bottom)
         view.blankSlateView = GamesListBlankSlateView()
         view.addLongPressGesture(handler: { [weak self] gesture in
@@ -67,12 +67,12 @@ class GameListView: BaseView {
                 if index == 0 {
                     //delete
                     if let selectedIndexPaths = self.collectionView.indexPathsForSelectedItems {
-                        GameOption.delete.performAction(with: selectedIndexPaths.compactMap({ self.getGame(at: $0) }))
+                        GameOption.delete.performAction(with: selectedIndexPaths.compactMap({ self.getGame(at: $0) }), in: self.hostingWindowScene)
                     }
                 } else if index == 1 {
                     //skin
                     if let selectedIndexPaths = self.collectionView.indexPathsForSelectedItems {
-                        GameOption.skins.performAction(with: selectedIndexPaths.compactMap({ self.getGame(at: $0) }))
+                        GameOption.skins.performAction(with: selectedIndexPaths.compactMap({ self.getGame(at: $0) }), in: self.hostingWindowScene)
                     }
                 }
             }
@@ -159,10 +159,6 @@ class GameListView: BaseView {
     private var lastToolViewScrollTimestamp: TimeInterval = 0
     private var isToolViewScrollInitialized = false
     private var lastSelectSection = 0
-    private let gamesNavigationBottom = (R.Size.SafeArea.top > 0 ? R.Size.SafeArea.top : R.Size.ContentSpaceLarge) + R.Size.ItemHeightMedium
-    private var gamesToolBottom: CGFloat {
-        gamesNavigationBottom + R.Size.GamesToolViewHeight
-    }
     
     private var notificationTokens = [Any]()
     
@@ -578,7 +574,7 @@ class GameListView: BaseView {
     
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout  { [weak self] sectionIndex, env in
-            guard let self = self else { return nil }
+            guard let self else { return nil }
             let gameType = self.sortDatasKeys()[sectionIndex]
             let itemSpacing = R.Size.ContentSpaceMedium - R.Size.GamesListSelectionEdge*2
             let sectionInsetTop = R.Size.ContentSpaceTiny
@@ -589,7 +585,11 @@ class GameListView: BaseView {
             let group: NSCollectionLayoutGroup
             var column = R.Style.GamesPerRow
             if UIDevice.isPad {
-                column = (UIDevice.isPadMini ? 4 : 5 )
+                if let w = self.hostingWindow {
+                    column = min(max((w.width/120).rounded(numberOfDecimalPlaces: -1, rule: .toNearestOrEven), 2), 5)
+                } else {
+                    column = (UIDevice.isPadMini ? 4 : 5 )
+                }
             }
             let widthDimension: NSCollectionLayoutDimension = .fractionalWidth(1/column)
             //item布局
@@ -1011,7 +1011,7 @@ extension GameListView: UICollectionViewDataSource {
                 let randomSection = Int(arc4random()) % self.normalDatas.count
                 if let games = self.normalDatas[self.sortDatasKeys()[randomSection]] {
                     let randomGame = games[Int(arc4random()) % games.count]
-                    randomGame.handleTapAction(forceQuick: true)
+                    randomGame.handleTapAction(forceQuick: true, in: self.hostingWindowScene)
                 }
             }
             return header
@@ -1069,7 +1069,7 @@ extension GameListView: UICollectionViewDelegate {
         }
         
         if let game = getGame(at: indexPath) {
-            game.handleTapAction()
+            game.handleTapAction(in: hostingWindowScene)
         }
         return false
     }
@@ -1150,7 +1150,7 @@ private extension GameListView {
     
     func updateToolViewVisibility(for scrollView: UIScrollView) {
         guard UIDevice.isPhone,
-        scrollView.contentSize.height >= R.Size.WindowHeight else { return }
+              scrollView.contentSize.height >= (hostingWindow?.height ?? R.Size.ApplicationWindowSize.height) else { return }
         
         let contentOffsetY = clampedContentOffsetY(for: scrollView)
         let now = CACurrentMediaTime()

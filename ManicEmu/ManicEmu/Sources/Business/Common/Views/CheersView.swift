@@ -14,8 +14,8 @@ import SwiftUI
 
 struct CheersView: View {
     
-    static func makePurchaseCheers() {
-        if let window = UIWindow.topWindow {
+    static func makePurchaseCheers(in scene: UIWindowScene?) {
+        if let window = UIWindow.topWindow(in: scene) {
             let vc = UIHostingController(rootView: CheersView().edgesIgnoringSafeArea(.all))
             if let cheersView = vc.view {
                 
@@ -46,7 +46,8 @@ struct CheersView: View {
                     make.edges.equalToSuperview()
                 }
                 
-                DispatchQueue.main.asyncAfter(delay: 2) {
+                DispatchQueue.main.asyncAfter(delay: 2) { [weak container] in
+                    guard let container else { return }
                     container.addTapGesture { [weak container] gesture in
                         UIView.normalAnimate(animations: {
                             memberView.alpha = 0
@@ -65,7 +66,7 @@ struct CheersView: View {
             $0.isHidden == false &&
             $0.rootViewController != nil &&
             (String(describing: type(of: $0)) == "SheetWindow" || String(describing: type(of: $0)) == "AlertWindow" || $0.windowLevel == .normal)
-        })) : ApplicationSceneDelegate.applicationWindow
+        })) : UIWindow.applicationWindow
         
         if let window {
             let vc = UIHostingController(rootView: CheersView().edgesIgnoringSafeArea(.all))
@@ -101,15 +102,15 @@ struct CheersView: View {
     
     var body: some View {
         Button(" "){}
-            .confettiCannon(trigger: $trigger, num: 100, confettiSize: 22.5, rainHeight: R.Size.WindowHeight, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 180), radius: customRadius)
+            .confettiCannon(trigger: $trigger, num: 100, confettiSize: 22.5, rainHeight: R.Size.ApplicationWindowSize.height, openingAngle: Angle(degrees: 0), closingAngle: Angle(degrees: 180), radius: customRadius)
             .onAppear {
                 trigger += 1
             }
     }
     
     private var customRadius: CGFloat {
-        var radius = R.Size.WindowWidth/(UIDevice.isPad ? 2 : 1)
-        if UIDevice.isPhone, UIDevice.isLandscape {
+        var radius = R.Size.ApplicationWindowSize.width/(UIDevice.isPad ? 2 : 1)
+        if UIDevice.isPhone, R.Size.ApplicationWindowSize.IsRelativelyWideRectangle {
             radius = radius/2
         }
         return radius

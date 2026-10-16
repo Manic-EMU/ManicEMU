@@ -26,7 +26,7 @@ class SkinPreviewViewController: BaseViewController {
         return view
     }()
 
-    init(skin: ControllerSkin, traits: ControllerSkin.Traits) {
+    init(skin: ControllerSkin, traits: ControllerSkin.Traits, window: UIWindow) {
         self.skin = skin
         self.traits = traits
         super.init(fullScreen: true)
@@ -36,17 +36,21 @@ class SkinPreviewViewController: BaseViewController {
         view.addSubview(controlView)
         
         var needToRotate = false
-        if traits.orientation == .portrait && (UIDevice.currentOrientation == .landscapeLeft || UIDevice.currentOrientation == .landscapeRight) {
-            needToRotate = true
-        } else if traits.orientation == .landscape && (UIDevice.currentOrientation == .portrait || UIDevice.currentOrientation == .portraitUpsideDown) {
-            needToRotate = true
+        let isLandscapeLayoutIPad = UIDevice.isPad && ((UIDevice.isFullScreenIPad(window: window) &&  UIDevice.isLandscape) || window.size.IsRelativelyWideRectangle)
+        
+        if UIDevice.isPhone || UIDevice.isFullScreenIPad(window: window) {
+            if traits.orientation == .portrait && UIDevice.isLandscape {
+                needToRotate = true
+            } else if traits.orientation == .landscape && UIDevice.isPortrait {
+                needToRotate = true
+            }
         }
         
         if needToRotate {
             controlView.snp.makeConstraints { make in
                 make.center.equalToSuperview()
                 if let aspectRatio = skin.aspectRatio(for: traits) {
-                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: CGSize(width: R.Size.WindowHeight, height: R.Size.WindowWidth)))
+                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.ApplicationWindowSize.swapSide))
                     make.size.equalTo(frame.size)
                 }
             }
@@ -55,7 +59,7 @@ class SkinPreviewViewController: BaseViewController {
             controlView.snp.makeConstraints { make in
                 make.center.equalToSuperview()
                 if let aspectRatio = skin.aspectRatio(for: traits) {
-                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.WindowSize))
+                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.ApplicationWindowSize))
                     make.size.equalTo(frame.size)
                 }
             }
@@ -66,7 +70,7 @@ class SkinPreviewViewController: BaseViewController {
             self?.dismiss(animated: true)
         }
         closeButtonView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(R.Size.SafeArea.top == 0 ? 20 : R.Size.SafeArea.top)
+            make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
             make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceLarge)
         }
     }

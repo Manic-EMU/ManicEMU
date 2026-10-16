@@ -62,7 +62,7 @@ class ASSheetView: BaseView {
             let containerView = UIView()
             
             var roundCorner: UIRectCorner {
-                (UIDevice.isPad || UIDevice.isLandscape || PlayViewController.menuInsets != nil) ? .allCorners : [.topLeft, .topRight]
+                (UIDevice.isPad || getLayoutStyle() == .landscape || PlayViewController.menuInsets != nil) ? .allCorners : [.topLeft, .topRight]
             }
             let contentView = RoundAndBorderView(roundCorner: roundCorner, borderWidth: 1.5)
             contentView.backgroundColor = R.Color.BackgroundPrimary
@@ -174,10 +174,10 @@ class ASSheetView: BaseView {
             
             //Other style configurations for the sheet
             func updateCardSize(config: SheetConfiguration) {
-                if sheetData.fullScreenForLandscape, UIDevice.isLandscape {
+                if sheetData.fullScreenForLandscape, getLayoutStyle() == .landscape {
                     if UIDevice.isPhone {
-                        config.cardMaxWidth = R.Size.WindowWidth
-                        config.cardMaxHeight = R.Size.WindowHeight
+                        config.cardMaxWidth = proHUDWindow()?.width
+                        config.cardMaxHeight = proHUDWindow()?.height
                     } else {
                         config.cardMaxWidth = R.Size.SheetFullScreenForIpadLandscape.width
                         config.cardMaxHeight = R.Size.SheetFullScreenForIpadLandscape.height
@@ -217,7 +217,7 @@ class ASSheetView: BaseView {
             
             var didNotifyCovering = false
             func isCoveringLandscapeBackground() -> Bool {
-                sheetData.fullScreenForLandscape && UIDevice.isPhone && UIDevice.isLandscape
+                sheetData.fullScreenForLandscape && UIDevice.isPhone && getLayoutStyle() == .landscape
             }
             func syncLandscapeBackgroundCovering() {
                 let covering = isCoveringLandscapeBackground()
@@ -255,11 +255,12 @@ class ASSheetView: BaseView {
             
             //Set view constraints
             func updateContentViewConstraints() {
-                if sheetData.fullScreenForLandscape, UIDevice.isLandscape {
+                if sheetData.fullScreenForLandscape, getLayoutStyle() == .landscape {
                     contentView.snp.remakeConstraints { make in
                         make.edges.equalToSuperview()
                         if UIDevice.isPhone {
-                            make.height.equalTo(R.Size.WindowHeight)
+                            let windowHeight = (proHUDWindow()?.height) ?? R.Size.ApplicationWindowSize.height
+                            make.height.equalTo(windowHeight)
                         } else {
                             make.height.equalTo(R.Size.SheetFullScreenForIpadLandscape.height)
                         }
@@ -293,9 +294,9 @@ class ASSheetView: BaseView {
             sheetView.config.viewWillTransitionUpdate = { [weak sheetView] _, reloadHUD in
                 guard let sheetView, let cardMaxHeight = sheetView.config.cardMaxHeight else { return }
                 let heightWillSet: CGFloat
-                if sheetData.fullScreenForLandscape, UIDevice.isLandscape {
+                if sheetData.fullScreenForLandscape, getLayoutStyle() == .landscape {
                     if UIDevice.isPhone {
-                        heightWillSet = R.Size.WindowHeight
+                        heightWillSet = (proHUDWindow()?.height) ?? R.Size.ApplicationWindowSize.height
                     } else {
                         heightWillSet = R.Size.SheetFullScreenForIpadLandscape.height
                     }
@@ -324,12 +325,25 @@ class ASSheetView: BaseView {
         }
     }
     
+    private static func getLayoutStyle() -> UIView.LayoutStyle {
+        if let w = proHUDWindow(), w.size != .zero {
+            if w.size.IsRelativelyWideRectangle {
+                return .landscape
+            } else {
+                return .portrait
+            }
+        } else {
+            return UIDevice.isLandscape ? .landscape : .portrait
+        }
+    }
+    
     private static func calculateHeight(sheetData: ASSheet) -> CGFloat? {
         let containerWidth = R.Size.SheetWindowMaxSize.width
         
         switch sheetData.style {
         case .listPage(let listPage):
             return ASListPageView.calculateMinHeight(listPage: listPage,
+                                                     containerWindow: proHUDWindow(),
                                                      containerWidth: containerWidth)
             
         case .options(let icon, let title, let detail, let options, let selectedIndexPath, let cancelEnable, let optionsType):
@@ -341,6 +355,7 @@ class ASSheetView: BaseView {
                                                                                                cancelEnable: cancelEnable,
                                                                                                optionsType: optionsType),
                                                                              enableGrabber: sheetData.enableGrabber),
+                                                     containerWindow: proHUDWindow(),
                                                      containerWidth: containerWidth)
             
         case .simpleList(let icon, let title, let detail, let options, let cancelEnable):
@@ -350,6 +365,7 @@ class ASSheetView: BaseView {
                                                                                               options: options,
                                                                                               cancelEnable: cancelEnable),
                                                                              enableGrabber: sheetData.enableGrabber),
+                                                     containerWindow: proHUDWindow(),
                                                      containerWidth: containerWidth)
             
         case .updation(_, let detail):
@@ -777,7 +793,7 @@ extension ASSheetView {
         
         func viewAlongsideTransition() {
             bottomView?.snp.updateConstraints { make in
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
             }
         }
     }
@@ -874,7 +890,7 @@ extension ASSheetView {
                     make.leading.equalToSuperview()
                     make.trailing.equalTo(verticalLine.snp.leading)
                 }
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
                 make.height.equalTo(R.Size.ButtonExtraLarge)
             }
             
@@ -1033,7 +1049,7 @@ extension ASSheetView {
             addSubview(stepView)
             stepView.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
                 make.height.equalTo(R.Size.ButtonSmall)
                 if let detailLabel {
                     make.top.equalTo(detailLabel.snp.bottom).offset(R.Size.ContentSpaceLarge)
@@ -1113,7 +1129,7 @@ extension ASSheetView {
                 } else {
                     make.top.equalToSuperview().offset(R.Size.ItemHeightMedium)
                 }
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
                 make.height.equalTo(300).priority(.high)
             }
             pickerView.addComponents([datas]) { [weak self] element, component, row in

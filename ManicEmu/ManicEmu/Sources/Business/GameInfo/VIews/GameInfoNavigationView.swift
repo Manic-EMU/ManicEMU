@@ -17,7 +17,7 @@ class GameInfoNavigationView: BaseView {
     
     var closeButton: ASButtonView = {
         let button = ASButton.smallIconButton(icon: .symbolImage(R.image.close_iconSymbols()),
-                                              background: UIDevice.isLandscape ? R.Color.BackgroundTertiary : R.Color.BackgroundSecondary).enableGlass(true)
+                                              background: proHUDLayoutStyle() == .landscape ? R.Color.BackgroundTertiary : R.Color.BackgroundSecondary).enableGlass(true)
         
         let view = ASButtonView(button)
         return view

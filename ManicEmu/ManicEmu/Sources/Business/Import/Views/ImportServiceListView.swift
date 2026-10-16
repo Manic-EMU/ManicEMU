@@ -123,7 +123,16 @@ class ImportServiceListView: BaseView {
         importNavigationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(R.Size.NavigationHeight)
-            make.top.equalToSuperview().offset(UIDevice.isPhone && UIDevice.isLandscape ? 0 : R.Size.ContentInsetTop)
+            make.top.equalToSuperview().offset(UIDevice.isPhone ? 0 : R.Size.ContentInsetTop(window: hostingWindow))
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.isPhone {
+            importNavigationView.snp.updateConstraints { make in
+                make.top.equalToSuperview().offset(UIDevice.isPhone && isLandscapeLayout ? 0 : R.Size.ContentInsetTop(window: hostingWindow))
+            }
         }
     }
     
@@ -131,14 +140,23 @@ class ImportServiceListView: BaseView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var isLandscapeLayout: Bool {
+        var isLandscape = prefferedLayoutStyle == .landscape
+        if isLandscape, UIDevice.isPad, isWindowHasEnoughSpaceforIpadMultiColumnLayout {
+            isLandscape = false
+        }
+        return isLandscape
+    }
+    
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
-            
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+            guard let self else { return nil }
+            let isLandscape = self.isLandscapeLayout
             let widthDimension: NSCollectionLayoutDimension
             if sectionIndex == 0 {
-                widthDimension = .fractionalWidth(UIDevice.isLandscape ? 0.5 : 1)
+                widthDimension = .fractionalWidth(isLandscape ? 0.5 : 1)
             } else {
-                widthDimension = .fractionalWidth(UIDevice.isLandscape ? 0.25 : 0.5)
+                widthDimension = .fractionalWidth(isLandscape ? 0.25 : 0.5)
             }
             
             let heightDimension: NSCollectionLayoutDimension
@@ -156,9 +174,9 @@ class ImportServiceListView: BaseView {
             //group
             let count: Int
             if sectionIndex == 0 {
-                count = UIDevice.isLandscape ? 2 : 1
+                count = isLandscape ? 2 : 1
             } else {
-                count = UIDevice.isLandscape ? 4 : 2
+                count = isLandscape ? 4 : 2
             }
             let groupLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                          heightDimension: heightDimension)
@@ -196,11 +214,11 @@ class ImportServiceListView: BaseView {
     }
     
     private func getCollectionViewContentInset() -> UIEdgeInsets {
-        var top = R.Size.ContentInsetTop
-        if UIDevice.isLandscape {
+        var top = R.Size.ContentInsetTop(window: hostingWindow)
+        if isLandscapeLayout {
             top += (R.Size.NavigationHeight + R.Size.ContentSpaceLarge)
         }
-        let bottom = R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
+        let bottom = R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         return .insets(top: top, bottom: bottom)
     }
 }
@@ -208,16 +226,16 @@ class ImportServiceListView: BaseView {
 extension ImportServiceListView: ViewTransition {
     func viewWillTransition() {
         if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? ImportMottoCollectionViewCell {
-            cell.updateViews()
+            cell.updateViews(isLandscape: isLandscapeLayout)
         }
     }
     
     func viewAlongsideTransition() {
         if UIDevice.isPhone {
             importNavigationView.snp.updateConstraints { make in
-                make.top.equalToSuperview().offset(UIDevice.isPhone && UIDevice.isLandscape ? 0 : R.Size.ContentInsetTop)
+                make.top.equalToSuperview().offset(UIDevice.isPhone && isLandscapeLayout ? 0 : R.Size.ContentInsetTop(window: hostingWindow))
             }
-        } else if UIDevice.isPad, UIDevice.isLandscape {
+        } else if UIDevice.isPad, isLandscapeLayout {
             collectionView.contentInset = getCollectionViewContentInset()
         }
     }
@@ -253,7 +271,7 @@ extension ImportServiceListView: UICollectionViewDataSource {
                     let enableSelectedEffect = WebServer.shard.isRunning ? true : false
                     if isOn {
                         cell?.enablePressEffect = enableSelectedEffect
-                        WebServer.shard.start()
+                        WebServer.shard.start(in: self?.hostingWindowScene)
                         service?.detail = R.string.localizable.importServiceListWiFiOnDetail(WebServer.shard.ipAddress)
                     } else {
                         cell?.enablePressEffect = enableSelectedEffect
@@ -309,7 +327,7 @@ extension ImportServiceListView: UICollectionViewDelegate {
         }
         if indexPath.section == 0, indexPath.row == 1 {
             //files
-            FilesImporter.shared.presentImportController()
+            FilesImporter.shared.presentImportController(in: hostingWindowScene)
             return
         }
         
@@ -324,12 +342,12 @@ extension ImportServiceListView: UICollectionViewDelegate {
             
         case .paste:
             //读取粘贴板
-            PasteImporter.paste()
+            PasteImporter.paste(in: hostingWindowScene)
             
         case .googledrive, .dropbox, .onedrive, .baiduyun, .aliyun:
             
             if !PurchaseManager.isMember {
-                topViewController()?.present(PurchaseViewController(featuresType: .import), animated: true)
+                topViewController(in: hostingWindowScene)?.present(PurchaseViewController(featuresType: .import), animated: true)
                 return
             }
             
@@ -345,7 +363,7 @@ extension ImportServiceListView: UICollectionViewDelegate {
         case .samba, .webdav, .romm:
             
             if !PurchaseManager.isMember {
-                topViewController()?.present(PurchaseViewController(featuresType: .import), animated: true)
+                topViewController(in: hostingWindowScene)?.present(PurchaseViewController(featuresType: .import), animated: true)
                 return
             }
             

@@ -62,8 +62,8 @@ class GameCoverScrapingView: BaseView {
         }
     }
     
-    convenience init(showClose: Bool) {
-        self.init(parameters: showClose)!
+    convenience init(games: [Game], showClose: Bool) {
+        self.init(parameters: games, showClose)!
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -87,12 +87,15 @@ class GameCoverScrapingView: BaseView {
         )
         navigation.enableClose = showClose
         
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        
         return ASListPage(
             navigation: navigation,
             sections: getSections(),
             bottom: getBottom(),
             backgroundColor: .clear,
-            pageInsets: .insets(top: R.Size.SheetGrabberTopInset)
+            listInsets: .insets(bottom: listInsetBottom),
+            pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow))
         )
     }
     

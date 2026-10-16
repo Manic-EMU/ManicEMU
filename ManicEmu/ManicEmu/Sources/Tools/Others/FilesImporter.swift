@@ -22,21 +22,28 @@ class FilesImporter: NSObject {
     private override init() {}
     private var manualHandle: (([URL])->Void)? = nil
     private var cancelHandle: (() -> Void)? = nil
+    private weak var scene: UIWindowScene? = nil
     
     func presentImportController(supportedTypes: [UTType] = UTType.allTypes,
                                  allowsMultipleSelection: Bool = true,
                                  manualHandle: (([URL])->Void)? = nil,
                                  cancelHandle: (() -> Void)? = nil,
-                                 appControllerPresent: Bool = false) {
+                                 appControllerPresent: Bool = false,
+                                 in scene: UIWindowScene?) {
         let documentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
         documentPickerViewController.delegate = self
         documentPickerViewController.overrideUserInterfaceStyle = UIDevice.isDarkMode ? .dark : .light
         documentPickerViewController.allowsMultipleSelection = allowsMultipleSelection
         documentPickerViewController.modalPresentationStyle = .formSheet
         documentPickerViewController.sheetPresentationController?.preferredCornerRadius = R.Size.CornerRadiusLarge
-        topViewController(appController: appControllerPresent)?.present(documentPickerViewController, animated: true)
+        if appControllerPresent {
+            topApplicationViewController()?.present(documentPickerViewController, animated: true)
+        } else {
+            topViewController(in: scene)?.present(documentPickerViewController, animated: true)
+        }
         self.manualHandle = manualHandle
         self.cancelHandle = cancelHandle
+        self.scene = scene
     }
 }
 
@@ -46,7 +53,7 @@ extension FilesImporter: UIDocumentPickerDelegate {
             manualHandle?(urls)
             manualHandle = nil
         } else {
-            FilesImporter.importFiles(urls: urls)
+            FilesImporter.importFiles(urls: urls, in: scene)
         }
     }
     
@@ -91,6 +98,7 @@ extension FilesImporter {
     static func importFiles(urls: [URL],
                             preErrors: [ImportError] = [],
                             silentMode: Bool = PlayViewController.isGaming,
+                            in scene: UIWindowScene?,
                             importCompletion: (()->Void)? = nil) {
         if urls.isEmpty {
             UIView.hideLoading()
@@ -294,7 +302,7 @@ extension FilesImporter {
                             
                             group.notify(queue: .main) {
                                 //导入游戏成功
-                                if let home = topViewController(appController: true) as? HomeViewController,
+                                if let home = topApplicationViewController() as? HomeViewController,
                                     home.homeTabBar.currentSelection == .games {
                                     UIView.makeToast(message: R.string.localizable.importGameSuccessTitle())
                                 } else {
@@ -314,7 +322,7 @@ extension FilesImporter {
                                                      confirmAction: {
                                         UIView.hideAllAlert {
                                             if importGames.count == 1 {
-                                                startGame(gameId: importGames.first!.id)
+                                                startGame(gameId: importGames.first!.id, in: scene)
                                             } else {
                                                 NotificationCenter.default.post(name: R.NotificationName.HomeSelectionChange, object: HomeTabBar.BarSelection.games)
                                             }
@@ -362,7 +370,7 @@ extension FilesImporter {
                                              confirmTitle: confirmTitle,
                                              confirmAction: {
                                 UIView.hideAllAlert {
-                                    startGame(gameId: importGameSaves.first!.id)
+                                    startGame(gameId: importGameSaves.first!.id, in: scene)
                                 }
                             })
                         } else if importGameSaves.count > 0 || importGames.count > 0 || importSkins.count > 0 {
@@ -405,10 +413,10 @@ extension FilesImporter {
         }
     }
     
-    private static func startGame(gameId: String) {
+    private static func startGame(gameId: String, in scene: UIWindowScene?) {
         let realm = Database.realm
         if let game = realm.object(ofType: Game.self, forPrimaryKey: gameId) {
-            game.handleTapAction()
+            game.handleTapAction(in: scene)
         }
     }
     

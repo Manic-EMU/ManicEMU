@@ -255,7 +255,7 @@ class GameLandscapeCarouselCell: UICollectionViewCell {
         emptyCardView.isHidden = false
         emptyContentStack.isHidden = false
         cardView.snp.updateConstraints { make in
-            make.centerY.equalToSuperview().offset(-((R.Size.NavigationHeight + R.Size.ContentInsetTop)/2))
+            make.centerY.equalToSuperview().offset(-((R.Size.NavigationHeight + R.Size.ContentInsetTop(window: hostingWindow))/2))
             make.size.equalTo(cardSize.height)
         }
         emptyCardView.snp.updateConstraints { make in

@@ -122,7 +122,7 @@ class SteamGridDBContentsView: BaseView {
     
     private func resolvedContainerWidth() -> CGFloat {
         if bounds.width > 1 { return bounds.width }
-        if R.Size.WindowSize.width > 1 { return R.Size.WindowSize.width }
+        if R.Size.ApplicationWindowSize.width > 1 { return R.Size.ApplicationWindowSize.width }
         return 390
     }
     
@@ -174,6 +174,7 @@ class SteamGridDBContentsView: BaseView {
             return
         }
         UIView.makeLoading()
+        let scene = hostingWindowScene
         KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
             Task { @MainActor in
                 UIView.hideLoading()
@@ -181,7 +182,7 @@ class SteamGridDBContentsView: BaseView {
             guard let self else { return }
             switch result {
             case .success(let imageResult):
-                ImageFetcher.edit(image: imageResult.image) { editedImage in
+                ImageFetcher.edit(image: imageResult.image, in: scene) { editedImage in
                     Task { @MainActor in
                         self.didSelectImage?(editedImage)
                         if self.showAsSheet {
@@ -247,7 +248,7 @@ class SteamGridDBContentsView: BaseView {
             sections: contentSections(),
             blankSlate: .init(detail: R.string.localizable.noGameCoverResult()),
             backgroundColor: .clear,
-            listInsets: .insets(bottom: R.Size.ContentInsetBottom),
+            listInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow)),
             pageInsets: .insets(top: R.Size.SheetGrabberTopInset)
         )
     }

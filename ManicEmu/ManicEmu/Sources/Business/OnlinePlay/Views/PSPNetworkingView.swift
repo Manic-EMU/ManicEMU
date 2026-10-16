@@ -37,7 +37,7 @@ class PSPNetworkingView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.isFocusable = true
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     

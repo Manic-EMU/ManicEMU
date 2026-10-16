@@ -102,9 +102,9 @@ class GameInfoCoverView: BaseView {
     
     private func updateCoverContainerViewConstraints() {
         coverContainerView.snp.remakeConstraints { make in
-            make.size.equalTo(UIDevice.isLandscape ? CoverImageSize.applying(.init(scaleX: 0.8, y: 0.8)) : CoverImageSize)
+            make.size.equalTo(proHUDLayoutStyle() == .landscape ? CoverImageSize.applying(.init(scaleX: 0.8, y: 0.8)) : CoverImageSize)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(UIDevice.isLandscape ? -R.Size.ItemHeightLarge : -R.Size.ItemHeightMicro)
+            make.centerY.equalToSuperview().offset(proHUDLayoutStyle() == .landscape ? -R.Size.ItemHeightLarge : -R.Size.ItemHeightMicro)
         }
     }
 }

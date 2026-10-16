@@ -11,6 +11,8 @@ import RealmSwift
 
 class RetroAchievementsProfileView: BaseView {
     class DetailView: BaseView {
+        var didLayoutChange: (() -> Bool)? = nil
+        
         private static let avatarSize = 80.0
         
         class UnlockedView: BaseView {
@@ -253,15 +255,19 @@ class RetroAchievementsProfileView: BaseView {
             }
             
             addSubviews([enableGlobalCardView, enableGlobalHardcoreCardView, unlockedView])
-            updateViewsConstraits()
         }
         
         @MainActor required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            updateViewsConstraits()
+        }
+        
         func updateViewsConstraits() {
-            if UIDevice.isLandscape {
+            if didLayoutChange?() ?? false {
                 enableGlobalCardView.snp.remakeConstraints { make in
                     make.height.equalTo(R.Size.CardHeight)
                     make.leading.equalToSuperview()
@@ -321,6 +327,10 @@ class RetroAchievementsProfileView: BaseView {
         view.didTapLogout = { [weak self] in
             self?.logoutSuccess?()
         }
+        view.didLayoutChange = { [weak self] in
+            guard let self else { return false }
+            return self.prefferedLandscapeStyle
+        }
         return view
     }()
     
@@ -377,12 +387,20 @@ class RetroAchievementsProfileView: BaseView {
     private var retroProfile = AchievementsProfile()
     
     private var detailViewHeight: CGFloat {
-        UIDevice.isLandscape ? 327 : 496.7
+        prefferedLandscapeStyle ? 327 : 496.7
     }
     
     var logoutSuccess: (()->Void)? = nil
     
     private var showAsSheet: Bool
+    
+    private var prefferedLandscapeStyle: Bool {
+        if showAsSheet {
+            return prefferedLayoutStyle == .landscape
+        } else {
+            return width > 600
+        }
+    }
     
     init(username: String, showAsSheet: Bool) {
         self.username = username
@@ -473,7 +491,7 @@ class RetroAchievementsProfileView: BaseView {
         return ASListPage(sections: sections,
                           backgroundColor: .clear,
                           listInsets: .insets(top: R.Size.NavigationHeight - R.Size.ContentSpaceSmall,
-                                              bottom: R.Size.ContentInsetBottom + (!showAsSheet ? R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0)))
+                                              bottom: R.Size.ContentInsetBottom(window: hostingWindow) + (!showAsSheet ? R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0)))
     }
     
     private func updateDatas() {

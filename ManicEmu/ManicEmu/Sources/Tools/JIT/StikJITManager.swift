@@ -125,7 +125,8 @@ final class StikJITManager: NSObject {
         }
     }
 
-    func presentPairingFilePicker(completion: @escaping (Bool, String?) -> Void) {
+    func presentPairingFilePicker(in scene: UIWindowScene?,
+                                  completion: @escaping (Bool, String?) -> Void) {
         let types: [UTType] = [.propertyList, UTType(filenameExtension: "plist")].compactMap { $0 }
         let picker = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
         picker.delegate = self
@@ -148,7 +149,7 @@ final class StikJITManager: NSObject {
                 completion(false, error.localizedDescription)
             }
         }
-        topViewController()?.present(picker, animated: true)
+        topViewController(in: scene)?.present(picker, animated: true)
     }
 
     func invalidateReadiness() {

@@ -89,7 +89,7 @@ class ThemeManager {
             if self.mainColor.hexString != mainColor.hexString {
                 self.mainColor = mainColor
                 //刷新整个系统的外观 会驱使traitCollectionDidChange方法进行调用
-                if let userInterfaceStyle = ApplicationSceneDelegate.applicationWindow?.traitCollection.userInterfaceStyle {
+                if let userInterfaceStyle = UIWindow.applicationWindow?.traitCollection.userInterfaceStyle {
                     if userInterfaceStyle == .dark {
                         ThemeManager.updateUserInterfaceStyle(.light)
                     } else {

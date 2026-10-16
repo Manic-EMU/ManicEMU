@@ -53,7 +53,7 @@ class PlayCasePromoView: BaseView {
             make.height.equalTo(R.Size.ItemHeightMedium)
             make.top.equalTo(detailLabel.snp.bottom).offset(R.Size.ItemHeightSmall)
             if !showDontShow {
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom + R.Size.ContentSpaceSmall)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ContentSpaceSmall)
             }
         }
         
@@ -74,7 +74,7 @@ class PlayCasePromoView: BaseView {
             dontshowAgain.snp.makeConstraints { make in
                 make.centerX.equalTo(button)
                 make.top.equalTo(button.snp.bottom).offset(R.Size.ContentSpaceTiny)
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom + R.Size.ContentSpaceSmall)
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ContentSpaceSmall)
             }
         }
         

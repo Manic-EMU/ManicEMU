@@ -52,9 +52,9 @@ class GameInfoView: BaseView {
     
     private lazy var gameInfoDetailView: GameInfoDetailView = {
         let view = GameInfoDetailView(game: game)
-        let width = UIDevice.isPhone ? R.Size.WindowWidth : (UIDevice.isLandscape ? R.Size.SheetFullScreenForIpadLandscape.width : R.Size.SheetWindowMaxSize.width)
+        let width = UIDevice.isPhone ? R.Size.ApplicationWindowSize.width : (proHUDLayoutStyle() == .landscape ? R.Size.SheetFullScreenForIpadLandscape.width : R.Size.SheetWindowMaxSize.width)
         view.frame = CGRect(origin: .zero,
-                            size: CGSize(width: width/(UIDevice.isLandscape ? 2 : 1),
+                            size: CGSize(width: width/(proHUDLayoutStyle() == .landscape ? 2 : 1),
                                          height: gameInfoDetailHeight))
         return view
     }()
@@ -70,7 +70,7 @@ class GameInfoView: BaseView {
         }
         view.didScroll = { [weak self] scrollView in
             guard let self else { return }
-            guard !UIDevice.isLandscape else { return }
+            guard self.prefferedLayoutStyle == .portrait else { return }
             let contentOffsetY = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
             //Make the gameInfoDetailView pin to the top of the gameOptionView content.
             if contentOffsetY >= scrollView.adjustedContentInset.top - self.gameInfoDetailHeight + R.Size.ContentSpaceSmall {
@@ -110,7 +110,7 @@ class GameInfoView: BaseView {
     private let gameInfoDetailMaxY = 292.0
     private let gameInfoDetailHeight = 162.0
     private var gameOptionViewInsets: UIEdgeInsets {
-        .insets(top: UIDevice.isLandscape ? 0 : R.Size.GameInfoGameOptionsTopInsets,
+        .insets(top: proHUDLayoutStyle() == .landscape ? 0 : R.Size.GameInfoGameOptionsTopInsets,
                 bottom: R.Size.ContentSpaceLarge)
     }
     private var gameMetadataChange: Any? = nil
@@ -232,7 +232,8 @@ class GameInfoView: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
         guard width > 0 else { return }
-        if UIDevice.isLandscape {
+        guard let window = hostingWindow else { return }
+        if window.size.IsRelativelyWideRectangle {
             gameInfoDetailView.frame = CGRect(origin: CGPoint(x: 0, y: height - gameInfoDetailHeight),
                                               size: CGSize(width: width/2, height: gameInfoDetailHeight))
         } else {
@@ -241,7 +242,8 @@ class GameInfoView: BaseView {
     }
     
     func updateViewsConstraints() {
-        if UIDevice.isLandscape {
+        guard let window = proHUDWindow() else { return }
+        if window.size.IsRelativelyWideRectangle {
             gameCoverView.snp.remakeConstraints { make in
                 make.leading.top.bottom.equalToSuperview()
                 make.width.equalToSuperview().multipliedBy(0.5)
@@ -299,6 +301,6 @@ extension GameInfoView: ViewTransition {
         navigationView.backgroundColor = .clear
         navigationView.gameCover.alpha = 0
         gameInfoDetailView.backgroundColor = .clear
-        navigationView.closeButton.setBackgroundColor(UIDevice.isLandscape ? R.Color.BackgroundTertiary : R.Color.BackgroundSecondary)
+        navigationView.closeButton.setBackgroundColor(proHUDLayoutStyle() == .landscape ? R.Color.BackgroundTertiary : R.Color.BackgroundSecondary)
     }
 }

@@ -387,7 +387,7 @@ class TriggerProMappingListView: BaseView {
                 
 
                 let isLastSection = sectionIndex == (self.inputs.count - 1)
-                section.contentInsets = NSDirectionalEdgeInsets(top: sectionIndex == 0 ? R.Size.ContentSpaceSmall : R.Size.ContentSpaceHuge, leading: 0, bottom: R.Size.ContentSpaceHuge + (isLastSection ? R.Size.SafeArea.bottom : 0), trailing: 0)
+                section.contentInsets = NSDirectionalEdgeInsets(top: sectionIndex == 0 ? R.Size.ContentSpaceSmall : R.Size.ContentSpaceHuge, leading: 0, bottom: R.Size.ContentSpaceHuge + (isLastSection ? self.safeAreaInsets.bottom : 0), trailing: 0)
                 
                 //header
                 if sectionIndex != 0 {

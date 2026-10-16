@@ -125,8 +125,9 @@ class SteamGridDBSearchView: BaseView {
                              detail: R.string.localizable.aiCoverSearchDesc(),
                              confirmTitle: R.string.localizable.goToUpgrade(),
                              confirmAutoHide: false,
-                             confirmAction: {
-                topViewController()?.present(PurchaseViewController(), animated: true)
+                             confirmAction: { [weak self] in
+                guard let self else { return }
+                topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(), animated: true)
             })
             return
         }

@@ -65,7 +65,7 @@ class ASWebView: BaseView {
         view.isOpaque = false
         view.backgroundColor = R.Color.BackgroundPrimary
         view.scrollView.backgroundColor = R.Color.BackgroundPrimary
-        view.scrollView.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.scrollView.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     
@@ -187,12 +187,12 @@ extension ASWebView: WKNavigationDelegate {
                     let mailController = MFMailComposeViewController()
                     mailController.setToRecipients([R.Strings.SupportEmail])
                     mailController.mailComposeDelegate = self
-                    topViewController(appController: true)?.present(mailController, animated: true)
+                    topApplicationViewController()?.present(mailController, animated: true)
                 } else {
                     let mailController = MFMailComposeViewController()
                     mailController.setToRecipients([url.string.replacingOccurrences(of: "mailto:", with: "")])
                     mailController.mailComposeDelegate = self
-                    topViewController(appController: true)?.present(mailController, animated: true)
+                    topApplicationViewController()?.present(mailController, animated: true)
                 }
             } else {
                 UIView.makeToast(message: R.string.localizable.noEmailSetting())

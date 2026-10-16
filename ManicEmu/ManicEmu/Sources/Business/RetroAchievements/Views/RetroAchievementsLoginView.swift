@@ -80,7 +80,7 @@ class RetroAchievementsLoginView: BaseView {
         view.delegate = self
         view.isFocusable = true
         view.contentInset = .insets(top: 90,
-                                    bottom: R.Size.ContentInsetBottom)
+                                    bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     

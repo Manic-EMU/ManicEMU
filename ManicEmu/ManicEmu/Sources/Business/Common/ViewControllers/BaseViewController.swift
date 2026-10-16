@@ -92,7 +92,7 @@ class BaseViewController: UIViewController {
             view.insertSubview(maskView, at: 0)
             maskView.snp.makeConstraints { make in
                 make.leading.top.trailing.equalToSuperview()
-                make.height.equalTo(R.Size.PageBackgroundMaskHeight)
+                make.height.equalTo(R.Size.PageBackgroundMaskHeight(window: hostingWindow))
             }
             maskView.isHidden = !enableBackgroundMask
             backgroundMaskView = maskView
@@ -150,14 +150,14 @@ class BaseViewController: UIViewController {
         coordinator.animate(alongsideTransition: { [weak self] _ in
             self?.setPreferredContentSize()
             self?.backgroundMaskView?.snp.updateConstraints { make in
-                make.height.equalTo(R.Size.PageBackgroundMaskHeight)
+                make.height.equalTo(R.Size.PageBackgroundMaskHeight(window: self?.hostingWindow))
             }
         })
     }
     
     override var prefersStatusBarHidden: Bool {
         if UIDevice.isPad {
-            return UIDevice.isLandscape
+            return view.prefferedLayoutStyle == .landscape
         }
         return super.prefersStatusBarHidden
     }

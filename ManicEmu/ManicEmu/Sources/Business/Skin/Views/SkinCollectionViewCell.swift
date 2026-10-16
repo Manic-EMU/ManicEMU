@@ -184,9 +184,9 @@ class SkinCollectionViewCell: UICollectionViewCell {
         if needsSkinUpdate {
             let screenAspectRatio: CGFloat
             if traits.orientation == .portrait {
-                screenAspectRatio = R.Size.WindowSize.aspectRatio
+                screenAspectRatio = R.Size.ApplicationWindowSize.aspectRatio
             } else {
-                screenAspectRatio = R.Size.WindowSize.height/R.Size.WindowSize.width
+                screenAspectRatio = R.Size.ApplicationWindowSize.height/R.Size.ApplicationWindowSize.width
             }
             if let aspectRatio = controllerSkin?.aspectRatio(for: traits), abs(aspectRatio.aspectRatio - screenAspectRatio) > 0.1 {
                 controllerView.snp.updateConstraints { make in

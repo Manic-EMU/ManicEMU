@@ -82,3 +82,11 @@ class ImportNavigationView: BaseView {
         ]
     }
 }
+
+extension ImportNavigationView: ViewTransition {
+    func viewAlongsideTransition() {
+        if UIDevice.isPad {
+            addServiceButton.isHidden = isWindowHasEnoughSpaceforIpadMultiColumnLayout
+        }
+    }
+}

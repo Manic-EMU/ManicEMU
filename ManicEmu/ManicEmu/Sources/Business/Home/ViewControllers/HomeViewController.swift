@@ -41,7 +41,7 @@ class HomeViewController: BaseViewController {
             manager.contentView.insertSubview(backgroundMask, at: 0)
             backgroundMask.snp.makeConstraints { make in
                 make.leading.top.trailing.equalToSuperview()
-                make.height.equalTo(R.Size.PageBackgroundMaskHeight)
+                make.height.equalTo(R.Size.PageBackgroundMaskHeight(window: hostingWindow))
             }
         }
         childControllers.forEach {
@@ -54,6 +54,7 @@ class HomeViewController: BaseViewController {
     lazy var homeTabBar: HomeTabBar = {
         let view = HomeTabBar()
         view.selectionChange = { [weak self] selection in
+            guard let self else { return }
             var selection = selection
             if Locale.isRTLLanguage {
                 if selection == .games {
@@ -62,37 +63,37 @@ class HomeViewController: BaseViewController {
                     selection = .games
                 }
             }
-            self?.pageViewManager.setCurrentPage(selection.rawValue)
+            self.pageViewManager.setCurrentPage(selection.rawValue)
             switch selection {
             case .games:
                 Log.debug("切换到游戏")
-                if UIDevice.isPhone, UIDevice.isLandscape {
-                    self?.gamesViewController.view.masksToBounds = false
+                if UIDevice.isPhone, self.view.prefferedLayoutStyle == .landscape {
+                    self.gamesViewController.view.masksToBounds = false
                 }
                 
             case .imports:
                 Log.debug("切换到导入")
-                if UIDevice.isPhone, UIDevice.isLandscape {
-                    self?.gamesViewController.view.masksToBounds = true
+                if UIDevice.isPhone, self.view.prefferedLayoutStyle == .landscape {
+                    self.gamesViewController.view.masksToBounds = true
                 }
                 
             case .settings:
                 Log.debug("切换到设置")
             }
-            self?.updateLandscapeBackgroundVisible()
-            self?.activateCurrentTabFocusContext()
+            self.updateLandscapeBackgroundVisible()
+            self.activateCurrentTabFocusContext()
         }
-        view.isHidden = UIDevice.isPhone && UIDevice.isLandscape
+        view.isHidden = UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape
         return view
     }()
     
-    private var homeTabBarBlurView: UIView = {
+    private lazy var homeTabBarBlurView: UIView = {
         let view = BlurUIKit.VariableBlurView()
         view.direction = .up
         view.maximumBlurRadius = 1
         view.dimmingAlpha = .interfaceStyle(lightModeAlpha: 0.05, darkModeAlpha: 0.05)
         view.dimmingTintColor = R.Color.BackgroundPrimary
-        view.isHidden = UIDevice.isLandscape
+        view.isHidden = self.view.prefferedLayoutStyle == .landscape
         return view
     }()
     
@@ -162,8 +163,8 @@ class HomeViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         landscapeBackgroundView.setHomeVisible(true)
-        if let coordinator = transitionCoordinator {
-            let size = R.Size.WindowSize
+        if let coordinator = transitionCoordinator,
+            let size = view.hostingWindow?.size {
             viewWillTransition(to: size, with: coordinator)
             childControllers.forEach { $0.viewWillTransition(to: size, with: coordinator) }
         }
@@ -197,7 +198,7 @@ class HomeViewController: BaseViewController {
         if !UIDevice.isIOS15 {
             NotificationCenter.default.post(name: R.NotificationName.ViewWillTransition, object: nil)
         }
-        homeTabBarBlurView.isHidden = UIDevice.isLandscape
+        homeTabBarBlurView.isHidden = view.prefferedLayoutStyle == .landscape
         if currentChildViewController is GamesViewController {
             updateGamesFocusCommands(focusContext: currentChildViewController.focusContext)
         }
@@ -206,7 +207,7 @@ class HomeViewController: BaseViewController {
             if UIDevice.isPhone {
                 if let pageBackgroundMaskView = self.pageViewManager.contentView.subviews.first(where: { $0.isKind(of: PageBackgroundMaskView.self) }) {
                     pageBackgroundMaskView.snp.updateConstraints { make in
-                        make.height.equalTo(R.Size.PageBackgroundMaskHeight)
+                        make.height.equalTo(R.Size.PageBackgroundMaskHeight(window: self.hostingWindow))
                     }
                 }
             }
@@ -215,7 +216,7 @@ class HomeViewController: BaseViewController {
                 NotificationCenter.default.post(name: R.NotificationName.ViewWillTransition, object: nil)
             }
             NotificationCenter.default.post(name: R.NotificationName.ViewAlongsideTransition, object: nil)
-            self.homeTabBar.isHidden = UIDevice.isPhone && UIDevice.isLandscape
+            self.homeTabBar.isHidden = UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape
         }, completion: { _ in
             NotificationCenter.default.post(name: R.NotificationName.ViewDidTransition, object: nil)
         })
@@ -257,8 +258,8 @@ class HomeViewController: BaseViewController {
         homeTabBar.snp.makeConstraints { make in
             make.size.equalTo(R.Size.HomeTabBarSize)
             make.centerX.equalTo(self.view)
-            if R.Size.SafeArea.top == 0 {
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom)
+            if self.view.safeAreaInsets.bottom == 0 {
+                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
             } else {
                 make.bottom.equalTo(view.safeAreaLayoutGuide)
             }
@@ -267,7 +268,7 @@ class HomeViewController: BaseViewController {
     
     ///根据横竖屏更新动态背景显隐 横屏时透明化分页容器与子页面使背景透出
     private func updateLandscapeBackgroundVisible() {
-        let landscape = UIDevice.isLandscape
+        let landscape = view.prefferedLayoutStyle == .landscape
         if landscape {
             if UIDevice.isPhone {
                 if landscapeBackgroundView.isHidden {
@@ -386,7 +387,7 @@ class HomeViewController: BaseViewController {
     
     private func updateGamesFocusCommands(focusContext: FocusContext) {
         guard currentChildViewController is GamesViewController else { return }
-        if UIDevice.isLandscape {
+        if view.prefferedLayoutStyle == .landscape {
             focusContext.addCommand(FocusCommand(key: FocusKey("l3"), title: R.string.localizable.filterTitle(), action: {
                 NotificationCenter.default.post(name: R.NotificationName.ShowFilterForLandscapeMode, object: nil)
             }))

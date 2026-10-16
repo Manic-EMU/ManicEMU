@@ -203,9 +203,9 @@ struct LimitedTextInputView {
                 }
             }
             
-            alert.onViewDidAppear { alert in
+            alert.onViewDidAppear { [weak inputView] alert in
                 alert.pushOverlayFocusContext { context in
-                    context.cancelHandler = { [weak inputView] in
+                    context.cancelHandler = {
                         if inputView?.isFirstResponder == true {
                             inputView?.resignFirstResponder()
                             return true
@@ -224,7 +224,7 @@ struct LimitedTextInputView {
                     width = 375
                 } else {
                     width = R.Size.SheetWindowMinSize.width
-                    if UIDevice.isPortrait {
+                    if proHUDLayoutStyle() == .portrait {
                         width -= R.Size.ContentSpaceHuge*2
                     }
                 }

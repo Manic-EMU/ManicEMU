@@ -100,12 +100,12 @@ class ICloudSettingView: BaseView {
             ], footer: .texts([.smallText(R.string.localizable.iCloudRepairSyncDesc(), numberOfLines: 0)], pin: false)))
         }
         
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
         return ASListPage(navigation: navigation,
                           sections: sections,
                           backgroundColor: .clear,
                           listInsets: .insets(bottom: listInsetBottom),
-                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop))
+                          pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow)))
     }
     
     private func masterCell(refreshSize: Bool = true) -> ASListPage.Cell {
@@ -256,7 +256,7 @@ class ICloudSettingView: BaseView {
         switch row {
         case .master:
             if value.subActions?.extraValue == nil {
-                topViewController()?.present(PurchaseViewController(featuresType: .iCloud), animated: true)
+                topViewController(in: hostingWindowScene)?.present(PurchaseViewController(featuresType: .iCloud), animated: true)
                 return
             }
             guard let isOn = value.subActions?.extraValue as? Bool else { return }

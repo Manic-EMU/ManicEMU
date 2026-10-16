@@ -237,7 +237,7 @@ class RetroAchievementsDetailView: BaseView {
             UIView.makeLoading()
             self.generateShareImage(achievement: achievement) { image in
                 UIView.hideLoading()
-                ShareManager.shareImage(image: image)
+                ShareManager.shareImage(image: image, in: self.hostingWindowScene)
                 self.shareContentView?.removeFromSuperview()
                 self.shareContentView = nil
             }
@@ -267,8 +267,8 @@ class RetroAchievementsDetailView: BaseView {
         contentView.addSubview(shareImageView)
         shareImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.size.equalTo(CGSize(width: R.Size.WindowSize.minDimension,
-                                     height: R.Size.WindowSize.maxDimension))
+            make.size.equalTo(CGSize(width: R.Size.ApplicationWindowSize.minDimension,
+                                     height: R.Size.ApplicationWindowSize.maxDimension))
         }
         
         let maskView = UIView()

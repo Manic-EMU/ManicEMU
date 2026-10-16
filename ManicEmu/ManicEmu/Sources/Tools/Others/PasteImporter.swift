@@ -10,7 +10,8 @@
 import UniformTypeIdentifiers
 
 struct PasteImporter {
-    static func paste(supportedTypes: [UTType] = UTType.allInfoPlistTypes) {
+    static func paste(supportedTypes: [UTType] = UTType.allInfoPlistTypes,
+                      in scene: UIWindowScene?) {
         UIView.makeLoading()
         DispatchQueue.global().async {
             var errors: [ImportError] = []
@@ -95,7 +96,7 @@ struct PasteImporter {
                     UIView.hideLoading()
                     UIView.makeToast(message: String.errorMessage(from: errors))
                 } else {
-                    FilesImporter.importFiles(urls: urls, preErrors: errors)
+                    FilesImporter.importFiles(urls: urls, preErrors: errors, in: scene)
                 }
             }
         }

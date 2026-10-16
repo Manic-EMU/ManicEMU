@@ -23,4 +23,9 @@ extension CGSize {
     var swapSide: CGSize {
         return CGSize(width: height, height: width)
     }
+    
+    var IsRelativelyWideRectangle: Bool {
+        guard self != .zero else { return false }
+        return width/height > 1.333
+    }
 }

@@ -53,7 +53,7 @@ class SkinSettingsView: BaseView {
     private var isPortraitSkinPage: Bool {
         segmentView.segment.index == 0
     }
-    private let defaultTraits: ControllerSkin.Traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.WindowSize)))
+    private let defaultTraits: ControllerSkin.Traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.ApplicationWindowSize)))
     private var currentTraits: ControllerSkin.Traits {
         isPortraitSkinPage ? portraitTraits : landscapeTraits
     }
@@ -107,7 +107,7 @@ class SkinSettingsView: BaseView {
     private var skinRenderGeneration = 0
     
     private var collectionViewContentInsetBottom: CGFloat {
-        R.Size.ContentInsetBottom + ((UIDevice.isPad && !showClose) ? R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0)
+        R.Size.ContentInsetBottom(window: hostingWindow) + ((UIDevice.isPad && !showClose) ? R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0)
     }
     
     private lazy var navigation: ASListPage.Navigation = {
@@ -376,7 +376,7 @@ class SkinSettingsView: BaseView {
                             self?.collectionView.reloadData()
                         }
                     }
-                    topViewController()?.present(vc, animated: true)
+                    topViewController(in: hostingWindowScene)?.present(vc, animated: true)
                     
                 } else {
                     //delete
@@ -444,7 +444,7 @@ class SkinSettingsView: BaseView {
             if showClose {
                 make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
             } else {
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
             }
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(R.Size.NavigationHeight)
@@ -470,7 +470,7 @@ class SkinSettingsView: BaseView {
             make.height.equalTo(R.Size.ButtonLarge)
         }
         
-        if UIDevice.isLandscape {
+        if proHUDLayoutStyle() == .landscape {
             segmentView.segment.index = 1
         }
         
@@ -491,16 +491,22 @@ class SkinSettingsView: BaseView {
     
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout  { [weak self] sectionIndex, env in
-            guard let self = self else { return nil }
+            guard let self else { return nil }
             
             var column: CGFloat = self.isPortraitSkinPage ? 2.0 : 1.0
-            if UIDevice.isPad, UIDevice.isLandscape {
+            if UIDevice.isPad, self.prefferedLayoutStyle == .landscape {
                 column = self.isPortraitSkinPage ? 3.0 : 2.0
             }
             
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/column), heightDimension: .fractionalHeight(1)))
             
-            let screenRation = R.Size.WindowSize.maxDimension/R.Size.WindowSize.minDimension
+            let screenRation: CGFloat
+            if let screen = self.hostingWindow?.screen {
+                screenRation = screen.bounds.size.maxDimension/screen.bounds.size.minDimension
+            } else {
+                screenRation = R.Size.ApplicationWindowSize.maxDimension/R.Size.ApplicationWindowSize.minDimension
+            }
+             
             let itemWidth = (env.container.contentSize.width - R.Size.ContentSpaceMedium*4 - ((column-1)*R.Size.ContentSpaceMedium))/column
             let itemHeight = self.isPortraitSkinPage ? itemWidth*screenRation : itemWidth/screenRation
             
@@ -769,10 +775,12 @@ extension SkinSettingsView: UICollectionViewDataSource {
                          isUsing: isUsing,
                          isEditable: skin.isEditable,
                          renderGeneration: skinRenderGeneration)
-            cell.onPreview = {
-                if let controllerSkin = skin.controllerSkin {
-                    topViewController()?.present(SkinPreviewViewController(skin: controllerSkin,
-                                                                           traits: traits),
+            cell.onPreview = { [weak self] in
+                guard let self else { return }
+                if let controllerSkin = skin.controllerSkin, let w = self.hostingWindow {
+                    topViewController(in: self.hostingWindowScene)?.present(SkinPreviewViewController(skin: controllerSkin,
+                                                                                                      traits: traits,
+                                                                                                      window: w),
                                                  animated: true)
                 }
             }
@@ -856,8 +864,9 @@ extension SkinSettingsView: UICollectionViewDelegate {
                 UIView.makeAlert(title: R.string.localizable.skinAddTitle(), detail: R.string.localizable.newSkinDesc(), cancelTitle: R.string.localizable.visitSite("DELTASTYLES"), confirmTitle: R.string.localizable.openFile(), cancelAction: { [weak self] in
                     guard let self else { return }
                     ASWebView.show(url: R.URLs.DeltaStyles(gameType: self.gameType))
-                }, confirmAction: {
-                    FilesImporter.shared.presentImportController(supportedTypes: UTType.skinTypes)
+                }, confirmAction: { [weak self] in
+                    guard let self else { return }
+                    FilesImporter.shared.presentImportController(supportedTypes: UTType.skinTypes, in: self.hostingWindowScene)
                 })
             } else {
                 if let currentUsingIndex, currentUsingIndex == indexPath.row {

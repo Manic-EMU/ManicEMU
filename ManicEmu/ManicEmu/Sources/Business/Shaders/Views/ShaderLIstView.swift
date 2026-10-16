@@ -311,15 +311,13 @@ class ShaderListView: BaseView {
             if showClose {
                 make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
             } else {
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
             }
             make.leading.trailing.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(R.Size.NavigationHeight)
         }
         
         addSubview(listPageView)
-        
-        updateViewsContraits()
         
         loadShader { [weak self] in
             self?.updateNavigation()
@@ -352,6 +350,11 @@ class ShaderListView: BaseView {
     
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateViewsContraits()
     }
     
     private func handleAction(_ action: ASListPage.Action) {
@@ -786,7 +789,7 @@ class ShaderListView: BaseView {
     }
     
     private func getTop() -> (UIView, ASViewLayout, Bool) {
-        return (topView, .fixedHeight(UIDevice.isLandscape && showClose ? 116 : 318), true)
+        return (topView, .fixedHeight(prefferedLayoutStyle == .landscape && showClose ? 116 : 318), true)
     }
     
     private func getCell(shader: Shader, isSelected: Bool) -> ASListPage.Cell {
@@ -865,23 +868,23 @@ class ShaderListView: BaseView {
                                         title: R.string.localizable.cloudDriveBrowserDownload(),
                                         titleColor: R.Color.LabelPrimary.forceStyle(.dark),
                                         background: R.Color.Main),
-                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom))
+                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow)))
             
         case .imported:
             return .init(title: R.string.localizable.noShaders(),
                          detail: R.string.localizable.importShader(),
-                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom))
+                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow)))
             
         case .custom:
             return .init(title: R.string.localizable.noShaders(),
                          detail: R.string.localizable.customShaderDesc(),
-                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom))
+                         layoutInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow)))
             
         }
     }
     
     private func getListPage() -> ASListPage {
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
         
         return ASListPage(top: getTop(),
                           sections: getSections(),
@@ -966,6 +969,43 @@ class ShaderListView: BaseView {
                                              fileNames: [R.Strings.SlangShader, R.Strings.GLSLShader])
         })
     }
+    
+    private func updateViewsContraits() {
+        previewView.removeFromSuperview()
+        if prefferedLayoutStyle == .landscape, showClose {
+            addSubview(previewView)
+            previewView.snp.remakeConstraints { make in
+                make.top.equalTo(navigationView.snp.bottom)
+                make.leading.equalTo(navigationView)
+                make.bottom.equalTo(safeAreaLayoutGuide)
+            }
+            listPageView.top = getTop()
+            
+            listPageView.snp.remakeConstraints { make in
+                make.top.equalTo(navigationView.snp.bottom)
+                make.leading.equalTo(previewView.snp.trailing)
+                make.width.equalTo(previewView)
+                make.trailing.equalTo(safeAreaLayoutGuide)
+                make.bottom.equalToSuperview()
+            }
+            
+        } else {
+            topView.addSubview(previewView)
+            previewView.snp.remakeConstraints { make in
+                make.top.equalTo(segmentView.snp.bottom).offset(R.Size.ContentSpaceMedium)
+                make.leading.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
+                make.height.equalTo(182)
+            }
+            listPageView.top = getTop()
+            
+            listPageView.snp.remakeConstraints { make in
+                make.top.equalTo(navigationView.snp.bottom)
+                make.leading.equalTo(safeAreaLayoutGuide)
+                make.trailing.equalTo(safeAreaLayoutGuide)
+                make.bottom.equalToSuperview()
+            }
+        }
+    }
 }
 
 extension ShaderListView: ShowableView {
@@ -1007,49 +1047,5 @@ extension ShaderListView: ShowableView {
             return true
         }
         return sheetData
-    }
-}
-
-extension ShaderListView: ViewTransition {
-    private func updateViewsContraits() {
-        previewView.removeFromSuperview()
-        if UIDevice.isLandscape, showClose {
-            addSubview(previewView)
-            previewView.snp.remakeConstraints { make in
-                make.top.equalTo(navigationView.snp.bottom)
-                make.leading.equalTo(navigationView)
-                make.bottom.equalTo(safeAreaLayoutGuide)
-            }
-            listPageView.top = getTop()
-            
-            listPageView.snp.remakeConstraints { make in
-                make.top.equalTo(navigationView.snp.bottom)
-                make.leading.equalTo(previewView.snp.trailing)
-                make.width.equalTo(previewView)
-                make.trailing.equalTo(safeAreaLayoutGuide)
-                make.bottom.equalToSuperview()
-            }
-            
-        } else {
-            topView.addSubview(previewView)
-            previewView.snp.remakeConstraints { make in
-                make.top.equalTo(segmentView.snp.bottom).offset(R.Size.ContentSpaceMedium)
-                make.leading.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-                make.height.equalTo(182)
-            }
-            listPageView.top = getTop()
-            
-            listPageView.snp.remakeConstraints { make in
-                make.top.equalTo(navigationView.snp.bottom)
-                make.leading.equalTo(safeAreaLayoutGuide)
-                make.trailing.equalTo(safeAreaLayoutGuide)
-                make.bottom.equalToSuperview()
-            }
-        }
-    }
-    
-    func viewAlongsideTransition() {
-        guard showAsSheet else { return }
-        updateViewsContraits()
     }
 }

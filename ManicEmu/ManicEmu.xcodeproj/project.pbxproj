@@ -1644,7 +1644,13 @@
 		E2CFD49A14B2461EA3CBFA66 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 575A39CB2DCCFA6B00B28FC2 /* SwiftSoup */; };
 		E2EA5DEE0D384C1281D9CF83 /* WebDavKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632E22D714E46007270E8 /* WebDavKit */; };
 		E4DFA97292C840F29BC49ED5 /* RuffleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */; };
+		E520DED8306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
+		E520DED9306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
+		E520DEDA306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
 		E5385955E04D43598CAC5694 /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E5A00BB23080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
+		E5A00BB33080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
+		E5A00BB43080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
 		E977CAA1F3C34827833FAF30 /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306D2D91AFE00043C28A /* XCGLogger */; };
 		EAE31C39F6FF42DE8F5BA497 /* Schedule in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759192FD42D030093A2B3 /* Schedule */; };
 		EE7572E891E3420A86A7E33F /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20902FD16DA500A2749A /* CollectionViewPagingLayout */; };
@@ -6831,6 +6837,8 @@
 		B2F4B7AF2A138C74003B0E07 /* PhotoSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSaver.swift; sourceTree = "<group>"; };
 		B2F4B7B12A147226003B0E07 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B93489E15EFD47F2AE825436 /* Amiga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amiga.swift; sourceTree = "<group>"; };
+		E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProHUDExtensions.swift; sourceTree = "<group>"; };
 		F0C500000000000000000101 /* FocusTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTypes.swift; sourceTree = "<group>"; };
 		F0C500000000000000000102 /* Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focusable.swift; sourceTree = "<group>"; };
 		F0C500000000000000000103 /* FocusContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusContainer.swift; sourceTree = "<group>"; };
@@ -13381,6 +13389,8 @@
 				579C114C2D1D0E0A00CFD1F5 /* UIWindowExtensions.swift */,
 				57E01004300B85ED009AA38C /* UIEdgeInsetsExtensions.swift */,
 				57D483A930217B010030A771 /* SequenceExtensions.swift */,
+				E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */,
+				E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -13970,6 +13980,7 @@
 				579093FC303C7D9100A53656 /* SymbianDeviceView.swift in Sources */,
 				579093FD303C7D9100A53656 /* SaveStateListView.swift in Sources */,
 				579093FE303C7D9100A53656 /* ASBorderStyle.swift in Sources */,
+				E520DEDA306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */,
 				579093FF303C7D9100A53656 /* GameCheat.swift in Sources */,
 				57909400303C7D9100A53656 /* GBA.swift in Sources */,
 				57909401303C7D9100A53656 /* WFC.swift in Sources */,
@@ -13980,6 +13991,7 @@
 				57909406303C7D9100A53656 /* ASListToolView.swift in Sources */,
 				57909407303C7D9100A53656 /* PhotoSaver.swift in Sources */,
 				57909408303C7D9100A53656 /* PurchaseManager.swift in Sources */,
+				E5A00BB43080B2CC00E99223 /* ProHUDExtensions.swift in Sources */,
 				57909409303C7D9100A53656 /* FlexItemView.swift in Sources */,
 				5790940A303C7D9100A53656 /* BlankSlateCollectionView.swift in Sources */,
 				5790940B303C7D9100A53656 /* System.swift in Sources */,
@@ -14440,6 +14452,7 @@
 				57BA2DA5303593670039E284 /* SymbianDeviceView.swift in Sources */,
 				57F1D4372FF3879200FC5B2A /* SaveStateListView.swift in Sources */,
 				5796DB1A2FE4181D0051F661 /* ASBorderStyle.swift in Sources */,
+				E520DED8306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */,
 				57CDCDE32FD5CBD3005BA4C8 /* GameCheat.swift in Sources */,
 				57CDCDE42FD5CBD3005BA4C8 /* GBA.swift in Sources */,
 				57CDCDE52FD5CBD3005BA4C8 /* WFC.swift in Sources */,
@@ -14450,6 +14463,7 @@
 				57BF60962FE2ABF70073D318 /* ASListToolView.swift in Sources */,
 				57CDCDEA2FD5CBD3005BA4C8 /* PhotoSaver.swift in Sources */,
 				57CDCDEC2FD5CBD3005BA4C8 /* PurchaseManager.swift in Sources */,
+				E5A00BB23080B2CC00E99223 /* ProHUDExtensions.swift in Sources */,
 				577160AF30078D680088345B /* FlexItemView.swift in Sources */,
 				57CDCDED2FD5CBD3005BA4C8 /* BlankSlateCollectionView.swift in Sources */,
 				57CDCDEE2FD5CBD3005BA4C8 /* System.swift in Sources */,
@@ -14813,6 +14827,7 @@
 				57FD14143011C73D007F211A /* ShaderPreviewView.swift in Sources */,
 				572D026B2F87E3F8000BD6F4 /* PretendoNetworkingView.swift in Sources */,
 				57DFBE8C2E71BC7A008C2161 /* CheevosPopupView.swift in Sources */,
+				E5A00BB33080B2CC00E99223 /* ProHUDExtensions.swift in Sources */,
 				576C4BE7304174AA00DB526E /* FocusSoundEffects.swift in Sources */,
 				578E4B592F8A2F480027E6D0 /* GlobalCoreSwitch.swift in Sources */,
 				57D482B33019D3330030A771 /* ASListCustomCollectionCell.swift in Sources */,
@@ -15131,6 +15146,7 @@
 				57F3BAEC2F6541C900ABF4B3 /* J2MESettingView.swift in Sources */,
 				57DF847A2D62E98100AA0AAB /* NSAttributedStringExtensions.swift in Sources */,
 				577160F0300931900088345B /* RetroAchievementsLaunchView.swift in Sources */,
+				E520DED9306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */,
 				576F0DA52D85CD3A00D2A1BA /* FeaturesCell.swift in Sources */,
 				57CC33BA2DBCD90700DF7418 /* AuxiliaryLineView.swift in Sources */,
 				57BA2D9430357F200039E284 /* SymbianFirmwareView.swift in Sources */,

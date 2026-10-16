@@ -319,11 +319,11 @@ class CitraAdvancedSettingView: BaseView {
     
     private func shareConfig() {
         saveIfNeeded()
-        ShareManager.shareFile(fileUrl: URL(fileURLWithPath: R.Path.CitraConfig))
+        ShareManager.shareFile(fileUrl: URL(fileURLWithPath: R.Path.CitraConfig), in: hostingWindowScene)
     }
     
     private func importConfig() {
-        FilesImporter.shared.presentImportController(supportedTypes: UTType.configTypes, allowsMultipleSelection: false) { [weak self] urls in
+        FilesImporter.shared.presentImportController(supportedTypes: UTType.configTypes, allowsMultipleSelection: false, manualHandle: { [weak self] urls in
             guard let self, let url = urls.first else { return }
             do {
                 try FileManager.safeCopyItem(at: url,
@@ -334,7 +334,7 @@ class CitraAdvancedSettingView: BaseView {
             } catch {
                 UIView.makeToast(message: R.string.localizable.readConfigFileFailed())
             }
-        }
+        }, in: hostingWindowScene)
     }
     
     //MARK: - Configuration read/write

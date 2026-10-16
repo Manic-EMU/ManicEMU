@@ -169,7 +169,7 @@ class SettingsListView: BaseView {
     }
     
     private func getNavigation() -> ASListPage.Navigation? {
-        if UIDevice.isPhone, UIDevice.isLandscape {
+        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
             return nil
         }
         var navigationText = ASText.extraLargeText(R.string.localizable.tabbarTitleSettings())
@@ -187,7 +187,7 @@ class SettingsListView: BaseView {
             case .top:
                 sections.append(ASListPage.Section(cells: [.custom(topView)],
                                                    decoration: .init(enable: false),
-                                                   itemLayout: .fixedHeight((UIDevice.isPhone && UIDevice.isLandscape) ? 165 : 301)))
+                                                   itemLayout: .fixedHeight((UIDevice.isPhone && prefferedLayoutStyle == .landscape) ? 165 : 301)))
                 
             case .general, .advance, .support, .others:
                 var header: ASListPage.Supplementary? = nil
@@ -211,7 +211,7 @@ class SettingsListView: BaseView {
         
         let listBottomInset = R.Size.ContentSpaceLarge + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         let pageTopInset: CGFloat
-        pageTopInset = UIDevice.isPhone && UIDevice.isLandscape ? 0 : R.Size.ContentInsetTop
+        pageTopInset = UIDevice.isPhone && prefferedLayoutStyle == .landscape ? 0 : R.Size.ContentInsetTop(window: hostingWindow)
         return ASListPage(navigation: getNavigation(),
                           sections: sections,
                           backgroundColor: .clear,
@@ -222,7 +222,7 @@ class SettingsListView: BaseView {
     
     private func showMemberShip(featuresType: FeaturesType = .advance) {
 #if !SIDE_LOAD
-        topViewController()?.present(PurchaseViewController(featuresType: featuresType), animated: true)
+        topViewController(in: hostingWindowScene)?.present(PurchaseViewController(featuresType: featuresType), animated: true)
 #endif
     }
     
@@ -271,37 +271,38 @@ class SettingsListView: BaseView {
                     
                 case .general, .advance, .support, .others:
                     if let item = items[sectionIndex]?[indexPath.row] {
+                        guard let hostingWindow else { return }
                         switch item.type {
                         case .retro:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(RetroAchievementsLaunchView(loginedAction: .jumpProfile, showClose: false))
                             } else {
                                 RetroAchievementsLaunchView.show(loginedAction: .jumpProfile)
                             }
                             
                         case .onlinePlay:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(OnlinePlaySettingView(showClose: false))
                             } else {
                                 OnlinePlaySettingView.show()
                             }
                             
                         case .bios:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(BIOSSelectionView(showClose: false))
                             } else {
                                 BIOSSelectionView.show()
                             }
                             
                         case .theme:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ThemeSettingView(showClose: false))
                             } else {
                                 ThemeSettingView.show()
                             }
                             
                         case .FAQ:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ASWebView(url: R.URLs.FAQ, showClose: false))
                             } else {
                                 ASWebView.show(url: R.URLs.FAQ)
@@ -312,13 +313,13 @@ class SettingsListView: BaseView {
                                 let mailController = MFMailComposeViewController()
                                 mailController.setToRecipients([R.Strings.SupportEmail])
                                 mailController.mailComposeDelegate = self
-                                topViewController(appController: true)?.present(mailController, animated: true)
+                                topApplicationViewController()?.present(mailController, animated: true)
                             } else {
                                 UIView.makeToast(message: R.string.localizable.noEmailSetting())
                             }
                             
                         case .shareApp:
-                            ShareManager.shareApp(senderForIpad: UIDevice.isPad ? self : nil)
+                            ShareManager.shareApp(senderForIpad: UIDevice.isPad ? self : nil, in: hostingWindowScene)
                             
                         case .qq:
                             UIApplication.shared.open(R.URLs.JoinQQ)
@@ -345,35 +346,35 @@ class SettingsListView: BaseView {
                             }
                             
                         case .userAgreement:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ASWebView(url: R.URLs.TermsOfUse, showClose: false))
                             } else {
                                 ASWebView.show(url: R.URLs.TermsOfUse)
                             }
                             
                         case .privacyPolicy:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ASWebView(url: R.URLs.PrivacyPolicy, showClose: false))
                             } else {
                                 ASWebView.show(url: R.URLs.PrivacyPolicy)
                             }
                             
                         case .about:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ASWebView(url: R.URLs.AboutUS, showClose: false))
                             } else {
                                 ASWebView.show(url: R.URLs.AboutUS)
                             }
                             
                         case .triggerPro:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(TriggerProManageView(showClose: false))
                             } else {
                                 TriggerProManageView.show()
                             }
                             
                         case .skin:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(SkinSettingsView(showClose: false))
                             } else {
                                 SkinSettingsView.show()
@@ -381,7 +382,7 @@ class SettingsListView: BaseView {
                             
                         case .iCloud:
 #if !SIDE_LOAD
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ICloudSettingView(showClose: false))
                             } else {
                                 ICloudSettingView.show()
@@ -389,14 +390,14 @@ class SettingsListView: BaseView {
 #endif
                             
                         case .jit:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(JITSettingView(showClose: false))
                             } else {
                                 JITSettingView.show()
                             }
                             
                         case .shaders:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(ShaderListView(initType: .normal, showClose: false))
                             } else {
                                 ShaderListView.show(initType: .normal)
@@ -406,7 +407,7 @@ class SettingsListView: BaseView {
                             UIApplication.shared.open(R.URLs.PlayCasePromo)
                             
                         case .globalCoreSwitch:
-                            if UIDevice.isPad {
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
                                 didTapDetailView?(GlobalCoreSwitchView(showClose: false))
                             } else {
                                 GlobalCoreSwitchView.show()
@@ -456,8 +457,15 @@ class SettingsListView: BaseView {
                             Settings.defalut.updateExtra(key: ExtraKey.skinSoundEffects.rawValue, value: value)
                             
                         case .coverScraping:
-                            if UIDevice.isPad {
-                                didTapDetailView?(GameCoverScrapingView(showClose: false))
+                            if isWindowHasEnoughSpaceforIpadMultiColumnLayout {
+                                let realm = Database.realm
+                                let games = realm.objects(Game.self).where({ !$0.isDeleted })
+                                if games.count > 0 {
+                                    didTapDetailView?(GameCoverScrapingView(games: Array(games),
+                                                                            showClose: false))
+                                } else {
+                                    UIView.makeToast(message: R.string.localizable.transferPakNoGames())
+                                }
                             } else {
                                 GameCoverScrapingView.show()
                             }

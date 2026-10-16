@@ -120,9 +120,6 @@ class ASListPageView: BaseView {
             updateIndexView()
         }
     }
-    var contentsBottomInset: CGFloat {
-        listInsets.bottom + pageInsets.bottom + (enableSafeAreaBottomInsets ? R.Size.SafeArea.bottom : 0)
-    }
     
     //MARK: - Subviews
     private var navigationView: ASNavigationView? = nil
@@ -195,7 +192,7 @@ class ASListPageView: BaseView {
         self.listPage = listPage
         if listPage.sections.count == 0 {
             //Prevent constraint errors
-            super.init(frame: .init(origin: .zero, size: R.Size.WindowSize))
+            super.init(frame: .init(origin: .zero, size: R.Size.ApplicationWindowSize))
         } else {
             super.init(frame: .zero)
         }
@@ -215,7 +212,7 @@ extension ASListPageView {
         let containerWidth = env.container.effectiveContentSize.width
         let fallbackWidth = max(collectionView.bounds.width, bounds.width)
         let width = containerWidth > 1 ? containerWidth : fallbackWidth
-        let resolved = width > 1 ? width : R.Size.WindowWidth
+        let resolved = width > 1 ? width : (hostingWindow?.width ?? R.Size.ApplicationWindowSize.width)
         return max(resolved - Self.sectionHorizontalInsets * 2 - Self.supplementaryHorizontalInsets * 2, 1)
     }
     
@@ -520,9 +517,9 @@ extension ASListPageView {
         }
         
         if enableSafeAreaBottomInsets {
-            contentInset.bottom += R.Size.SafeArea.bottom
+            contentInset.bottom += hostingWindow?.safeAreaInsets.bottom ?? 0
             if UIDevice.isSmallScreenPhone {
-                contentInset.bottom += R.Size.ContentInsetBottom
+                contentInset.bottom += R.Size.ContentInsetBottom(window: hostingWindow)
             }
         }
         
@@ -549,7 +546,7 @@ extension ASListPageView {
             if listPage.bottom != nil, let bottomButton, bottomButton.superview != nil {
                 make.bottom.equalTo(bottomButton.snp.top).offset(-R.Size.ContentSpaceMedium)
             } else {
-                make.bottom.equalToSuperview().inset(contentsBottomInset)
+                make.bottom.equalToSuperview().inset(contentsBottomInset(safeAreaBottom: self.hostingWindow?.safeAreaInsets.bottom ?? 0))
             }
             make.height.equalTo(Self.toolViewHeight)
         }
@@ -590,7 +587,7 @@ extension ASListPageView {
         }
         
         view.snp.remakeConstraints { make in
-            if UIDevice.isPad || (UIDevice.isPhone && UIDevice.isLandscape) {
+            if UIDevice.isPad || (UIDevice.isPhone && self.prefferedLayoutStyle == .landscape) {
                 make.width.equalTo(R.Size.ButtonMaxWidth)
                 make.centerX.equalToSuperview()
             } else {
@@ -599,7 +596,7 @@ extension ASListPageView {
                 make.leading.equalTo(enableSafeAreaLeftInsets ? safeAreaLayoutGuide : self).inset(leadingInset)
                 make.trailing.equalTo(enableSafeAreaRightInsets ? safeAreaLayoutGuide : self).inset(trailingInset)
             }
-            make.bottom.equalToSuperview().inset(contentsBottomInset)
+            make.bottom.equalToSuperview().inset(contentsBottomInset(safeAreaBottom: self.hostingWindow?.safeAreaInsets.bottom ?? 0))
             make.height.equalTo(Self.bottomButtonHeight)
         }
         
@@ -676,7 +673,8 @@ extension ASListPageView {
     }
     
     static func calculateMinHeight(listPage: ASListPage,
-                                   containerWidth: CGFloat = R.Size.WindowSize.width) -> CGFloat {
+                                   containerWindow: UIWindow?,
+                                   containerWidth: CGFloat = R.Size.ApplicationWindowSize.width) -> CGFloat {
         
         var height = 0.0
         
@@ -709,10 +707,11 @@ extension ASListPageView {
                 }
             }
             
-            if fixContainerWidth == 0 && (section.header != nil || section.footer != nil) {
-                let countHorizontalSafeArea = containerWidth >= R.Size.WindowWidth - R.Size.SafeArea.horizontal
-                let leftSafeArea = (countHorizontalSafeArea && listPage.enableSafeAreaLeftInsets) ? R.Size.SafeArea.left : 0
-                let rightSafeArea = (countHorizontalSafeArea && listPage.enableSafeAreaRightInsets) ? R.Size.SafeArea.right : 0
+            if fixContainerWidth == 0 && (section.header != nil || section.footer != nil),
+                let window = containerWindow {
+                let countHorizontalSafeArea = containerWidth >= window.width - window.safeAreaInsets.horizontal
+                let leftSafeArea = (countHorizontalSafeArea && listPage.enableSafeAreaLeftInsets) ? window.safeAreaInsets.left : 0
+                let rightSafeArea = (countHorizontalSafeArea && listPage.enableSafeAreaRightInsets) ? window.safeAreaInsets.right : 0
                 fixContainerWidth = containerWidth -
                 //This part isn’t quite right—if the header or footer has line breaks, the calculation might be off.
                 leftSafeArea -
@@ -743,14 +742,17 @@ extension ASListPageView {
         
         height += listPage.listInsets.bottom
         
-        if height >= R.Size.WindowHeight - R.Size.SafeArea.vertical, listPage.enableSafeAreaTopInsets {
-            height += R.Size.SafeArea.top
+        if let window = containerWindow,
+            height >= window.height - window.safeAreaInsets.vertical,
+            listPage.enableSafeAreaTopInsets {
+            height += window.safeAreaInsets.top
         }
         
-        if listPage.enableSafeAreaBottomInsets {
-            height += R.Size.SafeArea.bottom
+        if listPage.enableSafeAreaBottomInsets,
+            let window = containerWindow {
+            height += window.safeAreaInsets.bottom
             if UIDevice.isSmallScreenPhone {
-                height += R.Size.ContentInsetBottom
+                height += R.Size.ContentInsetBottom(window: containerWindow)
             }
         }
         
@@ -866,6 +868,10 @@ extension ASListPageView {
             collectionView.deleteSections(IndexSet(availableSections))
         }
         indexView?.reloadData()
+    }
+    
+    func contentsBottomInset(safeAreaBottom: CGFloat) -> CGFloat {
+        listInsets.bottom + pageInsets.bottom + (enableSafeAreaBottomInsets ? safeAreaBottom : 0)
     }
 }
 

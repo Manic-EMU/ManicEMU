@@ -37,7 +37,7 @@ class GameListLandscapeView: BaseView {
             guard let view = PlayHistoryView.show() else { return }
             view.didTapGame = { [weak self] game in
                 guard let self else { return }
-                game.handleTapAction()
+                game.handleTapAction(in: self.hostingWindowScene)
             }
         }
         return view
@@ -126,7 +126,7 @@ class GameListLandscapeView: BaseView {
         view.delegate = self
         view.alwaysBounceVertical = true
         view.isFocusable = true
-        let bottom = UIDevice.isPhone ? R.Size.ContentSpaceLarge : R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
+        let bottom = UIDevice.isPhone ? R.Size.ContentSpaceLarge : R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         view.contentInset = .insets(bottom: bottom)
         view.isHidden = LandscapeCarouselStyle.isCarouselEnabled
         view.addLongPressGesture(handler: { [weak self] gesture in
@@ -165,7 +165,7 @@ class GameListLandscapeView: BaseView {
         let view = ASButtonView(button)
         view.didTapButton = { [weak self] in
             guard let self, let game = self.focusedGame else { return }
-            game.handleTapAction(forceQuick: true)
+            game.handleTapAction(forceQuick: true, in: self.hostingWindowScene)
         }
         return view
     }()
@@ -312,7 +312,7 @@ class GameListLandscapeView: BaseView {
         navigationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(R.Size.NavigationHeight)
-            make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+            make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
         }
         
         navigationView.addSubview(filterButton)
@@ -967,7 +967,7 @@ class GameListLandscapeView: BaseView {
                         self.showDynamicBackgroundSheet()
                     }, cancelHandle: { [weak self] in
                         self?.showDynamicBackgroundSheet()
-                    })
+                    }, in: self.hostingWindowScene)
                 })
             }
             return .dismiss()
@@ -1038,7 +1038,7 @@ class GameListLandscapeView: BaseView {
                         self.showBackgroundMusicSheet()
                     }, cancelHandle: { [weak self] in
                         self?.showBackgroundMusicSheet()
-                    })
+                    }, in: self.hostingWindowScene)
                 })
             }
             return .dismiss()
@@ -1663,7 +1663,7 @@ extension GameListLandscapeView: UICollectionViewDataSource {
             let carouselHeight = carouselView.bounds.height > 0 ? carouselView.bounds.height : 300
             return max(carouselHeight - GameLandscapeCarouselCell.infoPanelReserve - R.Size.ContentSpaceLarge, 100)
         } else {
-            return R.Size.WindowHeight/3
+            return R.Size.ApplicationWindowSize.height/3
         }
     }
     
@@ -1708,8 +1708,9 @@ extension GameListLandscapeView: UICollectionViewDataSource {
                              showTitle: !R.Style.GamesHideTitle,
                              indexPath: indexPath)
                 cell.isFocusable = true
-                cell.onFocusConfirm = {
-                    game.handleTapAction()
+                cell.onFocusConfirm = { [weak self] in
+                    guard let self else { return true }
+                    game.handleTapAction(in: self.hostingWindowScene)
                     return true
                 }
             }
@@ -1752,7 +1753,7 @@ extension GameListLandscapeView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if isListCollectionView(collectionView) {
             if let game = listGame(at: indexPath) {
-                game.handleTapAction()
+                game.handleTapAction(in: hostingWindowScene)
             }
             return false
         }
@@ -1771,7 +1772,7 @@ extension GameListLandscapeView: UICollectionViewDelegate {
             focusCarouselPage(indexPath.row, animated: true)
         } else if let game = focusedGame {
             UIDevice.generateHaptic()
-            game.handleTapAction()
+            game.handleTapAction(in: hostingWindowScene)
         }
     }
     

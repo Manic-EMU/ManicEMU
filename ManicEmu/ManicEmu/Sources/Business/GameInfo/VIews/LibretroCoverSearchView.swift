@@ -41,8 +41,9 @@ class LibretroCoverSearchView: BaseView {
                                  detail: R.string.localizable.aiCoverSearchDesc(),
                                  confirmTitle: R.string.localizable.goToUpgrade(),
                                  confirmAutoHide: false,
-                                 confirmAction: {
-                    topViewController()?.present(PurchaseViewController(), animated: true)
+                                 confirmAction: { [weak self] in
+                    guard let self else { return }
+                    topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(), animated: true)
                 })
             } else {
                 self.searchCover(text: searchText)
@@ -60,7 +61,7 @@ class LibretroCoverSearchView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.allowsMultipleSelection = true
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         view.blankSlateView = BlankSlateEmptyView(title: R.string.localizable.noGameCoverResult())
         return view
     }()
@@ -216,11 +217,12 @@ extension LibretroCoverSearchView: UICollectionViewDelegate {
         collectionView.deselectItem(at: indexPath, animated: true)
         let game = self.datas[indexPath.row]
         if let url = URL(string: game.onlineCoverUrl) {
+            let scene = hostingWindowScene
             KingfisherManager.shared.retrieveImage(with: url) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success(let imageResult):
-                    ImageFetcher.edit(image: imageResult.image) { [weak self] image in
+                    ImageFetcher.edit(image: imageResult.image, in: scene) { [weak self] image in
                         guard let self = self else { return }
                         Task { @MainActor in
                             self.didSelectIamge?(image)

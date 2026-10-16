@@ -167,7 +167,7 @@ class ControllersSettingView: BaseView {
                         //change player index
                         
                         if !PurchaseManager.isMember {
-                            topViewController()?.present(PurchaseViewController(featuresType: .controler), animated: true)
+                            topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(featuresType: .controler), animated: true)
                             return
                         }
                         
@@ -192,7 +192,7 @@ class ControllersSettingView: BaseView {
                 } else {
                     vc = .init(gameType: gameType, controller: controller)
                 }
-                topViewController()?.present(vc, animated: true)
+                topViewController(in: hostingWindowScene)?.present(vc, animated: true)
             }
         }
     }
@@ -210,7 +210,7 @@ class ControllersSettingView: BaseView {
         return ASListPage(navigation: navigation,
                           sections: getSections(),
                           backgroundColor: .clear,
-                          pageInsets: .insets(top: asSideMenu ? R.Size.ContentInsetTop : R.Size.SheetGrabberTopInset),
+                          pageInsets: .insets(top: asSideMenu ? R.Size.ContentInsetTop(window: hostingWindow) : R.Size.SheetGrabberTopInset),
                           enableSafeAreaLeftInsets: true,
                           enableSafeAreaRightInsets: true)
     }
@@ -245,8 +245,8 @@ class ControllersSettingView: BaseView {
     
     func updateTopInsets() {
         guard asSideMenu else { return }
-        guard listPageView.pageInsets.top != R.Size.ContentInsetTop else { return }
-        listPageView.pageInsets = .insets(top: R.Size.ContentInsetTop)
+        guard listPageView.pageInsets.top != R.Size.ContentInsetTop(window: hostingWindow) else { return }
+        listPageView.pageInsets = .insets(top: R.Size.ContentInsetTop(window: hostingWindow))
     }
 }
 

@@ -268,13 +268,13 @@ class JITSettingView: BaseView {
         ]
         #endif
 
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
+        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
         return ASListPage(
             navigation: navigation,
             sections: sections,
             backgroundColor: .clear,
             listInsets: .insets(bottom: listInsetBottom),
-            pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop))
+            pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow)))
     }
 
 #if SIDE_LOAD
@@ -334,7 +334,7 @@ class JITSettingView: BaseView {
     }
 
     private func importPairingTapped() {
-        StikJITManager.shared.presentPairingFilePicker { [weak self] ok, error in
+        StikJITManager.shared.presentPairingFilePicker(in: hostingWindowScene) { [weak self] ok, error in
             if let error {
                 UIView.makeToast(message: error)
             } else if ok, StikJITManager.shared.hasPairingFile, StikJITManager.shared.isBuiltInAvailable {

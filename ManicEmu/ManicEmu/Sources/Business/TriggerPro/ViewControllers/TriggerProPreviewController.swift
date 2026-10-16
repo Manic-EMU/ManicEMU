@@ -180,7 +180,11 @@ class TriggerProPreviewController: BaseViewController {
         }
     }
     
-    init(gameType: GameType, trigger: Trigger? = nil, preferredSkinID: String? = nil, hideControls: Bool = false) {
+    init(gameType: GameType,
+         trigger: Trigger? = nil,
+         preferredSkinID: String? = nil,
+         hideControls: Bool = false,
+         window: UIWindow) {
         let realm = Database.realm
         self.defaultSkin = ControllerSkin.standardControllerSkin(for: gameType)!
         if let preferredSkinID,
@@ -190,7 +194,7 @@ class TriggerProPreviewController: BaseViewController {
         } else {
             self.skin = self.defaultSkin
         }
-        self.traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.WindowSize)))
+        self.traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.ApplicationWindowSize)))
         if let trigger {
             //将数据库实例转换为临时实例 为了更方便的修改 保存的时候统一修改数据库
             self.trigger = trigger.copyTrigger()
@@ -218,7 +222,7 @@ class TriggerProPreviewController: BaseViewController {
             controlView.snp.makeConstraints { make in
                 make.center.equalToSuperview()
                 if let aspectRatio = skin.aspectRatio(for: traits) {
-                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: CGSize(width: R.Size.WindowHeight, height: R.Size.WindowWidth)))
+                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.ApplicationWindowSize.swapSide))
                     make.size.equalTo(frame.size)
                 }
             }
@@ -227,7 +231,7 @@ class TriggerProPreviewController: BaseViewController {
             controlView.snp.makeConstraints { make in
                 make.center.equalToSuperview()
                 if let aspectRatio = skin.aspectRatio(for: traits) {
-                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.WindowSize))
+                    let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.ApplicationWindowSize))
                     make.size.equalTo(frame.size)
                 }
             }
@@ -236,11 +240,11 @@ class TriggerProPreviewController: BaseViewController {
         view.addSubview(navigationView)
         navigationView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+            make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
             make.height.equalTo(R.Size.NavigationHeight)
         }
         
-        if let skinFrames = skin.getFrames() {
+        if let skinFrames = skin.getFrames(window: window) {
             controlView.addSubview(gameViewBackgroundView)
             gameViewBackgroundView.snp.makeConstraints { make in
                 make.leading.equalTo(skinFrames.mainGameViewFrame.minX)

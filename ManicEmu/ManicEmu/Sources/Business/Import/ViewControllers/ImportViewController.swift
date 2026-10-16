@@ -41,11 +41,19 @@ class ImportViewController: BaseViewController {
         self.setupViews()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.isPad, hostingWindow != nil {
+            updateViewsForIpad()
+        }
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        if UIDevice.isPhone {
-            coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-                self?.hideSideMenu()
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            guard let self else { return }
+            if UIDevice.isPhone || (UIDevice.isPad && self.view.isWindowHasEnoughSpaceforIpadMultiColumnLayout) {
+                self.hideSideMenu()
             }
         }
     }
@@ -61,26 +69,48 @@ class ImportViewController: BaseViewController {
             view.backgroundColor = UIColor(.dm, light: .white, dark: .black)
             importServiceListView.backgroundColor = R.Color.BackgroundPrimary
             view.addSubview(importServiceListView)
-            importServiceListView.snp.makeConstraints { make in
+        }
+    }
+    
+    private func updateViewsForIpad() {
+        guard UIDevice.isPad else { return }
+        guard let hostingWindow else { return }
+        if view.isWindowHasEnoughSpaceforIpadMultiColumnLayout {
+            let sideMenuWidth = R.Size.SideMenuWidth(window: hostingWindow)*1.2
+            importServiceListView.snp.remakeConstraints { make in
                 make.top.bottom.trailing.equalToSuperview()
-                make.width.equalToSuperview().offset(-R.Size.SideMenuWidth*1.2)
+                if sideMenuWidth <= hostingWindow.width/2 {
+                    make.width.equalToSuperview().offset(-sideMenuWidth)
+                } else {
+                    make.width.equalToSuperview().offset(-hostingWindow.width/2)
+                }
             }
             
+            addImportServiceView.removeFromSuperview()
             view.addSubview(addImportServiceView)
-            addImportServiceView.snp.makeConstraints { make in
+            
+            addImportServiceView.snp.remakeConstraints { make in
                 make.leading.top.bottom.equalToSuperview()
                 make.trailing.equalTo(importServiceListView.snp.leading)
             }
             
+            cornerMaskViewForiPad.removeFromSuperview()
             view.addSubview(cornerMaskViewForiPad)
-            cornerMaskViewForiPad.snp.makeConstraints { make in
+            cornerMaskViewForiPad.snp.remakeConstraints { make in
                 make.edges.equalTo(importServiceListView)
             }
+        } else {
+            importServiceListView.snp.remakeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            }
+            addImportServiceView.removeFromSuperview()
+            cornerMaskViewForiPad.removeFromSuperview()
         }
     }
     
     override func handleScreenPanGesture(edges: UIRectEdge, gesture: UIScreenEdgePanGestureRecognizer) {
-        if UIDevice.isPhone || (UIDevice.isPad && !UIDevice.isLandscape) {
+        if UIDevice.isPhone || (UIDevice.isPad && view.prefferedLayoutStyle == .portrait) {
             if edges == .left {
                 showSideMenu()
             }
@@ -101,9 +131,9 @@ class ImportViewController: BaseViewController {
         menu.presentDuration = R.Numbers.LongAnimationDuration
         menu.dismissDuration = R.Numbers.LongAnimationDuration
         menu.leftSide = !Locale.isRTLLanguage
-        menu.menuWidth = R.Size.SideMenuWidth
+        menu.menuWidth = R.Size.SideMenuWidth(window: hostingWindow)
         menu.presentationStyle = SideMenuShowStyle()
-        topViewController()?.present(menu, animated: true)
+        topViewController(in: hostingWindowScene)?.present(menu, animated: true)
         sideMenu = menu
     }
     

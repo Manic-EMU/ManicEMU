@@ -250,7 +250,9 @@ class GameOptionsView: BaseView {
             let option = optionGroups[groupIndex.section][groupIndex.row]
             
             let shouldHide = shouldHideBlock?(option) ?? false
-            option.performAction(with: games, accessoryChange: { [weak self] in
+            option.performAction(with: games,
+                                 in: hostingWindowScene,
+                                 accessoryChange: { [weak self] in
                 guard let self, !shouldHide else { return }
                 self.listPageView.updateCellData(self.getCell(option: option), indexPath: indexPath)
             }, reloadAll: { [weak self] in
@@ -271,7 +273,7 @@ class GameOptionsView: BaseView {
                 }
             } else if let index = navigationValue.tapToolsValue {
                 if shortcuts.count > index {
-                    shortcuts[index].performAction(with: games)
+                    shortcuts[index].performAction(with: games, in: hostingWindowScene)
                 }
             }
         }
@@ -314,7 +316,7 @@ extension GameOptionsView: ShowableView {
     var prefferdConstraintHeight: CGFloat? {
         if scene == .gaming,
            UIDevice.isPhone,
-           UIDevice.isPortrait,
+           proHUDLayoutStyle() == .portrait,
            PlayViewController.menuInsets == nil {
             return Self.MaxHeightForGaming ?? R.Size.SheetWindowMaxSize.height
         } else if scene == .common {
@@ -324,7 +326,7 @@ extension GameOptionsView: ShowableView {
                 height += options.reduce(0.0, { result, _ in result + R.Size.ItemHeightLarge })
             })
             height += R.Size.ContentSpaceLarge
-            height += R.Size.ContentInsetBottom
+            height += R.Size.ContentInsetBottom(window: hostingWindow)
             return height
         }
         return R.Size.SheetWindowMaxSize.height

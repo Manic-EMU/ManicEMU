@@ -128,7 +128,7 @@ class RetroAchievementsLaunchView: BaseView {
                 if showClose {
                     make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
                 } else {
-                    make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+                    make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
                 }
                 make.leading.trailing.equalTo(safeAreaLayoutGuide)
                 make.height.equalTo(R.Size.ItemHeightMedium)

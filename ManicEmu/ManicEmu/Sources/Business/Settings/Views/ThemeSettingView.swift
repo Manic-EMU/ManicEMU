@@ -67,7 +67,7 @@ class ThemeSettingView: BaseView {
         view.dragDelegate = self
         view.dropDelegate = self
         view.contentInset = .insets(top: R.Size.ContentSpaceSmall,
-                                    bottom: UIDevice.isPad ? (R.Size.ContentInsetBottom + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge) : R.Size.ContentInsetBottom)
+                                    bottom: UIDevice.isPad ? (R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge) : R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     
@@ -94,7 +94,7 @@ class ThemeSettingView: BaseView {
             if showClose {
                 make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
             } else {
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop)
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
             }
             make.height.equalTo(R.Size.NavigationHeight)
         }

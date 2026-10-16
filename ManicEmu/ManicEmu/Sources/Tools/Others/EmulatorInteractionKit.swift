@@ -162,7 +162,7 @@ struct EmulatorInteractionKit {
     
     static func processGames(type: EmulatorType, callbackUrl: URL) {
         var delay: Double
-        if let _ = ApplicationSceneDelegate.applicationWindow {
+        if let _ = UIWindow.applicationWindow {
             delay = 0.0
         } else {
             delay = 3.0

@@ -35,7 +35,7 @@ class PSXSBIImportView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.isFocusable = true
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     
@@ -114,7 +114,7 @@ extension PSXSBIImportView: UICollectionViewDataSource {
                 guard let self else { return }
                 if let sbi = UTType(filenameExtension: "sbi") {
                     let supportedType = [sbi]
-                    FilesImporter.shared.presentImportController(supportedTypes: supportedType, allowsMultipleSelection: false) { [weak self] urls in
+                    FilesImporter.shared.presentImportController(supportedTypes: supportedType, allowsMultipleSelection: false, manualHandle: { [weak self] urls in
                         guard let self else { return }
                         if let url = urls.first {
                             do {
@@ -126,7 +126,7 @@ extension PSXSBIImportView: UICollectionViewDataSource {
                                 UIView.makeToast(message: R.string.localizable.biosImportFailed())
                             }
                         }
-                    }
+                    }, in: self.hostingWindowScene)
                 }
             }
             return cell

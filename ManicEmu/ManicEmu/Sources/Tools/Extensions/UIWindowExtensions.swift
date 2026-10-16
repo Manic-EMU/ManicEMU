@@ -9,6 +9,7 @@
 
 import Foundation
 import UIKit
+import ProHUD
 
 extension UIWindow {
     static var applicationWindow: UIWindow? {
@@ -21,8 +22,11 @@ extension UIWindow {
 #endif
     }
     
-    static var topWindow: UIWindow? {
-        if let window = ApplicationSceneDelegate.applicationScene?.windows.last(where: { w in
+    /// Content window in `scene`, skipping alerts and keeping an elevated ProHUD sheet when one is visible.
+    /// Pass nil to resolve the main application scene. A scene that was passed in is never replaced by another scene's window.
+    static func topWindow(in scene: UIWindowScene?) -> UIWindow? {
+        let resolvedScene = scene ?? ApplicationSceneDelegate.applicationScene
+        if let window = resolvedScene?.windows.last(where: { w in
             if w.isHidden {
                 return false
             }
@@ -47,7 +51,10 @@ extension UIWindow {
         }) {
             return window
         }
-        return applicationWindow
+        if scene == nil {
+            return applicationWindow
+        }
+        return nil
     }
     
 #if os(iOS)

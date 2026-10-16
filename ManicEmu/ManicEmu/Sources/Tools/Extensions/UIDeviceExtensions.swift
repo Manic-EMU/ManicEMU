@@ -62,39 +62,6 @@ extension UIDevice {
         CHHapticEngine.capabilitiesForHardware().supportsHaptics
     }
     
-    enum LayoutStyle: String {
-        case iPadFullscreen = "iPad Full Screen"
-        case iPadHalfScreen = "iPad 1/2 Screen"
-        case iPadTwoThirdScreeen = "iPad 2/3 Screen"
-        case iPadOneThirdScreen = "iPad 1/3 Screen"
-        case iPhoneFullScreen = "iPhone"
-    }
-    
-    static var layoutStyle: LayoutStyle {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .iPhoneFullScreen
-        }
-        let screenSize = UIScreen.main.bounds.size
-        let appSize = R.Size.WindowSize
-        let screenWidth = screenSize.width
-        let appWidth = appSize.width
-        
-        if screenSize == appSize {
-            return .iPadFullscreen
-        }
-        let persent = CGFloat(appWidth / screenWidth) * 100.0
-        if persent <= 55.0 && persent >= 45.0 {
-            // 半分屏
-            return .iPadHalfScreen
-        } else if persent > 55.0 {
-            // 2/3
-            return .iPadTwoThirdScreeen
-        } else {
-            // 1/3
-            return .iPadOneThirdScreen
-        }
-    }
-    
     static var isLandscape: Bool {
         UIDevice.currentOrientation == .landscapeLeft || UIDevice.currentOrientation == .landscapeRight
     }
@@ -104,8 +71,19 @@ extension UIDevice {
     }
     
     static var isPadMini: Bool {
-        if UIDevice.isPad, R.Size.WindowSize.minDimension <= 744 {
-            return true
+        if UIDevice.isPad {
+            switch Device.version(detectSimulator: true) {
+            case .iPadMini,
+                 .iPadMini2,
+                 .iPadMini3,
+                 .iPadMini4,
+                 .iPadMini5,
+                 .iPadMini6,
+                 .iPadMini7:
+                return true
+            default:
+                return false
+            }
         }
         return false
     }
@@ -118,20 +96,48 @@ extension UIDevice {
         return isPhone && Device.size().rawValue >= Size.screen6_3Inch.rawValue
     }
     
+    static func isFullScreenIPad(window: UIWindow) -> Bool {
+        guard isPad else { return false }
+        return window.bounds.equalTo(window.screen.bounds)
+    }
+    
+    static func isWindowAppIPad(window: UIWindow) -> Bool {
+        guard isPad else { return false }
+        return !window.bounds.equalTo(window.screen.bounds)
+    }
+    
     static var currentOrientation: UIInterfaceOrientation {
         UIWindow.applicationWindow?.windowScene?.interfaceOrientation ?? .portrait
     }
     static var hasNotch: Bool {
-        let insets = R.Size.SafeArea
-        let orientation = UIDevice.currentOrientation
-        if orientation == .landscapeRight {
-            return insets.left > 20
-        } else if orientation == .landscapeLeft {
-            return insets.right > 20
-        } else if orientation == .portraitUpsideDown {
-            return insets.bottom > 20
+        switch Device.version(detectSimulator: true) {
+        case .iPhoneX,
+             .iPhoneXS,
+             .iPhoneXS_Max,
+             .iPhoneXR,
+             .iPhone11,
+             .iPhone11Pro,
+             .iPhone11Pro_Max,
+             .iPhone12Mini,
+             .iPhone12,
+             .iPhone12Pro,
+             .iPhone12Pro_Max,
+             .iPhone13Mini,
+             .iPhone13,
+             .iPhone13Pro,
+             .iPhone13Pro_Max,
+             .iPhone14,
+             .iPhone14Plus,
+             .iPhone16e,
+             .iPhone17e:
+            return true
+        default:
+            return false
         }
-        return insets.top > 20
+    }
+    
+    static var hasDynamicIsland: Bool {
+        Device.hasDynamicIsland
     }
     
     private static var mtlDevice: MTLDevice? = MTLCreateSystemDefaultDevice()
@@ -153,23 +159,15 @@ extension UIDevice {
     }
     
     static var isPhone: Bool {
-        if Device.isPhone() || Device.isPod() {
+        if Device.isPhone(detectSimulator: true) || Device.isPod(detectSimulator: true) {
             return true
-        } else if Device.isSimulator() {
-            if R.Size.WindowSize.minDimension < 744 { //ipad mini 8.3寸 最小宽度是744
-                return true
-            }
         }
         return false
     }
     
     static var isPad: Bool {
-        if Device.isPad() {
+        if Device.isPad(detectSimulator: true) {
             return true
-        } else if Device.isSimulator() {
-            if R.Size.WindowSize.minDimension >= 744 { //ipad mini 8.3寸 最小宽度是744
-                return true
-            }
         }
         return false
     }
@@ -181,7 +179,7 @@ extension UIDevice {
     }
     
     static var isDarkMode: Bool {
-        ApplicationSceneDelegate.applicationWindow?.traitCollection.userInterfaceStyle == .dark
+        UIWindow.applicationWindow?.traitCollection.userInterfaceStyle == .dark
     }
     
     static var isIOS15: Bool {
@@ -430,7 +428,7 @@ enum OrientationLockPin {
     }
     
     private static func notifyOrientationControllers() {
-        var vc = ApplicationSceneDelegate.applicationWindow?.rootViewController
+        var vc = UIWindow.applicationWindow?.rootViewController
         while let current = vc {
             if #available(iOS 16.0, *) {
                 current.setNeedsUpdateOfSupportedInterfaceOrientations()
@@ -454,7 +452,7 @@ enum OrientationLockPin {
     
     private static func currentInterfaceOrientation() -> UIInterfaceOrientation {
         ApplicationSceneDelegate.applicationScene?.interfaceOrientation
-            ?? ApplicationSceneDelegate.applicationWindow?.windowScene?.interfaceOrientation
+            ?? UIWindow.applicationWindow?.windowScene?.interfaceOrientation
             ?? UIDevice.currentOrientation
     }
     

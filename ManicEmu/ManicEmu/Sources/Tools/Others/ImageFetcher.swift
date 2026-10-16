@@ -36,7 +36,10 @@ struct ImageFetcher {
         return editConfig
     }
     
-    static func capture(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize), isOpenEditor: Bool = true, completion: @escaping (_ image: UIImage?)->Void) {
+    static func capture(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize),
+                        isOpenEditor: Bool = true,
+                        in scene: UIWindowScene?,
+                        completion: @escaping (_ image: UIImage?)->Void) {
         //拍摄
         PermissionKit.requestCamera {
             var config = CameraConfiguration()
@@ -45,7 +48,7 @@ struct ImageFetcher {
             } else {
                 config.allowsEditing = false
             }
-            let vc = Photo.capture(config, type: .photo, sender: topViewController()) { result, _, _ in
+            let vc = Photo.capture(config, type: .photo, sender: topViewController(in: scene)) { result, _, _ in
                 if case .image(let image) = result {
                     if let preferenceSize {
                         completion(image.scaled(toSize: preferenceSize))
@@ -61,7 +64,10 @@ struct ImageFetcher {
         }
     }
     
-    static func pick(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize), isOpenEditor: Bool = true, completion: @escaping (_ image: UIImage?)->Void) {
+    static func pick(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize),
+                     isOpenEditor: Bool = true,
+                     in scene: UIWindowScene?,
+                     completion: @escaping (_ image: UIImage?)->Void) {
         PermissionKit.requestPhoto {
             var config = PickerConfiguration.default
             config.navigationBackgroundColor = R.Color.BackgroundSecondary.forceStyle(.dark)
@@ -70,7 +76,7 @@ struct ImageFetcher {
             config.selectOptions = [.livePhoto, .photo]
             config.photoSelectionTapAction = isOpenEditor ? .openEditor : .quickSelect
             config.editor = defaultEditorConfiguration()
-            let vc = Photo.picker(config, sender: topViewController()) { result, _ in
+            let vc = Photo.picker(config, sender: topViewController(in: scene)) { result, _ in
                 result.getImage(compressionScale: 1) { image in
                     if let image = image.first {
                         if let preferenceSize {
@@ -88,11 +94,17 @@ struct ImageFetcher {
         }
     }
     
-    static func file(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize), isOpenEditor: Bool = true, completion: @escaping (_ image: UIImage?)->Void) {
-        ImageFileFetcher.shared.file(preferenceSize: preferenceSize, completion: { image in
+    static func file(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize),
+                     isOpenEditor: Bool = true,
+                     in scene: UIWindowScene?,
+                     completion: @escaping (_ image: UIImage?)->Void) {
+        ImageFileFetcher.shared.file(preferenceSize: preferenceSize, in: scene, completion: { image in
             if let image {
                 if isOpenEditor {
-                    edit(image: image, preferenceSize: preferenceSize, completion: completion)
+                    edit(image: image,
+                         preferenceSize: preferenceSize,
+                         in: scene,
+                         completion: completion)
                 } else {
                     completion(image)
                 }
@@ -102,7 +114,10 @@ struct ImageFetcher {
         })
     }
     
-    static func edit(image: UIImage, preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize), completion: @escaping (_ image: UIImage?)->Void) {
+    static func edit(image: UIImage,
+                     preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize),
+                     in scene: UIWindowScene?,
+                     completion: @escaping (_ image: UIImage?)->Void) {
         var config = defaultEditorConfiguration()
         // 由我们在 dismiss 完成后再回调，避免调用方立刻关掉 presenting 的 SheetWindow，导致系统旋转卡住。
         config.isAutoBack = false
@@ -111,7 +126,7 @@ struct ImageFetcher {
         
         let vc = Photo.edit(asset: .init(type: .image(image)),
                             config: config,
-                            sender: topViewController(),
+                            sender: topViewController(in: scene),
                             finished: { asset, editor in
             var result = image
             if let url = asset.result?.url, let newImage = try? UIImage(url: url) {
@@ -138,6 +153,7 @@ struct ImageFetcher {
     }
     
     static func showCommonFetcher(sources: [Source],
+                                  in scene: UIWindowScene?,
                                   completion: ((UIImage?, Source) -> Void)? = nil ) {
         guard sources.count > 0 else { return }
         
@@ -175,15 +191,15 @@ struct ImageFetcher {
             guard let index else { return }
             switch sources[index] {
             case .capture:
-                ImageFetcher.capture(completion: {
+                ImageFetcher.capture(in: scene, completion: {
                     completion?($0, .capture)
                 })
             case .library:
-                ImageFetcher.pick(completion: {
+                ImageFetcher.pick(in: scene, completion: {
                     completion?($0, .library)
                 })
             case .file:
-                ImageFetcher.file(completion: {
+                ImageFetcher.file(in: scene, completion: {
                     completion?($0, .file)
                 })
             case .libretro(let game):
@@ -217,15 +233,16 @@ struct ImageFetcher {
                     })
                 }
             case .editImage(let image):
-                ImageFetcher.edit(image: image, completion: {
+                ImageFetcher.edit(image: image, in: scene, completion: {
                     completion?($0, .editImage(image))
                 })
             case .editImageUrl(let url):
+                let s = scene
                 KingfisherManager.shared.retrieveImage(with: url) { result in
                     switch result {
                     case .success(let imageResult):
                         Task { @MainActor in
-                            ImageFetcher.edit(image: imageResult.image, completion: {
+                            ImageFetcher.edit(image: imageResult.image, in: s, completion: {
                                 completion?($0, .editImageUrl(url))
                             })
                         }
@@ -247,14 +264,16 @@ fileprivate class ImageFileFetcher: NSObject {
     private var preferenceSize: CGSize? = nil
     private var completion: ((_ image: UIImage?)->Void)? = nil
     
-    func file(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize), completion: @escaping (_ image: UIImage?)->Void) {
+    func file(preferenceSize: CGSize? = .init(R.Size.GameCoverMaxSize),
+              in scene: UIWindowScene?,
+              completion: @escaping (_ image: UIImage?)->Void) {
         self.preferenceSize = preferenceSize
         self.completion = completion
         let documentPickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.image], asCopy: true)
         documentPickerViewController.delegate = self
         documentPickerViewController.overrideUserInterfaceStyle = UIDevice.isDarkMode ? .dark : .light
         documentPickerViewController.allowsMultipleSelection = false
-        topViewController()?.present(documentPickerViewController, animated: true)
+        topViewController(in: scene)?.present(documentPickerViewController, animated: true)
     }
 }
 

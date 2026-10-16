@@ -21,7 +21,7 @@ class PriceView: BaseView {
         view.delegate = self
         view.isFocusable = true
         view.contentInset = .insets(top: R.Size.ContentSpaceHuge,
-                                    bottom: R.Size.ContentInsetBottom)
+                                    bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
     
@@ -128,7 +128,7 @@ extension PriceView: UICollectionViewDataSource {
                     } else {
                         //购买成功
                         self?.needToClosePurchaseView?()
-                        CheersView.makePurchaseCheers()
+                        CheersView.makePurchaseCheers(in: self?.hostingWindowScene)
                     }
                 }
             }

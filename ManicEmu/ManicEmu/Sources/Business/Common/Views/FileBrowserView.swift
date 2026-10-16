@@ -199,10 +199,10 @@ class FileBrowserView: BaseView {
                     hide()
                 }
             } else if let index =  navigationValue.tapToolsValue {
-                if index == 0 {
+                if index == 0 && currentPageItems.filter({ !$0.isDirectory }).count > 0 {
                     //edit mode
                     isEditMode = true
-                } else if index == 1 {
+                } else if index == 1 || (index == 0 && currentPageItems.filter({ !$0.isDirectory }).count == 0) {
                     //download manager
                     DownloadManageView.show()
                 }
@@ -288,13 +288,22 @@ class FileBrowserView: BaseView {
             title = rootNavigationTitle ?? "/"
         }
         
+        let tools: [ASIcon]
+        if currentPageItems.filter({ !$0.isDirectory }).count > 0 {
+            tools = [
+                .symbolImage(R.image.selectedit_iconSymbols()),
+                .symbolImage(R.image.cloudDownload_iconSymbols(), animated: DownloadManager.shared.hasDownloadTask)
+             ]
+        } else {
+            tools = [
+                .symbolImage(R.image.cloudDownload_iconSymbols(), animated: DownloadManager.shared.hasDownloadTask)
+             ]
+        }
+        
         var navigation = ASListPage.Navigation.defaultNavigation(title: title,
                                                                  titleLineBreakMode: .byTruncatingHead,
                                                                  titleIcon: icon,
-                                                                 tools: [
-                                                                    .symbolImage(R.image.selectedit_iconSymbols()),
-                                                                    .symbolImage(R.image.cloudDownload_iconSymbols(), animated: DownloadManager.shared.hasDownloadTask)
-                                                                 ])
+                                                                 tools: tools)
         if pages.count > 1 {
             navigation.enableTitleInteractive = true
         }
@@ -376,7 +385,7 @@ class FileBrowserView: BaseView {
                     let errorsString = falures.reduce("") { ($0.isEmpty ? $0 : "\n") + $1 }
                     error.append(ImportError.downloadError(filenames: errorsString))
                 }
-                FilesImporter.importFiles(urls: urls, preErrors: error)
+                FilesImporter.importFiles(urls: urls, preErrors: error, in: self.hostingWindowScene)
             }
             return
         }

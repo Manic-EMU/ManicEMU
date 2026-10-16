@@ -175,7 +175,8 @@ class FlexSkinSettingViewController: BaseViewController {
         }
         
         if let controllerSkin = controlView.controllerSkin as? ControllerSkin,
-           let frames = controllerSkin.getFrames() {
+           let hostingWindow,
+           let frames = controllerSkin.getFrames(window: hostingWindow) {
             
             if let screens = controllerSkin.screens(for: traits) {
                 for (index, screen) in screens.enumerated() {
@@ -288,7 +289,8 @@ class FlexSkinSettingViewController: BaseViewController {
                                 for (index, screen) in screens.enumerated() {
                                     if let outputFrame = screen.outputFrame,
                                        let controllerSkin = controlView.controllerSkin as? ControllerSkin,
-                                       let frames = controllerSkin.getFrames()  {
+                                       let hostingWindow,
+                                       let frames = controllerSkin.getFrames(window: hostingWindow)  {
                                         let scaledFrame = outputFrame.applying(.init(scaleX: frames.skinFrame.width, y: frames.skinFrame.height))
                                         screensViews[index].frame = scaledFrame
                                         initFrames.append(scaledFrame)
@@ -629,7 +631,9 @@ extension FlexSkinSettingViewController {
                         if let image = background?.image {
                             sources += [.editImage(image)]
                         }
-                        ImageFetcher.showCommonFetcher(sources: sources, completion: { [weak self] image, source in
+                        ImageFetcher.showCommonFetcher(sources: sources,
+                                                       in: hostingWindowScene,
+                                                       completion: { [weak self] image, source in
                             guard let self, let image else { return }
                             if case .editImage = source {
                                 self.updateBackgroundImage(image)

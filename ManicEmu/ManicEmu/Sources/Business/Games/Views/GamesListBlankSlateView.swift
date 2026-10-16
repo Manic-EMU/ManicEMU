@@ -143,7 +143,7 @@ class GamesListBlankSlateView: BaseView {
         warnningContainer.layerCornerRadius = R.Size.ButtonExtraSmall/2
         containerView.addSubview(warnningContainer)
         warnningContainer.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-(R.Size.ContentInsetBottom + R.Size.ItemHeightLarge + ((Device.size().rawValue < Size.screen5_8Inch.rawValue || UIDevice.isPad) ? R.Size.ContentSpaceHuge : R.Size.ContentSpaceSmall)))
+            make.bottom.equalToSuperview().offset(-(R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.ItemHeightLarge + ((Device.size().rawValue < Size.screen5_8Inch.rawValue || UIDevice.isPad) ? R.Size.ContentSpaceHuge : R.Size.ContentSpaceSmall)))
             make.centerX.equalToSuperview()
             make.leading.greaterThanOrEqualToSuperview().offset(R.Size.ContentSpaceLarge)
             make.trailing.lessThanOrEqualToSuperview().offset(-R.Size.ContentSpaceLarge)

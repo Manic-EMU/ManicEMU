@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 UIViewController.attemptRotationToDeviceOrientation()
             }
             if #available(iOS 16.0, *) {
-                var vc = ApplicationSceneDelegate.applicationWindow?.rootViewController
+                var vc = UIWindow.applicationWindow?.rootViewController
                 while let current = vc {
                     current.setNeedsUpdateOfSupportedInterfaceOrientations()
                     if #available(iOS 26.0, *) {

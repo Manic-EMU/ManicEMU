@@ -18,7 +18,9 @@ class ShaderPreviewView: RoundAndBorderView {
                                                  background: R.Color.BackgroundQuaternary))
         view.didTapButton = { [weak self] in
             guard let self else { return }
-            ImageFetcher.showCommonFetcher(sources: [.capture, .library, .file], completion: { [weak self] fetchImage, _ in
+            ImageFetcher.showCommonFetcher(sources: [.capture, .library, .file],
+                                           in: self.hostingWindowScene,
+                                           completion: { [weak self] fetchImage, _ in
                 guard let self, let fetchImage = fetchImage?.scaled(toSize: self.dimensions) else { return }
                 self.image = fetchImage
             })

@@ -45,7 +45,7 @@ class OnlinePlaySettingView: BaseView {
         let view = ASListPageView(.init(navigation: navigation,
                                         sections: sections,
                                         backgroundColor: .clear,
-                                        pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop)))
+                                        pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow))))
         view.didActionOccurred = { [weak self] action in
             guard let self else { return }
             if let navigationValue = action.navigationValue {

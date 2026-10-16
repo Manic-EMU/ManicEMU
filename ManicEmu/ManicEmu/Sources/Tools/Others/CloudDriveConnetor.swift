@@ -37,11 +37,11 @@ class CloudDriveConnetor {
         return connector
     }
     
-    func connect(service: ImportService) {
+    func connect(service: ImportService, in scene: UIWindowScene?) {
         Log.debug("开始连接云服务:\(service.title)")
         currentConnector = genConnector(for: service.type)
         guard let connector = currentConnector else { return }
-        guard let topViewController = topViewController() else { return }
+        guard let topViewController = topViewController(in: scene) else { return }
         connector.connect(viewController: topViewController) { [weak self] connectResult in
             switch connectResult {
             case .success(let connectSuccess):

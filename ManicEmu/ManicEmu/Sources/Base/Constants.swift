@@ -9,6 +9,7 @@
 
 import UIKit
 import RealmSwift
+import ProHUD
 
 extension _R {
     var Size: _Size.Type { _Size.self }
@@ -29,20 +30,19 @@ extension _R {
 extension _R {
     struct _Size {
         //系统常用尺寸
-        static var WindowSize: CGSize { UIWindow.applicationWindow?.bounds.size ?? .zero }
-        static var WindowWidth: CGFloat { WindowSize.width }
-        static var WindowHeight: CGFloat { WindowSize.height }
-        static var SafeArea: UIEdgeInsets { UIWindow.applicationWindow?.safeAreaInsets ?? .zero}
-        static var TopWindowSafeArea: UIEdgeInsets { UIWindow.topWindow?.safeAreaInsets ?? .zero}
-        static var PresentationTop: CGFloat { UIDevice.isPhone ? (UIDevice.hasNotch ? 69 : 40) : 0 }
+        static var ApplicationWindowSize: CGSize { UIWindow.applicationWindow?.bounds.size ?? .zero }
+        static var PresentationTop: CGFloat { UIDevice.isPhone ? ((UIDevice.hasNotch || UIDevice.hasDynamicIsland) ? 69 : 40) : 0 }
         
         ///符号图标size 18
         static let SymbolSize = 18.0
         
         ///HomeTabBarSize 300x60
         static let HomeTabBarSize = CGSize(width: 300, height: ItemHeightLarge)
-        /// 侧边视图宽度
-        static let SideMenuWidth = UIDevice.isPhone ? WindowSize.minDimension * 0.874 : 300
+        
+        static func SideMenuWidth(window: UIWindow?) -> CGFloat {
+            let windowSize = (window ?? UIWindow.applicationWindow)?.size ?? R.Size.ApplicationWindowSize
+            return UIDevice.isPhone ? windowSize.minDimension * 0.874 : 300
+        }
         /// 游戏封面宽高比 默认1:1
         static func GameCoverRatio(gameType: GameType, ignoreForceSquare: Bool = false) -> CGFloat {
             if R.Style.GameCoverForceSquare && !ignoreForceSquare {
@@ -102,15 +102,15 @@ extension _R {
         static let GameNameMaxCount = 255
         
         ///CollectionView的top缩进
-        static var ContentInsetTop: CGFloat {
-            let safeArea = R.Size.SafeArea
-            return safeArea.top > 0 ? safeArea.top : R.Size.ContentSpaceLarge
+        static func ContentInsetTop(window: UIWindow?) -> CGFloat {
+            let safeAreaTop = (window ?? UIWindow.applicationWindow)?.safeAreaInsets.top ?? 0
+            return safeAreaTop > 0 ? safeAreaTop : R.Size.ContentSpaceLarge
         }
         
         ///CollectionView的bottom缩进
-        static var ContentInsetBottom: CGFloat {
-            let safeArea = R.Size.SafeArea
-            return safeArea.bottom > 0 ? safeArea.bottom : R.Size.ContentSpaceLarge
+        static func ContentInsetBottom(window: UIWindow?) -> CGFloat {
+            let safeAreaBottom = (window ?? UIWindow.applicationWindow)?.safeAreaInsets.bottom ?? 0
+            return safeAreaBottom > 0 ? safeAreaBottom : R.Size.ContentSpaceLarge
         }
         
         ///苹果图标默认尺寸
@@ -236,22 +236,26 @@ extension _R {
         
         //MARK: - Sheet
         static var SheetWindowMaxSize: CGSize {
+            let window = proHUDWindow()
+            let windowSize = window?.size ?? R.Size.ApplicationWindowSize
             if UIDevice.isPhone {
-                if UIDevice.isLandscape {
-                    return CGSize(width: WindowHeight, height: WindowHeight - SafeArea.vertical)
+                if windowSize.IsRelativelyWideRectangle {
+                    return CGSize(width: windowSize.height, height: windowSize.height - (window?.safeAreaInsets.vertical ?? 0))
                 } else {
-                    return CGSize(width: WindowWidth, height: WindowHeight - PresentationTop)
+                    return CGSize(width: windowSize.width, height: windowSize.height - PresentationTop)
                 }
             } else if UIDevice.isPad {
-                if UIDevice.isLandscape {
-                    let height = WindowHeight * 0.9
-                    return CGSize(width: height*9/16, height: height)
+                if windowSize.IsRelativelyWideRectangle {
+                    let height = windowSize.height * 0.9
+                    let width = min(max(height*9/16, 375), windowSize.width * 0.9)
+                    return CGSize(width: width, height: height)
                 } else {
-                    let width = WindowWidth*(UIDevice.isPadMini ? 0.65 : 0.5)
-                    return CGSize(width: width, height: width*16/9)
+                    let width = max(windowSize.width*(UIDevice.isPadMini ? 0.65 : 0.5), 375)
+                    let height = min(width*16/9, windowSize.height*0.9)
+                    return CGSize(width: width, height: height)
                 }
             }
-            return R.Size.WindowSize
+            return R.Size.ApplicationWindowSize
         }
         
         static var SheetWindowMinSize: CGSize {
@@ -260,7 +264,8 @@ extension _R {
         }
         
         static var SheetFullScreenForIpadLandscape: CGSize {
-            let width = WindowWidth*0.8
+            let windowSize = proHUDWindow()?.size ?? R.Size.ApplicationWindowSize
+            let width = windowSize.width*(UIDevice.isLandscape ? 0.8 : 0.9)
             return CGSize(width: width, height: width*9/16)
         }
         
@@ -295,7 +300,9 @@ extension _R {
         static let ItemHeightMicro = 30.0
         
         //MARK: Others
-        static var PageBackgroundMaskHeight: CGFloat { ContentInsetTop + ItemHeightMedium }
+        static func PageBackgroundMaskHeight(window: UIWindow?) -> CGFloat {
+            ContentInsetTop(window: window) + ItemHeightMedium
+        }
         
         static let GameInfoGameOptionsTopInsets = 380.0
         
@@ -303,8 +310,10 @@ extension _R {
         
         static var PreferredContentSize: CGSize {
             var sheetSize = SheetWindowMaxSize
-            if UIDevice.isLandscape {
-                sheetSize.height = WindowHeight * 0.79
+            let window = proHUDWindow()
+            let windowSize = window?.size ?? R.Size.ApplicationWindowSize
+            if windowSize.IsRelativelyWideRectangle {
+                sheetSize.height = windowSize.height * 0.79
             }
             return sheetSize
         }

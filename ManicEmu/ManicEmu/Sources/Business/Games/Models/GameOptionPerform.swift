@@ -14,6 +14,7 @@ import Haptica
 
 extension GameOption {
     func performAction(with games: [Game],
+                       in scene: UIWindowScene?,
                        performImmediately: Bool = false,
                        accessoryChange: (() -> Void)? = nil,
                        reloadAll: (() -> Void)? = nil) {
@@ -56,7 +57,7 @@ extension GameOption {
             })
             
         case .shareRom:
-            ShareManager.shareFiles(games: games, shareFileType: .rom)
+            ShareManager.shareFiles(games: games, shareFileType: .rom, in: scene)
             
         case .importSave:
             if showSaveTipsIfNeed(games: games) {
@@ -67,10 +68,10 @@ extension GameOption {
                 let zip = UTType(filenameExtension: "zip") {
                 types += [zip]
             }
-            FilesImporter.shared.presentImportController(supportedTypes: types, allowsMultipleSelection: false) { urls in
+            FilesImporter.shared.presentImportController(supportedTypes: types, allowsMultipleSelection: false, manualHandle: { urls in
                 if var url = urls.first {
                     if firstGame.gameType == ._3ds || firstGame.gameType == .psp {
-                        FilesImporter.importFiles(urls: [url])
+                        FilesImporter.importFiles(urls: [url], in: scene)
                     } else {
                         //try to fix j2meJS saves
                         if firstGame.gameType == .j2me,
@@ -98,13 +99,13 @@ extension GameOption {
                         }
                     }
                 }
-            }
+            }, in: scene)
             
         case .shareSave:
             if showSaveTipsIfNeed(games: games) {
                 return
             }
-            ShareManager.shareFiles(games: games, shareFileType: .save)
+            ShareManager.shareFiles(games: games, shareFileType: .save, in: scene)
             
         case .delete:
             UIView.makeAlert(title: R.string.localizable.gamesDelete(),
@@ -341,7 +342,7 @@ extension GameOption {
                         } else {
                             resumeEmulationIfNeed()
                         }
-                    })
+                    }, in: scene)
                 }, hideAction: { type in
                     if type != .confirm {
                         resumeEmulationIfNeed()
@@ -414,13 +415,13 @@ extension GameOption {
             performSwitchAction(with: games, accessoryChange: accessoryChange)
             
         case .azaharEmulationAccuracy:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .pspJitType:
             break
             
         case .pspRenderer:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .pspTexture:
             performSwitchAction(with: games, accessoryChange: accessoryChange)
@@ -465,13 +466,13 @@ extension GameOption {
             
             
         case .ps1ControllerMode:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .ps1Sbi:
             PSXSBIImportView.show(game: firstGame)
             
         case .ps1Renderer:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .n64TransferPak:
             let options = [
@@ -509,7 +510,7 @@ extension GameOption {
                     } else if index == 1 {
                         //from files
                         if let gb = UTType(filenameExtension: "gb"), let gbc = UTType(filenameExtension: "gbc"), let sav = UTType(filenameExtension: "sav") {
-                            FilesImporter.shared.presentImportController(supportedTypes: [gb, gbc, sav]) { urls in
+                            FilesImporter.shared.presentImportController(supportedTypes: [gb, gbc, sav], manualHandle: { urls in
                                 guard urls.count == 2 else {
                                     UIView.makeToast(message: R.string.localizable.transferPakImportError())
                                     return
@@ -550,7 +551,7 @@ extension GameOption {
                                 try? FileManager.safeCopyItem(at: URL(fileURLWithPath: savePath), to: URL(fileURLWithPath: firstGame.romUrl.path + ".sav"), shouldReplace: true)
                                 UIView.makeToast(message: R.string.localizable.alertImportFilesSuccess())
                                 
-                            }
+                            }, in: scene)
                         }
                     } else {
                         //turn off
@@ -563,10 +564,10 @@ extension GameOption {
             
             
         case .n64RdpPlugin:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .ndsSystemType:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .ndsGbaSlot:
             let options = [
@@ -604,7 +605,7 @@ extension GameOption {
                     } else if index == 1 {
                         //from files
                         if let gba = UTType(filenameExtension: "gba"), let sav = UTType(filenameExtension: "sav") {
-                            FilesImporter.shared.presentImportController(supportedTypes: [gba, sav]) { urls in
+                            FilesImporter.shared.presentImportController(supportedTypes: [gba, sav], manualHandle: { urls in
                                 guard urls.count == 1 || urls.count == 2 else {
                                     UIView.makeToast(message: R.string.localizable.gbaSlotImportError())
                                     return
@@ -652,7 +653,7 @@ extension GameOption {
                                     try? FileManager.safeCopyItem(at: URL(fileURLWithPath: savePath), to: URL(fileURLWithPath: firstGame.romUrl.path + ".slot.sav"), shouldReplace: true)
                                 }
                                 UIView.makeToast(message: R.string.localizable.alertImportFilesSuccess())
-                            }
+                            }, in: scene)
                         }
                         
                     } else {
@@ -668,10 +669,10 @@ extension GameOption {
             performSwitchAction(with: games, accessoryChange: accessoryChange)
             
         case .clownMDTvStandard:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .snesVRAM:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .coreSettings:
             pauseEmulationIfNeed()
@@ -701,7 +702,7 @@ extension GameOption {
                                  confirmTitle: R.string.localizable.goToUpgrade(),
                                  confirmAutoHide: false,
                                  confirmAction: {
-                    topViewController()?.present(PurchaseViewController(), animated: true)
+                    topViewController(in: scene)?.present(PurchaseViewController(), animated: true)
                 }, hideAction: { _ in
                     resumeEmulationIfNeed()
                 })
@@ -727,9 +728,9 @@ extension GameOption {
 
         case .fastForward:
             if performImmediately {
-                performFastForward(games: games, speed: firstGame.speed.next)
+                performFastForward(games: games, speed: firstGame.speed.next, in: scene)
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
             
         case .shaders:
@@ -767,7 +768,7 @@ extension GameOption {
             if performImmediately {
                 performHaptic(games: games, haptic: firstGame.haptic.next)
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
 
         case .airplay:
@@ -786,7 +787,7 @@ extension GameOption {
             if performImmediately {
                 performOrientation(games: games, orientation: firstGame.orientation.next)
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
 
         case .gameOptionSort:
@@ -802,7 +803,7 @@ extension GameOption {
             if performImmediately {
                 performResolution(games: games, resolution: firstGame.resolution.next)
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
 
         case .consoleHome:
@@ -865,9 +866,11 @@ extension GameOption {
                                         try? FileManager.safeCopyItem(at: url, to: URL(fileURLWithPath: toPath), shouldReplace: true)
                                         let palette = Game.NESPalette(name: url.lastPathComponent.deletingPathExtension, type: .custom)
                                         firstGame.nesPalettes.append(palette)
-                                        GameOption.palette.performAction(with: games, accessoryChange: accessoryChange)
+                                        GameOption.palette.performAction(with: games,
+                                                                         in: scene,
+                                                                         accessoryChange: accessoryChange)
                                     }
-                                })
+                                }, in: scene)
                             })
                         }
                         
@@ -897,17 +900,17 @@ extension GameOption {
                 })
                 
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
 
         case .swapDisk:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
 
         case .airPlayScaling:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
 
         case .airPlayLayout:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
 
         case .triggerPro:
             let triggers = Trigger.supportTriggers(gameType: firstGame.gameType)
@@ -980,7 +983,7 @@ extension GameOption {
             }
 
         case .screenScaling:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
 
         case .insertDisc:
             pauseEmulationIfNeed()
@@ -1035,7 +1038,7 @@ extension GameOption {
                         resumeEmulationIfNeed()
                     }, cancelHandle: {
                         resumeEmulationIfNeed()
-                    })
+                    }, in: scene)
                 }
             }, hideAction: { type in
                 if type == .other {
@@ -1079,23 +1082,23 @@ extension GameOption {
             }
             
         case .symbianDevice:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .wiiControllerMode:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .coverScraping:
             GameCoverScrapingView.show(games: games)
             
         case .dolphinCpuCore:
-            performStringAction(with: games, accessoryChange: accessoryChange)
+            performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             
         case .slowMotion:
             if performImmediately,
                let speed = GameOption.SlowMotionSpeed(rawValue: firstGame.getExtraInt(key: ExtraKey.slowMotionSpeed.rawValue) ?? 0) {
-                performSlowMotion(games: games, speed: speed.next)
+                performSlowMotion(games: games, speed: speed.next, in: scene)
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
             
         case .wswanRotation:
@@ -1111,7 +1114,7 @@ extension GameOption {
                     ], flush: false)
                 }
             } else {
-                performStringAction(with: games, accessoryChange: accessoryChange)
+                performStringAction(with: games, in: scene, accessoryChange: accessoryChange)
             }
             
         case .ndsLidToggle:
@@ -1272,7 +1275,9 @@ extension GameOption {
         }
     }
     
-    private func performStringAction(with games: [Game], accessoryChange: (() -> Void)? = nil) {
+    private func performStringAction(with games: [Game],
+                                     in scene: UIWindowScene?,
+                                     accessoryChange: (() -> Void)? = nil) {
         guard let firstGame = games.first else { return }
         
         var options = [String]()
@@ -1443,7 +1448,7 @@ extension GameOption {
                     })
                 } else if self == .fastForward {
                     if let speed = GameOption.FastForwardSpeed(rawValue: index+1) {
-                        performFastForward(games: games, speed: speed)
+                        performFastForward(games: games, speed: speed, in: scene)
                     }
                 } else if self == .haptic {
                     if let haptic = GameOption.HapticType(rawValue: index) {
@@ -1600,7 +1605,7 @@ extension GameOption {
                     })
                 } else if self == .slowMotion {
                     if let speed = GameOption.SlowMotionSpeed(rawValue: index) {
-                        performSlowMotion(games: games, speed: speed)
+                        performSlowMotion(games: games, speed: speed, in: scene)
                     }
                 } else if self == .wswanRotation {
                     games.forEach({
@@ -1620,7 +1625,8 @@ extension GameOption {
     }
     
     private func performFastForward(games: [Game],
-                                    speed: GameOption.FastForwardSpeed) {
+                                    speed: GameOption.FastForwardSpeed,
+                                    in scene: UIWindowScene?) {
         guard let firstGame = games.first else { return }
         if !PurchaseManager.isMember && speed.rawValue > GameOption.FastForwardSpeed.two.rawValue {
             pauseEmulationIfNeed()
@@ -1637,7 +1643,7 @@ extension GameOption {
                 resumeEmulationIfNeed()
                 UIView.makeToast(message: R.string.localizable.gameSettingFastForwardResume())
             }, confirmAction: {
-                topViewController()?.present(PurchaseViewController(), animated: true)
+                topViewController(in: scene)?.present(PurchaseViewController(), animated: true)
             }, hideAction: { type in
                 if type == .other {
                     resumeEmulationIfNeed()
@@ -1805,7 +1811,8 @@ extension GameOption {
     }
     
     private func performSlowMotion(games: [Game],
-                                    speed: GameOption.SlowMotionSpeed) {
+                                   speed: GameOption.SlowMotionSpeed,
+                                   in scene: UIWindowScene?) {
         guard games.count > 0 else { return }
         if !PurchaseManager.isMember && speed.rawValue > GameOption.SlowMotionSpeed.two.rawValue {
             pauseEmulationIfNeed()
@@ -1823,7 +1830,7 @@ extension GameOption {
                 resumeEmulationIfNeed()
                 UIView.makeToast(message: R.string.localizable.gameSettingFastForwardResume())
             }, confirmAction: {
-                topViewController()?.present(PurchaseViewController(), animated: true)
+                topViewController(in: scene)?.present(PurchaseViewController(), animated: true)
             }, hideAction: { type in
                 if type == .other {
                     resumeEmulationIfNeed()

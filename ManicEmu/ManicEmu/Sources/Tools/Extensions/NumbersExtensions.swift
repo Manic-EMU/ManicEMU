@@ -61,7 +61,7 @@ extension DecimalConvertible {
         (roundedDecimal(scale: scale) as NSDecimalNumber).doubleValue
     }
     
-    func roundedCGFloat(scale: Int = 1) -> Float {
+    func roundedFloat(scale: Int = 1) -> Float {
         roundedDouble(scale: scale).float
     }
     
@@ -94,5 +94,11 @@ extension Decimal {
     
     var floatValue: Float {
         (self as NSDecimalNumber).floatValue
+    }
+}
+
+extension BinaryFloatingPoint {
+    func rounded1(rule: FloatingPointRoundingRule = .toNearestOrAwayFromZero) -> Self {
+        return rounded(numberOfDecimalPlaces: 1, rule: rule)
     }
 }

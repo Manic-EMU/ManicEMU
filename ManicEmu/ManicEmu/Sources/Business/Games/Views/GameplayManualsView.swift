@@ -60,7 +60,7 @@ class GameplayManualsView: BaseView {
                             self.pdfView.autoScales = true
                         } catch {}
                     }
-                })
+                }, in: self.hostingWindowScene)
             }
         }
         return view

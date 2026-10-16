@@ -192,11 +192,12 @@ class RetroAchievementsListCell: UICollectionViewCell {
         }
         
         private func createLayout() -> UICollectionViewLayout {
-            let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
+            let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+                guard let self else { return nil }
                 var column = 4.0
-                if UIDevice.isPhone && UIDevice.isLandscape {
+                if UIDevice.isPhone && self.prefferedLayoutStyle == .landscape {
                     column = 8.0
-                } else if UIDevice.isPad && UIDevice.isLandscape {
+                } else if UIDevice.isPad && self.prefferedLayoutStyle == .landscape {
                     column = 6.0
                 }
                 let cellSize = (env.container.contentSize.width - R.Size.ContentSpaceHuge*2 - R.Size.ContentSpaceSmall*(column-1))/column

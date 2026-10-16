@@ -61,7 +61,7 @@ class GameCoverModifyView: BaseView {
     
     private func makeListPage() -> ASListPage {
         // 横屏时 WindowSize.width 会变成长边，不能拿来当容器宽；未布局时用短边兜底。
-        let availableWidth = bounds.width > 0 ? bounds.width : R.Size.WindowSize.minDimension
+        let availableWidth = bounds.width > 0 ? bounds.width : R.Size.ApplicationWindowSize.minDimension
         return ASListPage(
             navigation: .defaultNavigation(title: R.string.localizable.gamesModifyCover(),
                                            titleIcon: .symbolImage(R.image.cover_iconSymbols())),
@@ -125,7 +125,9 @@ class GameCoverModifyView: BaseView {
             sources.append(.delete)
         }
         
-        ImageFetcher.showCommonFetcher(sources: sources) { [weak self] image, source in
+        ImageFetcher.showCommonFetcher(sources: sources,
+                                       in: hostingWindowScene,
+                                       completion: { [weak self] image, source in
             guard let self else { return }
             if case .delete = source {
                 self.removeImage(for: kind)
@@ -133,7 +135,7 @@ class GameCoverModifyView: BaseView {
             }
             guard let image else { return }
             self.persist(image: image, for: kind)
-        }
+        })
     }
     
     private func persist(image: UIImage, for kind: CoverSlotKind) {
@@ -223,8 +225,8 @@ private enum CoverSlotKind {
         case .banner:
             let width = max(availableWidth - inset, 1)
             // 始终按设备横向屏幕尺寸（长边 x 短边），不随当前方向宽高互换。
-            let landscapeWidth = R.Size.WindowSize.maxDimension
-            let landscapeHeight = R.Size.WindowSize.minDimension
+            let landscapeWidth = R.Size.ApplicationWindowSize.maxDimension
+            let landscapeHeight = R.Size.ApplicationWindowSize.minDimension
             let landscapeAspect = landscapeWidth / max(landscapeHeight, 1)
             return CGSize(width: width, height: width / max(landscapeAspect, 0.01))
         }

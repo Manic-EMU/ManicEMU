@@ -29,7 +29,7 @@ class AddImportServiceView: BaseView {
         let view = ASListPageView(.init(navigation: navigation,
                                         sections: sections,
                                         backgroundColor: .clear,
-                                        pageInsets: .insets(top: R.Size.ContentInsetTop),
+                                        pageInsets: .insets(top: R.Size.ContentInsetTop(window: hostingWindow)),
                                         enableSafeAreaLeftInsets: true,
                                         enableSafeAreaRightInsets: true))
         
@@ -37,13 +37,13 @@ class AddImportServiceView: BaseView {
             guard let self else { return }
             if let indexPath = action.normalItemValue?.indexPath {
                 if !PurchaseManager.isMember {
-                    topViewController()?.present(PurchaseViewController(featuresType: .import), animated: true)
+                    topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(featuresType: .import), animated: true)
                     return
                 }
                 let service: ImportService
                 if indexPath.section == 0 {
                     service = cloudServices[indexPath.row]
-                    CloudDriveConnetor.shard.connect(service: service)
+                    CloudDriveConnetor.shard.connect(service: service, in: self.hostingWindowScene)
                 } else if indexPath.section == 1 {
                     service = LanServices[indexPath.row]
                     LanServiceEditView.show(serviceType: service.type, successHandler: { [weak self] in

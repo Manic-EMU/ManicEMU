@@ -102,6 +102,7 @@ class GameCoverView: BaseView {
         updateStyle(style,
                     gameType: game.gameType,
                     scalePlatform: scalePlatform,
+                    coverSize: coverSize,
                     gameTypeCategory: gameTypeCategory)
         
         if !R.Style.GameHideRating {
@@ -134,7 +135,8 @@ class GameCoverView: BaseView {
         imageView.contentMode = .center
         updateStyle(style,
                     gameType: gameType,
-                    scalePlatform: scalePlatform)
+                    scalePlatform: scalePlatform,
+                    coverSize: CGSize(150))
         if R.Style.GameHideRating {
             ratingView.isHidden = true
         } else {
@@ -150,9 +152,14 @@ class GameCoverView: BaseView {
     func updateStyle(_ style: CoverStyle,
                      gameType: GameType,
                      scalePlatform: Bool = true,
+                     coverSize: CGSize,
                      gameTypeCategory: Int = 0) {
         self.style = style
-        platformView.image = Self.getPlatformImage(gameType: gameType, style: style, scalePlatform: scalePlatform, gameTypeCategory: gameTypeCategory)
+        platformView.image = Self.getPlatformImage(gameType: gameType,
+                                                   style: style,
+                                                   scalePlatform: scalePlatform,
+                                                   coverSize: coverSize,
+                                                   gameTypeCategory: gameTypeCategory)
         switch style {
         case .style1:
             imageView.snp.remakeConstraints { make in
@@ -204,9 +211,14 @@ class GameCoverView: BaseView {
     }
     
     private static var platformImageCaches = [String: UIImage?]()
-    static func getPlatformImage(gameType: GameType, style: CoverStyle, scalePlatform: Bool = true, gameTypeCategory: Int = 0) -> UIImage? {
+    static func getPlatformImage(gameType: GameType,
+                                 style: CoverStyle,
+                                 scalePlatform: Bool = true,
+                                 coverSize: CGSize,
+                                 gameTypeCategory: Int = 0) -> UIImage? {
         guard style != .style1 else { return nil }
-        let key = gameType.rawValue + "_\(style.rawValue)" + (UIDevice.isPhone && !UIDevice.isLandscape && scalePlatform ? "_\(R.Style.GamesPerRow)" : "") + "_\(gameTypeCategory)"
+        guard coverSize != .zero else { return nil }
+        let key = gameType.rawValue + "_\(style.rawValue)" + (scalePlatform ? "_\(coverSize)" : "") + "_\(gameTypeCategory)"
         if let image = GameCoverView.platformImageCaches[key] {
             return image
         } else {
@@ -338,8 +350,11 @@ class GameCoverView: BaseView {
             } else if gameType == .ps2 {
                 image = style == .style2 ? R.image.ps2_cover_v() : R.image.ps2_cover_h()
             }
-            if UIDevice.isPhone, !UIDevice.isLandscape, scalePlatform, R.Style.GamesPerRow != 2, let unwrapImage = image {
-                image = unwrapImage.scaled(toWidth: unwrapImage.size.width * (1/(R.Style.GamesPerRow-1)))
+            if scalePlatform,
+                coverSize != .zero,
+                coverSize.width <= 150,
+                let unwrapImage = image {
+                image = unwrapImage.scaled(toWidth: unwrapImage.size.width * coverSize.width/150)
             }
             GameCoverView.platformImageCaches[key] = image
             return image

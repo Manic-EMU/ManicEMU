@@ -12,8 +12,9 @@ class GameSavePurchaseGuideView: BaseView {
         super.init(frame: .zero)
         enablePressEffect = true
         
-        addTapGesture { gesture in
-            topViewController()?.present(PurchaseViewController(), animated: true)
+        addTapGesture { [weak self] gesture in
+            guard let self else { return }
+            topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(), animated: true)
         }
         
         let seperator = SparkleSeperatorView(color: R.Color.BackgroundTertiary)

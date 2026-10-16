@@ -104,7 +104,12 @@ class GameCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setData(game: Game, isSelect: Bool = false, highlightString: String? = nil, coverSize: CGSize, showTitle: Bool = true, indexPath: IndexPath) {
+    func setData(game: Game,
+                 isSelect: Bool = false,
+                 highlightString: String? = nil,
+                 coverSize: CGSize,
+                 showTitle: Bool = true,
+                 indexPath: IndexPath) {
         self.indexPath = indexPath
         gameType = game.gameType
         titleLabel.isHidden = !showTitle

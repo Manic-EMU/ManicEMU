@@ -213,7 +213,7 @@ class CheevosPopupView: BaseView {
         view.isFocusable = true
         view.allowsSelection = true
         view.allowsMultipleSelection = false
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         return view
     }()
 
@@ -342,14 +342,14 @@ extension CheevosPopupView: ShowableView {
             var height = R.Size.SheetGrabberTopInset + R.Size.NavigationHeight
             height += CGFloat(leaderBoards.count) * 64
             height += CGFloat(leaderBoards.count + 1) * R.Size.ContentSpaceMedium
-            height += R.Size.ContentInsetBottom
+            height += R.Size.ContentInsetBottom(window: hostingWindow)
             return height
             
         case .progress, .challenge:
             var height = R.Size.SheetGrabberTopInset + R.Size.NavigationHeight
             height += CGFloat(achievements.count) * R.Size.ItemHeightExtraLarge
             height += CGFloat(achievements.count + 1) * R.Size.ContentSpaceMedium
-            height += R.Size.ContentInsetBottom
+            height += R.Size.ContentInsetBottom(window: hostingWindow)
             return height
         }
     }

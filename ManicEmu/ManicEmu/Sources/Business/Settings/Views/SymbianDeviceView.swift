@@ -84,7 +84,7 @@ class SymbianDeviceView: BaseView {
         view.dataSource = self
         view.delegate = self
         view.isFocusable = true
-        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom)
+        view.contentInset = .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow))
         view.blankSlateView = BlankSlateEmptyView(title: R.string.localizable.noSystemApp())
         return view
     }()
@@ -168,7 +168,7 @@ class SymbianDeviceView: BaseView {
         }
         game.safeMode = true
         game.symbianSystemApp = SymbianSystemApp(uid: symbianGame.uidString, deviceIndex: device.index, os: SymbianOS.getOS(by: device))
-        PlayViewController.startGame(game: game)
+        PlayViewController.startGame(game: game, in: hostingWindowScene)
     }
 }
 

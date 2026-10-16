@@ -73,7 +73,9 @@ class AddTriggerButtonStyleView: BaseView {
                 guard let self = self else { return }
                 if self.style == .custom {
                     //上传照片
-                    ImageFetcher.showCommonFetcher(sources: [.capture, .library, .file], completion: { [weak self] image, _ in
+                    ImageFetcher.showCommonFetcher(sources: [.capture, .library, .file],
+                                                   in: self.hostingWindowScene,
+                                                   completion: { [weak self] image, _ in
                         if let image = image?.scaled(toSize: self?.buttonSize ?? TriggerItem.Style.custom.defaultSize) {
                             self?.triggerButton.image = image
                             self?.didImageChange?(image)
