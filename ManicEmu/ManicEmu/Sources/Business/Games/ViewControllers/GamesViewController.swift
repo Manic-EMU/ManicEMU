@@ -205,7 +205,7 @@ class GamesViewController: BaseViewController {
     }
     
     override func handleScreenPanGesture(edges: UIRectEdge, gesture: UIScreenEdgePanGestureRecognizer) {
-        if UIDevice.isPhone || (UIDevice.isPad && view.prefferedLayoutStyle == .portrait) {
+        if view.prefferedLayoutStyle == .portrait {
             if edges == .left {
                 showSideMenu(leftSide: true)
             } else if edges == .right {
@@ -329,7 +329,12 @@ class GamesViewController: BaseViewController {
             }
             portraitListView.snp.remakeConstraints { make in
                 make.top.equalTo(gamesNavigationView.snp.bottom).offset(gamesToolViewIsHidden ? 0 : R.Size.GamesToolViewHeight)
-                make.leading.bottom.trailing.equalToSuperview()
+                if UIDevice.isPhoneDuoOuter || UIDevice.isPhoneDuoSplitView {
+                    make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                    make.bottom.equalToSuperview()
+                } else {
+                    make.leading.bottom.trailing.equalToSuperview()
+                }
             }
             
             if gamesSeperatorView.superview == nil {

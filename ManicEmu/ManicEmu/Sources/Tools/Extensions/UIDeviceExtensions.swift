@@ -89,11 +89,11 @@ extension UIDevice {
     }
     
     static var isSmallScreenPhone: Bool {
-        return Device.size().rawValue < Size.screen5_8Inch.rawValue
+        return Device.size().rawValue < Size.screen5_8Inch.rawValue && !isPhoneDuo
     }
     
     static var isProMaxPhone: Bool {
-        return isPhone && Device.size().rawValue >= Size.screen6_3Inch.rawValue
+        return isPhone && !isPhoneDuo && Device.size().rawValue >= Size.screen6_3Inch.rawValue
     }
     
     static func isFullScreenIPad(window: UIWindow) -> Bool {
@@ -161,6 +161,31 @@ extension UIDevice {
     static var isPhone: Bool {
         if Device.isPhone(detectSimulator: true) || Device.isPod(detectSimulator: true) {
             return true
+        }
+        return false
+    }
+    
+    static var isPhoneDuo: Bool {
+        guard isPhone else { return false }
+        return Device.version(detectSimulator: true) == .iPhoneDuo
+    }
+    
+    static var isPhoneDuoInner: Bool {
+        guard isPhoneDuo else { return false }
+        // 669×951 pt, including partially folded. The scene stays on the inner display until closed.
+        return Device.size() == .screen7_6Inch
+    }
+    
+    static var isPhoneDuoOuter: Bool {
+        guard isPhoneDuo else { return false }
+        // 466×678 pt. Only the closed pose uses the outer display.
+        return Device.size() == .screen5_4Inch_2
+    }
+    
+    static var isPhoneDuoSplitView: Bool {
+        guard isPhoneDuoInner && isLandscape else { return false }
+        if let appWindow = ApplicationSceneDelegate.applicationWindow {
+            return !appWindow.screen.bounds.equalTo(appWindow.bounds)
         }
         return false
     }

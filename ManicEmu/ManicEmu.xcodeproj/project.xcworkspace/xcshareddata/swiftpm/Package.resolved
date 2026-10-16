@@ -1,5 +1,5 @@
 {
-  "originHash" : "ec95bb03af22f560bff8bd2e9a95a848d31e15ea12c4e78e7916a3d26780376e",
+  "originHash" : "8131579a26fdd7e12a346ab9de23e4bd1e54e7d72c06ca478e2214a3aa08bd06",
   "pins" : [
     {
       "identity" : "attributedstring",
@@ -102,10 +102,10 @@
     {
       "identity" : "device",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Ekhoo/Device.git",
+      "location" : "https://github.com/Daiuno/Device.git",
       "state" : {
         "branch" : "master",
-        "revision" : "c5efafa1c0cbacae4efcf9a2c1bb165976a44d7a"
+        "revision" : "d5721be56fa0d5abcc2c89e227f5759c2c4cb5c6"
       }
     },
     {

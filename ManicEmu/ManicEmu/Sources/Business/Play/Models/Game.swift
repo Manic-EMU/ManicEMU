@@ -10,7 +10,9 @@
 import RealmSwift
 
 import IceCream
+#if !SIMULATOR
 import Citra
+#endif
 import SmartCodable
 import Kingfisher
 
@@ -182,7 +184,7 @@ class Game: Object, ObjectUpdatable {
         }
         
         var localUrl = URL(fileURLWithPath: R.Path.Data.appendingPathComponent(fileName))
-        
+#if !SIMULATOR
         if gameType == ._3ds,
            fileExtension.lowercased() == "app",
            let ciaPath = CitraCore.shared().getCIAContentPath(identifier: identifierFor3DS, isSdmc: true) {
@@ -209,7 +211,7 @@ class Game: Object, ObjectUpdatable {
                 return cueUrl
             }
         }
-        
+#endif
         return localUrl
     }
     
@@ -240,10 +242,12 @@ class Game: Object, ObjectUpdatable {
     //游戏自带存档路径
     var gameSaveUrl: URL {
         if gameType == ._3ds {
+#if !SIMULATOR
             //存档 sdmc/Nintendo 3DS/000...0/000...0/title/[game-TID-high]/[game-TID-low]/data/00000001/
             if let titlePath = CitraCore.shared().getTitlePath(identifier: identifierFor3DS, isSdmc: true) {
                 return URL(fileURLWithPath: titlePath.appendingPathComponent("data/00000001/"))
             }
+#endif
         }
         
         if gameType == .psp {

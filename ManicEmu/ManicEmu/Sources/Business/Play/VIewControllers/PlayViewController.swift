@@ -2868,6 +2868,7 @@ extension PlayViewController {
     }
     
     private func updateCitra3DSViews() {
+#if !SIMULATOR
         guard manicGame.isCitra3DS else { return }
         guard let controllerSkin = controllerView.controllerSkin as? ControllerSkin else { return }
         guard let hostingWindow, let frames = controllerSkin.getFrames(window: hostingWindow) else { return }
@@ -2917,6 +2918,7 @@ extension PlayViewController {
                 }
             }
         }
+#endif
     }
     
     private func updateLibretroViews() {

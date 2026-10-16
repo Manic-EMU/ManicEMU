@@ -13,7 +13,9 @@ import ZipArchive
 import ZIPFoundation
 import IceCream
 import SmartCodable
+#if !SIMULATOR
 import Citra
+#endif
 import PLzmaSDK
 import Unrar
 
@@ -467,6 +469,7 @@ extension FilesImporter {
             var ciaTitleUrl: URL? = nil
             let originalUrl = url
             var url = url
+#if !SIMULATOR
             var threeDSGameInfo: CitraGameInformation? = nil
             if FileType.get3DSExtensions().contains([url.pathExtension.lowercased()]) {
                 if url.pathExtension.lowercased() == "cia" {
@@ -523,6 +526,7 @@ extension FilesImporter {
                     return
                 }
             }
+#endif
             
             if let hash = FileHashUtil.truncatedHash(url: url) {
                 guard tryBeginProcessing(hash) else {
@@ -596,7 +600,7 @@ extension FilesImporter {
                     game.name = originalUrl.deletingPathExtension().lastPathComponent
                     game.fileExtension = url.pathExtension
                     game.importDate = Date()
-                    
+#if !SIMULATOR
                     //handle 3ds game info
                     if let threeDSGameInfo {
                         //读取3DS信息
@@ -616,6 +620,7 @@ extension FilesImporter {
                             }
                         }
                     }
+#endif
                     
                     //handle psp pbp game
                     let isPSPPBP = isPSPPBPGame(url: url)

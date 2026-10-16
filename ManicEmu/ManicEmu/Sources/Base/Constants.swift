@@ -104,7 +104,11 @@ extension _R {
         ///CollectionView的top缩进
         static func ContentInsetTop(window: UIWindow?) -> CGFloat {
             let safeAreaTop = (window ?? UIWindow.applicationWindow)?.safeAreaInsets.top ?? 0
-            return safeAreaTop > 0 ? safeAreaTop : R.Size.ContentSpaceLarge
+            if UIDevice.isPhoneDuoOuter {
+                return 0
+            } else {
+                return safeAreaTop > 0 ? safeAreaTop : R.Size.ContentSpaceLarge
+            }
         }
         
         ///CollectionView的bottom缩进

@@ -158,6 +158,8 @@ class BaseViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         if UIDevice.isPad {
             return view.prefferedLayoutStyle == .landscape
+        } else if UIDevice.isPhoneDuoOuter || UIDevice.isPhoneDuoSplitView {
+            return true
         }
         return super.prefersStatusBarHidden
     }

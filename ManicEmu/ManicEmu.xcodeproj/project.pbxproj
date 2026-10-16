@@ -7,6 +7,548 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00000000000051A10000000F /* RuffleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B188E5A6DD343E5960ABEF0 /* RuffleView.swift */; };
+		00000000000051A100000010 /* FLASH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809D2DE31034EF5B9135498 /* FLASH.swift */; };
+		00000000000051A100000011 /* WSC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16B86ECC930242969A108735 /* WSC.swift */; };
+		00000000000051A100000012 /* Amiga.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93489E15EFD47F2AE825436 /* Amiga.swift */; };
+		00000000000051A100000013 /* C64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C004DF500A40988FE64A18 /* C64.swift */; };
+		00000000000051A100000014 /* NGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D4867970474EB9B27D4D8D /* NGP.swift */; };
+		00000000000051A100000015 /* PCE.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E402E22DFA4C9D96FFBC89 /* PCE.swift */; };
+		00000000000051A100000016 /* Wii.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DDA01B1DB4E15B8F0C5C6 /* Wii.swift */; };
+		00000000000051A100000017 /* AddUrlGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C447133057D7CB0099C15F /* AddUrlGameView.swift */; };
+		00000000000051A100000018 /* NGC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691349DFB9FB4307A3151455 /* NGC.swift */; };
+		00000000000051A100000019 /* Symbian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460B02C144024C2EAC5EAF21 /* Symbian.swift */; };
+		00000000000051A10000001A /* FocusTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000101 /* FocusTypes.swift */; };
+		00000000000051A10000001B /* Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000102 /* Focusable.swift */; };
+		00000000000051A10000001C /* FocusContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000103 /* FocusContainer.swift */; };
+		00000000000051A10000001D /* FocusContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000104 /* FocusContext.swift */; };
+		00000000000051A10000001E /* FocusEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000105 /* FocusEngine.swift */; };
+		00000000000051A10000001F /* FocusCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000106 /* FocusCollectionView.swift */; };
+		00000000000051A100000020 /* GameCoverScrapingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C4C043041978C00DB526E /* GameCoverScrapingView.swift */; };
+		00000000000051A100000021 /* FocusSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000107 /* FocusSystem.swift */; };
+		00000000000051A100000022 /* FocusSystem+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C500000000000000000108 /* FocusSystem+UIViewController.swift */; };
+		00000000000051A100000023 /* CheersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E48D922D8D7395008000A3 /* CheersView.swift */; };
+		00000000000051A100000024 /* ImportServiceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005B22D3E6F1600762E8F /* ImportServiceListView.swift */; };
+		00000000000051A100000025 /* SNES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C8A1192DF2BA3500593F82 /* SNES.swift */; };
+		00000000000051A100000026 /* GameOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4A42FF630BF00FC5B2A /* GameOptionsView.swift */; };
+		00000000000051A100000027 /* ASButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB1F2FE418490051F661 /* ASButton.swift */; };
+		00000000000051A100000028 /* BackgroundMusicKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C4BD83041748700DB526E /* BackgroundMusicKit.swift */; };
+		00000000000051A100000029 /* PurchaseButtonReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A1C2D85BB2000C62FF6 /* PurchaseButtonReusableView.swift */; };
+		00000000000051A10000002A /* ControllerMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720D1C02DB9DCB10090C0F6 /* ControllerMapping.swift */; };
+		00000000000051A10000002B /* GB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B0812E1CDB8800F93E60 /* GB.swift */; };
+		00000000000051A10000002C /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57913B522D5EF71D004D51AA /* DateExtension.swift */; };
+		00000000000051A10000002D /* GradientLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0E112D8816F200D2A1BA /* GradientLabelView.swift */; };
+		00000000000051A10000002E /* MappingOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4834A301DF1520030A771 /* MappingOption.swift */; };
+		00000000000051A10000002F /* ChevronSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D40D2FF21B6E00FC5B2A /* ChevronSheetView.swift */; };
+		00000000000051A100000030 /* PageBackgroundMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFA7D2FE80522001C1425 /* PageBackgroundMaskView.swift */; };
+		00000000000051A100000031 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DF84E82D64249D00AA0AAB /* ShareManager.swift */; };
+		00000000000051A100000032 /* UIWindowExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C114C2D1D0E0A00CFD1F5 /* UIWindowExtensions.swift */; };
+		00000000000051A100000033 /* GameSaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770055C2D3CC3D700762E8F /* GameSaveState.swift */; };
+		00000000000051A100000034 /* INIFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DCE7DA2E0D385E0079E3AA /* INIFile.swift */; };
+		00000000000051A100000035 /* GameCoverModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9424F302CA8E100C06208 /* GameCoverModifyView.swift */; };
+		00000000000051A100000036 /* ControllersSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770068C2D438FEA00762E8F /* ControllersSettingView.swift */; };
+		00000000000051A100000037 /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CCB3492D65B3D60036476B /* ImageFetcher.swift */; };
+		00000000000051A100000038 /* AddTriggerButtonStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D483C03021D61C0030A771 /* AddTriggerButtonStyleView.swift */; };
+		00000000000051A100000039 /* ASSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB262FE419640051F661 /* ASSwitch.swift */; };
+		00000000000051A10000003A /* LocaleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F633032D718C45007270E8 /* LocaleExtensions.swift */; };
+		00000000000051A10000003B /* GG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706B0382DFBEC220066122E /* GG.swift */; };
+		00000000000051A10000003C /* ASStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB2D2FE419930051F661 /* ASStep.swift */; };
+		00000000000051A10000003D /* LandscapeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D941B6302ABE6E00C06208 /* LandscapeFilterView.swift */; };
+		00000000000051A10000003E /* PlayHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770068A2D438F7400762E8F /* PlayHistoryView.swift */; };
+		00000000000051A10000003F /* ExternalSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9332D7D6D7C00D0CC93 /* ExternalSceneDelegate.swift */; };
+		00000000000051A100000040 /* ImportMottoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFB082FEA8345001C1425 /* ImportMottoCollectionViewCell.swift */; };
+		00000000000051A100000041 /* ShaderPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FD140F3011C71E007F211A /* ShaderPreviewView.swift */; };
+		00000000000051A100000042 /* PretendoNetworkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D02682F87E3F1000BD6F4 /* PretendoNetworkingView.swift */; };
+		00000000000051A100000043 /* CheevosPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DFBE8B2E71BC4C008C2161 /* CheevosPopupView.swift */; };
+		00000000000051A100000044 /* FocusSoundEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C4BE13041749900DB526E /* FocusSoundEffects.swift */; };
+		00000000000051A100000045 /* GlobalCoreSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578E4B582F8A2F430027E6D0 /* GlobalCoreSwitch.swift */; };
+		00000000000051A100000046 /* ASListCustomCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D482B13019D3320030A771 /* ASListCustomCollectionCell.swift */; };
+		00000000000051A100000047 /* ASSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C79DE02FE3EC43003C737F /* ASSheetView.swift */; };
+		00000000000051A100000048 /* CitraAdvancedSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D942E0302F72C100C06208 /* CitraAdvancedSettingView.swift */; };
+		00000000000051A100000049 /* WFCSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28812F3780B700D2D998 /* WFCSettingView.swift */; };
+		00000000000051A10000004A /* TransparentHoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579076EF2D8AAC2800ED90FB /* TransparentHoleView.swift */; };
+		00000000000051A10000004B /* ASLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5742E1B32FDA9A2C0031A726 /* ASLabelView.swift */; };
+		00000000000051A10000004C /* ASListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DAEF2FE413C70051F661 /* ASListPage.swift */; };
+		00000000000051A10000004D /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577006822D438E2A00762E8F /* GamesViewController.swift */; };
+		00000000000051A10000004E /* WebDavServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632AC2D6FEC25007270E8 /* WebDavServiceProvider.swift */; };
+		00000000000051A10000004F /* RommClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000001 /* RommClient.swift */; };
+		00000000000051A100000050 /* RommServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000003 /* RommServiceProvider.swift */; };
+		00000000000051A100000051 /* RommLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A011012026091500000009 /* RommLibrary.swift */; };
+		00000000000051A100000052 /* ThemeColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590F2DC5BAF4007BFD92 /* ThemeColorCollectionViewCell.swift */; };
+		00000000000051A100000053 /* CheatTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECCC2D798419002E619C /* CheatTypeExtensions.swift */; };
+		00000000000051A100000054 /* ARMaxDecrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECD02D7984A0002E619C /* ARMaxDecrypt.swift */; };
+		00000000000051A100000055 /* DolphinGameID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECD32D7984B0002E619C /* DolphinGameID.swift */; };
+		00000000000051A100000056 /* DolphinCheatINI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECD62D7984B0002E619C /* DolphinCheatINI.swift */; };
+		00000000000051A100000057 /* ImportNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFAEE2FEA56E1001C1425 /* ImportNavigationView.swift */; };
+		00000000000051A100000058 /* ASSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5F9F2FDEF1630073D318 /* ASSegmentView.swift */; };
+		00000000000051A100000059 /* ASWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FD135A300F618F007F211A /* ASWebView.swift */; };
+		00000000000051A10000005A /* OnlinePlaySettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5754D88A2E274AB9001EA5ED /* OnlinePlaySettingView.swift */; };
+		00000000000051A10000005B /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005592D3CC35500762E8F /* Game.swift */; };
+		00000000000051A10000005C /* CreamAssetExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5713303D2D914C260043C28A /* CreamAssetExtensions.swift */; };
+		00000000000051A10000005D /* RetroAchievementsProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E76C2E540FC200EC0DA5 /* RetroAchievementsProfileView.swift */; };
+		00000000000051A10000005E /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57605FFD2D20F29000A98B0C /* SettingsViewController.swift */; };
+		00000000000051A10000005F /* ASListSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF60202FE0FF920073D318 /* ASListSupplementaryView.swift */; };
+		00000000000051A100000060 /* UniversalScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577EC55F2F7E561900E8E3EB /* UniversalScript.swift */; };
+		00000000000051A100000061 /* HomeTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573BECBC2D1D3F6B008AD18D /* HomeTabBar.swift */; };
+		00000000000051A100000062 /* ASText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB072FE416B60051F661 /* ASText.swift */; };
+		00000000000051A100000063 /* AddTriggerActionComboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4842A302311F20030A771 /* AddTriggerActionComboView.swift */; };
+		00000000000051A100000064 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EED0752ECB8172003971BD /* IconView.swift */; };
+		00000000000051A100000065 /* ShowableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D43C2FF3D53900FC5B2A /* ShowableView.swift */; };
+		00000000000051A100000066 /* Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5781F46D2EED6DBC00916D8B /* Shader.swift */; };
+		00000000000051A100000067 /* AchievementsUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E8452E5C4AA600EC0DA5 /* AchievementsUser.swift */; };
+		00000000000051A100000068 /* RetroAchievementsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E7872E5410C000EC0DA5 /* RetroAchievementsDetailView.swift */; };
+		00000000000051A100000069 /* Exported.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578E26872FD408BC00A2749A /* Exported.swift */; };
+		00000000000051A10000006A /* ViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFB422FEB9BA5001C1425 /* ViewTransition.swift */; };
+		00000000000051A10000006B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C1D85257F91550029B15B /* BaseViewController.swift */; };
+		00000000000051A10000006C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DE1F6B256BDD250099425B /* HomeViewController.swift */; };
+		00000000000051A10000006D /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A519A389256FCA50008AD6CE /* StringExtensions.swift */; };
+		00000000000051A10000006E /* ShadowLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CFC12EAA1B5E00F41540 /* ShadowLabel.m */; };
+		00000000000051A10000006F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58C3F4A248E3DB50099E068 /* Constants.swift */; };
+		00000000000051A100000070 /* SteamGridDBKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1B63027312B00CAC638 /* SteamGridDBKit.swift */; };
+		00000000000051A100000071 /* ControllerSkinExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC354B2DBF216200DF7418 /* ControllerSkinExtensions.swift */; };
+		00000000000051A100000072 /* PSP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE8F2DD435C700AABF98 /* PSP.swift */; };
+		00000000000051A100000073 /* LanServiceEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48367301F37F00030A771 /* LanServiceEditView.swift */; };
+		00000000000051A100000074 /* SkinPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC33E42DBE156400DF7418 /* SkinPreviewViewController.swift */; };
+		00000000000051A100000075 /* ControllerMappingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720D1BD2DB9D39E0090C0F6 /* ControllerMappingView.swift */; };
+		00000000000051A100000076 /* SteamGridDBContentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1C73027390E00CAC638 /* SteamGridDBContentsView.swift */; };
+		00000000000051A100000077 /* SettingsAdventureCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFB682FEBC348001C1425 /* SettingsAdventureCardView.swift */; };
+		00000000000051A100000078 /* JITSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EED0342EC8D9BB003971BD /* JITSettingView.swift */; };
+		00000000000051A100000079 /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A1E2D85C95500C62FF6 /* PurchaseViewController.swift */; };
+		00000000000051A10000007A /* UIEdgeInsetsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E01004300B85ED009AA38C /* UIEdgeInsetsExtensions.swift */; };
+		00000000000051A10000007B /* ControllerMappingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720D1C42DBA0DE70090C0F6 /* ControllerMappingViewController.swift */; };
+		00000000000051A10000007C /* SteamGridDBSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1BD3027374100CAC638 /* SteamGridDBSearchView.swift */; };
+		00000000000051A10000007D /* RetroAchievementsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E7F52E5569D600EC0DA5 /* RetroAchievementsListCell.swift */; };
+		00000000000051A10000007E /* GameTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005A62D3E4CDF00762E8F /* GameTypeExtensions.swift */; };
+		00000000000051A10000007F /* GameInfoCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57913B412D5ED722004D51AA /* GameInfoCoverView.swift */; };
+		00000000000051A100000080 /* FileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005572D3CC30400762E8F /* FileType.swift */; };
+		00000000000051A100000081 /* UIImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575A39CF2DCD2B3500B28FC2 /* UIImageViewExtensions.swift */; };
+		00000000000051A100000082 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6328A2D6EB837007270E8 /* DownloadManager.swift */; };
+		00000000000051A100000083 /* CGSizeExtenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DF849B2D630E5100AA0AAB /* CGSizeExtenstions.swift */; };
+		00000000000051A100000084 /* GameInfoNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4282FF381F100FC5B2A /* GameInfoNavigationView.swift */; };
+		00000000000051A100000085 /* DC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771C28A2E6986BE0062EDE0 /* DC.swift */; };
+		00000000000051A100000086 /* UIDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58C3F4E248E44AF0099E068 /* UIDeviceExtensions.swift */; };
+		00000000000051A100000087 /* ThreeDSKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720CACB2DB5558B0090C0F6 /* ThreeDSKeyboardView.swift */; };
+		00000000000051A100000088 /* PriceItemCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A152D8571D500C62FF6 /* PriceItemCollectionCell.swift */; };
+		00000000000051A100000089 /* CategorySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4012FF215ED00FC5B2A /* CategorySelectionView.swift */; };
+		00000000000051A10000008A /* AddTriggerActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D483B53021D4C60030A771 /* AddTriggerActionView.swift */; };
+		00000000000051A10000008B /* NDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A481692E7F05CD001D4598 /* NDS.swift */; };
+		00000000000051A10000008C /* GameInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9172D7D25B600D0CC93 /* GameInfoView.swift */; };
+		00000000000051A10000008D /* ASNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5FDA2FE0221F0073D318 /* ASNavigationView.swift */; };
+		00000000000051A10000008E /* GameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770069B2D44BDEA00762E8F /* GameCollectionViewCell.swift */; };
+		00000000000051A10000008F /* ASInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB572FE41AE10051F661 /* ASInput.swift */; };
+		00000000000051A100000090 /* SymbianDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA2DA43035935F0039E284 /* SymbianDeviceView.swift */; };
+		00000000000051A100000091 /* SaveStateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4322FF3878900FC5B2A /* SaveStateListView.swift */; };
+		00000000000051A100000092 /* ASBorderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB182FE418170051F661 /* ASBorderStyle.swift */; };
+		00000000000051A100000093 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
+		00000000000051A100000094 /* GameCheat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005772D3D60B300762E8F /* GameCheat.swift */; };
+		00000000000051A100000095 /* GBA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574ABEBB2E609FE30045F76E /* GBA.swift */; };
+		00000000000051A100000096 /* WFC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5754D8922E2751C0001EA5ED /* WFC.swift */; };
+		00000000000051A100000097 /* AddTriggerActionSimpleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48419302311940030A771 /* AddTriggerActionSimpleView.swift */; };
+		00000000000051A100000098 /* Skin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770055E2D3CC3FF00762E8F /* Skin.swift */; };
+		00000000000051A100000099 /* A7800.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE882F2338D500EA24F1 /* A7800.swift */; };
+		00000000000051A10000009A /* WebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005D32D3F2F8200762E8F /* WebServer.swift */; };
+		00000000000051A10000009B /* ASListToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF60922FE2ABEF0073D318 /* ASListToolView.swift */; };
+		00000000000051A10000009C /* PhotoSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4B7AF2A138C74003B0E07 /* PhotoSaver.swift */; };
+		00000000000051A10000009D /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B278BA802A32DA9000D0458D /* PurchaseManager.swift */; };
+		00000000000051A10000009E /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
+		00000000000051A10000009F /* FlexItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577160AB30078D530088345B /* FlexItemView.swift */; };
+		00000000000051A1000000A0 /* BlankSlateCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DF840B2D61B3D500AA0AAB /* BlankSlateCollectionView.swift */; };
+		00000000000051A1000000A1 /* System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575FF8E72D34A6DF0043B2F3 /* System.swift */; };
+		00000000000051A1000000A2 /* SpecialCoreOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D942AE302EE81D00C06208 /* SpecialCoreOption.swift */; };
+		00000000000051A1000000A3 /* Lynx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE952F23396C00EA24F1 /* Lynx.swift */; };
+		00000000000051A1000000A4 /* J2ME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57J2ME01F23397000EA24F1 /* J2ME.swift */; };
+		00000000000051A1000000A5 /* PlayHistoryItemCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E962F72D6AB43D0022914C /* PlayHistoryItemCollectionCell.swift */; };
+		00000000000051A1000000A6 /* ObjectUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CCB33A2D6584AC0036476B /* ObjectUpdatable.swift */; };
+		00000000000051A1000000A7 /* NDSSaveConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A912022F3B765B00628B04 /* NDSSaveConverter.swift */; };
+		00000000000051A1000000A8 /* MultiDiscDescCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C46302E16D8F20008D087 /* MultiDiscDescCollectionCell.swift */; };
+		00000000000051A1000000A9 /* PSXSBIImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57399AC42E40ACCF00AB73DD /* PSXSBIImportView.swift */; };
+		00000000000051A1000000AA /* ASViewEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF606D2FE278AF0073D318 /* ASViewEffects.swift */; };
+		00000000000051A1000000AB /* PlatformSortCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F59142DC5BB27007BFD92 /* PlatformSortCollectionViewCell.swift */; };
+		00000000000051A1000000AC /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C97B4D2A09F3B900053A4C /* UIColorExtensions.swift */; };
+		00000000000051A1000000AD /* SkinSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECF42D79F1E4002E619C /* SkinSettingsView.swift */; };
+		00000000000051A1000000AE /* LibretroCoverSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575A39D32DCD9C7000B28FC2 /* LibretroCoverSearchView.swift */; };
+		00000000000051A1000000AF /* UIScrollViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A0437F2E9BF57A006442C2 /* UIScrollViewExtensions.swift */; };
+		00000000000051A1000000B0 /* ESRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D941ED302B425A00C06208 /* ESRP.swift */; };
+		00000000000051A1000000B1 /* CloudDriveConnetor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770061A2D4089DD00762E8F /* CloudDriveConnetor.swift */; };
+		00000000000051A1000000B2 /* GamesSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6EBDA2D7587FE002E619C /* GamesSelectionView.swift */; };
+		00000000000051A1000000B3 /* FlexBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE392F21430D00EA24F1 /* FlexBackground.swift */; };
+		00000000000051A1000000B4 /* SectionIndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574789B92D4F8769006F0D99 /* SectionIndexView.swift */; };
+		00000000000051A1000000B5 /* EmulatorBridgingBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578E24202FD33FFC00A2749A /* EmulatorBridgingBase.swift */; };
+		00000000000051A1000000B6 /* LibretroNetplayAnalogDpad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C81DAD2FD6082600A8D0A1 /* LibretroNetplayAnalogDpad.swift */; };
+		00000000000051A1000000B7 /* GameSavePurchaseGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0E042D88005800D2A1BA /* GameSavePurchaseGuideView.swift */; };
+		00000000000051A1000000B8 /* J2MENetworkBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572C5CB32F6E983600776F8C /* J2MENetworkBridge.swift */; };
+		00000000000051A1000000B9 /* TriggerProPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF572EA78B1700F41540 /* TriggerProPreviewController.swift */; };
+		00000000000051A1000000BA /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F591B2DC7083E007BFD92 /* Theme.swift */; };
+		00000000000051A1000000BB /* SectionIndexViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574789BA2D4F8769006F0D99 /* SectionIndexViewItem.swift */; };
+		00000000000051A1000000BC /* AirPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9382D7D703500D0CC93 /* AirPlayViewController.swift */; };
+		00000000000051A1000000BD /* N64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D0BC092E1AD2BB008C3049 /* N64.swift */; };
+		00000000000051A1000000BE /* PlayHistoryFavouriteCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E962F92D6AB45B0022914C /* PlayHistoryFavouriteCollectionCell.swift */; };
+		00000000000051A1000000BF /* SettingsMembershipGiftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0E142D88208C00D2A1BA /* SettingsMembershipGiftView.swift */; };
+		00000000000051A1000000C0 /* 32X.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706B0482DFBF8350066122E /* 32X.swift */; };
+		00000000000051A1000000C1 /* CheevosChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A480E62E740301001D4598 /* CheevosChallengeView.swift */; };
+		00000000000051A1000000C2 /* Arcade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5E3122ECC625600DE17E9 /* Arcade.swift */; };
+		00000000000051A1000000C3 /* RadialGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E7A92E541F1100EC0DA5 /* RadialGradientView.swift */; };
+		00000000000051A1000000C4 /* RomPatcherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE0C2F20D05100EA24F1 /* RomPatcherView.swift */; };
+		00000000000051A1000000C5 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5713300E2D90FF770043C28A /* BaseView.swift */; };
+		00000000000051A1000000C6 /* PlatformSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57655C252DF6BCE3003E4A6E /* PlatformSelectionView.swift */; };
+		00000000000051A1000000C7 /* FilesImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005542D3CC23A00762E8F /* FilesImporter.swift */; };
+		00000000000051A1000000C8 /* ASSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5EC72FDB08F60073D318 /* ASSwitchView.swift */; };
+		00000000000051A1000000C9 /* LibretroNetplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D9430B303029F300C06208 /* LibretroNetplayView.swift */; };
+		00000000000051A1000000CA /* PS1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576A7DA72E3B4B1200008E35 /* PS1.swift */; };
+		00000000000051A1000000CB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CCB3C72D6770C80036476B /* Settings.swift */; };
+		00000000000051A1000000CC /* MappingOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D942D6302F448900C06208 /* MappingOptionsView.swift */; };
+		00000000000051A1000000CD /* ProductExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0DCB2D86D7B200D2A1BA /* ProductExtensions.swift */; };
+		00000000000051A1000000CE /* LimitedTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DCE82E2E0E9ACB0079E3AA /* LimitedTextInputView.swift */; };
+		00000000000051A1000000CF /* RoundAndBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5726FF802D74AC8D00041AD5 /* RoundAndBorderView.swift */; };
+		00000000000051A1000000D0 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C79DD22FE3E65D003C737F /* Functions.swift */; };
+		00000000000051A1000000D1 /* ShaderOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5781F4972EEE71A800916D8B /* ShaderOrderView.swift */; };
+		00000000000051A1000000D2 /* LandscapeBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FD13F0301109D5007F211A /* LandscapeBackgroundView.swift */; };
+		00000000000051A1000000D3 /* UTTypeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005602D3CD3A800762E8F /* UTTypeExtensions.swift */; };
+		00000000000051A1000000D4 /* TriggerProView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF932EA8E7E100F41540 /* TriggerProView.swift */; };
+		00000000000051A1000000D5 /* SG1000.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706B0362DFBEC190066122E /* SG1000.swift */; };
+		00000000000051A1000000D6 /* ASCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5ED52FDB09A00073D318 /* ASCheckView.swift */; };
+		00000000000051A1000000D7 /* CarouselLayoutIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5760A38E3029CB94002CCF6B /* CarouselLayoutIcon.swift */; };
+		00000000000051A1000000D8 /* PlayCasePromoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577160723005FAE80088345B /* PlayCasePromoView.swift */; };
+		00000000000051A1000000D9 /* MultiDiscAddCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE292F21035800EA24F1 /* MultiDiscAddCollectionCell.swift */; };
+		00000000000051A1000000DA /* iCloudSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EED02A2EC8D7C1003971BD /* iCloudSettingView.swift */; };
+		00000000000051A1000000DB /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CCB3CC2D6774F50036476B /* Database.swift */; };
+		00000000000051A1000000DC /* ASSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB502FE41A9F0051F661 /* ASSegment.swift */; };
+		00000000000051A1000000DD /* OptionsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D02DB2F894812000BD6F4 /* OptionsSheetView.swift */; };
+		00000000000051A1000000DE /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5726FED72D71B63A00041AD5 /* CacheManager.swift */; };
+		00000000000051A1000000DF /* AddImportServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005B42D3E6F3000762E8F /* AddImportServiceView.swift */; };
+		00000000000051A1000000E0 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF332EA5DB9C00F41540 /* Trigger.swift */; };
+		00000000000051A1000000E1 /* GamesListBlankSlateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EC6AA52D801F4D002920F0 /* GamesListBlankSlateView.swift */; };
+		00000000000051A1000000E2 /* DropGlowEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F6327B2D6EA8BD007270E8 /* DropGlowEffectView.swift */; };
+		00000000000051A1000000E3 /* MobyGamesKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771C1A72E6207650062EDE0 /* MobyGamesKit.swift */; };
+		00000000000051A1000000E4 /* FileHashUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005752D3D42FA00762E8F /* FileHashUtil.swift */; };
+		00000000000051A1000000E5 /* ThemeSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590B2DC5B82F007BFD92 /* ThemeSettingView.swift */; };
+		00000000000051A1000000E6 /* ImportError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005D92D3F404D00762E8F /* ImportError.swift */; };
+		00000000000051A1000000E7 /* SMBServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632AA2D6FEBE7007270E8 /* SMBServiceProvider.swift */; };
+		00000000000051A1000000E8 /* SettingsInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFBBC2FED1793001C1425 /* SettingsInfoView.swift */; };
+		00000000000051A1000000E9 /* MembershipInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0E162D8820AB00D2A1BA /* MembershipInfoView.swift */; };
+		00000000000051A1000000EA /* PSPNetworkingConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28B52F37881400D2D998 /* PSPNetworkingConfig.swift */; };
+		00000000000051A1000000EB /* CoreSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DCE8552E0FC9B60079E3AA /* CoreSelectionView.swift */; };
+		00000000000051A1000000EC /* ImportFooterCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9632B2D6B06090022914C /* ImportFooterCollectionReusableView.swift */; };
+		00000000000051A1000000ED /* ASViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DAF92FE4146D0051F661 /* ASViewLayout.swift */; };
+		00000000000051A1000000EE /* AddCheatCodeContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECCA2D797CA7002E619C /* AddCheatCodeContentCell.swift */; };
+		00000000000051A1000000EF /* ASCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB342FE419DB0051F661 /* ASCheck.swift */; };
+		00000000000051A1000000F0 /* ASCornerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB0E2FE417DB0051F661 /* ASCornerStyle.swift */; };
+		00000000000051A1000000F1 /* FileBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48250301702B20030A771 /* FileBrowserView.swift */; };
+		00000000000051A1000000F2 /* PSXSBICollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57399AC72E40AFB100AB73DD /* PSXSBICollectionCell.swift */; };
+		00000000000051A1000000F3 /* SkinCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CCB3A82D66CE610036476B /* SkinCollectionViewCell.swift */; };
+		00000000000051A1000000F4 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE4E2DD3326F00AABF98 /* Shaders.metal */; };
+		00000000000051A1000000F5 /* PersistedKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576060172D22BC5200A98B0C /* PersistedKit.swift */; };
+		00000000000051A1000000F6 /* FocusShortcutsTipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA7463303486E20039E284 /* FocusShortcutsTipsView.swift */; };
+		00000000000051A1000000F7 /* GlobalCoreSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578E4B4F2F8A2AA50027E6D0 /* GlobalCoreSwitchView.swift */; };
+		00000000000051A1000000F8 /* ASProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57744AE42FD91CB800DECBC7 /* ASProgressView.swift */; };
+		00000000000051A1000000F9 /* ASListInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF60042FE05CC00073D318 /* ASListInputView.swift */; };
+		00000000000051A1000000FA /* HomeMenuImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B18A2E2553CC00F93E60 /* HomeMenuImage.swift */; };
+		00000000000051A1000000FB /* A5200.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE822F2338C000EA24F1 /* A5200.swift */; };
+		00000000000051A1000000FC /* ArticBaseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D02782F87EC3A000BD6F4 /* ArticBaseCollectionCell.swift */; };
+		00000000000051A1000000FD /* AchievementsProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E7EC2E547FD800EC0DA5 /* AchievementsProfile.swift */; };
+		00000000000051A1000000FE /* Manufacturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F30CDD2EC44F340035327C /* Manufacturer.swift */; };
+		00000000000051A1000000FF /* PSXSBIDescCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57399ACE2E40BB4400AB73DD /* PSXSBIDescCollectionCell.swift */; };
+		00000000000051A100000100 /* BIOSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8B1012E2366D800F93E60 /* BIOSItem.swift */; };
+		00000000000051A100000101 /* GameOptionsSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D482963018F9490030A771 /* GameOptionsSortView.swift */; };
+		00000000000051A100000102 /* PSPNetworkingConfigCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28AB2F37870700D2D998 /* PSPNetworkingConfigCell.swift */; };
+		00000000000051A100000103 /* PretendoHomeMenuCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D02832F87EC6B000BD6F4 /* PretendoHomeMenuCollectionCell.swift */; };
+		00000000000051A100000104 /* Cipher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574BCC732F324C8E009BD74E /* Cipher.swift */; };
+		00000000000051A100000105 /* WeakScriptMessageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DC7FFB2F52EC38004B6FFD /* WeakScriptMessageHandler.swift */; };
+		00000000000051A100000106 /* ExtraKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5754D8952E2752C0001EA5ED /* ExtraKey.swift */; };
+		00000000000051A100000107 /* DOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578452B92F6A79340020A88F /* DOS.swift */; };
+		00000000000051A100000108 /* SymbianSystemApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA2DB13035B8B00039E284 /* SymbianSystemApp.swift */; };
+		00000000000051A100000109 /* GameListStyleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0D8192DE1C2C200760F57 /* GameListStyleCollectionViewCell.swift */; };
+		00000000000051A10000010A /* LocalWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE112F20D46B00EA24F1 /* LocalWebServer.swift */; };
+		00000000000051A10000010B /* GamehackingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FD1340300F2779007F211A /* GamehackingView.swift */; };
+		00000000000051A10000010C /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5739D1BD2DA79D220090409D /* DataExtension.swift */; };
+		00000000000051A10000010D /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE782DD336F100AABF98 /* Application.swift */; };
+		00000000000051A10000010E /* AddSkinCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CCB3B22D6700A20036476B /* AddSkinCollectionViewCell.swift */; };
+		00000000000051A10000010F /* SymbolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DE10462D606C4700CDD82A /* SymbolButton.swift */; };
+		00000000000051A100000110 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632FF2D718360007270E8 /* SettingItem.swift */; };
+		00000000000051A100000111 /* AddCheatCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECBF2D7969DA002E619C /* AddCheatCodeView.swift */; };
+		00000000000051A100000112 /* PSPNetworkingConfigOnlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28DA2F39FBC100D2D998 /* PSPNetworkingConfigOnlineView.swift */; };
+		00000000000051A100000113 /* ImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57605FFB2D20F28100A98B0C /* ImportViewController.swift */; };
+		00000000000051A100000114 /* GameCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F591F2DC7AC9E007BFD92 /* GameCoverView.swift */; };
+		00000000000051A100000115 /* GameOptionPerform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D483953020EA6A0030A771 /* GameOptionPerform.swift */; };
+		00000000000051A100000116 /* SideMenuShowStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B262620F2A260E4C00174003 /* SideMenuShowStyle.swift */; };
+		00000000000051A100000117 /* menu_pipeline.metal in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE4C2DD3326400AABF98 /* menu_pipeline.metal */; };
+		00000000000051A100000118 /* RandomGameCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57478A702D52037F006F0D99 /* RandomGameCollectionReusableView.swift */; };
+		00000000000051A100000119 /* ASIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5EED2FDCF5E70073D318 /* ASIconView.swift */; };
+		00000000000051A10000011A /* ShaderConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE6B2F224FAE00EA24F1 /* ShaderConfig.swift */; };
+		00000000000051A10000011B /* TitleInputCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E01071300CB3C8009AA38C /* TitleInputCollectionViewCell.swift */; };
+		00000000000051A10000011C /* RetroAchievementCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E8102E559ED600EC0DA5 /* RetroAchievementCountView.swift */; };
+		00000000000051A10000011D /* J2MEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DC7FF32F52E92B004B6FFD /* J2MEView.swift */; };
+		00000000000051A10000011E /* PSPNetworkingConfigLocalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28D42F39E0A100D2D998 /* PSPNetworkingConfigLocalView.swift */; };
+		00000000000051A10000011F /* ImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005B82D3E71B200762E8F /* ImportService.swift */; };
+		00000000000051A100000120 /* ShaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570622EB2D7BD2F6004F09E7 /* ShaderManager.swift */; };
+		00000000000051A100000121 /* AddTriggerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF612EA792F900F41540 /* AddTriggerButtonView.swift */; };
+		00000000000051A100000122 /* GameShortCutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48374301F57B90030A771 /* GameShortCutView.swift */; };
+		00000000000051A100000123 /* MAMEBiosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5E3342ECDF75800DE17E9 /* MAMEBiosView.swift */; };
+		00000000000051A100000124 /* CollectionFooterReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28E92F3A055F00D2D998 /* CollectionFooterReusableView.swift */; };
+		00000000000051A100000125 /* ASButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57744ADD2FD91C8000DECBC7 /* ASButtonView.swift */; };
+		00000000000051A100000126 /* GameViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9242D7D36CD00D0CC93 /* GameViewExtensions.swift */; };
+		00000000000051A100000127 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F59DB2DC9D528007BFD92 /* ThemeManager.swift */; };
+		00000000000051A100000128 /* GameMetadataSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D94206302C3EDA00C06208 /* GameMetadataSearchView.swift */; };
+		00000000000051A100000129 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4B7B12A147226003B0E07 /* UIViewExtensions.swift */; };
+		00000000000051A10000012A /* ASBlankSlateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF60F12FE31E2F0073D318 /* ASBlankSlateView.swift */; };
+		00000000000051A10000012B /* BIOSSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706AFC12DF7D9460066122E /* BIOSSelectionView.swift */; };
+		00000000000051A10000012C /* GameOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D37D2FF0D3CE00FC5B2A /* GameOption.swift */; };
+		00000000000051A10000012D /* EntryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E0CC8E2D8F0E170027FB8C /* EntryExtensions.swift */; };
+		00000000000051A10000012E /* PasteImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005D52D3F396C00762E8F /* PasteImporter.swift */; };
+		00000000000051A10000012F /* GBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 574ABE982E6021520045F76E /* GBC.swift */; };
+		00000000000051A100000130 /* GradientImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0E0B2D880DD600D2A1BA /* GradientImageView.swift */; };
+		00000000000051A100000131 /* ThreeDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571BB8062DA4357900830134 /* ThreeDS.swift */; };
+		00000000000051A100000132 /* AnimatedGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576060212D24E07500A98B0C /* AnimatedGradientView.swift */; };
+		00000000000051A100000133 /* CoverStyleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F59122DC5BB12007BFD92 /* CoverStyleCollectionViewCell.swift */; };
+		00000000000051A100000134 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5771C2092E6569B60062EDE0 /* LeaderboardView.swift */; };
+		00000000000051A100000135 /* ASStepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57744AEB2FD91CE200DECBC7 /* ASStepView.swift */; };
+		00000000000051A100000136 /* PM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744C7172E375BF00088081A /* PM.swift */; };
+		00000000000051A100000137 /* NES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0D8412DE2CD8B00760F57 /* NES.swift */; };
+		00000000000051A100000138 /* ApplicationSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C114A2D1D0B1900CFD1F5 /* ApplicationSceneDelegate.swift */; };
+		00000000000051A100000139 /* UIimageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C97B4F2A09F3DE00053A4C /* UIimageExtensions.swift */; };
+		00000000000051A10000013A /* CollectionHeaderReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577006082D3F980400762E8F /* CollectionHeaderReusableView.swift */; };
+		00000000000051A10000013B /* MAMEKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5E3222ECCCD0100DE17E9 /* MAMEKit.swift */; };
+		00000000000051A10000013C /* ASProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB492FE41A600051F661 /* ASProgress.swift */; };
+		00000000000051A10000013D /* SettingsMembershipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFB602FEBC334001C1425 /* SettingsMembershipView.swift */; };
+		00000000000051A10000013E /* Jaguar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE902F23396200EA24F1 /* Jaguar.swift */; };
+		00000000000051A10000013F /* CKAccountStatusExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DA89312D8328420074052A /* CKAccountStatusExtensions.swift */; };
+		00000000000051A100000140 /* RetroAchievementsLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E7642E540F5F00EC0DA5 /* RetroAchievementsLoginView.swift */; };
+		00000000000051A100000141 /* NumbersExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5781F4E92EEFE44800916D8B /* NumbersExtensions.swift */; };
+		00000000000051A100000142 /* SequenceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D483A930217B010030A771 /* SequenceExtensions.swift */; };
+		00000000000051A100000143 /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2383F502A2733DF000563E6 /* UIFontExtensions.swift */; };
+		00000000000051A100000144 /* SettingsRateUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFBB12FED174B001C1425 /* SettingsRateUsView.swift */; };
+		00000000000051A100000145 /* UITextFieldExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E0C1A62D56580400962555 /* UITextFieldExtensions.swift */; };
+		00000000000051A100000146 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E7C92E5446F700EC0DA5 /* ArrayExtensions.swift */; };
+		00000000000051A100000147 /* FlexSkinSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC338D2DBC789E00DF7418 /* FlexSkinSettingViewController.swift */; };
+		00000000000051A100000148 /* BIOSCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706AFC52DF7DAA20066122E /* BIOSCollectionViewCell.swift */; };
+		00000000000051A100000149 /* ASTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579454212FE683F000D32DD6 /* ASTextView.swift */; };
+		00000000000051A10000014A /* SparkleSeperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E9632D2D6B0B7D0022914C /* SparkleSeperatorView.swift */; };
+		00000000000051A10000014B /* MultiDiscItemCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C46342E16DA0D0008D087 /* MultiDiscItemCollectionCell.swift */; };
+		00000000000051A10000014C /* PSPNetworkingSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28A42F3786B500D2D998 /* PSPNetworkingSwitchCell.swift */; };
+		00000000000051A10000014D /* SS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706B0592DFC0F7A0066122E /* SS.swift */; };
+		00000000000051A10000014E /* LibretroCoreConfigsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5760A3693028CAF8002CCF6B /* LibretroCoreConfigsView.swift */; };
+		00000000000051A10000014F /* NoControllCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5744C6FE2E368BA50088081A /* NoControllCollectionView.swift */; };
+		00000000000051A100000150 /* PermissionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E38E9A2D8C74F9001616D3 /* PermissionKit.swift */; };
+		00000000000051A100000151 /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C889632574D82E00149D82 /* DispatchQueueExtensions.swift */; };
+		00000000000051A100000152 /* ASSymbolsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5FC82FE017BA0073D318 /* ASSymbolsButtonView.swift */; };
+		00000000000051A100000153 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5708351B2D3216930079D410 /* Log.swift */; };
+		00000000000051A100000154 /* PriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A132D856DB000C62FF6 /* PriceView.swift */; };
+		00000000000051A100000155 /* ServiceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D5B22E9796B800F920E7 /* ServiceIconView.swift */; };
+		00000000000051A100000156 /* GameOptionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C8C853032C95B00AEB08F /* GameOptionTypes.swift */; };
+		00000000000051A100000157 /* A2600.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573CEE7F2F2338B700EA24F1 /* A2600.swift */; };
+		00000000000051A100000158 /* ASCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57716109300A1C7D0088345B /* ASCardView.swift */; };
+		00000000000051A100000159 /* UIStackViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF60FB2FE3214B0073D318 /* UIStackViewExtensions.swift */; };
+		00000000000051A10000015A /* TriggerProManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4839F3020EDA70030A771 /* TriggerProManageView.swift */; };
+		00000000000051A10000015B /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575FF91C2D350F170043B2F3 /* PlayViewController.swift */; };
+		00000000000051A10000015C /* MultiDiscBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D4844F302330030030A771 /* MultiDiscBuilderView.swift */; };
+		00000000000051A10000015D /* GameMetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D941F4302BFC8700C06208 /* GameMetadataView.swift */; };
+		00000000000051A10000015E /* MCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706B0442DFBF7BC0066122E /* MCD.swift */; };
+		00000000000051A10000015F /* ProHUDExtentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6EBF22D769905002E619C /* ProHUDExtentions.swift */; };
+		00000000000051A100000160 /* EmulationCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA59B42E3F13C900110849 /* EmulationCore.swift */; };
+		00000000000051A100000161 /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577006882D438F1100762E8F /* GameListView.swift */; };
+		00000000000051A100000162 /* TriggerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D7CF842EA88ABA00F41540 /* TriggerButton.swift */; };
+		00000000000051A100000163 /* FilesSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */; };
+		00000000000051A100000164 /* FilesSyncPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */; };
+		00000000000051A100000165 /* FilesSyncIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */; };
+		00000000000051A100000166 /* FilesSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */; };
+		00000000000051A100000167 /* FilesSyncIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */; };
+		00000000000051A100000168 /* FilesSyncWatchers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5703052D8AA0017A6C3 /* FilesSyncWatchers.swift */; };
+		00000000000051A100000169 /* FilesSyncRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EBA5743052D8AA0017A6C3 /* FilesSyncRecord.swift */; };
+		00000000000051A10000016A /* UniversalScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 577EC5AA2F7E566700E8E3EB /* UniversalScript.c */; };
+		00000000000051A10000016B /* ShaderInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5781F47A2EEE572500916D8B /* ShaderInfoView.swift */; };
+		00000000000051A10000016C /* ASListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C65AE62FD6B2D600BB73E0 /* ASListItemView.swift */; };
+		00000000000051A10000016D /* PretendoNetworkingConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D02702F87E453000BD6F4 /* PretendoNetworkingConfig.swift */; };
+		00000000000051A10000016E /* ASChevron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB422FE41A2C0051F661 /* ASChevron.swift */; };
+		00000000000051A10000016F /* SettingsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632FD2D71822A007270E8 /* SettingsListView.swift */; };
+		00000000000051A100000170 /* TitleSortCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578E4BA32F8A9B140027E6D0 /* TitleSortCollectionCell.swift */; };
+		00000000000051A100000171 /* ASIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB002FE416200051F661 /* ASIcon.swift */; };
+		00000000000051A100000172 /* NimbusCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572D027B2F87EC4D000BD6F4 /* NimbusCollectionCell.swift */; };
+		00000000000051A100000173 /* Prefference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D49A2FF52FCE00FC5B2A /* Prefference.swift */; };
+		00000000000051A100000174 /* DownloadManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC357F2DC0683700DF7418 /* DownloadManageView.swift */; };
+		00000000000051A100000175 /* TouchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57913AF42D5D89CC004D51AA /* TouchController.swift */; };
+		00000000000051A100000176 /* CGRectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC33BD2DBCDF2C00DF7418 /* CGRectExtensions.swift */; };
+		00000000000051A100000177 /* DeadZoneControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57399B182E42EDE800AB73DD /* DeadZoneControl.swift */; };
+		00000000000051A100000178 /* DisabledTapSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A392D5632E96682600F920E7 /* DisabledTapSwitch.swift */; };
+		00000000000051A100000179 /* UIScreenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F632842D6EB47F007270E8 /* UIScreenExtensions.swift */; };
+		00000000000051A10000017A /* EmulatorInteractionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5781F5442EF1383F00916D8B /* EmulatorInteractionKit.swift */; };
+		00000000000051A10000017B /* MS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5706B03F2DFBEC2E0066122E /* MS.swift */; };
+		00000000000051A10000017C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A001F224555A5F006E0F0E /* AppDelegate.swift */; };
+		00000000000051A10000017D /* OnlineCoverManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575A39CD2DCD00FE00B28FC2 /* OnlineCoverManager.swift */; };
+		00000000000051A10000017E /* MappingInputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720D1C22DBA01740090C0F6 /* MappingInputPopupView.swift */; };
+		00000000000051A10000017F /* GamesToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E0C19D2D562F8600962555 /* GamesToolView.swift */; };
+		00000000000051A100000180 /* J2MESettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F3BAEA2F6541AB00ABF4B3 /* J2MESettingView.swift */; };
+		00000000000051A100000181 /* NSAttributedStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DF84792D62E97A00AA0AAB /* NSAttributedStringExtensions.swift */; };
+		00000000000051A100000182 /* RetroAchievementsLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577160EB300931850088345B /* RetroAchievementsLaunchView.swift */; };
+		00000000000051A100000183 /* FeaturesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F0DA42D85CD3900D2A1BA /* FeaturesCell.swift */; };
+		00000000000051A100000184 /* AuxiliaryLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC33B92DBCD90700DF7418 /* AuxiliaryLineView.swift */; };
+		00000000000051A100000185 /* SymbianFirmwareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BA2D8F30357F0E0039E284 /* SymbianFirmwareView.swift */; };
+		00000000000051A100000186 /* ImportServiceListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577005B62D3E715500762E8F /* ImportServiceListCollectionViewCell.swift */; };
+		00000000000051A100000187 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BFBE762DD336DD00AABF98 /* main.swift */; };
+		00000000000051A100000188 /* ManufacturerCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F30CD62EC048780035327C /* ManufacturerCategoryView.swift */; };
+		00000000000051A100000189 /* DesktopIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F590D2DC5BAE1007BFD92 /* DesktopIconCollectionViewCell.swift */; };
+		00000000000051A10000018A /* SettingsBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFBDC2FED2275001C1425 /* SettingsBottomView.swift */; };
+		00000000000051A10000018B /* GameInfoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4D02FFE10CC00FC5B2A /* GameInfoDetailView.swift */; };
+		00000000000051A10000018C /* FileManagerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770059D2D3E2ED900762E8F /* FileManagerExtensions.swift */; };
+		00000000000051A10000018D /* GameMetadataKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1A23027176800CAC638 /* GameMetadataKit.swift */; };
+		00000000000051A10000018E /* CheevosProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D029182E6C9C4000BF1F9D /* CheevosProgressView.swift */; };
+		00000000000051A10000018F /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A092D85217400C62FF6 /* PurchaseView.swift */; };
+		00000000000051A100000190 /* PlayHistoryBlankSlateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EC6AB72D8037FE002920F0 /* PlayHistoryBlankSlateView.swift */; };
+		00000000000051A100000191 /* AddTriggerActionHoldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48420302311C80030A771 /* AddTriggerActionHoldView.swift */; };
+		00000000000051A100000192 /* PSPNetworkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28952F37856700D2D998 /* PSPNetworkingView.swift */; };
+		00000000000051A100000193 /* AddTriggerMappingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D483CC3021D6CC0030A771 /* AddTriggerMappingListView.swift */; };
+		00000000000051A100000194 /* JGenesisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5781F5AB2EF45C6900916D8B /* JGenesisView.swift */; };
+		00000000000051A100000195 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23E3DF12A0C9D9B0068EADA /* GradientView.swift */; };
+		00000000000051A100000196 /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EC6AC72D8119D8002920F0 /* SyncManager.swift */; };
+		00000000000051A100000197 /* MD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57655C1A2DF6AD02003E4A6E /* MD.swift */; };
+		00000000000051A100000198 /* FocusKeyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4FB2FFF58B400FC5B2A /* FocusKeyObserver.swift */; };
+		00000000000051A100000199 /* ImportFileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E963292D6B013B0022914C /* ImportFileCollectionViewCell.swift */; };
+		00000000000051A10000019A /* GameplayManualsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A043B82E9CF33B006442C2 /* GameplayManualsView.swift */; };
+		00000000000051A10000019B /* FDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57526B7D2EADEECD003F91BD /* FDS.swift */; };
+		00000000000051A10000019C /* BonjourKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F28C02F39A9CA00D2D998 /* BonjourKit.swift */; };
+		00000000000051A10000019D /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579213522D95313800E88819 /* BaseNavigationController.swift */; };
+		00000000000051A10000019E /* ResourcesKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E0CC522D8EACBF0027FB8C /* ResourcesKit.swift */; };
+		00000000000051A10000019F /* SkinButtonBindingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D48BDA30585CD300151935 /* SkinButtonBindingView.swift */; };
+		00000000000051A1000001A0 /* ASListPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C65ADF2FD6B2BA00BB73E0 /* ASListPageView.swift */; };
+		00000000000051A1000001A1 /* GamesNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577006992D44B9B500762E8F /* GamesNavigationView.swift */; };
+		00000000000051A1000001A2 /* GamesCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5770069D2D44C01800762E8F /* GamesCollectionReusableView.swift */; };
+		00000000000051A1000001A3 /* RetroAchievementListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5720E78D2E54112A00EC0DA5 /* RetroAchievementListView.swift */; };
+		00000000000051A1000001A4 /* FeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57047A0B2D852E7200C62FF6 /* FeaturesView.swift */; };
+		00000000000051A1000001A5 /* ASListDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF60382FE176C60073D318 /* ASListDecorationView.swift */; };
+		00000000000051A1000001A6 /* ShaderToyScripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576C8D6A30332B2F00AEB08F /* ShaderToyScripts.swift */; };
+		00000000000051A1000001A7 /* ASSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579453BE2FE429CD00D32DD6 /* ASSheet.swift */; };
+		00000000000051A1000001A8 /* GameListLandscapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1D7302833E600CAC638 /* GameListLandscapeView.swift */; };
+		00000000000051A1000001A9 /* LandscapeStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1E2302833E600CAC638 /* LandscapeStatusView.swift */; };
+		00000000000051A1000001AA /* GameLandscapeCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5721F1E5302833E600CAC638 /* GameLandscapeCarouselCell.swift */; };
+		00000000000051A1000001AB /* ShaderLIstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D481FD3014A2430030A771 /* ShaderLIstView.swift */; };
+		00000000000051A1000001AC /* ASRadio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5796DB3B2FE41A050051F661 /* ASRadio.swift */; };
+		00000000000051A1000001AD /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570F59BF2DC91FEE007BFD92 /* ColorPickerView.swift */; };
+		00000000000051A1000001AE /* ASRadioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BF5EDC2FDB09AC0073D318 /* ASRadioView.swift */; };
+		00000000000051A1000001AF /* CheatCodeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B6ECBC2D7953E6002E619C /* CheatCodeListView.swift */; };
+		00000000000051A1000001B0 /* ShaderToy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5760A3A53029E80D002CCF6B /* ShaderToy.swift */; };
+		00000000000051A1000001B1 /* ZipHandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573DE1A52F6AF6AA0091CE59 /* ZipHandlerView.swift */; };
+		00000000000051A1000001B2 /* SettingsTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABFBD22FED20C4001C1425 /* SettingsTopView.swift */; };
+		00000000000051A1000001B3 /* Bimap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57D942CB302F1EBB00C06208 /* Bimap.swift */; };
+		00000000000051A1000001B4 /* VB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5754D8C72E27A861001EA5ED /* VB.swift */; };
+		00000000000051A1000001B5 /* DOOM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2068D6E791D56FF6148997EA /* DOOM.swift */; };
+		00000000000051A1000001B6 /* StikJITXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8A110304A4A1100000028 /* StikJITXPC.swift */; };
+		00000000000051A1000001B7 /* EntitlementChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8A110304A4A1100000029 /* EntitlementChecker.swift */; };
+		00000000000051A1000001B8 /* StikJITManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8A110304A4A110000002A /* StikJITManager.swift */; };
+		00000000000051A1000001B9 /* StikJITExtensionLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8A110304A4A110000002B /* StikJITExtensionLauncher.swift */; };
+		00000000000051A1000001BA /* StikJITHostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E8A110304A4A110000002C /* StikJITHostCoordinator.swift */; };
+		00000000000051A1000001BC /* IceCream in Frameworks */ = {isa = PBXBuildFile; productRef = 576C8C673032B5B700AEB08F /* IceCream */; };
+		00000000000051A1000001BD /* Libretro.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE172DD32F7700AABF98 /* Libretro.framework */; };
+		00000000000051A1000001BE /* Tiercel in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7590F2FD42C710093A2B3 /* Tiercel */; };
+		00000000000051A1000001BF /* GCDWebUploader in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23862FD2981800A2749A /* GCDWebUploader */; };
+		00000000000051A1000001C0 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759232FD42D960093A2B3 /* Kingfisher */; };
+		00000000000051A1000001C1 /* Fuse in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7591E2FD42D480093A2B3 /* Fuse */; };
+		00000000000051A1000001C2 /* Permission in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26C82FD41B6300A2749A /* Permission */; };
+		00000000000051A1000001C3 /* DNSPageView in Frameworks */ = {isa = PBXBuildFile; productRef = 57ABFAD02FE9849D001C1425 /* DNSPageView */; };
+		00000000000051A1000001C4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 571748382DA26F1E007CCE25 /* CoreBluetooth.framework */; };
+		00000000000051A1000001C5 /* BlurUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5706B0BD2DFDE4570066122E /* BlurUIKit */; };
+		00000000000051A1000001C6 /* DNSPageView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20A22FD1B94E00A2749A /* DNSPageView */; };
+		00000000000051A1000001C7 /* SMBClient in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632A22D6F17AB007270E8 /* SMBClient */; };
+		00000000000051A1000001C8 /* SwiftCloudDrive in Frameworks */ = {isa = PBXBuildFile; productRef = 579DDADD305AE9BB003AB167 /* SwiftCloudDrive */; };
+		00000000000051A1000001C9 /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E209D2FD1B8CB00A2749A /* CollectionViewPagingLayout */; };
+		00000000000051A1000001CA /* ChromaColorPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759D92FD486BA0093A2B3 /* ChromaColorPicker */; };
+		00000000000051A1000001CB /* Schedule in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759192FD42D030093A2B3 /* Schedule */; };
+		00000000000051A1000001CC /* Haptica in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759052FD42BD80093A2B3 /* Haptica */; };
+		00000000000051A1000001CD /* ObjcExceptionBridging in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306B2D91AFE00043C28A /* ObjcExceptionBridging */; };
+		00000000000051A1000001CE /* ProHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 579453AE2FE4262700D32DD6 /* ProHUD */; };
+		00000000000051A1000001CF /* SwifterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 578E246A2FD4017E00A2749A /* SwifterSwift */; };
+		00000000000051A1000001D0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 578E1FF52FD16A4600A2749A /* SnapKit */; };
+		00000000000051A1000001D1 /* HXPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 579096B4303F065800A53656 /* HXPhotoPicker */; };
+		00000000000051A1000001D2 /* SQLiteCipher in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759862FD459310093A2B3 /* SQLiteCipher */; };
+		00000000000051A1000001D3 /* JXBanner in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23B62FD2B7D400A2749A /* JXBanner */; };
+		00000000000051A1000001D4 /* FluentDarkModeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 579E54502FD4237B000F08E7 /* FluentDarkModeKit */; };
+		00000000000051A1000001D5 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 576F0DB52D86796100D2A1BA /* StoreKit.framework */; };
+		00000000000051A1000001D6 /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 57ABFAC92FE98443001C1425 /* CollectionViewPagingLayout */; };
+		00000000000051A1000001D7 /* BlankSlate in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23A42FD2AA0600A2749A /* BlankSlate */; };
+		00000000000051A1000001D8 /* VisualEffectView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26DD2FD41E4D00A2749A /* VisualEffectView */; };
+		00000000000051A1000001D9 /* Device in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26E22FD41F8300A2749A /* Device */; };
+		00000000000051A1000001DA /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCD032FD5A9CE005BA4C8 /* ColorfulX */; };
+		00000000000051A1000001DB /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 575A39CB2DCCFA6B00B28FC2 /* SwiftSoup */; };
+		00000000000051A1000001DC /* WebDavKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57F632E22D714E46007270E8 /* WebDavKit */; };
+		00000000000051A1000001DD /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759E02FD487190093A2B3 /* KeyboardKit */; };
+		00000000000051A1000001DE /* DominantColors in Frameworks */ = {isa = PBXBuildFile; productRef = 57DF84BE2D637A1A00AA0AAB /* DominantColors */; };
+		00000000000051A1000001DF /* PLzmaSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 570A27FF2DCF03CF001249C6 /* PLzmaSDK */; };
+		00000000000051A1000001E0 /* CloudServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23022FD27DA800A2749A /* CloudServiceKit */; };
+		00000000000051A1000001E1 /* Fireworks in Frameworks */ = {isa = PBXBuildFile; productRef = 578E24562FD3F9D700A2749A /* Fireworks */; };
+		00000000000051A1000001E2 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 578E23D02FD2BD0800A2749A /* ZipArchive */; };
+		00000000000051A1000001E3 /* SmartCodable in Frameworks */ = {isa = PBXBuildFile; productRef = 57DA89122D82B0C20074052A /* SmartCodable */; };
+		00000000000051A1000001E4 /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306D2D91AFE00043C28A /* XCGLogger */; };
+		00000000000051A1000001E5 /* SDL in Frameworks */ = {isa = PBXBuildFile; productRef = 571BB9392DA44D6B00830134 /* SDL */; };
+		00000000000051A1000001E6 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 57F1D3E12FF1437F00FC5B2A /* KeychainAccess */; };
+		00000000000051A1000001E7 /* UniversalDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7596E2FD455AA0093A2B3 /* UniversalDetector */; };
+		00000000000051A1000001E8 /* Closures in Frameworks */ = {isa = PBXBuildFile; productRef = 578E231F2FD288C600A2749A /* Closures */; };
+		00000000000051A1000001E9 /* SideMenu in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D82FD41E1200A2749A /* SideMenu */; };
+		00000000000051A1000001EA /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = 5726FF452D741F5C00041AD5 /* ColorfulX */; };
+		00000000000051A1000001EB /* RswiftLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 576060282D24E8BD00A98B0C /* RswiftLibrary */; };
+		00000000000051A1000001EC /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759142FD42CB70093A2B3 /* BetterSegmentedControl */; };
+		00000000000051A1000001ED /* ProHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20A92FD1C40700A2749A /* ProHUD */; };
+		00000000000051A1000001EE /* AttributedString in Frameworks */ = {isa = PBXBuildFile; productRef = 5742E1CC2FDA9FA10031A726 /* AttributedString */; };
+		00000000000051A1000001EF /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 57C7590A2FD42C2E0093A2B3 /* IQKeyboardManagerSwift */; };
+		00000000000051A1000001F0 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 57C758FB2FD42AF00093A2B3 /* SFSafeSymbols */; };
+		00000000000051A1000001F1 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D32FD41D9300A2749A /* NVActivityIndicatorView */; };
+		00000000000051A1000001F2 /* MarqueeLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 578E24432FD3EEE300A2749A /* MarqueeLabel */; };
+		00000000000051A1000001F3 /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20902FD16DA500A2749A /* CollectionViewPagingLayout */; };
+		00000000000051A1000001F4 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 57E48D902D8D736B008000A3 /* ConfettiSwiftUI */; };
+		00000000000051A1000001F5 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 578E24002FD31C0100A2749A /* ZIPFoundation */; };
+		00000000000051A1000001F6 /* Unrar in Frameworks */ = {isa = PBXBuildFile; productRef = 57F8A0B42FD31C0100A274A4 /* Unrar */; };
+		00000000000051A1000001F7 /* DeltaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 57F1D52B2FFFCCC700FC5B2A /* DeltaCore */; };
+		00000000000051A1000001F8 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCF842FD5CC08005BA4C8 /* FLEX */; };
+		00000000000051A1000001F9 /* ShowTouches in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCF862FD5CC10005BA4C8 /* ShowTouches */; };
+		00000000000051A1000001FA /* LookInsideServer in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCF882FD5CC1C005BA4C8 /* LookInsideServer */; };
+		00000000000051A1000001FB /* file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 57E0CCC62D9075110027FB8C /* file_icon.png */; };
+		00000000000051A1000001FC /* WhatsNew-AppStore.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA0A305ABCBF003AB167 /* WhatsNew-AppStore.strings */; };
+		00000000000051A1000001FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A001FD24555A5F006E0F0E /* LaunchScreen.storyboard */; };
+		00000000000051A1000001FE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5DE1F21256BC7F10099425B /* Localizable.strings */; };
+		00000000000051A1000001FF /* WhatsNew-Sideload.strings in Resources */ = {isa = PBXBuildFile; fileRef = 579DDA47305ABD8A003AB167 /* WhatsNew-Sideload.strings */; };
+		00000000000051A100000200 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5DE1F1A256BC78B0099425B /* InfoPlist.strings */; };
+		00000000000051A100000201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A001FB24555A5F006E0F0E /* Assets.xcassets */; };
+		00000000000051A100000202 /* System.core in Resources */ = {isa = PBXBuildFile; fileRef = 57C7595C2FD451130093A2B3 /* System.core */; };
+		00000000000051A100000204 /* mednafen.wswan.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 570C6146305437FE007E0C53 /* mednafen.wswan.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000205 /* mesen-s.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57909689303EF38000A53656 /* mesen-s.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000206 /* gpsp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57909600303D792500A53656 /* gpsp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000207 /* puae.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 03741E2E8CB24E5790E97476 /* puae.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000208 /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000209 /* mednafen.ngp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56A0D131A148448EA9816B /* mednafen.ngp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000020A /* mednafen.pce.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000020B /* dolphin.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9770068F58CC4F29B21DE396 /* dolphin.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000020C /* eka2l1.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 25F38CF54CA347238295BE77 /* eka2l1.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000020D /* MoltenVK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57C75B4D2FD592860093A2B3 /* MoltenVK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000020F /* Libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE172DD32F7700AABF98 /* Libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000210 /* azahar.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 578E22F12FD1EE6600A2749A /* azahar.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000211 /* pcsx.rearmed.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 572918892F8B9F6400985D2C /* pcsx.rearmed.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000212 /* snes9x.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5729188A2F8B9F6400985D2C /* snes9x.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000213 /* dosbox.pure.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 578452BE2F6A7F380020A88F /* dosbox.pure.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000214 /* prboom.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 20B6A88FB41ED3142FD4FD9E /* prboom.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000215 /* virtualjaguar.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 573CEE9D2F23403100EA24F1 /* virtualjaguar.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000216 /* holani.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 573CEE9A2F23403100EA24F1 /* holani.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000217 /* prosystem.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 573CEE9B2F23403100EA24F1 /* prosystem.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000218 /* atari800.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 573CEE992F23403100EA24F1 /* atari800.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000219 /* stella.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 573CEE9C2F23403100EA24F1 /* stella.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000021A /* desmume.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 573CED7C2F1CE2C100EA24F1 /* desmume.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000021B /* fbneo.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57B5E3482ECE0A1A00DE17E9 /* fbneo.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000021C /* mame.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57B5E3192ECC735D00DE17E9 /* mame.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000021D /* melondsds.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A481672E7F059D001D4598 /* melondsds.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000021E /* bsnes-jg.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A481532E7A8B76001D4598 /* bsnes-jg.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000021F /* clownmdemu.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A481282E77F482001D4598 /* clownmdemu.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000220 /* gearsystem.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A481292E77F482001D4598 /* gearsystem.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000221 /* flycast-jitless.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57A480CB2E733B77001D4598 /* flycast-jitless.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000222 /* flycast.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5771C2902E699C880062EDE0 /* flycast.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000223 /* mgba.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 574ABE942E6020880045F76E /* mgba.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000224 /* vbam.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 574ABE952E6020880045F76E /* vbam.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000225 /* gambatte.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 574ABE932E6020880045F76E /* gambatte.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000226 /* bsnes.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 574ABE872E5F53620045F76E /* bsnes.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000227 /* mednafen.psx.hw.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 576A7DAA2E3B4FBC00008E35 /* mednafen.psx.hw.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000228 /* pokemini.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5744C71B2E375EFF0088081A /* pokemini.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A100000229 /* mednafen.vb.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5754D8C22E27A562001EA5ED /* mednafen.vb.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000022A /* mupen64plus.next.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57D0BC0D2E1AD31A008C3049 /* mupen64plus.next.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000022B /* yabause.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57DCE8522E0F97780079E3AA /* yabause.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000022C /* mednafen.saturn.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57DCE79D2E0C43310079E3AA /* mednafen.saturn.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000022D /* picodrive.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57655C1E2DF6B94C003E4A6E /* picodrive.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000022E /* nestopia.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00000000000051A10000022F /* ppsspp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE712DD3360A00AABF98 /* ppsspp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		000FF60D4C0C45458B42CDD8 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 578E1FF52FD16A4600A2749A /* SnapKit */; };
 		023B2A9DBF6F473782A64EC6 /* Wii.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2DDA01B1DB4E15B8F0C5C6 /* Wii.swift */; };
 		0750DCA306CA4EB7A036C987 /* mednafen.ngp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56A0D131A148448EA9816B /* mednafen.ngp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1679,6 +2221,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		00000000000051A100000230 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5A001E724555A5F006E0F0E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 57BFBE162DD32F7700AABF98;
+			remoteInfo = Libretro;
+		};
 		57909383303C7D9100A53656 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A5A001E724555A5F006E0F0E /* Project object */;
@@ -1717,6 +2266,69 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		00000000000051A10000000A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		00000000000051A10000000B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				00000000000051A100000204 /* mednafen.wswan.libretro.framework in Embed Frameworks */,
+				00000000000051A100000205 /* mesen-s.libretro.framework in Embed Frameworks */,
+				00000000000051A100000206 /* gpsp.libretro.framework in Embed Frameworks */,
+				00000000000051A100000207 /* puae.libretro.framework in Embed Frameworks */,
+				00000000000051A100000208 /* vice.x64sc.libretro.framework in Embed Frameworks */,
+				00000000000051A100000209 /* mednafen.ngp.libretro.framework in Embed Frameworks */,
+				00000000000051A10000020A /* mednafen.pce.libretro.framework in Embed Frameworks */,
+				00000000000051A10000020B /* dolphin.libretro.framework in Embed Frameworks */,
+				00000000000051A10000020C /* eka2l1.libretro.framework in Embed Frameworks */,
+				00000000000051A10000020D /* MoltenVK.xcframework in Embed Frameworks */,
+				00000000000051A10000020F /* Libretro.framework in Embed Frameworks */,
+				00000000000051A100000210 /* azahar.libretro.framework in Embed Frameworks */,
+				00000000000051A100000211 /* pcsx.rearmed.libretro.framework in Embed Frameworks */,
+				00000000000051A100000212 /* snes9x.libretro.framework in Embed Frameworks */,
+				00000000000051A100000213 /* dosbox.pure.libretro.framework in Embed Frameworks */,
+				00000000000051A100000214 /* prboom.libretro.framework in Embed Frameworks */,
+				00000000000051A100000215 /* virtualjaguar.libretro.framework in Embed Frameworks */,
+				00000000000051A100000216 /* holani.libretro.framework in Embed Frameworks */,
+				00000000000051A100000217 /* prosystem.libretro.framework in Embed Frameworks */,
+				00000000000051A100000218 /* atari800.libretro.framework in Embed Frameworks */,
+				00000000000051A100000219 /* stella.libretro.framework in Embed Frameworks */,
+				00000000000051A10000021A /* desmume.libretro.framework in Embed Frameworks */,
+				00000000000051A10000021B /* fbneo.libretro.framework in Embed Frameworks */,
+				00000000000051A10000021C /* mame.libretro.framework in Embed Frameworks */,
+				00000000000051A10000021D /* melondsds.libretro.framework in Embed Frameworks */,
+				00000000000051A10000021E /* bsnes-jg.libretro.framework in Embed Frameworks */,
+				00000000000051A10000021F /* clownmdemu.libretro.framework in Embed Frameworks */,
+				00000000000051A100000220 /* gearsystem.libretro.framework in Embed Frameworks */,
+				00000000000051A100000221 /* flycast-jitless.libretro.framework in Embed Frameworks */,
+				00000000000051A100000222 /* flycast.libretro.framework in Embed Frameworks */,
+				00000000000051A100000223 /* mgba.libretro.framework in Embed Frameworks */,
+				00000000000051A100000224 /* vbam.libretro.framework in Embed Frameworks */,
+				00000000000051A100000225 /* gambatte.libretro.framework in Embed Frameworks */,
+				00000000000051A100000226 /* bsnes.libretro.framework in Embed Frameworks */,
+				00000000000051A100000227 /* mednafen.psx.hw.libretro.framework in Embed Frameworks */,
+				00000000000051A100000228 /* pokemini.libretro.framework in Embed Frameworks */,
+				00000000000051A100000229 /* mednafen.vb.libretro.framework in Embed Frameworks */,
+				00000000000051A10000022A /* mupen64plus.next.libretro.framework in Embed Frameworks */,
+				00000000000051A10000022B /* yabause.libretro.framework in Embed Frameworks */,
+				00000000000051A10000022C /* mednafen.saturn.libretro.framework in Embed Frameworks */,
+				00000000000051A10000022D /* picodrive.libretro.framework in Embed Frameworks */,
+				00000000000051A10000022E /* nestopia.libretro.framework in Embed Frameworks */,
+				00000000000051A10000022F /* ppsspp.libretro.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5790955C303C7D9100A53656 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1912,6 +2524,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00000000000051A100000002 /* ManicEmuSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManicEmuSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03741E2E8CB24E5790E97476 /* puae.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = puae.libretro.framework; path = ../Cores/puae.libretro.framework; sourceTree = SOURCE_ROOT; };
 		0A2DDA01B1DB4E15B8F0C5C6 /* Wii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wii.swift; sourceTree = "<group>"; };
 		16B86ECC930242969A108735 /* WSC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSC.swift; sourceTree = "<group>"; };
@@ -6850,6 +7463,76 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		00000000000051A100000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000000000051A1000001BC /* IceCream in Frameworks */,
+				00000000000051A1000001BD /* Libretro.framework in Frameworks */,
+				00000000000051A1000001BE /* Tiercel in Frameworks */,
+				00000000000051A1000001BF /* GCDWebUploader in Frameworks */,
+				00000000000051A1000001C0 /* Kingfisher in Frameworks */,
+				00000000000051A1000001C1 /* Fuse in Frameworks */,
+				00000000000051A1000001C2 /* Permission in Frameworks */,
+				00000000000051A1000001C3 /* DNSPageView in Frameworks */,
+				00000000000051A1000001C4 /* CoreBluetooth.framework in Frameworks */,
+				00000000000051A1000001C5 /* BlurUIKit in Frameworks */,
+				00000000000051A1000001C6 /* DNSPageView in Frameworks */,
+				00000000000051A1000001C7 /* SMBClient in Frameworks */,
+				00000000000051A1000001C8 /* SwiftCloudDrive in Frameworks */,
+				00000000000051A1000001C9 /* CollectionViewPagingLayout in Frameworks */,
+				00000000000051A1000001CA /* ChromaColorPicker in Frameworks */,
+				00000000000051A1000001CB /* Schedule in Frameworks */,
+				00000000000051A1000001CC /* Haptica in Frameworks */,
+				00000000000051A1000001CD /* ObjcExceptionBridging in Frameworks */,
+				00000000000051A1000001CE /* ProHUD in Frameworks */,
+				00000000000051A1000001CF /* SwifterSwift in Frameworks */,
+				00000000000051A1000001D0 /* SnapKit in Frameworks */,
+				00000000000051A1000001D1 /* HXPhotoPicker in Frameworks */,
+				00000000000051A1000001D2 /* SQLiteCipher in Frameworks */,
+				00000000000051A1000001D3 /* JXBanner in Frameworks */,
+				00000000000051A1000001D4 /* FluentDarkModeKit in Frameworks */,
+				00000000000051A1000001D5 /* StoreKit.framework in Frameworks */,
+				00000000000051A1000001D6 /* CollectionViewPagingLayout in Frameworks */,
+				00000000000051A1000001D7 /* BlankSlate in Frameworks */,
+				00000000000051A1000001D8 /* VisualEffectView in Frameworks */,
+				00000000000051A1000001D9 /* Device in Frameworks */,
+				00000000000051A1000001DA /* ColorfulX in Frameworks */,
+				00000000000051A1000001DB /* SwiftSoup in Frameworks */,
+				00000000000051A1000001DC /* WebDavKit in Frameworks */,
+				00000000000051A1000001DD /* KeyboardKit in Frameworks */,
+				00000000000051A1000001DE /* DominantColors in Frameworks */,
+				00000000000051A1000001DF /* PLzmaSDK in Frameworks */,
+				00000000000051A1000001E0 /* CloudServiceKit in Frameworks */,
+				00000000000051A1000001E1 /* Fireworks in Frameworks */,
+				00000000000051A1000001E2 /* ZipArchive in Frameworks */,
+				00000000000051A1000001E3 /* SmartCodable in Frameworks */,
+				00000000000051A1000001E4 /* XCGLogger in Frameworks */,
+				00000000000051A1000001E5 /* SDL in Frameworks */,
+				00000000000051A1000001E6 /* KeychainAccess in Frameworks */,
+				00000000000051A1000001E7 /* UniversalDetector in Frameworks */,
+				00000000000051A1000001E8 /* Closures in Frameworks */,
+				00000000000051A1000001E9 /* SideMenu in Frameworks */,
+				00000000000051A1000001EA /* ColorfulX in Frameworks */,
+				00000000000051A1000001EB /* RswiftLibrary in Frameworks */,
+				00000000000051A1000001EC /* BetterSegmentedControl in Frameworks */,
+				00000000000051A1000001ED /* ProHUD in Frameworks */,
+				00000000000051A1000001EE /* AttributedString in Frameworks */,
+				00000000000051A1000001EF /* IQKeyboardManagerSwift in Frameworks */,
+				00000000000051A1000001F0 /* SFSafeSymbols in Frameworks */,
+				00000000000051A1000001F1 /* NVActivityIndicatorView in Frameworks */,
+				00000000000051A1000001F2 /* MarqueeLabel in Frameworks */,
+				00000000000051A1000001F3 /* CollectionViewPagingLayout in Frameworks */,
+				00000000000051A1000001F4 /* ConfettiSwiftUI in Frameworks */,
+				00000000000051A1000001F5 /* ZIPFoundation in Frameworks */,
+				00000000000051A1000001F6 /* Unrar in Frameworks */,
+				00000000000051A1000001F7 /* DeltaCore in Frameworks */,
+				00000000000051A1000001F8 /* FLEX in Frameworks */,
+				00000000000051A1000001F9 /* ShowTouches in Frameworks */,
+				00000000000051A1000001FA /* LookInsideServer in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57909517303C7D9100A53656 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -13243,6 +13926,7 @@
 				57BFBE172DD32F7700AABF98 /* Libretro.framework */,
 				57B5917A2FD06468003C4235 /* ManicEmuTV.app */,
 				57CDCF792FD5CBD3005BA4C8 /* ManicEmuDebug.app */,
+				00000000000051A100000002 /* ManicEmuSimulator.app */,
 				5790958B303C7D9100A53656 /* ManicEmuSideload.app */,
 				57E8A110304A4A1100000001 /* JITEnabler.appex */,
 			);
@@ -13457,6 +14141,29 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		00000000000051A100000001 /* ManicEmuSimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000000000051A100000003 /* Build configuration list for PBXNativeTarget "ManicEmuSimulator" */;
+			buildPhases = (
+				00000000000051A100000007 /* Sources */,
+				00000000000051A100000008 /* Frameworks */,
+				57E0CCC92D9075110027FB8E /* Verify LFS */,
+				57E0CCC82D9075110027FB8D /* Gen System.core */,
+				00000000000051A100000009 /* Resources */,
+				00000000000051A10000000A /* Embed Foundation Extensions */,
+				00000000000051A10000000B /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				00000000000051A10000000C /* PBXTargetDependency */,
+				00000000000051A10000000D /* PBXTargetDependency */,
+			);
+			name = ManicEmuSimulator;
+			productName = ManicEMU;
+			productReference = 00000000000051A100000002 /* ManicEmuSimulator.app */;
+			productType = "com.apple.product-type.application";
+		};
 		57909380303C7D9100A53656 /* ManicEmuSideload */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 57909587303C7D9100A53656 /* Build configuration list for PBXNativeTarget "ManicEmuSideload" */;
@@ -13693,7 +14400,6 @@
 				578E26D22FD41D9200A2749A /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 				578E26D72FD41E1200A2749A /* XCRemoteSwiftPackageReference "SideMenu" */,
 				578E26DC2FD41E4D00A2749A /* XCRemoteSwiftPackageReference "VisualEffectView" */,
-				578E26E12FD41F8200A2749A /* XCRemoteSwiftPackageReference "Device" */,
 				579E544F2FD4237B000F08E7 /* XCRemoteSwiftPackageReference "FluentDarkModeKit" */,
 				57C759042FD42BD80093A2B3 /* XCRemoteSwiftPackageReference "Haptica" */,
 				57C759092FD42C2E0093A2B3 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
@@ -13716,12 +14422,14 @@
 				576C8C5A3032B57A00AEB08F /* XCLocalSwiftPackageReference "../Dependencies/IceCream" */,
 				579096CF303F0B4C00A53656 /* XCRemoteSwiftPackageReference "HXPhotoPicker" */,
 				579DDAD6305AE990003AB167 /* XCLocalSwiftPackageReference "../Dependencies/SwiftCloudDrive" */,
+				E54AEA6030827A3800AEAC07 /* XCRemoteSwiftPackageReference "Device" */,
 			);
 			productRefGroup = A5A001F024555A5F006E0F0E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				57CDCD872FD5CBD3005BA4C8 /* ManicEmuDebug */,
+				00000000000051A100000001 /* ManicEmuSimulator */,
 				A5A001EE24555A5F006E0F0E /* ManicEmuRelease */,
 				57909380303C7D9100A53656 /* ManicEmuSideload */,
 				57B591792FD06468003C4235 /* ManicEmuTV */,
@@ -13732,6 +14440,21 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		00000000000051A100000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000000000051A1000001FB /* file_icon.png in Resources */,
+				00000000000051A1000001FC /* WhatsNew-AppStore.strings in Resources */,
+				00000000000051A1000001FD /* LaunchScreen.storyboard in Resources */,
+				00000000000051A1000001FE /* Localizable.strings in Resources */,
+				00000000000051A1000001FF /* WhatsNew-Sideload.strings in Resources */,
+				00000000000051A100000200 /* InfoPlist.strings in Resources */,
+				00000000000051A100000201 /* Assets.xcassets in Resources */,
+				00000000000051A100000202 /* System.core in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57909555303C7D9100A53656 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -13844,6 +14567,441 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		00000000000051A100000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000000000051A10000000F /* RuffleView.swift in Sources */,
+				00000000000051A100000010 /* FLASH.swift in Sources */,
+				00000000000051A100000011 /* WSC.swift in Sources */,
+				00000000000051A100000012 /* Amiga.swift in Sources */,
+				00000000000051A100000013 /* C64.swift in Sources */,
+				00000000000051A100000014 /* NGP.swift in Sources */,
+				00000000000051A100000015 /* PCE.swift in Sources */,
+				00000000000051A100000016 /* Wii.swift in Sources */,
+				00000000000051A100000017 /* AddUrlGameView.swift in Sources */,
+				00000000000051A100000018 /* NGC.swift in Sources */,
+				00000000000051A100000019 /* Symbian.swift in Sources */,
+				00000000000051A10000001A /* FocusTypes.swift in Sources */,
+				00000000000051A10000001B /* Focusable.swift in Sources */,
+				00000000000051A10000001C /* FocusContainer.swift in Sources */,
+				00000000000051A10000001D /* FocusContext.swift in Sources */,
+				00000000000051A10000001E /* FocusEngine.swift in Sources */,
+				00000000000051A10000001F /* FocusCollectionView.swift in Sources */,
+				00000000000051A100000020 /* GameCoverScrapingView.swift in Sources */,
+				00000000000051A100000021 /* FocusSystem.swift in Sources */,
+				00000000000051A100000022 /* FocusSystem+UIViewController.swift in Sources */,
+				00000000000051A100000023 /* CheersView.swift in Sources */,
+				00000000000051A100000024 /* ImportServiceListView.swift in Sources */,
+				00000000000051A100000025 /* SNES.swift in Sources */,
+				00000000000051A100000026 /* GameOptionsView.swift in Sources */,
+				00000000000051A100000027 /* ASButton.swift in Sources */,
+				00000000000051A100000028 /* BackgroundMusicKit.swift in Sources */,
+				00000000000051A100000029 /* PurchaseButtonReusableView.swift in Sources */,
+				00000000000051A10000002A /* ControllerMapping.swift in Sources */,
+				00000000000051A10000002B /* GB.swift in Sources */,
+				00000000000051A10000002C /* DateExtension.swift in Sources */,
+				00000000000051A10000002D /* GradientLabelView.swift in Sources */,
+				00000000000051A10000002E /* MappingOption.swift in Sources */,
+				00000000000051A10000002F /* ChevronSheetView.swift in Sources */,
+				00000000000051A100000030 /* PageBackgroundMaskView.swift in Sources */,
+				00000000000051A100000031 /* ShareManager.swift in Sources */,
+				00000000000051A100000032 /* UIWindowExtensions.swift in Sources */,
+				00000000000051A100000033 /* GameSaveState.swift in Sources */,
+				00000000000051A100000034 /* INIFile.swift in Sources */,
+				00000000000051A100000035 /* GameCoverModifyView.swift in Sources */,
+				00000000000051A100000036 /* ControllersSettingView.swift in Sources */,
+				00000000000051A100000037 /* ImageFetcher.swift in Sources */,
+				00000000000051A100000038 /* AddTriggerButtonStyleView.swift in Sources */,
+				00000000000051A100000039 /* ASSwitch.swift in Sources */,
+				00000000000051A10000003A /* LocaleExtensions.swift in Sources */,
+				00000000000051A10000003B /* GG.swift in Sources */,
+				00000000000051A10000003C /* ASStep.swift in Sources */,
+				00000000000051A10000003D /* LandscapeFilterView.swift in Sources */,
+				00000000000051A10000003E /* PlayHistoryView.swift in Sources */,
+				00000000000051A10000003F /* ExternalSceneDelegate.swift in Sources */,
+				00000000000051A100000040 /* ImportMottoCollectionViewCell.swift in Sources */,
+				00000000000051A100000041 /* ShaderPreviewView.swift in Sources */,
+				00000000000051A100000042 /* PretendoNetworkingView.swift in Sources */,
+				00000000000051A100000043 /* CheevosPopupView.swift in Sources */,
+				00000000000051A100000044 /* FocusSoundEffects.swift in Sources */,
+				00000000000051A100000045 /* GlobalCoreSwitch.swift in Sources */,
+				00000000000051A100000046 /* ASListCustomCollectionCell.swift in Sources */,
+				00000000000051A100000047 /* ASSheetView.swift in Sources */,
+				00000000000051A100000048 /* CitraAdvancedSettingView.swift in Sources */,
+				00000000000051A100000049 /* WFCSettingView.swift in Sources */,
+				00000000000051A10000004A /* TransparentHoleView.swift in Sources */,
+				00000000000051A10000004B /* ASLabelView.swift in Sources */,
+				00000000000051A10000004C /* ASListPage.swift in Sources */,
+				00000000000051A10000004D /* GamesViewController.swift in Sources */,
+				00000000000051A10000004E /* WebDavServiceProvider.swift in Sources */,
+				00000000000051A10000004F /* RommClient.swift in Sources */,
+				00000000000051A100000050 /* RommServiceProvider.swift in Sources */,
+				00000000000051A100000051 /* RommLibrary.swift in Sources */,
+				00000000000051A100000052 /* ThemeColorCollectionViewCell.swift in Sources */,
+				00000000000051A100000053 /* CheatTypeExtensions.swift in Sources */,
+				00000000000051A100000054 /* ARMaxDecrypt.swift in Sources */,
+				00000000000051A100000055 /* DolphinGameID.swift in Sources */,
+				00000000000051A100000056 /* DolphinCheatINI.swift in Sources */,
+				00000000000051A100000057 /* ImportNavigationView.swift in Sources */,
+				00000000000051A100000058 /* ASSegmentView.swift in Sources */,
+				00000000000051A100000059 /* ASWebView.swift in Sources */,
+				00000000000051A10000005A /* OnlinePlaySettingView.swift in Sources */,
+				00000000000051A10000005B /* Game.swift in Sources */,
+				00000000000051A10000005C /* CreamAssetExtensions.swift in Sources */,
+				00000000000051A10000005D /* RetroAchievementsProfileView.swift in Sources */,
+				00000000000051A10000005E /* SettingsViewController.swift in Sources */,
+				00000000000051A10000005F /* ASListSupplementaryView.swift in Sources */,
+				00000000000051A100000060 /* UniversalScript.swift in Sources */,
+				00000000000051A100000061 /* HomeTabBar.swift in Sources */,
+				00000000000051A100000062 /* ASText.swift in Sources */,
+				00000000000051A100000063 /* AddTriggerActionComboView.swift in Sources */,
+				00000000000051A100000064 /* IconView.swift in Sources */,
+				00000000000051A100000065 /* ShowableView.swift in Sources */,
+				00000000000051A100000066 /* Shader.swift in Sources */,
+				00000000000051A100000067 /* AchievementsUser.swift in Sources */,
+				00000000000051A100000068 /* RetroAchievementsDetailView.swift in Sources */,
+				00000000000051A100000069 /* Exported.swift in Sources */,
+				00000000000051A10000006A /* ViewTransition.swift in Sources */,
+				00000000000051A10000006B /* BaseViewController.swift in Sources */,
+				00000000000051A10000006C /* HomeViewController.swift in Sources */,
+				00000000000051A10000006D /* StringExtensions.swift in Sources */,
+				00000000000051A10000006E /* ShadowLabel.m in Sources */,
+				00000000000051A10000006F /* Constants.swift in Sources */,
+				00000000000051A100000070 /* SteamGridDBKit.swift in Sources */,
+				00000000000051A100000071 /* ControllerSkinExtensions.swift in Sources */,
+				00000000000051A100000072 /* PSP.swift in Sources */,
+				00000000000051A100000073 /* LanServiceEditView.swift in Sources */,
+				00000000000051A100000074 /* SkinPreviewViewController.swift in Sources */,
+				00000000000051A100000075 /* ControllerMappingView.swift in Sources */,
+				00000000000051A100000076 /* SteamGridDBContentsView.swift in Sources */,
+				00000000000051A100000077 /* SettingsAdventureCardView.swift in Sources */,
+				00000000000051A100000078 /* JITSettingView.swift in Sources */,
+				00000000000051A100000079 /* PurchaseViewController.swift in Sources */,
+				00000000000051A10000007A /* UIEdgeInsetsExtensions.swift in Sources */,
+				00000000000051A10000007B /* ControllerMappingViewController.swift in Sources */,
+				00000000000051A10000007C /* SteamGridDBSearchView.swift in Sources */,
+				00000000000051A10000007D /* RetroAchievementsListCell.swift in Sources */,
+				00000000000051A10000007E /* GameTypeExtensions.swift in Sources */,
+				00000000000051A10000007F /* GameInfoCoverView.swift in Sources */,
+				00000000000051A100000080 /* FileType.swift in Sources */,
+				00000000000051A100000081 /* UIImageViewExtensions.swift in Sources */,
+				00000000000051A100000082 /* DownloadManager.swift in Sources */,
+				00000000000051A100000083 /* CGSizeExtenstions.swift in Sources */,
+				00000000000051A100000084 /* GameInfoNavigationView.swift in Sources */,
+				00000000000051A100000085 /* DC.swift in Sources */,
+				00000000000051A100000086 /* UIDeviceExtensions.swift in Sources */,
+				00000000000051A100000087 /* ThreeDSKeyboardView.swift in Sources */,
+				00000000000051A100000088 /* PriceItemCollectionCell.swift in Sources */,
+				00000000000051A100000089 /* CategorySelectionView.swift in Sources */,
+				00000000000051A10000008A /* AddTriggerActionView.swift in Sources */,
+				00000000000051A10000008B /* NDS.swift in Sources */,
+				00000000000051A10000008C /* GameInfoView.swift in Sources */,
+				00000000000051A10000008D /* ASNavigationView.swift in Sources */,
+				00000000000051A10000008E /* GameCollectionViewCell.swift in Sources */,
+				00000000000051A10000008F /* ASInput.swift in Sources */,
+				00000000000051A100000090 /* SymbianDeviceView.swift in Sources */,
+				00000000000051A100000091 /* SaveStateListView.swift in Sources */,
+				00000000000051A100000092 /* ASBorderStyle.swift in Sources */,
+				00000000000051A100000093 /* UIViewControllerExtensions.swift in Sources */,
+				00000000000051A100000094 /* GameCheat.swift in Sources */,
+				00000000000051A100000095 /* GBA.swift in Sources */,
+				00000000000051A100000096 /* WFC.swift in Sources */,
+				00000000000051A100000097 /* AddTriggerActionSimpleView.swift in Sources */,
+				00000000000051A100000098 /* Skin.swift in Sources */,
+				00000000000051A100000099 /* A7800.swift in Sources */,
+				00000000000051A10000009A /* WebServer.swift in Sources */,
+				00000000000051A10000009B /* ASListToolView.swift in Sources */,
+				00000000000051A10000009C /* PhotoSaver.swift in Sources */,
+				00000000000051A10000009D /* PurchaseManager.swift in Sources */,
+				00000000000051A10000009E /* ProHUDExtensions.swift in Sources */,
+				00000000000051A10000009F /* FlexItemView.swift in Sources */,
+				00000000000051A1000000A0 /* BlankSlateCollectionView.swift in Sources */,
+				00000000000051A1000000A1 /* System.swift in Sources */,
+				00000000000051A1000000A2 /* SpecialCoreOption.swift in Sources */,
+				00000000000051A1000000A3 /* Lynx.swift in Sources */,
+				00000000000051A1000000A4 /* J2ME.swift in Sources */,
+				00000000000051A1000000A5 /* PlayHistoryItemCollectionCell.swift in Sources */,
+				00000000000051A1000000A6 /* ObjectUpdatable.swift in Sources */,
+				00000000000051A1000000A7 /* NDSSaveConverter.swift in Sources */,
+				00000000000051A1000000A8 /* MultiDiscDescCollectionCell.swift in Sources */,
+				00000000000051A1000000A9 /* PSXSBIImportView.swift in Sources */,
+				00000000000051A1000000AA /* ASViewEffects.swift in Sources */,
+				00000000000051A1000000AB /* PlatformSortCollectionViewCell.swift in Sources */,
+				00000000000051A1000000AC /* UIColorExtensions.swift in Sources */,
+				00000000000051A1000000AD /* SkinSettingsView.swift in Sources */,
+				00000000000051A1000000AE /* LibretroCoverSearchView.swift in Sources */,
+				00000000000051A1000000AF /* UIScrollViewExtensions.swift in Sources */,
+				00000000000051A1000000B0 /* ESRP.swift in Sources */,
+				00000000000051A1000000B1 /* CloudDriveConnetor.swift in Sources */,
+				00000000000051A1000000B2 /* GamesSelectionView.swift in Sources */,
+				00000000000051A1000000B3 /* FlexBackground.swift in Sources */,
+				00000000000051A1000000B4 /* SectionIndexView.swift in Sources */,
+				00000000000051A1000000B5 /* EmulatorBridgingBase.swift in Sources */,
+				00000000000051A1000000B6 /* LibretroNetplayAnalogDpad.swift in Sources */,
+				00000000000051A1000000B7 /* GameSavePurchaseGuideView.swift in Sources */,
+				00000000000051A1000000B8 /* J2MENetworkBridge.swift in Sources */,
+				00000000000051A1000000B9 /* TriggerProPreviewController.swift in Sources */,
+				00000000000051A1000000BA /* Theme.swift in Sources */,
+				00000000000051A1000000BB /* SectionIndexViewItem.swift in Sources */,
+				00000000000051A1000000BC /* AirPlayViewController.swift in Sources */,
+				00000000000051A1000000BD /* N64.swift in Sources */,
+				00000000000051A1000000BE /* PlayHistoryFavouriteCollectionCell.swift in Sources */,
+				00000000000051A1000000BF /* SettingsMembershipGiftView.swift in Sources */,
+				00000000000051A1000000C0 /* 32X.swift in Sources */,
+				00000000000051A1000000C1 /* CheevosChallengeView.swift in Sources */,
+				00000000000051A1000000C2 /* Arcade.swift in Sources */,
+				00000000000051A1000000C3 /* RadialGradientView.swift in Sources */,
+				00000000000051A1000000C4 /* RomPatcherView.swift in Sources */,
+				00000000000051A1000000C5 /* BaseView.swift in Sources */,
+				00000000000051A1000000C6 /* PlatformSelectionView.swift in Sources */,
+				00000000000051A1000000C7 /* FilesImporter.swift in Sources */,
+				00000000000051A1000000C8 /* ASSwitchView.swift in Sources */,
+				00000000000051A1000000C9 /* LibretroNetplayView.swift in Sources */,
+				00000000000051A1000000CA /* PS1.swift in Sources */,
+				00000000000051A1000000CB /* Settings.swift in Sources */,
+				00000000000051A1000000CC /* MappingOptionsView.swift in Sources */,
+				00000000000051A1000000CD /* ProductExtensions.swift in Sources */,
+				00000000000051A1000000CE /* LimitedTextInputView.swift in Sources */,
+				00000000000051A1000000CF /* RoundAndBorderView.swift in Sources */,
+				00000000000051A1000000D0 /* Functions.swift in Sources */,
+				00000000000051A1000000D1 /* ShaderOrderView.swift in Sources */,
+				00000000000051A1000000D2 /* LandscapeBackgroundView.swift in Sources */,
+				00000000000051A1000000D3 /* UTTypeExtensions.swift in Sources */,
+				00000000000051A1000000D4 /* TriggerProView.swift in Sources */,
+				00000000000051A1000000D5 /* SG1000.swift in Sources */,
+				00000000000051A1000000D6 /* ASCheckView.swift in Sources */,
+				00000000000051A1000000D7 /* CarouselLayoutIcon.swift in Sources */,
+				00000000000051A1000000D8 /* PlayCasePromoView.swift in Sources */,
+				00000000000051A1000000D9 /* MultiDiscAddCollectionCell.swift in Sources */,
+				00000000000051A1000000DA /* iCloudSettingView.swift in Sources */,
+				00000000000051A1000000DB /* Database.swift in Sources */,
+				00000000000051A1000000DC /* ASSegment.swift in Sources */,
+				00000000000051A1000000DD /* OptionsSheetView.swift in Sources */,
+				00000000000051A1000000DE /* CacheManager.swift in Sources */,
+				00000000000051A1000000DF /* AddImportServiceView.swift in Sources */,
+				00000000000051A1000000E0 /* Trigger.swift in Sources */,
+				00000000000051A1000000E1 /* GamesListBlankSlateView.swift in Sources */,
+				00000000000051A1000000E2 /* DropGlowEffectView.swift in Sources */,
+				00000000000051A1000000E3 /* MobyGamesKit.swift in Sources */,
+				00000000000051A1000000E4 /* FileHashUtil.swift in Sources */,
+				00000000000051A1000000E5 /* ThemeSettingView.swift in Sources */,
+				00000000000051A1000000E6 /* ImportError.swift in Sources */,
+				00000000000051A1000000E7 /* SMBServiceProvider.swift in Sources */,
+				00000000000051A1000000E8 /* SettingsInfoView.swift in Sources */,
+				00000000000051A1000000E9 /* MembershipInfoView.swift in Sources */,
+				00000000000051A1000000EA /* PSPNetworkingConfig.swift in Sources */,
+				00000000000051A1000000EB /* CoreSelectionView.swift in Sources */,
+				00000000000051A1000000EC /* ImportFooterCollectionReusableView.swift in Sources */,
+				00000000000051A1000000ED /* ASViewLayout.swift in Sources */,
+				00000000000051A1000000EE /* AddCheatCodeContentCell.swift in Sources */,
+				00000000000051A1000000EF /* ASCheck.swift in Sources */,
+				00000000000051A1000000F0 /* ASCornerStyle.swift in Sources */,
+				00000000000051A1000000F1 /* FileBrowserView.swift in Sources */,
+				00000000000051A1000000F2 /* PSXSBICollectionCell.swift in Sources */,
+				00000000000051A1000000F3 /* SkinCollectionViewCell.swift in Sources */,
+				00000000000051A1000000F4 /* Shaders.metal in Sources */,
+				00000000000051A1000000F5 /* PersistedKit.swift in Sources */,
+				00000000000051A1000000F6 /* FocusShortcutsTipsView.swift in Sources */,
+				00000000000051A1000000F7 /* GlobalCoreSwitchView.swift in Sources */,
+				00000000000051A1000000F8 /* ASProgressView.swift in Sources */,
+				00000000000051A1000000F9 /* ASListInputView.swift in Sources */,
+				00000000000051A1000000FA /* HomeMenuImage.swift in Sources */,
+				00000000000051A1000000FB /* A5200.swift in Sources */,
+				00000000000051A1000000FC /* ArticBaseCollectionCell.swift in Sources */,
+				00000000000051A1000000FD /* AchievementsProfile.swift in Sources */,
+				00000000000051A1000000FE /* Manufacturer.swift in Sources */,
+				00000000000051A1000000FF /* PSXSBIDescCollectionCell.swift in Sources */,
+				00000000000051A100000100 /* BIOSItem.swift in Sources */,
+				00000000000051A100000101 /* GameOptionsSortView.swift in Sources */,
+				00000000000051A100000102 /* PSPNetworkingConfigCell.swift in Sources */,
+				00000000000051A100000103 /* PretendoHomeMenuCollectionCell.swift in Sources */,
+				00000000000051A100000104 /* Cipher.swift in Sources */,
+				00000000000051A100000105 /* WeakScriptMessageHandler.swift in Sources */,
+				00000000000051A100000106 /* ExtraKey.swift in Sources */,
+				00000000000051A100000107 /* DOS.swift in Sources */,
+				00000000000051A100000108 /* SymbianSystemApp.swift in Sources */,
+				00000000000051A100000109 /* GameListStyleCollectionViewCell.swift in Sources */,
+				00000000000051A10000010A /* LocalWebServer.swift in Sources */,
+				00000000000051A10000010B /* GamehackingView.swift in Sources */,
+				00000000000051A10000010C /* DataExtension.swift in Sources */,
+				00000000000051A10000010D /* Application.swift in Sources */,
+				00000000000051A10000010E /* AddSkinCollectionViewCell.swift in Sources */,
+				00000000000051A10000010F /* SymbolButton.swift in Sources */,
+				00000000000051A100000110 /* SettingItem.swift in Sources */,
+				00000000000051A100000111 /* AddCheatCodeView.swift in Sources */,
+				00000000000051A100000112 /* PSPNetworkingConfigOnlineView.swift in Sources */,
+				00000000000051A100000113 /* ImportViewController.swift in Sources */,
+				00000000000051A100000114 /* GameCoverView.swift in Sources */,
+				00000000000051A100000115 /* GameOptionPerform.swift in Sources */,
+				00000000000051A100000116 /* SideMenuShowStyle.swift in Sources */,
+				00000000000051A100000117 /* menu_pipeline.metal in Sources */,
+				00000000000051A100000118 /* RandomGameCollectionReusableView.swift in Sources */,
+				00000000000051A100000119 /* ASIconView.swift in Sources */,
+				00000000000051A10000011A /* ShaderConfig.swift in Sources */,
+				00000000000051A10000011B /* TitleInputCollectionViewCell.swift in Sources */,
+				00000000000051A10000011C /* RetroAchievementCountView.swift in Sources */,
+				00000000000051A10000011D /* J2MEView.swift in Sources */,
+				00000000000051A10000011E /* PSPNetworkingConfigLocalView.swift in Sources */,
+				00000000000051A10000011F /* ImportService.swift in Sources */,
+				00000000000051A100000120 /* ShaderManager.swift in Sources */,
+				00000000000051A100000121 /* AddTriggerButtonView.swift in Sources */,
+				00000000000051A100000122 /* GameShortCutView.swift in Sources */,
+				00000000000051A100000123 /* MAMEBiosView.swift in Sources */,
+				00000000000051A100000124 /* CollectionFooterReusableView.swift in Sources */,
+				00000000000051A100000125 /* ASButtonView.swift in Sources */,
+				00000000000051A100000126 /* GameViewExtensions.swift in Sources */,
+				00000000000051A100000127 /* ThemeManager.swift in Sources */,
+				00000000000051A100000128 /* GameMetadataSearchView.swift in Sources */,
+				00000000000051A100000129 /* UIViewExtensions.swift in Sources */,
+				00000000000051A10000012A /* ASBlankSlateView.swift in Sources */,
+				00000000000051A10000012B /* BIOSSelectionView.swift in Sources */,
+				00000000000051A10000012C /* GameOption.swift in Sources */,
+				00000000000051A10000012D /* EntryExtensions.swift in Sources */,
+				00000000000051A10000012E /* PasteImporter.swift in Sources */,
+				00000000000051A10000012F /* GBC.swift in Sources */,
+				00000000000051A100000130 /* GradientImageView.swift in Sources */,
+				00000000000051A100000131 /* ThreeDS.swift in Sources */,
+				00000000000051A100000132 /* AnimatedGradientView.swift in Sources */,
+				00000000000051A100000133 /* CoverStyleCollectionViewCell.swift in Sources */,
+				00000000000051A100000134 /* LeaderboardView.swift in Sources */,
+				00000000000051A100000135 /* ASStepView.swift in Sources */,
+				00000000000051A100000136 /* PM.swift in Sources */,
+				00000000000051A100000137 /* NES.swift in Sources */,
+				00000000000051A100000138 /* ApplicationSceneDelegate.swift in Sources */,
+				00000000000051A100000139 /* UIimageExtensions.swift in Sources */,
+				00000000000051A10000013A /* CollectionHeaderReusableView.swift in Sources */,
+				00000000000051A10000013B /* MAMEKit.swift in Sources */,
+				00000000000051A10000013C /* ASProgress.swift in Sources */,
+				00000000000051A10000013D /* SettingsMembershipView.swift in Sources */,
+				00000000000051A10000013E /* Jaguar.swift in Sources */,
+				00000000000051A10000013F /* CKAccountStatusExtensions.swift in Sources */,
+				00000000000051A100000140 /* RetroAchievementsLoginView.swift in Sources */,
+				00000000000051A100000141 /* NumbersExtensions.swift in Sources */,
+				00000000000051A100000142 /* SequenceExtensions.swift in Sources */,
+				00000000000051A100000143 /* UIFontExtensions.swift in Sources */,
+				00000000000051A100000144 /* SettingsRateUsView.swift in Sources */,
+				00000000000051A100000145 /* UITextFieldExtensions.swift in Sources */,
+				00000000000051A100000146 /* ArrayExtensions.swift in Sources */,
+				00000000000051A100000147 /* FlexSkinSettingViewController.swift in Sources */,
+				00000000000051A100000148 /* BIOSCollectionViewCell.swift in Sources */,
+				00000000000051A100000149 /* ASTextView.swift in Sources */,
+				00000000000051A10000014A /* SparkleSeperatorView.swift in Sources */,
+				00000000000051A10000014B /* MultiDiscItemCollectionCell.swift in Sources */,
+				00000000000051A10000014C /* PSPNetworkingSwitchCell.swift in Sources */,
+				00000000000051A10000014D /* SS.swift in Sources */,
+				00000000000051A10000014E /* LibretroCoreConfigsView.swift in Sources */,
+				00000000000051A10000014F /* NoControllCollectionView.swift in Sources */,
+				00000000000051A100000150 /* PermissionKit.swift in Sources */,
+				00000000000051A100000151 /* DispatchQueueExtensions.swift in Sources */,
+				00000000000051A100000152 /* ASSymbolsButtonView.swift in Sources */,
+				00000000000051A100000153 /* Log.swift in Sources */,
+				00000000000051A100000154 /* PriceView.swift in Sources */,
+				00000000000051A100000155 /* ServiceIconView.swift in Sources */,
+				00000000000051A100000156 /* GameOptionTypes.swift in Sources */,
+				00000000000051A100000157 /* A2600.swift in Sources */,
+				00000000000051A100000158 /* ASCardView.swift in Sources */,
+				00000000000051A100000159 /* UIStackViewExtensions.swift in Sources */,
+				00000000000051A10000015A /* TriggerProManageView.swift in Sources */,
+				00000000000051A10000015B /* PlayViewController.swift in Sources */,
+				00000000000051A10000015C /* MultiDiscBuilderView.swift in Sources */,
+				00000000000051A10000015D /* GameMetadataView.swift in Sources */,
+				00000000000051A10000015E /* MCD.swift in Sources */,
+				00000000000051A10000015F /* ProHUDExtentions.swift in Sources */,
+				00000000000051A100000160 /* EmulationCore.swift in Sources */,
+				00000000000051A100000161 /* GameListView.swift in Sources */,
+				00000000000051A100000162 /* TriggerButton.swift in Sources */,
+				00000000000051A100000163 /* FilesSyncManager.swift in Sources */,
+				00000000000051A100000164 /* FilesSyncPolicy.swift in Sources */,
+				00000000000051A100000165 /* FilesSyncIndex.swift in Sources */,
+				00000000000051A100000166 /* FilesSyncEngine.swift in Sources */,
+				00000000000051A100000167 /* FilesSyncIO.swift in Sources */,
+				00000000000051A100000168 /* FilesSyncWatchers.swift in Sources */,
+				00000000000051A100000169 /* FilesSyncRecord.swift in Sources */,
+				00000000000051A10000016A /* UniversalScript.c in Sources */,
+				00000000000051A10000016B /* ShaderInfoView.swift in Sources */,
+				00000000000051A10000016C /* ASListItemView.swift in Sources */,
+				00000000000051A10000016D /* PretendoNetworkingConfig.swift in Sources */,
+				00000000000051A10000016E /* ASChevron.swift in Sources */,
+				00000000000051A10000016F /* SettingsListView.swift in Sources */,
+				00000000000051A100000170 /* TitleSortCollectionCell.swift in Sources */,
+				00000000000051A100000171 /* ASIcon.swift in Sources */,
+				00000000000051A100000172 /* NimbusCollectionCell.swift in Sources */,
+				00000000000051A100000173 /* Prefference.swift in Sources */,
+				00000000000051A100000174 /* DownloadManageView.swift in Sources */,
+				00000000000051A100000175 /* TouchController.swift in Sources */,
+				00000000000051A100000176 /* CGRectExtensions.swift in Sources */,
+				00000000000051A100000177 /* DeadZoneControl.swift in Sources */,
+				00000000000051A100000178 /* DisabledTapSwitch.swift in Sources */,
+				00000000000051A100000179 /* UIScreenExtensions.swift in Sources */,
+				00000000000051A10000017A /* EmulatorInteractionKit.swift in Sources */,
+				00000000000051A10000017B /* MS.swift in Sources */,
+				00000000000051A10000017C /* AppDelegate.swift in Sources */,
+				00000000000051A10000017D /* OnlineCoverManager.swift in Sources */,
+				00000000000051A10000017E /* MappingInputPopupView.swift in Sources */,
+				00000000000051A10000017F /* GamesToolView.swift in Sources */,
+				00000000000051A100000180 /* J2MESettingView.swift in Sources */,
+				00000000000051A100000181 /* NSAttributedStringExtensions.swift in Sources */,
+				00000000000051A100000182 /* RetroAchievementsLaunchView.swift in Sources */,
+				00000000000051A100000183 /* FeaturesCell.swift in Sources */,
+				00000000000051A100000184 /* AuxiliaryLineView.swift in Sources */,
+				00000000000051A100000185 /* SymbianFirmwareView.swift in Sources */,
+				00000000000051A100000186 /* ImportServiceListCollectionViewCell.swift in Sources */,
+				00000000000051A100000187 /* main.swift in Sources */,
+				00000000000051A100000188 /* ManufacturerCategoryView.swift in Sources */,
+				00000000000051A100000189 /* DesktopIconCollectionViewCell.swift in Sources */,
+				00000000000051A10000018A /* SettingsBottomView.swift in Sources */,
+				00000000000051A10000018B /* GameInfoDetailView.swift in Sources */,
+				00000000000051A10000018C /* FileManagerExtensions.swift in Sources */,
+				00000000000051A10000018D /* GameMetadataKit.swift in Sources */,
+				00000000000051A10000018E /* CheevosProgressView.swift in Sources */,
+				00000000000051A10000018F /* PurchaseView.swift in Sources */,
+				00000000000051A100000190 /* PlayHistoryBlankSlateView.swift in Sources */,
+				00000000000051A100000191 /* AddTriggerActionHoldView.swift in Sources */,
+				00000000000051A100000192 /* PSPNetworkingView.swift in Sources */,
+				00000000000051A100000193 /* AddTriggerMappingListView.swift in Sources */,
+				00000000000051A100000194 /* JGenesisView.swift in Sources */,
+				00000000000051A100000195 /* GradientView.swift in Sources */,
+				00000000000051A100000196 /* SyncManager.swift in Sources */,
+				00000000000051A100000197 /* MD.swift in Sources */,
+				00000000000051A100000198 /* FocusKeyObserver.swift in Sources */,
+				00000000000051A100000199 /* ImportFileCollectionViewCell.swift in Sources */,
+				00000000000051A10000019A /* GameplayManualsView.swift in Sources */,
+				00000000000051A10000019B /* FDS.swift in Sources */,
+				00000000000051A10000019C /* BonjourKit.swift in Sources */,
+				00000000000051A10000019D /* BaseNavigationController.swift in Sources */,
+				00000000000051A10000019E /* ResourcesKit.swift in Sources */,
+				00000000000051A10000019F /* SkinButtonBindingView.swift in Sources */,
+				00000000000051A1000001A0 /* ASListPageView.swift in Sources */,
+				00000000000051A1000001A1 /* GamesNavigationView.swift in Sources */,
+				00000000000051A1000001A2 /* GamesCollectionReusableView.swift in Sources */,
+				00000000000051A1000001A3 /* RetroAchievementListView.swift in Sources */,
+				00000000000051A1000001A4 /* FeaturesView.swift in Sources */,
+				00000000000051A1000001A5 /* ASListDecorationView.swift in Sources */,
+				00000000000051A1000001A6 /* ShaderToyScripts.swift in Sources */,
+				00000000000051A1000001A7 /* ASSheet.swift in Sources */,
+				00000000000051A1000001A8 /* GameListLandscapeView.swift in Sources */,
+				00000000000051A1000001A9 /* LandscapeStatusView.swift in Sources */,
+				00000000000051A1000001AA /* GameLandscapeCarouselCell.swift in Sources */,
+				00000000000051A1000001AB /* ShaderLIstView.swift in Sources */,
+				00000000000051A1000001AC /* ASRadio.swift in Sources */,
+				00000000000051A1000001AD /* ColorPickerView.swift in Sources */,
+				00000000000051A1000001AE /* ASRadioView.swift in Sources */,
+				00000000000051A1000001AF /* CheatCodeListView.swift in Sources */,
+				00000000000051A1000001B0 /* ShaderToy.swift in Sources */,
+				00000000000051A1000001B1 /* ZipHandlerView.swift in Sources */,
+				00000000000051A1000001B2 /* SettingsTopView.swift in Sources */,
+				00000000000051A1000001B3 /* Bimap.swift in Sources */,
+				00000000000051A1000001B4 /* VB.swift in Sources */,
+				00000000000051A1000001B5 /* DOOM.swift in Sources */,
+				00000000000051A1000001B6 /* StikJITXPC.swift in Sources */,
+				00000000000051A1000001B7 /* EntitlementChecker.swift in Sources */,
+				00000000000051A1000001B8 /* StikJITManager.swift in Sources */,
+				00000000000051A1000001B9 /* StikJITExtensionLauncher.swift in Sources */,
+				00000000000051A1000001BA /* StikJITHostCoordinator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		57909384303C7D9100A53656 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -15204,6 +16362,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		00000000000051A10000000C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 576DD4472E0FFAC900644424 /* RswiftGenerateInternalResources */;
+		};
+		00000000000051A10000000D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 57BFBE162DD32F7700AABF98 /* Libretro */;
+			targetProxy = 00000000000051A100000230 /* PBXContainerItemProxy */;
+		};
 		576DD4482E0FFAC900644424 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 576DD4472E0FFAC900644424 /* RswiftGenerateInternalResources */;
@@ -15443,6 +16610,149 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		00000000000051A100000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = ManicEmu/ManicEmu.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD_VERSION)";
+				DEVELOPMENT_TEAM = UU52N52JLD;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = ManicEmu/Resources/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/Frameworks/MoltenVK.framework",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_MODULE_VERIFIER_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "${APP_BUNDLE_IDENTIFIER}";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "${APP_BUNDLE_IDENTIFIER}";
+				PRODUCT_MODULE_NAME = ManicEmu;
+				PRODUCT_NAME = ManicEmuSimulator;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SIMULATOR";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00000000000051A100000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = ManicEmu/ManicEmu.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD_VERSION)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UU52N52JLD;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = ManicEmu/Resources/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/Frameworks/MoltenVK.framework",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_MODULE_VERIFIER_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "${APP_BUNDLE_IDENTIFIER}";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "${APP_BUNDLE_IDENTIFIER}";
+				PRODUCT_MODULE_NAME = ManicEmu;
+				PRODUCT_NAME = ManicEmuSimulator;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SIMULATOR;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		00000000000051A100000006 /* SideloadRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57BA45C12D1B235400BCA5E1 /* Config-Base.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon_Dark AppIcon_Retro AppIcon_Color AppIcon_Halloween AppIcon_Xmas AppIcon_Pixel32 AppIcon_ChineseNewYear AppIcon_Lily AppIcon_Rainbow1 AppIcon_Rainbow2 AppIcon_Rainbow3 AppIcon_Unity";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = ManicEmu/ManicEmu.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = "$(APP_BUILD_VERSION)";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UU52N52JLD;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				INFOPLIST_FILE = ManicEmu/Resources/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/Frameworks/MoltenVK.framework",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_MODULE_VERIFIER_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "${APP_BUNDLE_IDENTIFIER}";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "${APP_BUNDLE_IDENTIFIER}";
+				PRODUCT_MODULE_NAME = ManicEmu;
+				PRODUCT_NAME = ManicEmuSimulator;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG SIDE_LOAD SIMULATOR";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/ManicEmu/Sources/Base/Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = SideloadRelease;
+		};
 		575A3A3E2DCEE98500B28FC2 /* SideloadRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -16449,6 +17759,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		00000000000051A100000003 /* Build configuration list for PBXNativeTarget "ManicEmuSimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000051A100000004 /* Debug */,
+				00000000000051A100000005 /* Release */,
+				00000000000051A100000006 /* SideloadRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		57909587303C7D9100A53656 /* Build configuration list for PBXNativeTarget "ManicEmuSideload" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -16787,7 +18107,7 @@
 		};
 		578E26E12FD41F8200A2749A /* XCRemoteSwiftPackageReference "Device" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Ekhoo/Device.git";
+			repositoryURL = ../Dependencies/Device;
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -16983,6 +18303,14 @@
 			requirement = {
 				kind = exactVersion;
 				version = 0.5.4;
+			};
+		};
+		E54AEA6030827A3800AEAC07 /* XCRemoteSwiftPackageReference "Device" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Daiuno/Device.git";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

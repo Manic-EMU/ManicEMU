@@ -6,11 +6,13 @@
 //  Copyright © 2025 Manic EMU. All rights reserved.
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
+#if !SIMULATOR
 import Citra
+#endif
 import ProHUD
 
 struct ThreeDSKeyboardView {
+#if !SIMULATOR
     static func showForCitra(config: CitraKeyboardConfig,
                              completion: ((_ buttonPressed: Int, _ text: String?) -> Void)? = nil) {
         let mapped = AzaharKeyboardConfig()
@@ -59,6 +61,7 @@ struct ThreeDSKeyboardView {
             completion?(buttonPressed, text)
         }
     }
+#endif
     
     static func showForAzahar(config: AzaharKeyboardConfig,
                               tapAction: ((_ buttonType: AzaharButtonType, _ inputText: String?)->Void)? = nil) {

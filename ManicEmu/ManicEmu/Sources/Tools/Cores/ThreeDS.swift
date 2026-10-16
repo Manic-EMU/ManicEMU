@@ -9,7 +9,9 @@
 
 
 import AVFoundation
+#if !SIMULATOR
 import Citra
+#endif
 import MetalKit
 
 extension GameType
@@ -178,6 +180,7 @@ struct ThreeDS: DeltaCoreProtocol {
     
     //For Citra
     static func setupCheats(identifier: UInt64, cheatsTxt: String, enableCheats: [String]) {
+#if !SIMULATOR
         let manager = CitraCheatsManager(identifier: identifier)
         let path = manager.cheatFilePath()
         try? cheatsTxt.writeWithCompletePath(to: URL(fileURLWithPath: path))
@@ -192,6 +195,7 @@ struct ThreeDS: DeltaCoreProtocol {
             manager.update(cheat, at: index)
         }
         manager.saveCheats()
+#endif
     }
     
     struct Cheat {
@@ -226,8 +230,9 @@ struct ThreeDS: DeltaCoreProtocol {
 class ThreeDSEmulatorBridge : EmulatorBridgeBase {
     
     static let shared = ThreeDSEmulatorBridge()
+#if !SIMULATOR
     private let citraCore = CitraCore.shared()
-    
+#endif
     private var enableControl = false
     
     private var thumbstickPosition: CGPoint = .zero
@@ -242,17 +247,22 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
     private var isAdvancedMode: Bool = false
     
     func setSimBlowing(start: Bool) {
+#if !SIMULATOR
         citraCore.setSimBlowing(start: start)
+#endif
     }
 
     /// 0=portrait, 1=landscapeLeft, 2=upside down, 3=landscapeRight.
     func setMotionRotation(_ rotation: Int) {
+#if !SIMULATOR
         citraCore.setMotionRotation(rotation)
+#endif
     }
 
     func applyCurrentMotionRotation(
         _ orientation: UIInterfaceOrientation = UIDevice.currentOrientation
     ) {
+#if !SIMULATOR
         switch orientation {
         case .portrait:
             citraCore.setMotionRotation(0)
@@ -265,28 +275,40 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
         default:
             citraCore.setMotionRotation(3)
         }
+#endif
     }
 
     func setFrameLimit(_ limit: UInt16) {
+#if !SIMULATOR
         citraCore.setFrameLimit(limit)
+#endif
     }
     
     func jumpToHome() {
+#if !SIMULATOR
         citraCore.jumpToHome()
+#endif
     }
     
     func loadAmiibo(path: String) {
+#if !SIMULATOR
         citraCore.loadAmiibo(path: path)
+#endif
     }
     
     func isAmiiboSearching() -> Bool {
+#if !SIMULATOR
         return citraCore.isSearchingAmiibo()
+#else
+        return false
+#endif
     }
     
     func setResolution(resolution: GameOption.Resolution) {
         updateConfig(["ManicEMU.resolutionFactor": resolution.rawValue])
     }
     
+#if !SIMULATOR
     func openKeyboardAction(_ action: ((CitraKeyboardConfig) -> Void)? = nil) {
         CitraCore.openKeyboardAction = { config in
             guard let action else { return }
@@ -299,6 +321,7 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
             }
         }
     }
+#endif
     
     func start(withGameURL gameURL: URL,
                metalView: MTKView,
@@ -312,6 +335,7 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
                language: Int = -1,
                renderRightEye: Bool = false,
                advancedMode: Bool = Settings.defalut.threeDSAdvancedSettingMode) {
+#if !SIMULATOR
         self.topRect = topRect
         self.bottomRect = bottomRect
         self.gameURL = gameURL
@@ -370,60 +394,87 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
             self.citraCore.orientationChange(with: UIDevice.currentOrientation, using: metalView)
             self.enableControl = true
         }
+#endif
     }
     
     func destory() {
+#if !SIMULATOR
         citraCore.deallocateVulkanLibrary()
         citraCore.deallocateMetalLayers()
+#endif
     }
     
     override func stop() {
+#if !SIMULATOR
         citraCore.stop()
+#endif
     }
     
     override func pause() {
+#if !SIMULATOR
         if citraCore.stopped() {
             return
         }
         if !citraCore.isPaused() {
             citraCore.pausePlay(false)
         }
+#endif
     }
     
     var isPaused: Bool {
+#if !SIMULATOR
         citraCore.isPaused()
+#else
+        return false
+#endif
     }
     
     override func resume() {
+#if !SIMULATOR
         if citraCore.stopped() {
             return
         }
         if citraCore.isPaused() {
             citraCore.pausePlay(true)
         }
+#endif
     }
     
     var saveStateCount: Int {
+#if !SIMULATOR
         return citraCore.saveStateCount
+#else
+        return 0
+#endif
     }
     
     func addSaveState(fileUrl: URL, slot: UInt32) {
+#if !SIMULATOR
         if let path = citraCore.saveStatePathForRunningGame(slot: slot) {
             try? FileManager.safeCopyItem(at: fileUrl, to: URL(fileURLWithPath: path), shouldReplace: true)
         }
+#endif
     }
     
     func saveState() -> (isSuccess: Bool, path: String) {
+#if !SIMULATOR
         let state = citraCore.saveState()
         return (state.isSuccess, state.path)
+#else
+        return (false, "")
+#endif
     }
     
     @discardableResult func loadState(_ slot: UInt32? = nil) -> Bool {
+#if !SIMULATOR
         if let slot {
             return citraCore.loadState(slot)
         } else {
             return citraCore.loadState()
         }
+#else
+        return false
+#endif
     }
     
     func enableVolume() {
@@ -434,7 +485,7 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
         updateConfig(["ManicEMU.audioMuted": true])
     }
     
-    
+#if !SIMULATOR
     func gameInputToCoreInput(gameInput: ThreeDSGameInput) -> CitraVirtualControllerButtonType {
         if gameInput == .a { return .A }
         else if gameInput == .b { return .B }
@@ -452,8 +503,10 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
         else if gameInput == .r1 { return .triggerR }
         else { return .debug }
     }
+#endif
     
     override func activateInput(_ input: Int, value: Double, playerIndex: Int) {
+#if !SIMULATOR
         guard enableControl else { return }
         /**
          摇杆坐标
@@ -504,9 +557,11 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
             }
             
         }
+#endif
     }
     
     override func deactivateInput(_ input: Int, playerIndex: Int) {
+#if !SIMULATOR
         guard enableControl else { return }
         if input == ThreeDSGameInput.leftThumbstickUp || input == ThreeDSGameInput.leftThumbstickDown {
             thumbstickPosition.y = 0
@@ -532,9 +587,11 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
                 }
             }
         }
+#endif
     }
     
     func updateViews(topRect: CGRect, bottomRect: CGRect, isAirPlay: Bool = false) {
+#if !SIMULATOR
         self.topRect = topRect
         self.bottomRect = bottomRect
         updateConfig(buildLayoutConfig())
@@ -543,13 +600,17 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
                 self.citraCore.orientationChange(with: isAirPlay ? .landscapeLeft : UIDevice.currentOrientation, using: metalView)
             }
         }
+#endif
     }
     
     func reload() {
+#if !SIMULATOR
         citraCore.reset()
+#endif
     }
 
     func updateConfig(_ updates: [String: Any] = [:]) {
+#if !SIMULATOR
         var defaultConfigs: [String: Any]
         switch Settings.defalut.threeDSMode {
         case .performance:
@@ -582,6 +643,7 @@ class ThreeDSEmulatorBridge : EmulatorBridgeBase {
         }
         UserDefaults.standard.synchronize()
         citraCore.updateSettings(advancedMode: isAdvancedMode)
+#endif
     }
     
     private func buildLayoutConfig() -> [String: Any] {
