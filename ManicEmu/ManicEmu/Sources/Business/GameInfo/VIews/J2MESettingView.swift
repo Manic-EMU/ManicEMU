@@ -94,6 +94,11 @@ class J2MEScreenSizeCell: UICollectionViewCell {
             guard let self else { return }
             self.updateSize(width: self.widthTextField.text?.int ?? self.currentSize.width, height: self.heightTextField.text?.int ?? self.currentSize.height)
         }
+        textField.isFocusable = true
+        textField.onFocusConfirm = { [weak self] in
+            self?.widthTextField.becomeFirstResponder()
+            return true
+        }
         return textField
     }()
     
@@ -126,6 +131,11 @@ class J2MEScreenSizeCell: UICollectionViewCell {
         textField.didEndEditing { [weak self] in
             guard let self else { return }
             self.updateSize(width: self.widthTextField.text?.int ?? self.currentSize.width, height: self.heightTextField.text?.int ?? self.currentSize.height)
+        }
+        textField.isFocusable = true
+        textField.onFocusConfirm = { [weak self] in
+            self?.heightTextField.becomeFirstResponder()
+            return true
         }
         return textField
     }()

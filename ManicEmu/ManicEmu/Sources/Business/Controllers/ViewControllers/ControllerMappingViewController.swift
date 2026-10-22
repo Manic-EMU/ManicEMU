@@ -78,4 +78,11 @@ class ControllerMappingViewController: BaseViewController {
         PlayViewController.refreshExternalInputSink()
         AppDelegate.orientation = R.Config.DefaultOrientation
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        if UIDevice.isPhoneDuo {
+             return true
+        }
+        return super.prefersStatusBarHidden
+    }
 }

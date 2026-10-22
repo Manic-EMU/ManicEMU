@@ -369,7 +369,6 @@ class TriggerProManageView: BaseView {
     }
     
     private func getListPage() -> ASListPage {
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
         
         return ASListPage(navigation: getNavigation(),
                           sections: getSections(),
@@ -379,7 +378,7 @@ class TriggerProManageView: BaseView {
                                                              background: R.Color.Main),
                           blankSlate: .init(),
                           backgroundColor: .clear,
-                          listInsets: .insets(bottom: listInsetBottom),
+                          listInsets: .insets(bottom: R.Size.ContentInsetBottomForSettingPage(showAsDetail: (UIDevice.isPad && !showClose) || UIDevice.isPhoneDuoInnerFullScreen)),
                           pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow)),
                           enableLongPress: true)
     }

@@ -169,7 +169,7 @@ class SettingsListView: BaseView {
     }
     
     private func getNavigation() -> ASListPage.Navigation? {
-        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+        if (UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen), preferredLayoutStyle == .landscape {
             return nil
         }
         var navigationText = ASText.extraLargeText(R.string.localizable.tabbarTitleSettings())
@@ -187,7 +187,7 @@ class SettingsListView: BaseView {
             case .top:
                 sections.append(ASListPage.Section(cells: [.custom(topView)],
                                                    decoration: .init(enable: false),
-                                                   itemLayout: .fixedHeight((UIDevice.isPhone && prefferedLayoutStyle == .landscape) ? 165 : 301)))
+                                                   itemLayout: .fixedHeight(((UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen) && preferredLayoutStyle == .landscape) ? 165 : 301)))
                 
             case .general, .advance, .support, .others:
                 var header: ASListPage.Supplementary? = nil
@@ -211,13 +211,12 @@ class SettingsListView: BaseView {
         
         let listBottomInset = R.Size.ContentSpaceLarge + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         let pageTopInset: CGFloat
-        pageTopInset = UIDevice.isPhone && prefferedLayoutStyle == .landscape ? 0 : R.Size.ContentInsetTop(window: hostingWindow)
+        pageTopInset = (UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen) && preferredLayoutStyle == .landscape ? 0 : R.Size.ContentInsetTop(window: hostingWindow)
         return ASListPage(navigation: getNavigation(),
                           sections: sections,
                           backgroundColor: .clear,
                           listInsets: .insets(bottom: listBottomInset),
-                          pageInsets: .insets(top: pageTopInset),
-                          enableSafeAreaBottomInsets: true)
+                          pageInsets: .insets(top: pageTopInset))
     }
     
     private func showMemberShip(featuresType: FeaturesType = .advance) {
@@ -271,7 +270,7 @@ class SettingsListView: BaseView {
                     
                 case .general, .advance, .support, .others:
                     if let item = items[sectionIndex]?[indexPath.row] {
-                        guard let hostingWindow else { return }
+                        guard let _ = hostingWindow else { return }
                         switch item.type {
                         case .retro:
                             if isWindowHasEnoughSpaceforIpadMultiColumnLayout {

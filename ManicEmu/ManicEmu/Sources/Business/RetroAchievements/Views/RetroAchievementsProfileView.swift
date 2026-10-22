@@ -329,7 +329,7 @@ class RetroAchievementsProfileView: BaseView {
         }
         view.didLayoutChange = { [weak self] in
             guard let self else { return false }
-            return self.prefferedLandscapeStyle
+            return self.preferredLandscapeStyle
         }
         return view
     }()
@@ -387,16 +387,16 @@ class RetroAchievementsProfileView: BaseView {
     private var retroProfile = AchievementsProfile()
     
     private var detailViewHeight: CGFloat {
-        prefferedLandscapeStyle ? 327 : 496.7
+        preferredLandscapeStyle ? 327 : 496.7
     }
     
     var logoutSuccess: (()->Void)? = nil
     
     private var showAsSheet: Bool
     
-    private var prefferedLandscapeStyle: Bool {
+    private var preferredLandscapeStyle: Bool {
         if showAsSheet {
-            return prefferedLayoutStyle == .landscape
+            return preferredLayoutStyle == .landscape
         } else {
             return width > 600
         }

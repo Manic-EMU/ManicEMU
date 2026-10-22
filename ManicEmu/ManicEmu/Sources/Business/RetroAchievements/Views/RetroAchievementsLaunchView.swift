@@ -124,15 +124,7 @@ class RetroAchievementsLaunchView: BaseView {
         
         if showClose {
             addSubview(navigationView)
-            navigationView.snp.makeConstraints { make in
-                if showClose {
-                    make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
-                } else {
-                    make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
-                }
-                make.leading.trailing.equalTo(safeAreaLayoutGuide)
-                make.height.equalTo(R.Size.ItemHeightMedium)
-            }
+            updateNavigationViewConstraints()
         }
     }
     
@@ -142,6 +134,40 @@ class RetroAchievementsLaunchView: BaseView {
     
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.isPhoneDuo, showClose {
+            updateNavigationViewConstraints()
+        }
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview()
+            } else {
+                if UIDevice.isPhoneDuo {
+                    make.leading.trailing.equalToSuperview()
+                } else {
+                    make.leading.trailing.equalTo(safeAreaLayoutGuide)
+                }
+                if showClose {
+                    make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
+                } else {
+                    make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
+                }
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
+        }
     }
 }
 

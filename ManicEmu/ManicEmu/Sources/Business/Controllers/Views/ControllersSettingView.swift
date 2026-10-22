@@ -211,8 +211,8 @@ class ControllersSettingView: BaseView {
                           sections: getSections(),
                           backgroundColor: .clear,
                           pageInsets: .insets(top: asSideMenu ? R.Size.ContentInsetTop(window: hostingWindow) : R.Size.SheetGrabberTopInset),
-                          enableSafeAreaLeftInsets: true,
-                          enableSafeAreaRightInsets: true)
+                          enableSafeAreaLeftInsets: UIDevice.isPhoneDuo ? false : true,
+                          enableSafeAreaRightInsets: UIDevice.isPhoneDuo ? false : true)
     }
     
     private func getSections() -> [ASListPage.Section] {

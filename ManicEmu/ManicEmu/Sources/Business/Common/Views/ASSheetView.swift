@@ -62,7 +62,7 @@ class ASSheetView: BaseView {
             let containerView = UIView()
             
             var roundCorner: UIRectCorner {
-                (UIDevice.isPad || getLayoutStyle() == .landscape || PlayViewController.menuInsets != nil) ? .allCorners : [.topLeft, .topRight]
+                (UIDevice.isPad || getLayoutStyle() == .landscape || PlayViewController.menuInsets != nil || UIDevice.isPhoneDuoInnerFullScreen) ? .allCorners : [.topLeft, .topRight]
             }
             let contentView = RoundAndBorderView(roundCorner: roundCorner, borderWidth: 1.5)
             contentView.backgroundColor = R.Color.BackgroundPrimary
@@ -175,7 +175,7 @@ class ASSheetView: BaseView {
             //Other style configurations for the sheet
             func updateCardSize(config: SheetConfiguration) {
                 if sheetData.fullScreenForLandscape, getLayoutStyle() == .landscape {
-                    if UIDevice.isPhone {
+                    if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen {
                         config.cardMaxWidth = proHUDWindow()?.width
                         config.cardMaxHeight = proHUDWindow()?.height
                     } else {
@@ -217,7 +217,7 @@ class ASSheetView: BaseView {
             
             var didNotifyCovering = false
             func isCoveringLandscapeBackground() -> Bool {
-                sheetData.fullScreenForLandscape && UIDevice.isPhone && getLayoutStyle() == .landscape
+                sheetData.fullScreenForLandscape && UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen && getLayoutStyle() == .landscape
             }
             func syncLandscapeBackgroundCovering() {
                 let covering = isCoveringLandscapeBackground()
@@ -258,7 +258,7 @@ class ASSheetView: BaseView {
                 if sheetData.fullScreenForLandscape, getLayoutStyle() == .landscape {
                     contentView.snp.remakeConstraints { make in
                         make.edges.equalToSuperview()
-                        if UIDevice.isPhone {
+                        if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen {
                             let windowHeight = (proHUDWindow()?.height) ?? R.Size.ApplicationWindowSize.height
                             make.height.equalTo(windowHeight)
                         } else {
@@ -295,7 +295,7 @@ class ASSheetView: BaseView {
                 guard let sheetView, let cardMaxHeight = sheetView.config.cardMaxHeight else { return }
                 let heightWillSet: CGFloat
                 if sheetData.fullScreenForLandscape, getLayoutStyle() == .landscape {
-                    if UIDevice.isPhone {
+                    if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen {
                         heightWillSet = (proHUDWindow()?.height) ?? R.Size.ApplicationWindowSize.height
                     } else {
                         heightWillSet = R.Size.SheetFullScreenForIpadLandscape.height

@@ -27,6 +27,11 @@ class PSPNetworkingConfigOnlineView: BaseView {
             guard let self else { return }
             self.didConnectedHostChange?(self.ipAddressTitleTextField.text)
         }
+        textField.isFocusable = true
+        textField.onFocusConfirm = { [weak self] in
+            self?.ipAddressTitleTextField.becomeFirstResponder()
+            return true
+        }
         return textField
     }()
     

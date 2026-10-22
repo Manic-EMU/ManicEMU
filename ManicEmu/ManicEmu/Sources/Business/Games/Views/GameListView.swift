@@ -218,6 +218,13 @@ class GameListView: BaseView {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.isPhoneDuo {
+            collectionView.reloadData()
+        }
+    }
+    
     private var gamesUpdateToken: NotificationToken? = nil
     private var games: Results<Game> = {
         //查询数据库
@@ -584,7 +591,7 @@ class GameListView: BaseView {
             //group布局
             let group: NSCollectionLayoutGroup
             var column = R.Style.GamesPerRow
-            if UIDevice.isPad {
+            if UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen {
                 if let w = self.hostingWindow {
                     column = min(max((w.width/120).rounded(numberOfDecimalPlaces: -1, rule: .toNearestOrEven), 2), 5)
                 } else {
@@ -724,7 +731,12 @@ class GameListView: BaseView {
         }
         indexView.reloadData()
         indexView.deselectCurrentItem()
-        indexView.selectItem(at: 0)
+        var willSelectedSection = indexView.selectedSection
+        while willSelectedSection != 0,
+              willSelectedSection > collectionView.numberOfSections {
+            willSelectedSection -= 1
+        }
+        indexView.selectItem(at: willSelectedSection)
         indexView.isHidden = R.Style.GamesHideScrollIndicator
     }
     

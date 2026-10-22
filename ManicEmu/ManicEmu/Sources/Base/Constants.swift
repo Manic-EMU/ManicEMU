@@ -38,10 +38,11 @@ extension _R {
         
         ///HomeTabBarSize 300x60
         static let HomeTabBarSize = CGSize(width: 300, height: ItemHeightLarge)
+        static let HomeTabBarSizeVertical = CGSize(width: ItemHeightLarge, height: 240)
         
         static func SideMenuWidth(window: UIWindow?) -> CGFloat {
             let windowSize = (window ?? UIWindow.applicationWindow)?.size ?? R.Size.ApplicationWindowSize
-            return UIDevice.isPhone ? windowSize.minDimension * 0.874 : 300
+            return (UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen) ? windowSize.minDimension * 0.874 : 300
         }
         /// 游戏封面宽高比 默认1:1
         static func GameCoverRatio(gameType: GameType, ignoreForceSquare: Bool = false) -> CGFloat {
@@ -103,18 +104,37 @@ extension _R {
         
         ///CollectionView的top缩进
         static func ContentInsetTop(window: UIWindow?) -> CGFloat {
-            let safeAreaTop = (window ?? UIWindow.applicationWindow)?.safeAreaInsets.top ?? 0
-            if UIDevice.isPhoneDuoOuter {
-                return 0
-            } else {
-                return safeAreaTop > 0 ? safeAreaTop : R.Size.ContentSpaceLarge
+            if #available(iOS 27.1, *), DuoTabletopKit.isTabletopMode {
+                return R.Size.ContentSpaceMedium
             }
+            if UIDevice.isPhoneDuoInnerFullScreen {
+                 return R.Size.ContentSpaceLarge
+            }
+            let safeAreaTop = (window ?? UIWindow.applicationWindow)?.safeAreaInsets.top ?? 0
+            if UIDevice.isPhoneDuo {
+                if UIDevice.isPhoneDuoOuter && (UIDevice.currentOrientation == .portrait || UIDevice.currentOrientation == .landscapeRight) {
+                    return 0
+                } else if UIDevice.isPhoneDuoSplitView {
+                    return 0
+                }
+            }
+            return safeAreaTop > 0 ? safeAreaTop : R.Size.ContentSpaceLarge
         }
         
         ///CollectionView的bottom缩进
         static func ContentInsetBottom(window: UIWindow?) -> CGFloat {
+            if #available(iOS 27.1, *), DuoTabletopKit.isTabletopMode {
+                return R.Size.ContentSpaceMedium
+            }
             let safeAreaBottom = (window ?? UIWindow.applicationWindow)?.safeAreaInsets.bottom ?? 0
             return safeAreaBottom > 0 ? safeAreaBottom : R.Size.ContentSpaceLarge
+        }
+        
+        static func ContentInsetBottomForSettingPage(showAsDetail: Bool) -> CGFloat {
+            if showAsDetail {
+                return R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium
+            }
+            return 0
         }
         
         ///苹果图标默认尺寸
@@ -242,21 +262,22 @@ extension _R {
         static var SheetWindowMaxSize: CGSize {
             let window = proHUDWindow()
             let windowSize = window?.size ?? R.Size.ApplicationWindowSize
-            if UIDevice.isPhone {
+            if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen {
                 if windowSize.IsRelativelyWideRectangle {
-                    return CGSize(width: windowSize.height, height: windowSize.height - (window?.safeAreaInsets.vertical ?? 0))
+                    return CGSize(width: UIDevice.isPhoneDuo ? 375 : windowSize.height, height: windowSize.height - (window?.safeAreaInsets.vertical ?? 0))
                 } else {
                     return CGSize(width: windowSize.width, height: windowSize.height - PresentationTop)
                 }
-            } else if UIDevice.isPad {
+            } else if UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen {
                 if windowSize.IsRelativelyWideRectangle {
                     let height = windowSize.height * 0.9
                     let width = min(max(height*9/16, 375), windowSize.width * 0.9)
                     return CGSize(width: width, height: height)
                 } else {
+                    let scale = UIDevice.isPhoneDuoInnerFullScreen ? 1.2 : 1.0
                     let width = max(windowSize.width*(UIDevice.isPadMini ? 0.65 : 0.5), 375)
                     let height = min(width*16/9, windowSize.height*0.9)
-                    return CGSize(width: width, height: height)
+                    return CGSize(width: width*scale, height: height*scale)
                 }
             }
             return R.Size.ApplicationWindowSize
@@ -268,9 +289,10 @@ extension _R {
         }
         
         static var SheetFullScreenForIpadLandscape: CGSize {
+            let scale = UIDevice.isPhoneDuoInnerFullScreen ? 1.1 : 1.0
             let windowSize = proHUDWindow()?.size ?? R.Size.ApplicationWindowSize
             let width = windowSize.width*(UIDevice.isLandscape ? 0.8 : 0.9)
-            return CGSize(width: width, height: width*9/16)
+            return CGSize(width: width*scale, height: width*9/16*scale)
         }
         
         ///12.0
@@ -321,6 +343,13 @@ extension _R {
             }
             return sheetSize
         }
+        
+        ///iPhone Duo outer screen camera distance from the edge
+        static let iPhoneDuoOuterCameraEdge = 29.33
+        ///iPhone Duo outer screen camera size
+        static let iPhoneDuoOuterCameraSize = CGSize(37)
+        ///iPhone Duo Safearea
+        static let iPhoneDuoSafeAreaSize = 84.0
     }
     
     struct _Color {
@@ -1073,7 +1102,7 @@ extension _R {
         }
         static var PlatformOrder: [String]? = nil
         static var DefaultOrientation: UIInterfaceOrientationMask {
-            UIDevice.isPad ? .all : .allButUpsideDown
+            (UIDevice.isPad || UIDevice.isPhoneDuoInner) ? .all : .allButUpsideDown
         }
     }
     
@@ -1185,6 +1214,11 @@ extension _R {
         static let GameMetadataChange = NSNotification.Name(rawValue: "GameMetadataChange")
         //show filter view for landscape mode
         static let ShowFilterForLandscapeMode = NSNotification.Name(rawValue: "ShowFilterForLandscapeMode")
+        ///iPhone Duo Hinge Change
+        /// Posted after a settled status change, once the window is already on the matching display.
+        /// `userInfo` contains `fromStatusKey` and `toStatusKey` (`NSNumber` raw values).
+        /// A fast closed → fully open drops the intermediate partially-open notice.
+        static let DuoHingeChange = NSNotification.Name(rawValue: "DuoHingeChange")
     }
     
     struct _URLs {

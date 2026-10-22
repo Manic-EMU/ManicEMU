@@ -156,15 +156,19 @@ extension UIView {
             let w = bounds.width
             let h = bounds.height
             guard w > 0.5, h > 0.5 else { return }
-            let shortest = min(w, h)
-            let longest = max(w, h)
-            let aspectRatio = longest / shortest
-            if aspectRatio > 1.1 {
-                layerCornerRadius = shortest / 2.0
-            } else if shortest / longest > 0.9 {
-                layerCornerRadius = h / 2.0
+            if h > 150 {
+                layerCornerRadius = R.Size.CornerRadiusMedium
             } else {
-                layerCornerRadius = R.Size.AppleIconCornerRadius(height: h)
+                let shortest = min(w, h)
+                let longest = max(w, h)
+                let aspectRatio = longest / shortest
+                if aspectRatio > 1.1 {
+                    layerCornerRadius = shortest / 2.0
+                } else if shortest / longest > 0.9 {
+                    layerCornerRadius = h / 2.0
+                } else {
+                    layerCornerRadius = R.Size.AppleIconCornerRadius(height: h)
+                }
             }
         }
     }

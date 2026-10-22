@@ -15,6 +15,8 @@ import IceCream
 ///布局从上到下分为两个部分：navigation（筛选器/功能菜单/状态信息）、content（游戏轮播+聚焦信息）
 class GameListLandscapeView: BaseView {
     
+    private let navigationView = UIView()
+    
     //MARK: - navigation区
     ///筛选器 两级筛选：厂商→GameType
     private lazy var filterButton: LandscapeFilterView = {
@@ -29,6 +31,8 @@ class GameListLandscapeView: BaseView {
         }
         return view
     }()
+    
+    private let functionStack = UIStackView()
     
     private lazy var historyButton: ASButtonView = {
         let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.history_iconSymbols())).enableGlass(true))
@@ -126,7 +130,7 @@ class GameListLandscapeView: BaseView {
         view.delegate = self
         view.alwaysBounceVertical = true
         view.isFocusable = true
-        let bottom = UIDevice.isPhone ? R.Size.ContentSpaceLarge : R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
+        let bottom = (UIDevice.isPhone && !UIDevice.isPhoneDuo) ? R.Size.ContentSpaceLarge : R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         view.contentInset = .insets(bottom: bottom)
         view.isHidden = LandscapeCarouselStyle.isCarouselEnabled
         view.addLongPressGesture(handler: { [weak self] gesture in
@@ -138,6 +142,10 @@ class GameListLandscapeView: BaseView {
             UIDevice.generateHaptic(style: .heavy)
             self.showListGameEditSheet(game: game)
         }).delegate = self
+        if UIDevice.isPhoneDuo {
+            view.contentInsetAdjustmentBehavior = .never
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     
@@ -285,7 +293,21 @@ class GameListLandscapeView: BaseView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        guard window != nil, superview != nil else { return }
+        guard hostingWindow != nil, superview != nil else { return }
+        if UIDevice.isPhoneDuo {
+            updateNavigationViewConstraints()
+            if UIDevice.isPhoneDuoOuter, UIDevice.currentOrientation == .landscapeRight {
+                functionStack.spacing = R.Size.ContentSpaceExtraSmall
+                functionStack.snp.updateConstraints { make in
+                    make.leading.equalTo(filterButton.snp.trailing).offset(R.Size.ContentSpaceExtraExtraSmall)
+                }
+            } else {
+                functionStack.spacing = R.Size.ContentSpaceSmall
+                functionStack.snp.updateConstraints { make in
+                    make.leading.equalTo(filterButton.snp.trailing).offset(R.Size.ContentSpaceLarge)
+                }
+            }
+        }
         if bounds.size != lastLayoutSize, bounds.size != .zero {
             lastLayoutSize = bounds.size
             if isCarouselEnabled {
@@ -307,13 +329,8 @@ class GameListLandscapeView: BaseView {
         backgroundColor = .clear
         
         //navigation区
-        let navigationView = UIView()
         addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(R.Size.NavigationHeight)
-            make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
-        }
+        updateNavigationViewConstraints()
         
         navigationView.addSubview(filterButton)
         filterButton.snp.makeConstraints { make in
@@ -322,7 +339,8 @@ class GameListLandscapeView: BaseView {
             make.height.equalTo(R.Size.ButtonSmall)
         }
         
-        let functionStack = UIStackView(arrangedSubviews: [historyButton, themeButton, importButton, settingsButton])
+        
+        functionStack.addArrangedSubviews([historyButton, themeButton, importButton, settingsButton])
         functionStack.axis = .horizontal
         functionStack.spacing = R.Size.ContentSpaceSmall
         navigationView.addSubview(functionStack)
@@ -705,6 +723,29 @@ class GameListLandscapeView: BaseView {
         if searchString != nil {
             searchString = nil
             reloadAll(keepFocus: false)
+        }
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview()
+            } else {
+                if UIDevice.isPhoneDuo {
+                    make.leading.trailing.equalToSuperview()
+                } else {
+                    make.leading.trailing.equalTo(safeAreaLayoutGuide)
+                }
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
         }
     }
     
@@ -1345,7 +1386,9 @@ class GameListLandscapeView: BaseView {
     
     /// Match GameListView cover math; one horizontally scrolling row per platform.
     private func createListLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+        return UICollectionViewCompositionalLayout(sectionProvider: { [weak self] sectionIndex, env in
             guard let self, self.displaySections.indices.contains(sectionIndex) else { return nil }
             let gameType = self.displaySections[sectionIndex].gameType
             let itemSpacing = R.Size.ContentSpaceMedium - R.Size.GamesListSelectionEdge * 2
@@ -1357,7 +1400,7 @@ class GameListLandscapeView: BaseView {
             if UIDevice.isPad {
                 column = UIDevice.isPadMini ? 5 : 6
             } else {
-                column = UIDevice.isSmallScreenPhone ? 4 : 5
+                column = UIDevice.isStandardPhone ? 4 : 5
             }
             
             let totleSpacing = (R.Size.ContentSpaceMedium - R.Size.GamesListSelectionEdge) * 2 + itemSpacing * (column - 1)
@@ -1389,7 +1432,7 @@ class GameListLandscapeView: BaseView {
                                                                          alignment: .top)
             section.boundarySupplementaryItems = [headerItem]
             return section
-        }
+        }, configuration: configuration)
     }
     
     /// Avoid `=== listView` / `=== carouselView` in data source — those lazy vars re-enter during init.
@@ -1659,9 +1702,12 @@ class GameListLandscapeView: BaseView {
 extension GameListLandscapeView: UICollectionViewDataSource {
     ///轮播cell的封面尺寸 底部为聚焦信息面板预留空间
     private var carouselCoverHeight: CGFloat {
-        if UIDevice.isPhone {
+        if #available(iOS 27.1, *), DuoTabletopKit.isTabletopMode {
+            return 152
+        }
+        if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen {
             let carouselHeight = carouselView.bounds.height > 0 ? carouselView.bounds.height : 300
-            return max(carouselHeight - GameLandscapeCarouselCell.infoPanelReserve - R.Size.ContentSpaceLarge, 100)
+            return max(carouselHeight - GameLandscapeCarouselCell.infoPanelReserve - R.Size.ContentSpaceLarge, 100) * (UIDevice.isPhoneDuoOuter ? 0.8 : 1.0)
         } else {
             return R.Size.ApplicationWindowSize.height/3
         }

@@ -144,6 +144,9 @@ class ASListPageView: BaseView {
         view.delegate = self
         view.contentInset = listInsets
         view.isFocusable = true
+        if UIDevice.isPhoneDuo {
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     private var toolView: ASListToolView? = nil
@@ -196,11 +199,19 @@ class ASListPageView: BaseView {
         } else {
             super.init(frame: .zero)
         }
-        updateViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private var hasInit = false
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        guard !hasInit else { return }
+        updateViews()
+        hasInit = true
     }
 }
 
@@ -217,7 +228,9 @@ extension ASListPageView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { [weak self] sectionIndex, env in
             guard let self else { return nil }
             
             //sectionData
@@ -341,9 +354,8 @@ extension ASListPageView {
                                                             leading: Self.sectionHorizontalInsets,
                                                             bottom: hasFooter ? Self.sectionBottomInsetsWithFooter : 0,
                                                             trailing: Self.sectionHorizontalInsets)
-            
             return section
-        }
+        }, configuration: configuration)
         
         layout.register(ASListDecorationPrimaryView.self,
                         forDecorationViewOfKind: String(describing: ASListDecorationPrimaryView.self))
@@ -517,10 +529,7 @@ extension ASListPageView {
         }
         
         if enableSafeAreaBottomInsets {
-            contentInset.bottom += hostingWindow?.safeAreaInsets.bottom ?? 0
-            if UIDevice.isSmallScreenPhone {
-                contentInset.bottom += R.Size.ContentInsetBottom(window: hostingWindow)
-            }
+            contentInset.bottom += R.Size.ContentInsetBottom(window: hostingWindow)
         }
         
         collectionView.contentInset = contentInset
@@ -587,7 +596,7 @@ extension ASListPageView {
         }
         
         view.snp.remakeConstraints { make in
-            if UIDevice.isPad || (UIDevice.isPhone && self.prefferedLayoutStyle == .landscape) {
+            if UIDevice.isPad || (UIDevice.isPhone && self.preferredLayoutStyle == .landscape) {
                 make.width.equalTo(R.Size.ButtonMaxWidth)
                 make.centerX.equalToSuperview()
             } else {
@@ -748,12 +757,8 @@ extension ASListPageView {
             height += window.safeAreaInsets.top
         }
         
-        if listPage.enableSafeAreaBottomInsets,
-            let window = containerWindow {
-            height += window.safeAreaInsets.bottom
-            if UIDevice.isSmallScreenPhone {
-                height += R.Size.ContentInsetBottom(window: containerWindow)
-            }
+        if listPage.enableSafeAreaBottomInsets {
+            height += R.Size.ContentInsetBottom(window: containerWindow)
         }
         
         return height

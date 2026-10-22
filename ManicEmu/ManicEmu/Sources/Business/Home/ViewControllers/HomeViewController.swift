@@ -52,7 +52,7 @@ class HomeViewController: BaseViewController {
     }()
     
     lazy var homeTabBar: HomeTabBar = {
-        let view = HomeTabBar()
+        let view = HomeTabBar(orientation: UIDevice.isPhoneDuoCompactWidth ? .portrait : .landscape)
         view.selectionChange = { [weak self] selection in
             guard let self else { return }
             var selection = selection
@@ -67,13 +67,13 @@ class HomeViewController: BaseViewController {
             switch selection {
             case .games:
                 Log.debug("切换到游戏")
-                if UIDevice.isPhone, self.view.prefferedLayoutStyle == .landscape {
+                if UIDevice.isPhone, self.view.preferredLayoutStyle == .landscape {
                     self.gamesViewController.view.masksToBounds = false
                 }
                 
             case .imports:
                 Log.debug("切换到导入")
-                if UIDevice.isPhone, self.view.prefferedLayoutStyle == .landscape {
+                if UIDevice.isPhone, self.view.preferredLayoutStyle == .landscape {
                     self.gamesViewController.view.masksToBounds = true
                 }
                 
@@ -83,7 +83,7 @@ class HomeViewController: BaseViewController {
             self.updateLandscapeBackgroundVisible()
             self.activateCurrentTabFocusContext()
         }
-        view.isHidden = UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape
+        view.isHidden = UIDevice.isPhone && !UIDevice.isPhoneDuo && self.view.preferredLayoutStyle == .landscape
         return view
     }()
     
@@ -93,7 +93,7 @@ class HomeViewController: BaseViewController {
         view.maximumBlurRadius = 1
         view.dimmingAlpha = .interfaceStyle(lightModeAlpha: 0.05, darkModeAlpha: 0.05)
         view.dimmingTintColor = R.Color.BackgroundPrimary
-        view.isHidden = self.view.prefferedLayoutStyle == .landscape
+        view.isHidden = self.view.preferredLayoutStyle == .landscape || UIDevice.isPhoneDuoCompactWidth
         return view
     }()
     
@@ -112,6 +112,9 @@ class HomeViewController: BaseViewController {
     /// D-pad ran off a tab edge; the following selection change should restore focus in the new tab.
     private var shouldHandoffTabFocus = false
     
+    /// Last compact-width tab bar frame. Avoids rebuilding constraints every layout pass.
+    private var appliedPhoneDuoTabBarFrame: CGRect?
+    
     private var currentChildViewController: BaseViewController {
         switch homeTabBar.currentSelection {
         case .games:
@@ -124,10 +127,10 @@ class HomeViewController: BaseViewController {
     }
     
     deinit {
-        if let homeSelectionChangeNotification = homeSelectionChangeNotification {
+        if let homeSelectionChangeNotification {
             NotificationCenter.default.removeObserver(homeSelectionChangeNotification)
         }
-        if let landscapeBackgroundNotification = landscapeBackgroundNotification {
+        if let landscapeBackgroundNotification {
             NotificationCenter.default.removeObserver(landscapeBackgroundNotification)
         }
     }
@@ -183,6 +186,22 @@ class HomeViewController: BaseViewController {
         landscapeBackgroundView.setHomeVisible(false)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.isPhoneDuo {
+            refreshPhoneDuoTabBarPlacementIfNeeded()
+        }
+    }
+    
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        appliedPhoneDuoTabBarFrame = nil
+        if UIDevice.isPhoneDuo {
+            refreshPhoneDuoTabBarPlacementIfNeeded()
+            homeTabBarBlurView.isHidden = self.view.preferredLayoutStyle == .landscape || UIDevice.isPhoneDuoCompactWidth
+        }
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.resignFirstResponder()
@@ -198,12 +217,12 @@ class HomeViewController: BaseViewController {
         if !UIDevice.isIOS15 {
             NotificationCenter.default.post(name: R.NotificationName.ViewWillTransition, object: nil)
         }
-        homeTabBarBlurView.isHidden = view.prefferedLayoutStyle == .landscape
         if currentChildViewController is GamesViewController {
             updateGamesFocusCommands(focusContext: currentChildViewController.focusContext)
         }
         coordinator.animate(alongsideTransition: { [weak self] _ in
             guard let self else { return }
+            self.homeTabBarBlurView.isHidden = self.view.preferredLayoutStyle == .landscape || UIDevice.isPhoneDuoCompactWidth
             if UIDevice.isPhone {
                 if let pageBackgroundMaskView = self.pageViewManager.contentView.subviews.first(where: { $0.isKind(of: PageBackgroundMaskView.self) }) {
                     pageBackgroundMaskView.snp.updateConstraints { make in
@@ -216,7 +235,10 @@ class HomeViewController: BaseViewController {
                 NotificationCenter.default.post(name: R.NotificationName.ViewWillTransition, object: nil)
             }
             NotificationCenter.default.post(name: R.NotificationName.ViewAlongsideTransition, object: nil)
-            self.homeTabBar.isHidden = UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape
+            self.homeTabBar.isHidden = UIDevice.isPhone && !UIDevice.isPhoneDuo && self.view.preferredLayoutStyle == .landscape
+            if UIDevice.isPhoneDuo {
+                self.updateHomeTabBarConstraints()
+            }
         }, completion: { _ in
             NotificationCenter.default.post(name: R.NotificationName.ViewDidTransition, object: nil)
         })
@@ -255,20 +277,12 @@ class HomeViewController: BaseViewController {
             make.top.equalTo(homeTabBar).offset(-R.Size.ContentSpaceLarge)
         }
         
-        homeTabBar.snp.makeConstraints { make in
-            make.size.equalTo(R.Size.HomeTabBarSize)
-            make.centerX.equalTo(self.view)
-            if self.view.safeAreaInsets.bottom == 0 {
-                make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
-            } else {
-                make.bottom.equalTo(view.safeAreaLayoutGuide)
-            }
-        }
+        updateHomeTabBarConstraints()
     }
     
     ///根据横竖屏更新动态背景显隐 横屏时透明化分页容器与子页面使背景透出
     private func updateLandscapeBackgroundVisible() {
-        let landscape = view.prefferedLayoutStyle == .landscape
+        let landscape = view.preferredLayoutStyle == .landscape
         if landscape {
             if UIDevice.isPhone {
                 if landscapeBackgroundView.isHidden {
@@ -317,6 +331,63 @@ class HomeViewController: BaseViewController {
         }
     }
     
+    private func updateHomeTabBarConstraints() {
+        if !UIDevice.isPhoneDuoCompactWidth {
+            appliedPhoneDuoTabBarFrame = nil
+        }
+        let duoFrame = UIDevice.isPhoneDuoCompactWidth ? (appliedPhoneDuoTabBarFrame ?? phoneDuoTabBarFrame()) : nil
+        homeTabBar.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoCompactWidth {
+                make.size.equalTo(R.Size.HomeTabBarSizeVertical)
+                if let duoFrame {
+                    make.leading.equalToSuperview().offset(duoFrame.minX)
+                    make.top.equalToSuperview().offset(duoFrame.minY)
+                } else {
+                    make.centerY.equalToSuperview()
+                    make.trailing.equalToSuperview()
+                }
+            } else {
+                make.size.equalTo(R.Size.HomeTabBarSize)
+                make.centerX.equalTo(self.view)
+                if self.view.safeAreaInsets.bottom == 0 && !UIDevice.isPhoneDuo {
+                    make.bottom.equalToSuperview().inset(R.Size.ContentInsetBottom(window: hostingWindow))
+                } else if UIDevice.isPhoneDuo {
+                    make.bottom.equalToSuperview().inset(R.Size.ContentSpaceLarge)
+                } else {
+                    make.bottom.equalTo(view.safeAreaLayoutGuide)
+                }
+            }
+        }
+        homeTabBar.orientation = UIDevice.isPhoneDuoCompactWidth ? .portrait : .landscape
+    }
+    
+    /// Keeps the vertical tab bar centered in the side strip, shifting down only when that frame hits an occlusion.
+    private func refreshPhoneDuoTabBarPlacementIfNeeded() {
+        guard UIDevice.isPhoneDuoCompactWidth || UIDevice.isPhoneDuoSplitView, view.bounds.width > 1, view.bounds.height > 1 else { return }
+        let frame = phoneDuoTabBarFrame()
+        func framesDiffer(_ lhs: CGRect?, _ rhs: CGRect?) -> Bool {
+            switch (lhs, rhs) {
+            case (nil, nil):
+                return false
+            case let (lhs?, rhs?):
+                return abs(lhs.minX - rhs.minX) > 0.5
+                    || abs(lhs.minY - rhs.minY) > 0.5
+                    || abs(lhs.width - rhs.width) > 0.5
+                    || abs(lhs.height - rhs.height) > 0.5
+            default:
+                return true
+            }
+        }
+        guard framesDiffer(appliedPhoneDuoTabBarFrame, frame) else { return }
+        appliedPhoneDuoTabBarFrame = frame
+        updateHomeTabBarConstraints()
+    }
+    
+    /// `nil` until the side strip can be measured. Centering with no occlusion is the strip helper's own default.
+    private func phoneDuoTabBarFrame() -> CGRect? {
+        DuoLayoutKit.sideStrip(in: view)?.frame(fitting: R.Size.HomeTabBarSizeVertical)
+    }
+    
     // MARK: - Tab FocusKit
     
     /// Make the selected child VC the focus root so search stays inside that tab.
@@ -347,7 +418,7 @@ class HomeViewController: BaseViewController {
             ])
             
             if self.homeTabBar.currentSelection == .games {
-                var commands = [FocusCommand(key: FocusKey("l1"), title: R.string.localizable.scrollToFirstGame(), action: { [weak self] in
+                let commands = [FocusCommand(key: FocusKey("l1"), title: R.string.localizable.scrollToFirstGame(), action: { [weak self] in
                     self?.gamesViewController.scrollToFirstGame()
                 }),
                  FocusCommand(key: FocusKey("r1"), title: R.string.localizable.scrollToLastGame(), action: { [weak self] in
@@ -387,7 +458,7 @@ class HomeViewController: BaseViewController {
     
     private func updateGamesFocusCommands(focusContext: FocusContext) {
         guard currentChildViewController is GamesViewController else { return }
-        if view.prefferedLayoutStyle == .landscape {
+        if view.preferredLayoutStyle == .landscape {
             focusContext.addCommand(FocusCommand(key: FocusKey("l3"), title: R.string.localizable.filterTitle(), action: {
                 NotificationCenter.default.post(name: R.NotificationName.ShowFilterForLandscapeMode, object: nil)
             }))

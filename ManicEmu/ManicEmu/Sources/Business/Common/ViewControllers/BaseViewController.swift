@@ -152,20 +152,23 @@ class BaseViewController: UIViewController {
             self?.backgroundMaskView?.snp.updateConstraints { make in
                 make.height.equalTo(R.Size.PageBackgroundMaskHeight(window: self?.hostingWindow))
             }
+        }, completion: { _ in
+            if #available(iOS 27.1, *) {
+                DuoTabletopKit.relayoutTabletopPanesIfNeeded()
+            }
         })
     }
     
     override var prefersStatusBarHidden: Bool {
-        if UIDevice.isPad {
-            return view.prefferedLayoutStyle == .landscape
-        } else if UIDevice.isPhoneDuoOuter || UIDevice.isPhoneDuoSplitView {
-            return true
+        if let shouldHidden = UIViewController.shouldStatusBarHidden(window: hostingWindow,
+                                                                     presentedViewController: presentedViewController) {
+            return shouldHidden
         }
         return super.prefersStatusBarHidden
     }
     
     fileprivate func setPreferredContentSize() {
-        if UIDevice.isPad {
+        if UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen {
             if let _ = self.presentingViewController { //如果自己是被present出来的话 就执行
                 let size = R.Size.PreferredContentSize
                 if self.preferredContentSize != size {
@@ -198,9 +201,16 @@ class BaseViewController: UIViewController {
         return [.left, .right]
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        OrientationLockPin.resolvedMask(for: hostingWindow)
+    }
+    
     @available(iOS 26.0, *)
     override var prefersInterfaceOrientationLocked: Bool {
-        OrientationLockPin.prefersLocked
+        if #available(iOS 27.1, *), DuoTabletopKit.isTabletopActive {
+            return DuoTabletopKit.isTabletopOrientationLocked
+        }
+        return OrientationLockPin.prefersLocked
     }
     
 }

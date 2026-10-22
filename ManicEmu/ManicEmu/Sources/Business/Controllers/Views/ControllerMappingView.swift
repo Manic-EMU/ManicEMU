@@ -263,6 +263,14 @@ class ControllerMappingView: BaseView {
                 make.width.equalTo(frames.mainGameViewFrame.width - R.Size.ContentSpaceMedium*2)
                 make.centerX.equalToSuperview()
             }
+            
+            if UIDevice.isPhoneDuoOuter {
+                navigationView.snp.remakeConstraints { make in
+                    make.top.equalTo(safeAreaLayoutGuide)
+                    make.leading.trailing.equalTo(tipsView)
+                    make.height.equalTo(R.Size.NavigationHeight)
+                }
+            }
         }
     }
     

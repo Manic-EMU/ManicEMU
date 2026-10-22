@@ -80,6 +80,7 @@ class SectionIndexView: BaseView {
     @objc public var itemIndicatorHorizontalOffset: CGFloat = 60
 
     @objc public private(set) var selectedItem: SectionIndexViewItem?
+    var selectedSection: Int = 0
     @objc public private(set) var isTouching = false
     
     @objc public var hideSearch = false
@@ -134,6 +135,7 @@ class SectionIndexView: BaseView {
         guard let item = item(at: section) else { return }
         item.isSelected = true
         selectedItem = item
+        selectedSection = section
     }
 
     @objc public func deselectCurrentItem() {
@@ -230,6 +232,7 @@ class SectionIndexView: BaseView {
         let section = rawSection - 1
         guard let item = item(at: section), !(self.selectedItem?.isEqual(item) ?? false) else { return }
         delegate?.sectionIndexView(self, didSelect: section)
+        selectedSection = section
         NotificationCenter.default.post(name: SectionIndexView.touchesEndedNotification, object: self, userInfo: ["section": section])
     }
 

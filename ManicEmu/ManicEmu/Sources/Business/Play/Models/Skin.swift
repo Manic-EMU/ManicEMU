@@ -105,6 +105,9 @@ class Skin: Object, ObjectUpdatable {
         skinType == .default || isKeyboardSkin || identifier == R.Strings.WiimoteSkinIdentifier 
     }
     
+    var previewPortraitTraits: ControllerSkin.Traits? = nil
+    var previewLandscapeTraits: ControllerSkin.Traits? = nil
+    
     /// Drop stale `.buildIn` rows iCloud restored after a bundle skin file (hash PK) changed.
     /// Default / PlayCase are local-only (`isSyncable`); imported skins are user data. Runs once per app version.
     static func polishSkinsAfterRealmSync() {

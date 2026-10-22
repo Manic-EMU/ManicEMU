@@ -52,6 +52,9 @@ class PlayHistoryView: BaseView {
                 }
             }
         })
+        if UIDevice.isPhoneDuoSplitView && !UIDevice.isPhoneDuoSplitViewRight {
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     
@@ -69,7 +72,11 @@ class PlayHistoryView: BaseView {
         addSubview(navigationView)
         navigationView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(R.Size.SheetGrabberTopInset)
-            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            if UIDevice.isPhoneDuoSplitView && !UIDevice.isPhoneDuoSplitViewRight {
+                make.leading.trailing.equalToSuperview()
+            } else {
+                make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+            }
             make.height.equalTo(R.Size.NavigationHeight)
         }
         
@@ -91,7 +98,9 @@ class PlayHistoryView: BaseView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout  { sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = (UIDevice.isPhoneDuoSplitView && !UIDevice.isPhoneDuoSplitViewRight) ? .none : .safeArea
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, env in
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                                                  heightDimension: .fractionalHeight(1)))
             //group布局
@@ -108,7 +117,7 @@ class PlayHistoryView: BaseView {
                                                             trailing: 0)
             return section
             
-        }
+        }, configuration: configuration)
         return layout
     }
     

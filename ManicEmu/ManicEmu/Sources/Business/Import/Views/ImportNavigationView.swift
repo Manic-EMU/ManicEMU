@@ -45,10 +45,6 @@ class ImportNavigationView: BaseView {
             make.centerY.equalToSuperview()
         }
         
-        if UIDevice.isPad {
-            addServiceButton.isHidden = true
-        }
-        
         toolsView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceLarge)
             make.centerY.equalToSuperview()
@@ -68,6 +64,11 @@ class ImportNavigationView: BaseView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addServiceButton.isHidden = UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen
     }
     
     private func updateToolsView() {

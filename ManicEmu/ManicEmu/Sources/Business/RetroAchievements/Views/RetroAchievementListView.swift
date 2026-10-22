@@ -26,7 +26,10 @@ class RetroAchievementListView: BaseView {
         let blankView = BlankSlateEmptyView(image: .symbolImage(.gamecontrollerFill).applySymbolConfig(size: 70, color: R.Color.LabelSecondary), title: R.string.localizable.achievementsNotSupport(game.displayName))
         blankView.label.isHidden = true
         view.blankSlateView = blankView
-        
+        if UIDevice.isPhoneDuo {
+            view.contentInsetAdjustmentBehavior = .never
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     
@@ -67,11 +70,7 @@ class RetroAchievementListView: BaseView {
         }
         
         addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
-            make.leading.trailing.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(R.Size.ItemHeightMedium)
-        }
+        updateNavigationViewConstraints()
         
         let gamePath = game.romUrl.path
         let didShowLoading: Bool
@@ -143,7 +142,9 @@ class RetroAchievementListView: BaseView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, env in
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                                                  heightDimension: .fractionalHeight(1)))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(1098)), subitems: [item])
@@ -152,8 +153,38 @@ class RetroAchievementListView: BaseView {
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
             
             return section
-        }
+        }, configuration: configuration)
         return layout
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.isPhoneDuo {
+            updateNavigationViewConstraints()
+        }
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview()
+            } else {
+                if UIDevice.isPhoneDuo {
+                    make.leading.trailing.equalToSuperview()
+                } else {
+                    make.leading.trailing.equalTo(safeAreaLayoutGuide)
+                }
+                make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
+        }
     }
 }
 

@@ -30,7 +30,7 @@ class GlobalCoreSwitchView: BaseView {
         let view = ASListPageView(ASListPage(navigation: navigation,
                                              sections: sections,
                                              backgroundColor: .clear,
-                                             listInsets: .insets(bottom: UIDevice.isPad ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge : R.Size.ContentInsetBottom(window: hostingWindow)),
+                                             listInsets: .insets(bottom: R.Size.ContentInsetBottomForSettingPage(showAsDetail: (UIDevice.isPad && !showClose) || UIDevice.isPhoneDuoInnerFullScreen)),
                                              pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow))))
         view.didActionOccurred = { [weak self] listAction in
             guard let self else { return }

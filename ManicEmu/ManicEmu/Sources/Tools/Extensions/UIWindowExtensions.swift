@@ -9,7 +9,6 @@
 
 import Foundation
 import UIKit
-import ProHUD
 
 extension UIWindow {
     static var applicationWindow: UIWindow? {

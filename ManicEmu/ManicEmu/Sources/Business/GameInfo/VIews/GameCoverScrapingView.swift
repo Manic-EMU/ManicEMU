@@ -87,14 +87,12 @@ class GameCoverScrapingView: BaseView {
         )
         navigation.enableClose = showClose
         
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
-        
         return ASListPage(
             navigation: navigation,
             sections: getSections(),
             bottom: getBottom(),
             backgroundColor: .clear,
-            listInsets: .insets(bottom: listInsetBottom),
+            listInsets: .insets(bottom: R.Size.ContentInsetBottomForSettingPage(showAsDetail: (UIDevice.isPad && !showClose) || UIDevice.isPhoneDuoInnerFullScreen)),
             pageInsets: .insets(top: showClose ? R.Size.SheetGrabberTopInset : R.Size.ContentInsetTop(window: hostingWindow))
         )
     }

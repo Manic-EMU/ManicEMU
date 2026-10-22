@@ -81,6 +81,10 @@ class RetroAchievementsLoginView: BaseView {
         view.isFocusable = true
         view.contentInset = .insets(top: 90,
                                     bottom: R.Size.ContentInsetBottom(window: hostingWindow))
+        if UIDevice.isPhoneDuo {
+            view.contentInsetAdjustmentBehavior = .never
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     
@@ -117,7 +121,9 @@ class RetroAchievementsLoginView: BaseView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, env in
             //item布局
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                                                  heightDimension: .fractionalHeight(1)))
@@ -139,7 +145,7 @@ class RetroAchievementsLoginView: BaseView {
             section.boundarySupplementaryItems.append(footerItem)
             
             return section
-        }
+        }, configuration: configuration)
         return layout
     }
     

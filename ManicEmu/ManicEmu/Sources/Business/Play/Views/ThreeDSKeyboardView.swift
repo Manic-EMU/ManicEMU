@@ -127,6 +127,12 @@ struct ThreeDSKeyboardView {
                 }
                 textView.becomeFirstResponder()
                 inputText = { textView.text }
+                textView.isFocusable = true
+                textView.onFocusConfirm = { [weak textView] in
+                    textView?.becomeFirstResponder()
+                    return true
+                }
+                
             } else {
                 let textField = UITextField()
                 
@@ -156,6 +162,11 @@ struct ThreeDSKeyboardView {
                     textField.onReturnKeyPress {
                         submit()
                     }
+                }
+                textField.isFocusable = true
+                textField.onFocusConfirm = { [weak textField] in
+                    textField?.becomeFirstResponder()
+                    return true
                 }
             }
             

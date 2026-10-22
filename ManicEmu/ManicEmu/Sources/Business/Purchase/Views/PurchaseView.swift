@@ -7,7 +7,7 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-class PurchaseView: BaseView {
+class PurchaseView: BaseView, ViewTransition {
     
     ///点击关闭按钮回调
     var didTapClose: (()->Void)? = nil
@@ -89,12 +89,10 @@ class PurchaseView: BaseView {
         return view
     }()
     
-    private let imageLayer: CALayer = CALayer()
-    private lazy var backgroundGradientView: AnimatedGradientView = {
-        let view = AnimatedGradientView(notifiedUpadate: true, alphaComponent: 0.9)
-        view.layer.insertSublayer(imageLayer, at: 0)
-        return view
-    }()
+    private let backgroundGradientView = PurchaseBackgroundView()
+
+    /// Constraint set last installed. `remakeConstraints` inside `updateConstraints` always dirties constraints, so this skips unchanged passes.
+    private var appliedLayoutMode: LayoutMode?
     
     private var featureView = FeaturesView()
     
@@ -110,60 +108,138 @@ class PurchaseView: BaseView {
         super.init(frame: .zero)
         addSubview(backgroundGradientView)
         addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(safeAreaLayoutGuide)
-            make.top.equalToSuperview()
-            make.height.equalTo(R.Size.ItemHeightMedium)
-        }
+        updateNavigationViewConstraints()
         
         addSubview(featureView)
         featureView.featuresType = featuresType
         addSubview(priceView)
+        setNeedsUpdateConstraints()
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateViewsConstraits()
-        imageLayer.contents = R.image.game_cover_bg()?.scaled(toWidth: backgroundGradientView.width)?.cropped(to: backgroundGradientView.bounds).cgImage
-        imageLayer.frame = CGRect(origin: .zero, size: backgroundGradientView.size)
-    }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    /// Window size is current here, so the following layout pass can solve the new constraints.
+    func viewAlongsideTransition() {
+        setNeedsUpdateConstraints()
+    }
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        guard window != nil else { return }
+        setNeedsUpdateConstraints()
+    }
+
+    override func safeAreaInsetsDidChange() {
+        super.safeAreaInsetsDidChange()
+        setNeedsUpdateConstraints()
+    }
+
+    /// Runs before this pass solves frames, so `PurchaseBackgroundView` lays out with its final bounds.
+    override func updateConstraints() {
+        let mode = layoutMode
+        if mode != appliedLayoutMode {
+            appliedLayoutMode = mode
+            updateViewsConstraits()
+        }
+        super.updateConstraints()
+    }
+
+    private var layoutMode: LayoutMode {
+        if UIDevice.isPhone, preferredLayoutStyle == .landscape {
+            return .phoneLandscape
+        }
+        if UIDevice.isPhoneDuoCompactWidth {
+            return .duoCompact
+        }
+        return .regular
+    }
+
     private func updateViewsConstraits() {
         backgroundGradientView.snp.remakeConstraints { make in
-            if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+            if UIDevice.isPhone, preferredLayoutStyle == .landscape {
                 make.top.equalToSuperview()
                 make.leading.bottom.trailing.equalTo(featureView)
             } else {
-                make.leading.top.trailing.equalToSuperview()
-                make.bottom.equalTo(featureView.snp.bottom)
+                if UIDevice.isPhoneDuoCompactWidth {
+                    make.leading.trailing.equalTo(featureView)
+                    make.top.equalToSuperview()
+                } else {
+                    make.leading.top.trailing.equalToSuperview()
+                }
+                make.bottom.equalTo(featureView)
             }
         }
         
         featureView.snp.remakeConstraints { make in
-            if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+            if UIDevice.isPhone, preferredLayoutStyle == .landscape {
                 make.top.equalToSuperview().offset(R.Size.NavigationHeight)
                 make.leading.bottom.equalToSuperview()
                 make.width.equalToSuperview().dividedBy(2)
             } else {
-                make.leading.trailing.equalToSuperview()
+                if UIDevice.isPhoneDuoCompactWidth {
+                    make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+                } else {
+                    make.leading.trailing.equalToSuperview()
+                }
                 make.top.equalTo(navigationView.snp.bottom)
             }
         }
         
         priceView.snp.remakeConstraints { make in
-            if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+            if UIDevice.isPhone, preferredLayoutStyle == .landscape {
                 make.top.equalToSuperview().offset(R.Size.NavigationHeight)
-                make.bottom.trailing.equalToSuperview()
+                make.bottom.equalToSuperview()
+                if UIDevice.isPhoneDuoCompactWidth {
+                    make.trailing.equalTo(safeAreaLayoutGuide)
+                } else {
+                    make.trailing.equalToSuperview()
+                }
                 make.leading.equalTo(featureView.snp.trailing)
             } else {
-                make.leading.bottom.trailing.equalToSuperview()
+                if UIDevice.isPhoneDuoCompactWidth {
+                    make.trailing.equalTo(safeAreaLayoutGuide)
+                } else {
+                    make.trailing.equalToSuperview()
+                }
+                make.leading.bottom.equalToSuperview()
                 make.top.equalTo(featureView.snp.bottom)
                 make.height.equalTo(447)
             }
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.isPhoneDuo {
+            updateNavigationViewConstraints()
+        }
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            make.trailing.equalTo(safeAreaLayoutGuide)
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.leading.equalTo(safeAreaLayoutGuide).offset(-R.Size.ContentSpaceLarge)
+            } else {
+                make.top.equalToSuperview()
+                make.leading.equalTo(safeAreaLayoutGuide)
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
+        }
+    }
+}
+
+private extension PurchaseView {
+    enum LayoutMode: Equatable {
+        case phoneLandscape
+        case duoCompact
+        case regular
     }
 }

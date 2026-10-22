@@ -32,7 +32,7 @@ class SettingsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UIDevice.isPhone {
+        if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen {
             view.addSubview(settingsListView)
             settingsListView.snp.makeConstraints { make in
                 make.top.bottom.equalToSuperview()
@@ -42,6 +42,29 @@ class SettingsViewController: BaseViewController {
             view.addSubview(settingsListView)
             view.backgroundColor = UIColor(.dm, light: .white, dark: .black)
             settingsListView.backgroundColor = R.Color.BackgroundPrimary
+            setupDetailContent()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if (UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen), hostingWindow != nil {
+            updateViewsForLargeScreen()
+        } else if UIDevice.isPhoneDuo {
+            removeMultiColumnViews()
+            settingsListView.snp.remakeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                if UIDevice.isPhoneDuoCompactWidth {
+                    make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                } else {
+                    make.leading.trailing.equalToSuperview()
+                }
+            }
+        }
+    }
+    
+    private func setupDetailContent() {
+        if settingsListView.didTapDetailView == nil {
             settingsListView.didTapDetailView = { [weak self] view in
                 guard let self = self else { return }
                 self.detailContentView.subviews.forEach { $0.removeFromSuperview() }
@@ -50,7 +73,9 @@ class SettingsViewController: BaseViewController {
                     make.edges.equalToSuperview()
                 }
             }
-            
+        }
+        
+        if detailContentView.subviews.count == 0 {
             let themeView = ThemeSettingView(showClose: false)
             detailContentView.addSubview(themeView)
             themeView.snp.makeConstraints { make in
@@ -59,17 +84,10 @@ class SettingsViewController: BaseViewController {
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if UIDevice.isPad, hostingWindow != nil {
-            updateViewsForIpad()
-        }
-    }
-    
-    private func updateViewsForIpad() {
-        guard UIDevice.isPad else { return }
+    private func updateViewsForLargeScreen() {
+        guard UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen else { return }
         guard let hostingWindow else { return }
-        if view.isWindowHasEnoughSpaceforIpadMultiColumnLayout {
+        if view.isWindowHasEnoughSpaceforIpadMultiColumnLayout || UIDevice.isPhoneDuoInnerFullScreen {
             let sideMenuWidth = R.Size.SideMenuWidth(window: hostingWindow)*1.2
             settingsListView.snp.remakeConstraints { make in
                 make.leading.top.bottom.equalToSuperview()
@@ -80,10 +98,12 @@ class SettingsViewController: BaseViewController {
                 }
             }
             
-            cornerMaskViewForiPad.removeFromSuperview()
-            view.addSubview(cornerMaskViewForiPad)
-            cornerMaskViewForiPad.snp.remakeConstraints { make in
-                make.edges.equalTo(settingsListView)
+            if UIDevice.isPad {
+                cornerMaskViewForiPad.removeFromSuperview()
+                view.addSubview(cornerMaskViewForiPad)
+                cornerMaskViewForiPad.snp.remakeConstraints { make in
+                    make.edges.equalTo(settingsListView)
+                }
             }
             
             detailContentView.removeFromSuperview()
@@ -93,19 +113,34 @@ class SettingsViewController: BaseViewController {
                 make.leading.equalTo(settingsListView.snp.trailing).offset(R.Size.ContentSpaceMedium)
             }
             
-            detailMaskViewForiPad.removeFromSuperview()
-            view.addSubview(detailMaskViewForiPad)
-            detailMaskViewForiPad.snp.remakeConstraints { make in
-                make.edges.equalTo(detailContentView)
+            if UIDevice.isPad {
+                detailMaskViewForiPad.removeFromSuperview()
+                view.addSubview(detailMaskViewForiPad)
+                detailMaskViewForiPad.snp.remakeConstraints { make in
+                    make.edges.equalTo(detailContentView)
+                }
+            }
+            
+            if UIDevice.isPhoneDuoInnerFullScreen {
+                detailContentView.backgroundColor = .clear
+                settingsListView.backgroundColor = .clear
+                setupDetailContent()
             }
         } else {
             settingsListView.snp.remakeConstraints { make in
                 make.top.bottom.equalToSuperview()
                 make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             }
-            cornerMaskViewForiPad.removeFromSuperview()
-            detailContentView.removeFromSuperview()
-            detailMaskViewForiPad.removeFromSuperview()
+            removeMultiColumnViews()
         }
+    }
+    
+    private func removeMultiColumnViews() {
+        cornerMaskViewForiPad.removeFromSuperview()
+        detailContentView.removeFromSuperview()
+        detailMaskViewForiPad.removeFromSuperview()
+        
+        detailContentView.backgroundColor = R.Color.BackgroundPrimary
+        settingsListView.backgroundColor = UIDevice.isPhoneDuo ? .clear : R.Color.BackgroundPrimary
     }
 }

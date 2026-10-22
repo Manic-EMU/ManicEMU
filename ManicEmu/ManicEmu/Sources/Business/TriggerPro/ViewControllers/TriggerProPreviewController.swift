@@ -89,6 +89,7 @@ class TriggerProPreviewController: BaseViewController {
     private lazy var addButton: UIView = {
         let view = UIView()
         view.enablePressEffect = true
+        view.enableFocusEffects = false
         let iconContainerView = RoundAndBorderView(roundCorner: .allCorners, radius: R.Size.CornerRadiusMedium)
         iconContainerView.backgroundColor = R.Color.BackgroundPrimary
         view.addSubview(iconContainerView)
@@ -144,6 +145,11 @@ class TriggerProPreviewController: BaseViewController {
         }
         view.attributedPlaceholder = NSAttributedString(string: trigger.defaultName, attributes: [.font: R.Font.Body(), .foregroundColor: R.Color.LabelTertiary])
         view .returnKeyType = .done
+        view.isFocusable = true
+        view.onFocusConfirm = { [weak self] in
+            self?.titleTextField.becomeFirstResponder()
+            return true
+        }
         return view
     }()
     
@@ -212,9 +218,9 @@ class TriggerProPreviewController: BaseViewController {
         view.addSubview(controlView)
         
         var needToRotate = false
-        if traits.orientation == .portrait && (UIDevice.currentOrientation == .landscapeLeft || UIDevice.currentOrientation == .landscapeRight) {
+        if traits.orientation == .portrait && window.size.IsRelativelyWideRectangle {
             needToRotate = true
-        } else if traits.orientation == .landscape && (UIDevice.currentOrientation == .portrait || UIDevice.currentOrientation == .portraitUpsideDown) {
+        } else if traits.orientation == .landscape && !window.size.IsRelativelyWideRectangle {
             needToRotate = true
         }
         
@@ -238,11 +244,7 @@ class TriggerProPreviewController: BaseViewController {
         }
         
         view.addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
-            make.height.equalTo(R.Size.NavigationHeight)
-        }
+        updateNavigationViewConstraints()
         
         if let skinFrames = skin.getFrames(window: window) {
             controlView.addSubview(gameViewBackgroundView)
@@ -330,6 +332,50 @@ class TriggerProPreviewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AppDelegate.orientation = R.Config.DefaultOrientation
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        if UIDevice.isPhoneDuo {
+             return true
+        }
+        return super.prefersStatusBarHidden
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if UIDevice.isPhoneDuo {
+            updateNavigationViewConstraints()
+        }
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview()
+            } else {
+                if UIDevice.isPhoneDuo {
+                    make.leading.equalToSuperview()
+                    if UIDevice.isPhoneDuoOuter {
+                        make.top.equalToSuperview().offset(21.5)
+                        make.trailing.equalToSuperview().inset(64)
+                    } else {
+                        make.trailing.equalToSuperview()
+                        make.top.equalToSuperview().offset(UIDevice.isPhoneDuoSplitView ? R.Size.ContentSpaceLarge : R.Size.ContentInsetTop(window: hostingWindow))
+                    }
+                } else {
+                    make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                    make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
+                }
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
+        }
     }
     
     private func getInputs() -> [String] {

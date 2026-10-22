@@ -168,64 +168,104 @@ class FlexSkinSettingViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        
-        view.addSubview(backgroundImageView)
-        backgroundImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        if let controllerSkin = controlView.controllerSkin as? ControllerSkin,
-           let hostingWindow,
-           let frames = controllerSkin.getFrames(window: hostingWindow) {
+    }
+    
+    private var hasInit = false
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !hasInit {
+            hasInit = true
+            view.addSubview(backgroundImageView)
+            backgroundImageView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
             
-            if let screens = controllerSkin.screens(for: traits) {
-                for (index, screen) in screens.enumerated() {
-                    if let outputFrame = screen.outputFrame {
-                        let scaledFrame = outputFrame.applying(.init(scaleX: frames.skinFrame.width, y: frames.skinFrame.height))
-                        let view = createInteractiveScreenView(frame: scaledFrame, image: index < images.count ? images[index] : nil)
-                        screensViews.append(view)
-                        initFrames.append(scaledFrame)
-                        initScreens.append(screen)
+            if let controllerSkin = controlView.controllerSkin as? ControllerSkin,
+               let hostingWindow,
+               let frames = controllerSkin.getFrames(window: hostingWindow) {
+                
+                if let screens = controllerSkin.screens(for: traits) {
+                    for (index, screen) in screens.enumerated() {
+                        if let outputFrame = screen.outputFrame {
+                            let scaledFrame = outputFrame.applying(.init(scaleX: frames.skinFrame.width, y: frames.skinFrame.height))
+                            let view = createInteractiveScreenView(frame: scaledFrame, image: index < images.count ? images[index] : nil)
+                            screensViews.append(view)
+                            initFrames.append(scaledFrame)
+                            initScreens.append(screen)
+                        }
                     }
+                    
+                    screensContainerView.frame = frames.skinFrame
+                    view.addSubview(screensContainerView)
+                    screensViews.forEach { screensContainerView.addSubview($0) }
                 }
                 
-                screensContainerView.frame = frames.skinFrame
-                view.addSubview(screensContainerView)
-                screensViews.forEach { screensContainerView.addSubview($0) }
+                view.addSubview(controlView)
+                controlView.snp.makeConstraints { make in
+                    make.center.equalToSuperview()
+                    make.size.equalTo(frames.skinFrame.size)
+                }
+                
+                if let items = controllerSkin.items(for: traits) {
+                    buttonsContainerView.frame = frames.skinFrame
+                    buttonsContainerView.alpha = 0.2
+                    buttonsContainerView.isUserInteractionEnabled = false
+                    view.addSubview(buttonsContainerView)
+                    setupItemViews(controllerSkin: controllerSkin, items: items)
+                }
             }
             
-            view.addSubview(controlView)
-            controlView.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-                make.size.equalTo(frames.skinFrame.size)
+            view.addSubview(crosshairGuideView)
+            crosshairGuideView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
             }
             
-            if let items = controllerSkin.items(for: traits) {
-                buttonsContainerView.frame = frames.skinFrame
-                buttonsContainerView.alpha = 0.2
-                buttonsContainerView.isUserInteractionEnabled = false
-                view.addSubview(buttonsContainerView)
-                setupItemViews(controllerSkin: controllerSkin, items: items)
-            }
+            view.addSubview(navigationView)
+            
         }
-        
-        view.addSubview(crosshairGuideView)
-        crosshairGuideView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        view.addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(R.Size.ContentSpaceMedium)
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(R.Size.NavigationHeight)
-        }
+        updateNavigationViewConstraints()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         FlexSkinSettingViewController.isShow = false
         didCompletion?(isModified)
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        if UIDevice.isPhoneDuo {
+            return true
+        }
+        return super.prefersStatusBarHidden
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.trailing.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.trailing.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+            } else {
+                if UIDevice.isPhoneDuo {
+                    make.leading.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview()
+                } else {
+                    if view.preferredLayoutStyle == .landscape {
+                        make.centerX.equalToSuperview()
+                        make.width.equalToSuperview().dividedBy(2)
+                    } else {
+                        make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(R.Size.ContentSpaceMedium)
+                    }
+                    make.top.equalTo(view.safeAreaLayoutGuide)
+                }
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
+        }
     }
     
     private func updatedTopViewVisual(toneDown: Bool) {
@@ -946,12 +986,15 @@ extension FlexSkinSettingViewController {
         guard let handle = gesture.view,
               let gameView = handle.superview else { return }
         
+        // Edge resize assigns frame. Bake a leftover pinch scale first so that write cannot inflate bounds.
+        bakeScreenTransform(into: gameView)
+        
         updatedTopViewVisual(toneDown: true)
         
         let translation = gesture.translation(in: self.view)
         var newFrame = gameView.frame
         
-        // 根据手柄tag确定调整哪个边
+        // Which edge this handle adjusts.
         switch handle.tag {
         case 1: // top
             let newHeight = newFrame.height - translation.y
@@ -989,10 +1032,17 @@ extension FlexSkinSettingViewController {
         gesture.setTranslation(.zero, in: self.view)
         
         if gesture.state == .ended {
-            // 执行优化
             optimizeScale(for: gameView)
             updatedTopViewVisual(toneDown: false)
         }
+    }
+    
+    /// Folds the pinch scale into bounds and clears `transform` before a `frame` write, so fixed-size edge handles are not shrunk.
+    private func bakeScreenTransform(into view: UIView) {
+        guard view.transform != .identity else { return }
+        let bakedFrame = view.frame
+        view.transform = .identity
+        view.frame = bakedFrame
     }
     
     // MARK: - 优化缩放（限制最大尺寸不超出屏幕）
@@ -1009,7 +1059,10 @@ extension FlexSkinSettingViewController {
             let edgeMinY = UIScreen.main.bounds.minY - screensContainerView.frame.minY
             let edgeMaxY = UIScreen.main.bounds.height - screensContainerView.frame.maxY
             
-            // 保证位置在屏幕范围内
+            // Bake before this frame write. Pinch and the fit animation below both leave the scale in `transform`.
+            bakeScreenTransform(into: view)
+            
+            // Keep the view inside the screen.
             var newFrame = view.frame
             var newOrigin = newFrame.origin
             
@@ -1035,22 +1088,15 @@ extension FlexSkinSettingViewController {
         let maxWidth = UIScreen.main.bounds.width
         let maxHeight = UIScreen.main.bounds.height
         
-        // 如果视图超出屏幕边界，需要缩小
+        // Shrink to fit the screen, using the smaller axis so neither side overflows.
         if currentFrame.width > maxWidth || currentFrame.height > maxHeight {
-            // 计算需要缩放到屏幕宽度和高度的比例
             let widthScale = maxWidth / currentFrame.width
             let heightScale = maxHeight / currentFrame.height
-            
-            // 取较小的比例，确保视图不会超出任何一边
             let scale = min(widthScale, heightScale)
-            
-            // 计算目标尺寸
             let targetSize = CGSize(
                 width: currentFrame.width * scale,
                 height: currentFrame.height * scale
             )
-            
-            // 计算相对于当前frame的缩放比例
             let scaleX = targetSize.width / currentFrame.width
             let scaleY = targetSize.height / currentFrame.height
             

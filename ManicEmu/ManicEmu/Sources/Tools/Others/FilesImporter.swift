@@ -36,7 +36,11 @@ class FilesImporter: NSObject {
         documentPickerViewController.delegate = self
         documentPickerViewController.overrideUserInterfaceStyle = UIDevice.isDarkMode ? .dark : .light
         documentPickerViewController.allowsMultipleSelection = allowsMultipleSelection
-        documentPickerViewController.modalPresentationStyle = .formSheet
+        if #available(iOS 27.1, *), DuoTabletopKit.isTabletopMode {
+            documentPickerViewController.modalPresentationStyle = .overFullScreen
+        } else {
+            documentPickerViewController.modalPresentationStyle = .formSheet
+        }
         documentPickerViewController.sheetPresentationController?.preferredCornerRadius = R.Size.CornerRadiusLarge
         if appControllerPresent {
             topApplicationViewController()?.present(documentPickerViewController, animated: true)

@@ -30,8 +30,8 @@ class AddImportServiceView: BaseView {
                                         sections: sections,
                                         backgroundColor: .clear,
                                         pageInsets: .insets(top: R.Size.ContentInsetTop(window: hostingWindow)),
-                                        enableSafeAreaLeftInsets: true,
-                                        enableSafeAreaRightInsets: true))
+                                        enableSafeAreaLeftInsets: UIDevice.isPhoneDuo ? false : true,
+                                        enableSafeAreaRightInsets: UIDevice.isPhoneDuo ? false : true))
         
         view.didActionOccurred = { [weak self] action in
             guard let self else { return }

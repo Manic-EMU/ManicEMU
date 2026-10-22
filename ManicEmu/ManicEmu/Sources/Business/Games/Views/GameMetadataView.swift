@@ -5,6 +5,7 @@
 //  Created by Daiuno on 2026/8/12.
 //  Copyright © 2026 Manic EMU. All rights reserved.
 //
+import ProHUD
 
 class GameMetadataView: BaseView {
     private static let overviewMaxHeight: CGFloat = 90

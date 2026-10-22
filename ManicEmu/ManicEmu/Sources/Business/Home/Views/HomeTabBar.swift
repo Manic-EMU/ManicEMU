@@ -11,6 +11,11 @@ import UIKit
 
 ///主页面的tabbar
 class HomeTabBar: BaseView {
+    enum Orientation {
+        case landscape
+        case portrait
+    }
+    
     /// 实现一个视图 拥有点击和非点击状态
     private class BarView: BaseView {
         var isSelected: Bool {
@@ -31,6 +36,7 @@ class HomeTabBar: BaseView {
         private let titleLabel = ASLabelView()
         private let normalSymbol: ASIcon
         private let selectedSymbol: ASIcon
+        private var orientation: Orientation = .landscape
         
         init(frame: CGRect, isSelected: Bool = false, normalSymbol: ASIcon, selectedSymbol: ASIcon, title: String) {
             self.isSelected = isSelected
@@ -64,8 +70,30 @@ class HomeTabBar: BaseView {
             fatalError("init(coder:) has not been implemented")
         }
         
+        /// Portrait hides the title. Landscape keeps the selected title visible.
+        func apply(orientation: Orientation) {
+            self.orientation = orientation
+            titleLabel.isHidden = orientation == .portrait
+            if orientation == .landscape, isSelected {
+                UIView.normalAnimate { [weak self] in
+                    self?.titleLabel.alpha = 1
+                }
+            } else {
+                titleLabel.alpha = 0
+            }
+            titleLabel.snp.remakeConstraints { make in
+                if orientation == .portrait {
+                    make.center.equalToSuperview()
+                    make.size.equalTo(CGSize.zero)
+                } else {
+                    make.trailing.centerY.equalToSuperview()
+                }
+            }
+            symbolView.snp.remakeConstraints { makeSymbolViewConstraints(make: $0, isSelected: isSelected) }
+        }
+        
         private func updateViews(isSelected: Bool) {
-            if isSelected {
+            if orientation == .landscape, isSelected {
                 UIView.normalAnimate { [weak self] in
                     self?.titleLabel.alpha = 1
                 }
@@ -81,8 +109,12 @@ class HomeTabBar: BaseView {
         }
         
         private func makeSymbolViewConstraints(make: ConstraintMaker, isSelected: Bool) {
-            make.leading.centerY.equalToSuperview()
             make.size.equalTo(R.Size.IconSizeMedium)
+            if orientation == .portrait {
+                make.edges.equalToSuperview()
+                return
+            }
+            make.leading.centerY.equalToSuperview()
             if isSelected {
                 make.trailing.equalTo(titleLabel.snp.leading).offset(-R.Size.ContentSpaceTiny)
             } else {
@@ -202,8 +234,20 @@ class HomeTabBar: BaseView {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    /// Rebuilt from the current selection, so assigning the same or opposite value stays consistent.
+    var orientation: Orientation {
+        didSet {
+            guard oldValue != orientation else { return }
+            applyOrientation()
+        }
+    }
+    
+    /// False after a portrait rebuild, so the next landscape pass installs fresh constraints.
+    private var usesLandscapeConstraints = false
+    
+    init(orientation: Orientation = .landscape) {
+        self.orientation = orientation
+        super.init(frame: .zero)
         self.backgroundColor = .clear
         self.layer.cornerRadius = R.Size.HomeTabBarSize.height/2
         if #available(iOS 26.0, tvOS 26.0, *) {
@@ -230,6 +274,11 @@ class HomeTabBar: BaseView {
         }
         
         addSubviews([indicatorView, gamesBar, importBar, settingsBar])
+        if orientation == .portrait {
+            gamesBar.apply(orientation: .portrait)
+            importBar.apply(orientation: .portrait)
+            settingsBar.apply(orientation: .portrait)
+        }
         updateViewsConstraints(isInit: true)
         gamesBar.addTapGesture { [weak self] gesture in
             self?.currentSelection = .games
@@ -273,7 +322,61 @@ class HomeTabBar: BaseView {
         super.layoutSubviews()
     }
     
+    private func applyOrientation() {
+        gamesBar.apply(orientation: orientation)
+        importBar.apply(orientation: orientation)
+        settingsBar.apply(orientation: orientation)
+        updateViewsConstraints()
+        UIView.springAnimate { [weak self] in
+            self?.layoutIfNeeded()
+        }
+    }
+    
     private func updateViewsConstraints(isInit: Bool = false) {
+        if orientation == .portrait {
+            usesLandscapeConstraints = false
+            updatePortraitConstraints()
+            return
+        }
+        if isInit || !usesLandscapeConstraints {
+            installLandscapeConstraints()
+            usesLandscapeConstraints = true
+            // Initial install matches the games-selected spacing. Re-apply when another tab is selected.
+            if !isInit {
+                updateLandscapeConstraints()
+            }
+            return
+        }
+        updateLandscapeConstraints()
+    }
+    
+    private func updatePortraitConstraints() {
+        let bars = [gamesBar, importBar, settingsBar]
+        let spacing = R.Size.ContentSpaceSmall
+        for (index, bar) in bars.enumerated() {
+            bar.snp.remakeConstraints { make in
+                make.leading.equalToSuperview().offset(spacing)
+                make.trailing.equalToSuperview().offset(-spacing)
+                if index == 0 {
+                    make.top.equalToSuperview().offset(spacing)
+                } else {
+                    make.top.equalTo(bars[index - 1].snp.bottom).offset(spacing)
+                    make.height.equalTo(bars[0])
+                }
+                if index == bars.count - 1 {
+                    make.bottom.equalToSuperview().offset(-spacing)
+                }
+            }
+        }
+        indicatorView.layerCornerRadius = R.Size.ItemHeightTiny / 2
+        indicatorView.snp.remakeConstraints { make in
+            guard let selected = bars.first(where: \.isSelected) else { return }
+            make.center.equalTo(selected)
+            make.width.height.equalTo(R.Size.ItemHeightTiny)
+        }
+    }
+    
+    private func installLandscapeConstraints() {
         let contentWidth = R.Size.HomeTabBarSize.width - 3*R.Size.ContentSpaceSmall
         let selectedBarConstraintsWidth = contentWidth * 1/2
         let unselectedBarConstraintsWidth = contentWidth * 1/4
@@ -282,36 +385,44 @@ class HomeTabBar: BaseView {
             make.width.equalTo(bar.isSelected ? selectedBarConstraintsWidth : unselectedBarConstraintsWidth)
         }
         
-        if isInit {
-            let temp = [gamesBar, importBar, settingsBar]
-            for (index, view) in temp.enumerated() {
-                view.snp.makeConstraints { make in
-                    if index == 0 {
-                        make.leading.equalToSuperview().offset(R.Size.ContentSpaceSmall)
-                    } else {
-                        make.leading.equalTo(temp[index-1].snp.trailing).offset(index == 1 ? R.Size.ContentSpaceSmall*1.5 : 0)
-                    }
-                    make.top.bottom.equalToSuperview()
-                    if index == temp.count - 1 {
-                        make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceSmall*0.5)
-                    } else {
-                        makeWidthConstraints(make, view)
-                    }
+        let temp = [gamesBar, importBar, settingsBar]
+        for (index, view) in temp.enumerated() {
+            view.snp.remakeConstraints { make in
+                if index == 0 {
+                    make.leading.equalToSuperview().offset(R.Size.ContentSpaceSmall)
+                } else {
+                    make.leading.equalTo(temp[index-1].snp.trailing).offset(index == 1 ? R.Size.ContentSpaceSmall*1.5 : 0)
+                }
+                make.top.bottom.equalToSuperview()
+                if index == temp.count - 1 {
+                    make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceSmall*0.5)
+                } else {
+                    makeWidthConstraints(make, view)
                 }
             }
-            
-            indicatorView.snp.makeConstraints { make in
-                make.centerY.equalToSuperview()
-                make.height.equalTo(R.Size.ItemHeightTiny)
-                if let view = [gamesBar, importBar, settingsBar].filter({ $0.isSelected }).first {
-                    make.centerX.equalTo(view)
-                    make.width.equalTo(view)
-                }
-                
+        }
+        
+        indicatorView.layerCornerRadius = R.Size.ItemHeightTiny / 2
+        indicatorView.snp.remakeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.height.equalTo(R.Size.ItemHeightTiny)
+            if let view = [gamesBar, importBar, settingsBar].filter({ $0.isSelected }).first {
+                make.centerX.equalTo(view)
+                make.width.equalTo(view)
             }
-            
-        } else {
-            if gamesBar.isSelected {
+        }
+    }
+    
+    private func updateLandscapeConstraints() {
+        let contentWidth = R.Size.HomeTabBarSize.width - 3*R.Size.ContentSpaceSmall
+        let selectedBarConstraintsWidth = contentWidth * 1/2
+        let unselectedBarConstraintsWidth = contentWidth * 1/4
+        
+        func makeWidthConstraints(_ make: ConstraintMaker, _ bar: BarView) {
+            make.width.equalTo(bar.isSelected ? selectedBarConstraintsWidth : unselectedBarConstraintsWidth)
+        }
+        
+        if gamesBar.isSelected {
                 gamesBar.snp.updateConstraints { make in
                     make.leading.equalToSuperview().offset(R.Size.ContentSpaceSmall)
                 }
@@ -360,7 +471,6 @@ class HomeTabBar: BaseView {
                 }
                 
             }
-        }
     }
     
     func nextSelection() {

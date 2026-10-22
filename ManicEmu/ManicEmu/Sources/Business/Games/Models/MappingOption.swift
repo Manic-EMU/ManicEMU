@@ -153,6 +153,9 @@ enum MappingOption: String, CaseIterable {
         case .rewind:
             return GameOption.rewind.icon
             
+        case .slowMotion:
+            return GameOption.slowMotion.icon
+            
         default:
             return .symbol(.questionmark)
         }
@@ -179,6 +182,8 @@ enum MappingOption: String, CaseIterable {
             return "Right Difficulty"
         case .rewind:
             return GameOption.rewind.title
+        case .slowMotion:
+            return GameOption.slowMotion.title
         default:
             return ""
         }

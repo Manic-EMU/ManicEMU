@@ -196,7 +196,7 @@ class GameLandscapeCarouselCell: UICollectionViewCell {
         cardView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             //封面整体上移 底部留给聚焦信息面板
-            make.centerY.equalToSuperview().offset(-Self.infoPanelReserve/2)
+            make.centerY.equalToSuperview().offset(-Self.infoPanelReserve/2 - (UIDevice.isPhoneDuoOuter ? R.Size.ContentSpaceMedium : 0))
             make.size.equalTo(100)
         }
         
@@ -234,7 +234,11 @@ class GameLandscapeCarouselCell: UICollectionViewCell {
         emptyContentStack.isHidden = true
         coverView.isHidden = false
         cardView.snp.updateConstraints { make in
-            make.centerY.equalToSuperview().offset(-Self.infoPanelReserve/2)
+            var centerYOffset = -Self.infoPanelReserve/2 - (UIDevice.isPhoneDuoOuter ? R.Size.ContentSpaceMedium : 0)
+            if #available(iOS 27.1, *), DuoTabletopKit.isTabletopMode {
+                centerYOffset -= R.Size.ContentSpaceMedium
+            }
+            make.centerY.equalToSuperview().offset(centerYOffset)
             make.size.equalTo(cardSize.height)
         }
         coverView.setData(game: game, coverSize: cardSize, style: R.Style.GameCoverStyle)

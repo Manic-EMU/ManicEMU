@@ -38,7 +38,11 @@ class GameInfoNavigationView: BaseView {
         addSubviews([closeButton, gameCover, toolsView])
         
         closeButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).inset(R.Size.ContentSpaceLarge)
+            if UIDevice.isPhoneDuo {
+                make.trailing.equalToSuperview().inset(R.Size.ContentSpaceLarge)
+            } else {
+                make.trailing.equalTo(safeAreaLayoutGuide).inset(R.Size.ContentSpaceLarge)
+            }
             make.centerY.equalToSuperview()
         }
         
@@ -51,6 +55,25 @@ class GameInfoNavigationView: BaseView {
             make.leading.equalTo(safeAreaLayoutGuide).offset(R.Size.ContentSpaceLarge)
             make.centerY.equalToSuperview()
             make.height.equalTo(R.Size.ButtonSmall)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if UIDevice.isPhoneDuo {
+            toolsView.snp.remakeConstraints { make in
+                if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                    if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                        make.leading.equalToSuperview().inset(cameraArea.width)
+                    } else {
+                        make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width)
+                    }
+                } else {
+                    make.leading.equalTo(safeAreaLayoutGuide).offset(R.Size.ContentSpaceLarge)
+                }
+                make.centerY.equalToSuperview()
+                make.height.equalTo(R.Size.ButtonSmall)
+            }
         }
     }
     

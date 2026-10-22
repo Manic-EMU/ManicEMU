@@ -392,7 +392,7 @@ extension UIView {
         case portrait
     }
     
-    var prefferedLayoutStyle: LayoutStyle {
+    var preferredLayoutStyle: LayoutStyle {
         let w = hostingWindow ?? ApplicationSceneDelegate.applicationWindow
         if let w, w.size != .zero {
             if w.size.IsRelativelyWideRectangle {
@@ -406,6 +406,9 @@ extension UIView {
     }
     
     var isWindowHasEnoughSpaceforIpadMultiColumnLayout: Bool {
+        if UIDevice.isPhoneDuoInnerFullScreen {
+            return true
+        }
         guard UIDevice.isPad else { return false }
         if let w = hostingWindow {
             return w.width > 600

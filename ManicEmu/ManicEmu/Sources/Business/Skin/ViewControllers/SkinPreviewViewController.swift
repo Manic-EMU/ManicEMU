@@ -36,12 +36,11 @@ class SkinPreviewViewController: BaseViewController {
         view.addSubview(controlView)
         
         var needToRotate = false
-        let isLandscapeLayoutIPad = UIDevice.isPad && ((UIDevice.isFullScreenIPad(window: window) &&  UIDevice.isLandscape) || window.size.IsRelativelyWideRectangle)
         
         if UIDevice.isPhone || UIDevice.isFullScreenIPad(window: window) {
-            if traits.orientation == .portrait && UIDevice.isLandscape {
+            if traits.orientation == .portrait && window.size.IsRelativelyWideRectangle {
                 needToRotate = true
-            } else if traits.orientation == .landscape && UIDevice.isPortrait {
+            } else if traits.orientation == .landscape && !window.size.IsRelativelyWideRectangle {
                 needToRotate = true
             }
         }
@@ -70,8 +69,17 @@ class SkinPreviewViewController: BaseViewController {
             self?.dismiss(animated: true)
         }
         closeButtonView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
-            make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceLarge)
+            if UIDevice.isPhoneDuoOuter {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.ContentSpaceExtraSmall)/2)
+                } else {
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview().offset(-(UIDevice.isPortrait ? R.Size.iPhoneDuoSafeAreaSize : R.Size.iPhoneDuoOuterCameraEdge))
+            } else {
+                make.top.equalToSuperview().offset(UIDevice.isPhoneDuoSplitView ? R.Size.ContentSpaceLarge : R.Size.ContentInsetTop(window: hostingWindow))
+                make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceLarge)
+            }
         }
     }
 
@@ -106,6 +114,13 @@ class SkinPreviewViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AppDelegate.orientation = R.Config.DefaultOrientation
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        if UIDevice.isPhoneDuo {
+             return true
+        }
+        return super.prefersStatusBarHidden
     }
 }
 

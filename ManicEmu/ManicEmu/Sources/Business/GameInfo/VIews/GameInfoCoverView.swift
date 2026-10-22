@@ -110,7 +110,7 @@ class GameInfoCoverView: BaseView {
 }
 
 extension GameInfoCoverView: ViewTransition {
-    func viewWillTransition() {
+    func viewAlongsideTransition() {
         if UIDevice.isPhone {
             updateCoverContainerViewConstraints()
         }

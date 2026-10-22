@@ -23,8 +23,8 @@ class LandscapeFilterView: UIVisualEffectView {
         let iconView = ASIconView(.symbolImage(R.image.app_title()))
         view.addSubview(iconView)
         iconView.snp.makeConstraints { make in
-            make.leading.equalTo(logoView.snp.trailing).offset(R.Size.ContentSpaceSmall)
-            make.trailing.equalToSuperview().inset(R.Size.ContentSpaceSmall)
+            make.leading.equalTo(logoView.snp.trailing).offset(R.Size.ContentSpaceExtraExtraSmall)
+            make.trailing.equalToSuperview().inset(R.Size.ContentSpaceExtraExtraSmall)
             make.height.equalTo(10)
             make.centerY.equalToSuperview()
         }

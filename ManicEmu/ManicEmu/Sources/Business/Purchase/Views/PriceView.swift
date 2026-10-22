@@ -22,6 +22,9 @@ class PriceView: BaseView {
         view.isFocusable = true
         view.contentInset = .insets(top: R.Size.ContentSpaceHuge,
                                     bottom: R.Size.ContentInsetBottom(window: hostingWindow))
+        if UIDevice.isPhoneDuo {
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     
@@ -73,7 +76,9 @@ class PriceView: BaseView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, env in
             
             //item布局
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -92,7 +97,7 @@ class PriceView: BaseView {
             section.boundarySupplementaryItems.append(footerItem)
             
             return section
-        }
+        }, configuration: configuration)
         return layout
     }
 }

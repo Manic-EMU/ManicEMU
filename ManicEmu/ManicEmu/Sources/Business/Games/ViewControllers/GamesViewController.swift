@@ -27,7 +27,7 @@ class GamesViewController: BaseViewController {
         
         view.scrollToTopView.addTapGesture { [weak self] gesture in
             guard let self else { return }
-            if UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape {
+            if UIDevice.isPhone && self.view.preferredLayoutStyle == .landscape {
                 self.gamesListView?.scrollToTop()
             }
         }
@@ -95,7 +95,7 @@ class GamesViewController: BaseViewController {
         view.needsUpdateToolViewVisible = { [weak self] show in
             guard let self = self,
                   UIDevice.isPhone,
-                  self.view.prefferedLayoutStyle == .portrait,
+                  self.view.preferredLayoutStyle == .portrait,
                   self.gamesToolView.isHidden != !show else { return }
             
             self.gamesListView?.snp.updateConstraints { make in
@@ -121,7 +121,7 @@ class GamesViewController: BaseViewController {
             if empty {
                 self.gamesToolView.stopSearch()
             }
-            if UIDevice.isPhone && self.view.prefferedLayoutStyle == .landscape {
+            if UIDevice.isPhone && self.view.preferredLayoutStyle == .landscape {
                 self.gamesToolView.isHidden = true
             } else {
                 self.gamesToolView.isHidden = empty
@@ -155,7 +155,7 @@ class GamesViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.updateViews(isLandscape: view.prefferedLayoutStyle == .landscape)
+        self.updateViews(isLandscape: view.preferredLayoutStyle == .landscape)
         //处理Launch Link
         if let launchGameID = ApplicationSceneDelegate.launchGameID {
             ApplicationSceneDelegate.launchGameID = nil
@@ -205,7 +205,7 @@ class GamesViewController: BaseViewController {
     }
     
     override func handleScreenPanGesture(edges: UIRectEdge, gesture: UIScreenEdgePanGestureRecognizer) {
-        if view.prefferedLayoutStyle == .portrait {
+        if view.preferredLayoutStyle == .portrait {
             if edges == .left {
                 showSideMenu(leftSide: true)
             } else if edges == .right {
@@ -345,6 +345,7 @@ class GamesViewController: BaseViewController {
                 make.bottom.equalTo(portraitListView.snp.top).offset(5)
                 make.height.equalTo(10)
             }
+            gamesSeperatorView.isHidden = false
             if gameListLandscapeView != nil {
                 view.layoutIfNeeded()
             }
@@ -372,12 +373,12 @@ class GamesViewController: BaseViewController {
     }
     
     func updateLandscapeBackgroundIfNeed() {
-        guard view.prefferedLayoutStyle == .landscape else { return }
+        guard view.preferredLayoutStyle == .landscape else { return }
         gameListLandscapeView?.updateFocusedGameInfo()
     }
     
     func scrollToLastGame() {
-        if view.prefferedLayoutStyle == .landscape {
+        if view.preferredLayoutStyle == .landscape {
             gameListLandscapeView?.scrollToLastGame()
         } else {
             gamesListView?.scrollToLastGame()
@@ -385,7 +386,7 @@ class GamesViewController: BaseViewController {
     }
     
     func scrollToFirstGame() {
-        if view.prefferedLayoutStyle == .landscape {
+        if view.preferredLayoutStyle == .landscape {
             gameListLandscapeView?.scrollToFirstGame()
         } else {
             gamesListView?.scrollToFirstGame()

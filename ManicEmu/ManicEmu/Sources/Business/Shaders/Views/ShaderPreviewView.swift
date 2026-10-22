@@ -58,15 +58,6 @@ class ShaderPreviewView: RoundAndBorderView {
         }
         
         addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.width.equalTo(imageView.snp.height).multipliedBy(self.dimensions.width/self.dimensions.height)
-            if self.dimensions.width >= self.dimensions.height {
-                make.top.bottom.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-            } else {
-                make.leading.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
-            }
-        }
         
         addSubview(changeImageButton)
         changeImageButton.snp.makeConstraints { make in
@@ -74,6 +65,19 @@ class ShaderPreviewView: RoundAndBorderView {
         }
         
         updatePreview()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.snp.remakeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(imageView.snp.height).multipliedBy(self.dimensions.width/self.dimensions.height)
+            if size.IsRelativelyWideRectangle {
+                make.top.bottom.equalToSuperview().inset(R.Size.ContentSpaceMedium)
+            } else {
+                make.leading.trailing.equalToSuperview().inset(R.Size.ContentSpaceMedium)
+            }
+        }
     }
     
     @MainActor required init?(coder: NSCoder) {

@@ -64,14 +64,14 @@ class FeaturesCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if Device.size().rawValue < Size.screen5_8Inch.rawValue {
-            if prefferedLayoutStyle == .landscape {
+        if Device.size().rawValue < Size.screen5_8Inch.rawValue || UIDevice.isPhoneDuoSplitView {
+            if preferredLayoutStyle == .landscape {
                 iconImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
             } else {
                 iconImageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             }
         } else if UIDevice.isPad {
-            if prefferedLayoutStyle == .landscape {
+            if preferredLayoutStyle == .landscape {
                 iconImageView.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
             } else {
                 iconImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -224,9 +224,9 @@ class FeaturesCell: UICollectionViewCell {
         let animation = CABasicAnimation(keyPath: "position.x")
         let windowSize = hostingWindow?.size ?? R.Size.ApplicationWindowSize
         if UIDevice.isPad {
-            offset = (prefferedLayoutStyle == .landscape ? windowSize.height * 0.9 * 9 / 16 : windowSize.width * 0.6)  - iconImageView.width
+            offset = (preferredLayoutStyle == .landscape ? windowSize.height * 0.9 * 9 / 16 : windowSize.width * 0.6)  - iconImageView.width
         } else {
-            if prefferedLayoutStyle == .landscape {
+            if preferredLayoutStyle == .landscape {
                 offset = windowSize.width/2 - iconImageView.width
             } else {
                 offset = windowSize.width - iconImageView.width

@@ -53,16 +53,19 @@ class SkinSettingsView: BaseView {
     private var isPortraitSkinPage: Bool {
         segmentView.segment.index == 0
     }
-    private let defaultTraits: ControllerSkin.Traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.ApplicationWindowSize)))
-    private var currentTraits: ControllerSkin.Traits {
-        isPortraitSkinPage ? portraitTraits : landscapeTraits
+    private let defaultTraits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.ApplicationWindowSize)))
+    
+    private var defaultPortraitTraits: ControllerSkin.Traits {
+        var t = defaultTraits
+        t.orientation = .portrait
+        return t
     }
-    private lazy var portraitTraits: ControllerSkin.Traits = {
-        ControllerSkin.Traits(device: self.defaultTraits.device, displayType: self.defaultTraits.displayType, orientation: .portrait)
-    }()
-    private lazy var landscapeTraits: ControllerSkin.Traits = {
-        ControllerSkin.Traits(device: self.defaultTraits.device, displayType: self.defaultTraits.displayType, orientation: .landscape)
-    }()
+    
+    private var defaultLandscapeTraits: ControllerSkin.Traits {
+        var t = defaultTraits
+        t.orientation = .landscape
+        return t
+    }
     
     private var skinsUpdateToken: NotificationToken? = nil
     
@@ -107,7 +110,7 @@ class SkinSettingsView: BaseView {
     private var skinRenderGeneration = 0
     
     private var collectionViewContentInsetBottom: CGFloat {
-        R.Size.ContentInsetBottom(window: hostingWindow) + ((UIDevice.isPad && !showClose) ? R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0)
+        R.Size.ContentInsetBottom(window: hostingWindow) + (((UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen) && !showClose) ? R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0)
     }
     
     private lazy var navigation: ASListPage.Navigation = {
@@ -365,7 +368,7 @@ class SkinSettingsView: BaseView {
                    flexSkin.isFlexSkin {
                     //flex edit
                     let vc = FlexSkinSettingViewController(skin: flexSkin,
-                                                           traits: self.currentTraits,
+                                                           traits: self.currentTraits(for: flexSkin),
                                                            images: [],
                                                            gameId: self.currentGames.count == 1 ? self.currentGames.first!.id : nil,
                                                            gameType: self.gameType)
@@ -494,7 +497,7 @@ class SkinSettingsView: BaseView {
             guard let self else { return nil }
             
             var column: CGFloat = self.isPortraitSkinPage ? 2.0 : 1.0
-            if UIDevice.isPad, self.prefferedLayoutStyle == .landscape {
+            if UIDevice.isPad, self.preferredLayoutStyle == .landscape {
                 column = self.isPortraitSkinPage ? 3.0 : 2.0
             }
             
@@ -502,7 +505,11 @@ class SkinSettingsView: BaseView {
             
             let screenRation: CGFloat
             if let screen = self.hostingWindow?.screen {
-                screenRation = screen.bounds.size.maxDimension/screen.bounds.size.minDimension
+                if UIDevice.isPhoneDuo {
+                    screenRation = 4/3
+                } else {
+                    screenRation = screen.bounds.size.maxDimension/screen.bounds.size.minDimension
+                }
             } else {
                 screenRation = R.Size.ApplicationWindowSize.maxDimension/R.Size.ApplicationWindowSize.minDimension
             }
@@ -589,12 +596,25 @@ class SkinSettingsView: BaseView {
                 if skin.skinType == .playcase {
                     controllerSkin.isPlayCase = true
                     skin.controllerSkin = controllerSkin
-                }
-                if controllerSkin.supports(portraitTraits) {
-                    portraitSkins.append(skin)
-                }
-                if controllerSkin.supports(landscapeTraits) {
-                    landscapeSkins.append(skin)
+                    if controllerSkin.supports(defaultPortraitTraits) {
+                        skin.previewPortraitTraits = defaultPortraitTraits
+                        portraitSkins.append(skin)
+                    }
+                    
+                    if controllerSkin.supports(defaultLandscapeTraits) {
+                        skin.previewLandscapeTraits = defaultLandscapeTraits
+                        landscapeSkins.append(skin)
+                    }
+                } else {
+                    if let traits = controllerSkin.supportedTraits(for: defaultPortraitTraits) {
+                        skin.previewPortraitTraits = traits
+                        portraitSkins.append(skin)
+                    }
+                    
+                    if let traits = controllerSkin.supportedTraits(for: defaultLandscapeTraits) {
+                        skin.previewLandscapeTraits = traits
+                        landscapeSkins.append(skin)
+                    }
                 }
             }
         }
@@ -683,8 +703,8 @@ class SkinSettingsView: BaseView {
         var unsupportSkinNames: String = ""
         for skin in skins {
             if let controllerSkin = ControllerSkin(fileURL: skin.fileURL) {
-                if !controllerSkin.supports(landscapeTraits) &&
-                    !controllerSkin.supports(portraitTraits) {
+                if controllerSkin.supportedTraits(for: defaultPortraitTraits) == nil &&
+                    controllerSkin.supportedTraits(for: defaultLandscapeTraits) == nil {
                     //获取不支持当前设备的皮肤
                     unsupportSkins.append(skin)
                     unsupportSkinNames.append(controllerSkin.name + "\n")
@@ -750,6 +770,14 @@ class SkinSettingsView: BaseView {
         }
         return false
     }
+    
+    private func currentTraits(for skin: Skin) -> ControllerSkin.Traits {
+        if isPortraitSkinPage {
+            return skin.previewPortraitTraits ?? defaultPortraitTraits
+        } else {
+            return skin.previewLandscapeTraits ?? defaultLandscapeTraits
+        }
+    }
 }
 
 extension SkinSettingsView: UICollectionViewDataSource {
@@ -763,7 +791,7 @@ extension SkinSettingsView: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withClass: SkinCollectionViewCell.self, for: indexPath)
             let skin = currentSkins[indexPath.row]
-            let traits = currentTraits
+            let traits = currentTraits(for: skin)
             var isUsing: Bool = false
             if let currentUsingIndex, currentUsingIndex == indexPath.row {
                 isUsing = true

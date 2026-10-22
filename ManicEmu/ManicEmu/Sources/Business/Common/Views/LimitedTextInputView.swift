@@ -219,16 +219,18 @@ struct LimitedTextInputView {
             }
             
             alert.set(customView: containerView).snp.makeConstraints { make in
-                var width = 0.0
-                if UIDevice.isPad {
-                    width = 375
-                } else {
-                    width = R.Size.SheetWindowMinSize.width
-                    if proHUDLayoutStyle() == .portrait {
-                        width -= R.Size.ContentSpaceHuge*2
+                if !UIDevice.isPhoneDuoCompactWidth {
+                    var width = 0.0
+                    if UIDevice.isPad {
+                        width = 375
+                    } else {
+                        width = R.Size.SheetWindowMinSize.width
+                        if proHUDLayoutStyle() == .portrait {
+                            width -= R.Size.ContentSpaceHuge*2
+                        }
                     }
+                    make.width.equalTo(width)
                 }
-                make.width.equalTo(width)
                 make.edges.equalToSuperview()
             }
         }

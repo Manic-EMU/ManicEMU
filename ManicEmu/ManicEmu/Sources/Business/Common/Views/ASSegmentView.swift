@@ -41,7 +41,7 @@ class ASSegmentView: BaseView {
         clipsToBounds = true
         applySegmentAppearance()
         
-        indicatorView.clipsToBounds = true
+        indicatorView.masksToBounds = true
         addSubview(indicatorView)
         
         containerView.axis = .horizontal

@@ -21,10 +21,16 @@ class PurchaseViewController: BaseViewController {
     
     init(featuresType: FeaturesType = .advance) {
         self.featuresType = featuresType
-        super.init(nibName: nil, bundle: nil)
+        if UIDevice.isPhoneDuoOuter || UIDevice.isPhoneDuoSplitView {
+            super.init(fullScreen: true)
+        } else {
+            super.init(nibName: nil, bundle: nil)
+        }
         
         //禁止下滑关闭控制器
         isModalInPresentation = true
+        
+        
     }
     
     @MainActor required init?(coder: NSCoder) {

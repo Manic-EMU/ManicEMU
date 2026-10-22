@@ -164,6 +164,10 @@ class RetroAchievementsListCell: UICollectionViewCell {
             view.dataSource = self
             view.delegate = self
             view.isFocusable = true
+            if UIDevice.isPhoneDuo {
+                view.contentInsetAdjustmentBehavior = .never
+                view.insetsLayoutMarginsFromSafeArea = false
+            }
             return view
         }()
         
@@ -192,12 +196,14 @@ class RetroAchievementsListCell: UICollectionViewCell {
         }
         
         private func createLayout() -> UICollectionViewLayout {
-            let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+            let configuration = UICollectionViewCompositionalLayoutConfiguration()
+            configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+            let layout = UICollectionViewCompositionalLayout(sectionProvider: { [weak self] sectionIndex, env in
                 guard let self else { return nil }
                 var column = 4.0
-                if UIDevice.isPhone && self.prefferedLayoutStyle == .landscape {
+                if UIDevice.isPhone && self.preferredLayoutStyle == .landscape {
                     column = 8.0
-                } else if UIDevice.isPad && self.prefferedLayoutStyle == .landscape {
+                } else if UIDevice.isPad && self.preferredLayoutStyle == .landscape {
                     column = 6.0
                 }
                 let cellSize = (env.container.contentSize.width - R.Size.ContentSpaceHuge*2 - R.Size.ContentSpaceSmall*(column-1))/column
@@ -210,7 +216,7 @@ class RetroAchievementsListCell: UICollectionViewCell {
                 section.interGroupSpacing = R.Size.ContentSpaceSmall
                 section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 24, trailing: 24)
                 return section
-            }
+            }, configuration: configuration)
             return layout
         }
         

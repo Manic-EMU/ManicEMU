@@ -65,20 +65,7 @@ class PlayViewController: GameViewController {
     //游戏控制器，如果游戏在运行中则有值，没有进行游戏的时候则为nil
     static weak var currentPlayViewController: PlayViewController? = nil
     //屏幕上的功能按钮容器
-    class ShortcutButtonContainerView: UIView {
-        override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-            // Iterate through all subviews and check whether the click is on a subview
-            for subview in subviews.reversed() {
-                let convertedPoint = subview.convert(point, from: self)
-                if subview.bounds.contains(convertedPoint) {
-                    return super.hitTest(point, with: event)
-                }
-            }
-            // Click not on any subview, return nil to let the click pass through.
-            return nil
-        }
-    }
-    private var shortcutsButtonContainer = ShortcutButtonContainerView()
+    private var shortcutsButtonContainer: ShortcutButtonContainerView
     //渲染视图
     private var gameMetalView: UIView? = nil
     //3DS核心
@@ -156,21 +143,40 @@ class PlayViewController: GameViewController {
     private var skinSwitchBindDatas = [String: Bool]()
     
     static func startGame(game: Game, saveState: GameSaveState? = nil, in scene: UIWindowScene?) {
+        var tabletopPaused = false
+        var holdTabletopPause = false
+        if #available(iOS 27.1, *) {
+            tabletopPaused = DuoTabletopKit.pauseTabletopForPlay()
+        }
+        // In-app paths that never present the game resume Tabletop when this function returns.
+        // A real launch, or an external emulator, sets `holdTabletopPause` so the defer leaves it paused.
+        func releaseTabletopIfNotPlaying() {
+            guard tabletopPaused, !holdTabletopPause else { return }
+            tabletopPaused = false
+            if #available(iOS 27.1, *) {
+                DuoTabletopKit.resumeTabletopIfStillPartiallyOpen()
+            }
+        }
+        defer { releaseTabletopIfNotPlaying() }
+        
         if game.isUrlGame {
             game.handleTapAction(forceQuick: true, in: scene)
             return
         }
-        if game.gameType == .ns {
-            EmulatorInteractionKit.startGame(type: .meloNX, id: game.id)
-            return
-        } else if game.gameType == .xbox360 {
-            EmulatorInteractionKit.startGame(type: .xeniOS, id: game.id)
-            return
-        } else if game.gameType == .xbox {
-            EmulatorInteractionKit.startGame(type: .dukeX, id: game.id)
-            return
-        } else if game.gameType == .ps2 {
-            EmulatorInteractionKit.startGame(type: .armsx2, id: game.id)
+        if game.gameType == .ns || game.gameType == .xbox360 || game.gameType == .xbox || game.gameType == .ps2 {
+            holdTabletopPause = true
+            if #available(iOS 27.1, *) {
+                DuoTabletopKit.markTabletopResumeWhenActive()
+            }
+            if game.gameType == .ns {
+                EmulatorInteractionKit.startGame(type: .meloNX, id: game.id)
+            } else if game.gameType == .xbox360 {
+                EmulatorInteractionKit.startGame(type: .xeniOS, id: game.id)
+            } else if game.gameType == .xbox {
+                EmulatorInteractionKit.startGame(type: .dukeX, id: game.id)
+            } else {
+                EmulatorInteractionKit.startGame(type: .armsx2, id: game.id)
+            }
             return
         }
         
@@ -187,6 +193,10 @@ class PlayViewController: GameViewController {
                     return
                 }
                 func launchGameByDismissOtherVC() {
+                    holdTabletopPause = true
+                    if #available(iOS 27.1, *) {
+                        DuoTabletopKit.pauseTabletopForPlay()
+                    }
                     //Clear the image memory cache before starting the game.
                     KingfisherManager.shared.cache.clearMemoryCache()
                     
@@ -317,6 +327,7 @@ class PlayViewController: GameViewController {
     
     private init(game: Game, saveState: GameSaveState? = nil) {
         manicGame = game
+        shortcutsButtonContainer = ShortcutButtonContainerView(game: game)
         super.init()
         Log.debug("⚠️ \(ObjectIdentifier(self)) init")
         loadSaveState = saveState
@@ -714,7 +725,7 @@ class PlayViewController: GameViewController {
         notificationTokens.append(center.addObserver(forName: R.NotificationName.ShortcutsChange, object: nil, queue: .main, using: { [weak self] notification in
             //快捷键变更
             guard let self else { return }
-            self.updateShortcutsButton()
+            self.updateShortcuts()
         }))
         notificationTokens.append(center.addObserver(forName: Notification.Name(rawValue: "FirmwareNoSupportNotification"), object: nil, queue: .main) { [weak self] notification in
             guard let self else { return }
@@ -763,46 +774,46 @@ class PlayViewController: GameViewController {
         //添加功能按钮容器按钮
         shortcutsButtonContainer.isHidden = true
         view.addSubview(shortcutsButtonContainer)
-        shortcutsButtonContainer.snp.makeConstraints { make in
-            if manicGame.gameType == .n64 && UIDevice.isPad {
-                make.top.equalTo(gameView.snp.bottom).offset(-9)
-            } else if manicGame.gameType == .j2me ||
-                        manicGame.gameType == .gba || manicGame.gameType == .wsc {
-                make.top.equalTo(gameView.snp.bottom).offset(3)
-            } else if manicGame.gameType.usesDOSSkinLayout {
-                if UIDevice.isSmallScreenPhone {
-                    make.top.equalTo(gameView.snp.bottom).offset(17)
-                } else if UIDevice.isProMaxPhone {
-                    make.top.equalTo(gameView.snp.bottom).offset(22)
-                } else {
-                    make.top.equalTo(gameView.snp.bottom).offset(19)
-                }
-            } else if manicGame.gameType == .symbian, UIDevice.isPhone {
-                make.top.equalTo(gameView.snp.bottom).offset(4)
-            } else if manicGame.isDolphinCore || manicGame.gameType == .flash {
-                make.top.equalTo(gameView.snp.bottom).offset(5)
-            } else if manicGame.gameType == .pce {
-                make.top.equalTo(gameView.snp.bottom).offset(R.Size.ContentSpaceMedium)
-            } else {
-                make.top.equalTo(gameView.snp.bottom)
-            }
-            
-            make.leading.trailing.equalTo(gameView)
-            
-            if manicGame.gameType == .j2me ||
-                manicGame.gameType.usesDOSSkinLayout ||
-                (manicGame.gameType == .symbian && UIDevice.isPhone) ||
-                manicGame.gameType == .pce ||
-                manicGame.gameType == .gba ||
-                manicGame.gameType == .wsc {
-                make.height.equalTo(R.Size.ItemHeightMicro)
-            } else if manicGame.gameType == .ngp {
-                make.height.equalTo(R.Size.ItemHeightTiny)
-            } else {
-                make.height.equalTo(R.Size.ItemHeightMedium)
-            }
-            
-        }
+//        shortcutsButtonContainer.snp.makeConstraints { make in
+//            if manicGame.gameType == .n64 && UIDevice.isPad {
+//                make.top.equalTo(gameView.snp.bottom).offset(-9)
+//            } else if manicGame.gameType == .j2me ||
+//                        manicGame.gameType == .gba || manicGame.gameType == .wsc {
+//                make.top.equalTo(gameView.snp.bottom).offset(3)
+//            } else if manicGame.gameType.usesDOSSkinLayout {
+//                if UIDevice.isStandardPhone {
+//                    make.top.equalTo(gameView.snp.bottom).offset(17)
+//                } else if UIDevice.isProMaxPhone {
+//                    make.top.equalTo(gameView.snp.bottom).offset(22)
+//                } else {
+//                    make.top.equalTo(gameView.snp.bottom).offset(19)
+//                }
+//            } else if manicGame.gameType == .symbian, UIDevice.isPhone {
+//                make.top.equalTo(gameView.snp.bottom).offset(4)
+//            } else if manicGame.isDolphinCore || manicGame.gameType == .flash {
+//                make.top.equalTo(gameView.snp.bottom).offset(5)
+//            } else if manicGame.gameType == .pce {
+//                make.top.equalTo(gameView.snp.bottom).offset(R.Size.ContentSpaceMedium)
+//            } else {
+//                make.top.equalTo(gameView.snp.bottom)
+//            }
+//            
+//            make.leading.trailing.equalTo(gameView)
+//            
+//            if manicGame.gameType == .j2me ||
+//                manicGame.gameType.usesDOSSkinLayout ||
+//                (manicGame.gameType == .symbian && UIDevice.isPhone) ||
+//                manicGame.gameType == .pce ||
+//                manicGame.gameType == .gba ||
+//                manicGame.gameType == .wsc {
+//                make.height.equalTo(R.Size.ItemHeightMicro)
+//            } else if manicGame.gameType == .ngp {
+//                make.height.equalTo(R.Size.ItemHeightTiny)
+//            } else {
+//                make.height.equalTo(R.Size.ItemHeightMedium)
+//            }
+//            
+//        }
         //设置外设控制器
         updateExternalGameController()
         // Load default core config after JIT is ready (sideload waits for CS_DEBUGGED first).
@@ -890,6 +901,11 @@ class PlayViewController: GameViewController {
         removeExternalGameControllerReceivers()
         PlayViewController.currentPlayViewController = nil
         PlayViewController.refreshExternalInputSink()
+        if isBeingDismissed || isMovingFromParent {
+            if #available(iOS 27.1, *) {
+                DuoTabletopKit.resumeTabletopAfterPlayIfNeeded()
+            }
+        }
         
         //发送结束游戏通知
         NotificationCenter.default.post(name: R.NotificationName.StopPlayGame, object: nil)
@@ -953,6 +969,9 @@ class PlayViewController: GameViewController {
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
+        if manicGame.isLibretroType, !LibretroCore.sharedInstance().isCoreRunning() {
+            return
+        }
         OrientationLockPin.resistPortraitTransitionIfNeeded(to: size)
         let fromSize = R.Size.ApplicationWindowSize
         let toSize = size
@@ -1241,12 +1260,12 @@ extension PlayViewController {
                 }
             } else {
                 pauseEmulationIfNeed()
-                if UIDevice.isPhone && view.prefferedLayoutStyle == .portrait {
-                    var prefferedMenuHeight = view.height - gameView.frame.maxY
-                    if prefferedMenuHeight < R.Size.ApplicationWindowSize.height/3 {
-                        prefferedMenuHeight = R.Size.SheetWindowMaxSize.height/2
+                if UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen && view.preferredLayoutStyle == .portrait {
+                    var preferredMenuHeight = view.height - gameView.frame.maxY
+                    if preferredMenuHeight < R.Size.ApplicationWindowSize.height/3 {
+                        preferredMenuHeight = R.Size.SheetWindowMaxSize.height/2
                     }
-                    GameOptionsView.MaxHeightForGaming = max(prefferedMenuHeight, R.Size.SheetWindowMinSize.height)
+                    GameOptionsView.MaxHeightForGaming = max(preferredMenuHeight, R.Size.SheetWindowMinSize.height)
                 }
                 GameOptionsView.show(scene: .gaming, games: [manicGame], hideCompletion: { [weak self] option in
                     guard let self else { return }
@@ -2458,7 +2477,7 @@ extension PlayViewController {
             }
             
             if let result = Prefference.defalut.getPrefference(kind: .skin,
-                                                               storeKey: .orientationKey(gameId: manicGame.id, isLandScape: view.prefferedLayoutStyle == .landscape),
+                                                               storeKey: .orientationKey(gameId: manicGame.id, isLandScape: view.preferredLayoutStyle == .landscape),
                                                                bestEfforts: true),
                let skinId = result.skinValue?.skinId,
                let skin = Database.realm.object(ofType: Skin.self, forPrimaryKey: skinId),
@@ -2527,10 +2546,7 @@ extension PlayViewController {
         //尝试加载滤镜
         updateFilter()
         //尝试添加屏幕按钮
-        updateShortcutsButton()
-        if manicGame.gameType == .ds || (manicGame.gameType == ._3ds && !manicGame.isAzaharArticBase) || (manicGame.gameType.usesDOSSkinLayout && UIDevice.isPad) {
-            updateShortcutButtonContainer()
-        }
+        updateShortcuts()
         //更新3DS画面视图
         updateCitra3DSViews()
         //更新JGenesis画面
@@ -2700,172 +2716,188 @@ extension PlayViewController {
         }
     }
     
-    private func updateShortcutsButton() {
-        shortcutsButtonContainer.subviews.forEach { $0.removeFromSuperview() }
-        if (manicGame.gameType == ._3ds && UIDevice.isPad) || manicGame.isAzaharArticBase {
-            return
-        }
-        if let hostingWindow, UIDevice.isWindowAppIPad(window: hostingWindow) {
-            return 
-        }
-        if let controllerSkin = controllerView.controllerSkin {
-            if let skin = Database.realm.objects(Skin.self).first(where: { $0.identifier == controllerSkin.identifier }) {
-                if skin.supportShortcut {
-                    //当前使用的是默认皮肤 则添加功能按钮
-                    var shortcuts = Prefference.defalut.getPrefference(kind: .gameShortcut,
-                                                                       storeKey: .game(gameId: manicGame.id),
-                                                                       bestEfforts: true)?.gameShortcutValue ?? GameOption.defaultShortcutOptions(for: manicGame)
-                    let availableOptions = Set(GameOption.availableOptions(game: manicGame, scene: .gaming))
-                    shortcuts = shortcuts.filter({ availableOptions.contains($0) })
-                    
-                    
-                    guard shortcuts.count > 0 else { return }
-                    let functionButtonCount = shortcuts.count
-                    for (index, shortcut) in shortcuts.enumerated() {
-                        var iconColor = UIColor.white.withAlphaComponent(0.25)
-                        if (manicGame.gameType == .ds && UIDevice.isPad) ||
-                            manicGame.gameType == .wii ||
-                            manicGame.gameType == .ngc ||
-                            (manicGame.gameType == .pce && view.prefferedLayoutStyle == .portrait) ||
-                            manicGame.gameType.usesDOSSkinLayout ||
-                            manicGame.gameType == .wsc {
-                            iconColor = .black.withAlphaComponent(0.25)
-                        }
-                        let buttonContainerView = UIView()
-                        let button = ASButtonView(.iconOnlyWithSmallSize(icon: shortcut.icon.updateColorsIfNeed(colors: [iconColor], forceUpdate: true),
-                                                                         background: .clear))
-                        button.didTapButton = { [weak self] in
-                            guard let self, shortcut != .rewind else { return }
-                            shortcut.showSecondPromptIfNeed(continued: {
-                                shortcut.performAction(with: [self.manicGame],
-                                                       in: self.hostingWindowScene,
-                                                       performImmediately: true)
-                            })
-                        }
-                        button.didLongPressButton = { [weak self] state in
-                            guard let self else { return }
-                            var mapping: MappingOption? = nil
-                            if shortcut == .fastForward {
-                                mapping = .fastForward2x
-                            } else if shortcut == .rewind {
-                                mapping = .rewind
-                            } else {
-                                mapping = MappingOption.GameOptionMappings.key(forValue: shortcut)
-                            }
-                            guard let mapping else { return }
-                            let input = AnyInput(stringValue: mapping.rawValue,
-                                                 intValue: 1,
-                                                 type: .controller(.controllerSkin))
-                            if state == .began {
-                                self.gameController(self.controllerView,
-                                                    didActivate:input,
-                                                    value: 1)
-                            } else if state == .cancelled || state == .ended {
-                                self.gameController(self.controllerView,
-                                                    didDeactivate: input)
-                            }
-                        }
-                        buttonContainerView.addSubview(button)
-                        button.snp.makeConstraints { make in
-                            make.center.equalToSuperview()
-                        }
-                        shortcutsButtonContainer.addSubview(buttonContainerView)
-                        buttonContainerView.snp.makeConstraints { make in
-                            if manicGame.gameType == .ds || manicGame.gameType == ._3ds {
-                                if UIDevice.isPhone {
-                                    make.width.equalTo(31)
-                                    make.height.equalToSuperview().dividedBy(2)
-                                    if index == 0 {
-                                        make.leading.equalToSuperview()
-                                        make.top.equalToSuperview()
-                                    } else if index == 1 {
-                                        make.leading.equalToSuperview()
-                                        make.top.equalTo(shortcutsButtonContainer.subviews[index - 1].snp.bottom)
-                                    } else if index == 2 {
-                                        make.trailing.equalToSuperview()
-                                        make.top.equalToSuperview()
-                                    } else if index == 3 {
-                                        make.trailing.equalToSuperview()
-                                        make.top.equalTo(shortcutsButtonContainer.subviews[index - 1].snp.bottom)
-                                    }
-                                } else {
-                                    make.width.equalTo(50)
-                                    make.top.bottom.equalToSuperview()
-                                    if index == 0 {
-                                        make.leading.equalToSuperview()
-                                    } else if index == 1 {
-                                        make.leading.equalTo(shortcutsButtonContainer.subviews[index-1].snp.trailing)
-                                    } else if index == 2 {
-                                        make.trailing.equalToSuperview().inset(50)
-                                    } else if index == 3 {
-                                        make.trailing.equalToSuperview()
-                                    }
-                                }
-                            } else {
-                                if index == 0 {
-                                    make.leading.equalToSuperview()
-                                } else {
-                                    make.leading.equalTo(shortcutsButtonContainer.subviews[index-1].snp.trailing)
-                                }
-                                make.top.bottom.equalToSuperview()
-                                if index == functionButtonCount-1 && functionButtonCount == R.Numbers.GameFunctionButtonCount {
-                                    make.trailing.equalToSuperview()
-                                }
-                                make.width.equalToSuperview().dividedBy(R.Numbers.GameFunctionButtonCount)
-                            }
-                        }
-                        
-                    }
-                }
-            }
+    private func updateShortcuts() {
+        if let controllerSkin = controllerView.controllerSkin as? ControllerSkin {
+            shortcutsButtonContainer.updateControllerSkin(controllerSkin,
+                                                          beginLongPress: { [weak self] input in
+                guard let self else { return }
+                self.gameController(self.controllerView,
+                                    didActivate:input,
+                                    value: 1)
+            }, endLongPress: { [weak self] input in
+                guard let self else { return }
+                self.gameController(self.controllerView,
+                                    didDeactivate: input)
+            })
         }
     }
     
-    private func updateShortcutButtonContainer() {
-        if (manicGame.gameType == .ds || (UIDevice.isPhone && manicGame.gameType == ._3ds)) &&  UIDevice.isPhone {
-            shortcutsButtonContainer.snp.remakeConstraints { make in
-                if gameViews.count > 1 {
-                    //iPhone ds布局比较特殊
-                    if view.prefferedLayoutStyle == .landscape {
-                        make.leading.equalTo(gameViews[0]).inset(-33)
-                        make.trailing.equalTo(gameViews[1]).inset(-33)
-                        make.top.equalToSuperview()
-                    } else {
-                        make.leading.trailing.equalTo(gameViews[1]).inset(-33)
-                        make.top.equalTo(gameViews[1])
-                    }
-                    
-                    if manicGame.gameType == ._3ds {
-                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard {
-                            //小屏幕
-                            make.height.equalTo(80)
-                        } else {
-                            //大屏幕
-                            make.height.equalTo(96)
-                        }
-                    } else {
-                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard, view.prefferedLayoutStyle == .portrait {
-                            make.height.equalTo(87)
-                        } else {
-                            make.height.equalTo(113)
-                        }
-                    }
-                }
-            }
-        } else if manicGame.gameType.usesDOSSkinLayout, UIDevice.isPad {
-            shortcutsButtonContainer.snp.updateConstraints { make in
-                make.top.equalTo(gameView.snp.bottom).offset(view.prefferedLayoutStyle == .landscape ? 30 : 40)
-            }
-        } else if manicGame.gameType == .ds, UIDevice.isPad {
-            shortcutsButtonContainer.snp.updateConstraints { make in
-                make.top.equalTo(gameView.snp.bottom).offset(view.prefferedLayoutStyle == .landscape ? 25 : 40)
-            }
-        } else if manicGame.gameType == .pm && view.prefferedLayoutStyle == .portrait {
-            shortcutsButtonContainer.snp.updateConstraints { make in
-                make.leading.trailing.equalTo(gameView).inset(50)
-            }
-        }
-    }
+//    private func updateShortcutsButton() {
+//        shortcutsButtonContainer.subviews.forEach { $0.removeFromSuperview() }
+//        if (manicGame.gameType == ._3ds && UIDevice.isPad) || manicGame.isAzaharArticBase {
+//            return
+//        }
+//        if let hostingWindow, UIDevice.isWindowAppIPad(window: hostingWindow) {
+//            return 
+//        }
+//        if let controllerSkin = controllerView.controllerSkin {
+//            if let skin = Database.realm.objects(Skin.self).first(where: { $0.identifier == controllerSkin.identifier }) {
+//                if skin.supportShortcut {
+//                    //当前使用的是默认皮肤 则添加功能按钮
+//                    var shortcuts = Prefference.defalut.getPrefference(kind: .gameShortcut,
+//                                                                       storeKey: .game(gameId: manicGame.id),
+//                                                                       bestEfforts: true)?.gameShortcutValue ?? GameOption.defaultShortcutOptions(for: manicGame)
+//                    let availableOptions = Set(GameOption.availableOptions(game: manicGame, scene: .gaming))
+//                    shortcuts = shortcuts.filter({ availableOptions.contains($0) })
+//                    
+//                    
+//                    guard shortcuts.count > 0 else { return }
+//                    let functionButtonCount = shortcuts.count
+//                    for (index, shortcut) in shortcuts.enumerated() {
+//                        var iconColor = UIColor.white.withAlphaComponent(0.25)
+//                        if (manicGame.gameType == .ds && UIDevice.isPad) ||
+//                            manicGame.gameType == .wii ||
+//                            manicGame.gameType == .ngc ||
+//                            (manicGame.gameType == .pce && view.preferredLayoutStyle == .portrait) ||
+//                            manicGame.gameType.usesDOSSkinLayout ||
+//                            manicGame.gameType == .wsc {
+//                            iconColor = .black.withAlphaComponent(0.25)
+//                        }
+//                        let buttonContainerView = UIView()
+//                        let button = ASButtonView(.iconOnlyWithSmallSize(icon: shortcut.icon.updateColorsIfNeed(colors: [iconColor], forceUpdate: true),
+//                                                                         background: .clear))
+//                        button.didTapButton = { [weak self] in
+//                            guard let self, shortcut != .rewind else { return }
+//                            shortcut.showSecondPromptIfNeed(continued: {
+//                                shortcut.performAction(with: [self.manicGame],
+//                                                       in: self.hostingWindowScene,
+//                                                       performImmediately: true)
+//                            })
+//                        }
+//                        button.didLongPressButton = { [weak self] state in
+//                            guard let self else { return }
+//                            var mapping: MappingOption? = nil
+//                            if shortcut == .fastForward {
+//                                mapping = .fastForward2x
+//                            } else if shortcut == .rewind {
+//                                mapping = .rewind
+//                            } else {
+//                                mapping = MappingOption.GameOptionMappings.key(forValue: shortcut)
+//                            }
+//                            guard let mapping else { return }
+//                            let input = AnyInput(stringValue: mapping.rawValue,
+//                                                 intValue: 1,
+//                                                 type: .controller(.controllerSkin))
+//                            if state == .began {
+//                                self.gameController(self.controllerView,
+//                                                    didActivate:input,
+//                                                    value: 1)
+//                            } else if state == .cancelled || state == .ended {
+//                                self.gameController(self.controllerView,
+//                                                    didDeactivate: input)
+//                            }
+//                        }
+//                        buttonContainerView.addSubview(button)
+//                        button.snp.makeConstraints { make in
+//                            make.center.equalToSuperview()
+//                        }
+//                        shortcutsButtonContainer.addSubview(buttonContainerView)
+//                        buttonContainerView.snp.makeConstraints { make in
+//                            if manicGame.gameType == .ds || manicGame.gameType == ._3ds {
+//                                if UIDevice.isPhone {
+//                                    make.width.equalTo(31)
+//                                    make.height.equalToSuperview().dividedBy(2)
+//                                    if index == 0 {
+//                                        make.leading.equalToSuperview()
+//                                        make.top.equalToSuperview()
+//                                    } else if index == 1 {
+//                                        make.leading.equalToSuperview()
+//                                        make.top.equalTo(shortcutsButtonContainer.subviews[index - 1].snp.bottom)
+//                                    } else if index == 2 {
+//                                        make.trailing.equalToSuperview()
+//                                        make.top.equalToSuperview()
+//                                    } else if index == 3 {
+//                                        make.trailing.equalToSuperview()
+//                                        make.top.equalTo(shortcutsButtonContainer.subviews[index - 1].snp.bottom)
+//                                    }
+//                                } else {
+//                                    make.width.equalTo(50)
+//                                    make.top.bottom.equalToSuperview()
+//                                    if index == 0 {
+//                                        make.leading.equalToSuperview()
+//                                    } else if index == 1 {
+//                                        make.leading.equalTo(shortcutsButtonContainer.subviews[index-1].snp.trailing)
+//                                    } else if index == 2 {
+//                                        make.trailing.equalToSuperview().inset(50)
+//                                    } else if index == 3 {
+//                                        make.trailing.equalToSuperview()
+//                                    }
+//                                }
+//                            } else {
+//                                if index == 0 {
+//                                    make.leading.equalToSuperview()
+//                                } else {
+//                                    make.leading.equalTo(shortcutsButtonContainer.subviews[index-1].snp.trailing)
+//                                }
+//                                make.top.bottom.equalToSuperview()
+//                                if index == functionButtonCount-1 && functionButtonCount == R.Numbers.GameFunctionButtonCount {
+//                                    make.trailing.equalToSuperview()
+//                                }
+//                                make.width.equalToSuperview().dividedBy(R.Numbers.GameFunctionButtonCount)
+//                            }
+//                        }
+//                        
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+//    private func updateShortcutButtonContainer() {
+//        if (manicGame.gameType == .ds || (UIDevice.isPhone && manicGame.gameType == ._3ds)) &&  UIDevice.isPhone {
+//            shortcutsButtonContainer.snp.remakeConstraints { make in
+//                if gameViews.count > 1 {
+//                    //iPhone ds布局比较特殊
+//                    if view.preferredLayoutStyle == .landscape {
+//                        make.leading.equalTo(gameViews[0]).inset(-33)
+//                        make.trailing.equalTo(gameViews[1]).inset(-33)
+//                        make.top.equalToSuperview()
+//                    } else {
+//                        make.leading.trailing.equalTo(gameViews[1]).inset(-33)
+//                        make.top.equalTo(gameViews[1])
+//                    }
+//                    
+//                    if manicGame.gameType == ._3ds {
+//                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard {
+//                            //小屏幕
+//                            make.height.equalTo(80)
+//                        } else {
+//                            //大屏幕
+//                            make.height.equalTo(96)
+//                        }
+//                    } else {
+//                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard, view.preferredLayoutStyle == .portrait {
+//                            make.height.equalTo(87)
+//                        } else {
+//                            make.height.equalTo(113)
+//                        }
+//                    }
+//                }
+//            }
+//        } else if manicGame.gameType.usesDOSSkinLayout, UIDevice.isPad {
+//            shortcutsButtonContainer.snp.updateConstraints { make in
+//                make.top.equalTo(gameView.snp.bottom).offset(view.preferredLayoutStyle == .landscape ? 30 : 40)
+//            }
+//        } else if manicGame.gameType == .ds, UIDevice.isPad {
+//            shortcutsButtonContainer.snp.updateConstraints { make in
+//                make.top.equalTo(gameView.snp.bottom).offset(view.preferredLayoutStyle == .landscape ? 25 : 40)
+//            }
+//        } else if manicGame.gameType == .pm && view.preferredLayoutStyle == .portrait {
+//            shortcutsButtonContainer.snp.updateConstraints { make in
+//                make.leading.trailing.equalTo(gameView).inset(50)
+//            }
+//        }
+//    }
     
     private func updateCitra3DSViews() {
 #if !SIMULATOR
@@ -3401,7 +3433,7 @@ extension PlayViewController {
                 let scaleTopFrame = topFrame.applying(scaleTransform)
                 let scaleBottomFrame = bottomFrame.applying(scaleTransform)
                 
-                if !isOriginalShader, manicGame.gameType == ._3ds, view.prefferedLayoutStyle == .landscape {
+                if !isOriginalShader, manicGame.gameType == ._3ds, view.preferredLayoutStyle == .landscape {
                     //fix 3DS Scale
                     let fixScale = hostingWindow.screen.scale-scale
                     layout = "\(scaleTopFrame.minX.rounded1()),\(scaleTopFrame.minY.rounded1()),\(scaleTopFrame.width.rounded1()),\((scaleTopFrame.height*fixScale).rounded1()),\((scaleBottomFrame.minX).rounded1()),\(scaleBottomFrame.minY.rounded1()),\(scaleBottomFrame.width.rounded1()),\((scaleBottomFrame.height*fixScale).rounded1()),\(bufferframe.width.rounded1()),\((bufferframe.height*fixScale).rounded1())"
@@ -4286,7 +4318,7 @@ extension PlayViewController {
         }
         
         if let result = Prefference.defalut.getPrefference(kind: .flexBackground,
-                                                           storeKey: .orientationKey(gameId: manicGame.id, isLandScape: view.prefferedLayoutStyle == .landscape),
+                                                           storeKey: .orientationKey(gameId: manicGame.id, isLandScape: view.preferredLayoutStyle == .landscape),
                                                            bestEfforts: true),
            case let .flexBackground(bg) = result {
             backgroundImageView?.image = bg.image

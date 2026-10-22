@@ -76,6 +76,11 @@ class FeaturesView: BaseView {
             }
             self.featuresType = nil
         }
+        banner.reloadView()
+        if let collectionView = banner.subviews.first(where: { $0 is UICollectionView }) as? UICollectionView, UIDevice.isPhoneDuo {
+            collectionView.contentInsetAdjustmentBehavior = .never
+            collectionView.insetsLayoutMarginsFromSafeArea = false
+        }
     }
 }
 

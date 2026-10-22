@@ -64,6 +64,11 @@ class AddCheatCodeContentCell: UICollectionViewCell {
         view.font = R.Font.Body()
         view.returnKeyType = .default
         view.delegate = self
+        view.isFocusable = true
+        view.onFocusConfirm = { [weak self] in
+            self?.editTextView.becomeFirstResponder()
+            return true
+        }
         return view
     }()
     

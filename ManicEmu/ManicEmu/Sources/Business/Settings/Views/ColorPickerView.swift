@@ -11,7 +11,7 @@ import ChromaColorPicker
 
 class ColorPickerView: BaseView {
     private var colorPickerSize: CGSize {
-        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+        if UIDevice.isPhone, preferredLayoutStyle == .landscape {
             return CGSize(150)
         }
         return CGSize(290)
@@ -19,12 +19,17 @@ class ColorPickerView: BaseView {
     private let colorPicker = ChromaColorPicker(frame: CGRect(origin: .zero, size: CGSize(290)))
     private let brightnessSlider = ChromaBrightnessSlider()
     private let colorView = ThemeColorCollectionViewCell.ColorView()
-    private var textField: UITextField = {
+    private lazy var textField: UITextField = {
         let view = UITextField()
         view.textColor = R.Color.LabelPrimary
         view.font = R.Font.Body()
         view.clearButtonMode = .whileEditing
         view.attributedPlaceholder = NSAttributedString(string: R.Color.Main.hexString, attributes: [.font: R.Font.Body(), .foregroundColor: R.Color.LabelSecondary])
+        view.isFocusable = true
+        view.onFocusConfirm = { [weak self] in
+            self?.textField.becomeFirstResponder()
+            return true
+        }
         return view
     }()
     private var addButton: ASButtonView = {

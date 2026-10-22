@@ -53,6 +53,7 @@ class AddTriggerButtonView: BaseView {
                                                                        titleIcon: .symbolImage(R.image.triggerpro_iconSymbols())),
                                         sections: getSections(),
                                         backgroundColor: .clear,
+                                        listInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow)),
                                         pageInsets: .insets(top: R.Size.SheetGrabberTopInset)))
         
         view.didActionOccurred = { [weak self] action in

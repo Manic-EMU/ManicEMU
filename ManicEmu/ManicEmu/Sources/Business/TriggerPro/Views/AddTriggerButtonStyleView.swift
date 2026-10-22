@@ -106,6 +106,11 @@ class AddTriggerButtonStyleView: BaseView {
                 guard let self, let textField else { return }
                 self.handleCommittedTextChange(textField)
             }
+            textField.isFocusable = true
+            textField.onFocusConfirm = { [weak self] in
+                self?.titleTextField.becomeFirstResponder()
+                return true
+            }
             return textField
         }()
         

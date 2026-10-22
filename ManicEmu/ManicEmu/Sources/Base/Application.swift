@@ -18,7 +18,17 @@ class ManicApplication: UIApplication {
         if event.type == .touches,
            let touches = event.allTouches,
            touches.contains(where: { $0.phase == .began }) {
-            FocusSystem.shared.userDidTouchScreen()
+            // sendEvent runs before the control's keyDown. Clearing focus here makes the
+            // following direction key only restore the remembered item, so a tap never moves.
+            // A held direction still repeats after this, which is why a long press navigates.
+            let began = touches.filter { $0.phase == .began }
+            let tabletopControl: Bool = {
+                guard #available(iOS 27.1, *) else { return false }
+                return !began.isEmpty && began.allSatisfy(DuoTabletopKit.isTabletopControlTouch)
+            }()
+            if !tabletopControl {
+                FocusSystem.shared.userDidTouchScreen()
+            }
         }
         super.sendEvent(event)
     }

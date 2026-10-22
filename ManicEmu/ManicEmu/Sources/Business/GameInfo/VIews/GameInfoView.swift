@@ -70,7 +70,7 @@ class GameInfoView: BaseView {
         }
         view.didScroll = { [weak self] scrollView in
             guard let self else { return }
-            guard self.prefferedLayoutStyle == .portrait else { return }
+            guard self.preferredLayoutStyle == .portrait else { return }
             let contentOffsetY = scrollView.contentOffset.y + scrollView.adjustedContentInset.top
             //Make the gameInfoDetailView pin to the top of the gameOptionView content.
             if contentOffsetY >= scrollView.adjustedContentInset.top - self.gameInfoDetailHeight + R.Size.ContentSpaceSmall {
@@ -110,8 +110,7 @@ class GameInfoView: BaseView {
     private let gameInfoDetailMaxY = 292.0
     private let gameInfoDetailHeight = 162.0
     private var gameOptionViewInsets: UIEdgeInsets {
-        .insets(top: proHUDLayoutStyle() == .landscape ? 0 : R.Size.GameInfoGameOptionsTopInsets,
-                bottom: R.Size.ContentSpaceLarge)
+        .insets(top: proHUDLayoutStyle() == .landscape ? 0 : R.Size.GameInfoGameOptionsTopInsets)
     }
     private var gameMetadataChange: Any? = nil
     
@@ -233,6 +232,9 @@ class GameInfoView: BaseView {
         super.layoutSubviews()
         guard width > 0 else { return }
         guard let window = hostingWindow else { return }
+        if UIDevice.isPhoneDuo {
+            updateNavigationViewConstraints()
+        }
         if window.size.IsRelativelyWideRectangle {
             gameInfoDetailView.frame = CGRect(origin: CGPoint(x: 0, y: height - gameInfoDetailHeight),
                                               size: CGSize(width: width/2, height: gameInfoDetailHeight))
@@ -250,7 +252,12 @@ class GameInfoView: BaseView {
             }
             
             gameOptionView.snp.remakeConstraints { make in
-                make.bottom.top.trailing.equalToSuperview()
+                if UIDevice.isPhone && !UIDevice.isPhoneDuo {
+                    make.bottom.top.trailing.equalToSuperview()
+                    make.trailing.equalTo(self.safeAreaLayoutGuide)
+                } else {
+                    make.bottom.top.trailing.equalToSuperview()
+                }
                 make.leading.equalTo(gameCoverView.snp.trailing)
             }
             
@@ -266,9 +273,20 @@ class GameInfoView: BaseView {
             }
         }
         
-        
+        updateNavigationViewConstraints()
+    }
+    
+    private func updateNavigationViewConstraints() {
         navigationView.snp.remakeConstraints { make in
-            make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+            } else {
+                make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
+            }
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(R.Size.NavigationHeight)
         }
@@ -293,7 +311,7 @@ extension GameInfoView: ShowableView {
 }
 
 extension GameInfoView: ViewTransition {
-    func viewWillTransition() {
+    func viewAlongsideTransition() {
         gameOptionView.listPageView.listInsets = gameOptionViewInsets
         gameOptionView.listPageView.collectionView.scrollToTop(animated: false)
         updateViewsConstraints()

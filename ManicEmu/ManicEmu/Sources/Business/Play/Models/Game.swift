@@ -397,6 +397,9 @@ class Game: Object, ObjectUpdatable {
     }
     
     func isBIOSMissing(required: Bool = true) -> Bool {
+#if SIMULATOR
+        return false
+#endif
         let requireBIOS: [BIOSItem]
         if gameType == .mcd {
             if defaultCore == 2 {
@@ -1503,7 +1506,7 @@ class Game: Object, ObjectUpdatable {
                                                      storeValue: skinId)
             }
             
-            let prefferedEdgeSkin = SymbianOS.getOS(by: device).rawValue > SymbianOS.S60v3.rawValue
+            let preferredEdgeSkin = SymbianOS.getOS(by: device).rawValue > SymbianOS.S60v3.rawValue
             let realm = Database.realm
             var hadSetLandscapeSkin = false
             var hadSetPortraitSkin = false
@@ -1515,16 +1518,16 @@ class Game: Object, ObjectUpdatable {
                 //设置过横屏
                 hadSetLandscapeSkin = true
                 
-                if !prefferedEdgeSkin && skin.identifier == R.Strings.SymbianEdgeSkinIdentifier {
+                if !preferredEdgeSkin && skin.identifier == R.Strings.SymbianEdgeSkinIdentifier {
                     //要换成标准横屏
                     changeSkin(isLandScape: true, isFlex: false, isEdge: false)
-                } else if !prefferedEdgeSkin && skin.identifier == R.Strings.SymbianEdgeFlexSkinIdentifier {
+                } else if !preferredEdgeSkin && skin.identifier == R.Strings.SymbianEdgeFlexSkinIdentifier {
                     //切换到flex标准横屏
                     changeSkin(isLandScape: true, isFlex: true, isEdge: false)
-                } else if prefferedEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
+                } else if preferredEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
                     //切换Edge横屏
                     changeSkin(isLandScape: true, isFlex: false, isEdge: true)
-                } else if prefferedEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
+                } else if preferredEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
                     //切换Edge Flex横屏
                     changeSkin(isLandScape: true, isFlex: true, isEdge: true)
                 }
@@ -1536,16 +1539,16 @@ class Game: Object, ObjectUpdatable {
                let skin = realm.object(ofType: Skin.self, forPrimaryKey: skinId) {
                 //设置过竖屏
                 hadSetPortraitSkin = true
-                if !prefferedEdgeSkin && skin.identifier == R.Strings.SymbianEdgeSkinIdentifier {
+                if !preferredEdgeSkin && skin.identifier == R.Strings.SymbianEdgeSkinIdentifier {
                     //要换成标准竖屏
                     changeSkin(isLandScape: false, isFlex: false, isEdge: false)
-                } else if !prefferedEdgeSkin && skin.identifier == R.Strings.SymbianEdgeFlexSkinIdentifier {
+                } else if !preferredEdgeSkin && skin.identifier == R.Strings.SymbianEdgeFlexSkinIdentifier {
                     //切换到flex标准竖屏
                     changeSkin(isLandScape: false, isFlex: true, isEdge: false)
-                } else if prefferedEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
+                } else if preferredEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
                     //切换Edge竖屏
                     changeSkin(isLandScape: false, isFlex: false, isEdge: true)
-                } else if prefferedEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
+                } else if preferredEdgeSkin && skin.identifier == R.Strings.SymbianSkinIdentifier {
                     //切换Edge Flex竖屏
                     changeSkin(isLandScape: false, isFlex: true, isEdge: true)
                 }
@@ -1553,7 +1556,7 @@ class Game: Object, ObjectUpdatable {
             
             if !hadSetLandscapeSkin {
                 //需要设置横屏
-                if prefferedEdgeSkin {
+                if preferredEdgeSkin {
                     //切换Edge横屏
                     changeSkin(isLandScape: true, isFlex: false, isEdge: true)
                 } else {
@@ -1564,7 +1567,7 @@ class Game: Object, ObjectUpdatable {
             
             if !hadSetPortraitSkin {
                 //需要设置竖屏
-                if prefferedEdgeSkin {
+                if preferredEdgeSkin {
                     //切换Edge竖屏
                     changeSkin(isLandScape: false, isFlex: false, isEdge: true)
                 } else {

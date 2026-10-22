@@ -29,11 +29,6 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
         
         addSubviews([keepCellHeightView, backgroundGradientView, imageView, labelView])
         
-        keepCellHeightView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalTo(220).priority(.high)
-        }
-        
         let bg = R.Color.BackgroundPrimary
         let bgDark = R.Color.BackgroundPrimary.forceStyle(.dark)
         let bgLight = R.Color.BackgroundPrimary.forceStyle(.light)
@@ -49,11 +44,19 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(R.Size.ItemHeightSmall)
         }
-        updateViews(isLandscape: false)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private var hasInit = false
+    
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        guard !hasInit else { return }
+        updateViews(isLandscape: preferredLayoutStyle == .landscape)
+        hasInit = true
     }
     
     override func layoutSubviews() {
@@ -64,7 +67,7 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
                                                                   height: backgroundGradientView.height*2))).cgPath
         backgroundGradientView.layer.mask = ovalLayer
         
-        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+        if UIDevice.isPhone, preferredLayoutStyle == .landscape {
             keepCellHeightView.backgroundColor = R.Color.BackgroundSecondary
             backgroundGradientView.isHidden = true
         } else {
@@ -86,7 +89,8 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
                 make.centerY.equalToSuperview()
             }
             
-            keepCellHeightView.snp.updateConstraints { make in
+            keepCellHeightView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
                 make.height.equalTo(100).priority(.high)
             }
         } else {
@@ -102,7 +106,8 @@ class ImportMottoCollectionViewCell: UICollectionViewCell {
                 make.bottom.greaterThanOrEqualToSuperview().inset(R.Size.ContentSpaceSmall)
             }
             
-            keepCellHeightView.snp.updateConstraints { make in
+            keepCellHeightView.snp.remakeConstraints { make in
+                make.edges.equalToSuperview()
                 make.height.equalTo(220).priority(.high)
             }
         }

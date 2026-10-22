@@ -618,6 +618,7 @@ extension ASListPage {
         var enableTitleInteractive: Bool = false
         var toolsBackground: UIColor = R.Color.BackgroundSecondary
         var closeBackground: UIColor = R.Color.BackgroundSecondary
+        var enableIPhoneDuolayoutOptimization: Bool = false
         
         static func defaultNavigation(title: String? = nil,
                                       titleLineBreakMode: NSLineBreakMode = .byTruncatingTail,

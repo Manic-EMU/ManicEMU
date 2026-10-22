@@ -307,15 +307,7 @@ class ShaderListView: BaseView {
         }
         
         addSubview(navigationView)
-        navigationView.snp.makeConstraints { make in
-            if showClose {
-                make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
-            } else {
-                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
-            }
-            make.leading.trailing.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(R.Size.NavigationHeight)
-        }
+        updateNavigationViewConstraints()
         
         addSubview(listPageView)
         
@@ -355,6 +347,34 @@ class ShaderListView: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
         updateViewsContraits()
+        updateNavigationViewConstraints()
+    }
+    
+    private func updateNavigationViewConstraints() {
+        navigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview()
+            } else {
+                if UIDevice.isPhoneDuo {
+                    make.leading.trailing.equalToSuperview()
+                } else {
+                    make.leading.trailing.equalTo(safeAreaLayoutGuide)
+                }
+                if showClose {
+                    make.top.equalToSuperview().offset(R.Size.SheetGrabberTopInset)
+                } else {
+                    make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
+                }
+            }
+            make.height.equalTo(R.Size.NavigationHeight)
+        }
     }
     
     private func handleAction(_ action: ASListPage.Action) {
@@ -789,7 +809,7 @@ class ShaderListView: BaseView {
     }
     
     private func getTop() -> (UIView, ASViewLayout, Bool) {
-        return (topView, .fixedHeight(prefferedLayoutStyle == .landscape && showClose ? 116 : 318), true)
+        return (topView, .fixedHeight(preferredLayoutStyle == .landscape && showClose ? 116 : 318), true)
     }
     
     private func getCell(shader: Shader, isSelected: Bool) -> ASListPage.Cell {
@@ -884,12 +904,10 @@ class ShaderListView: BaseView {
     }
     
     private func getListPage() -> ASListPage {
-        let listInsetBottom = (UIDevice.isPad && !showClose) ? R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceMedium : 0
-        
         return ASListPage(top: getTop(),
                           sections: getSections(),
                           blankSlate: getBlankSlate(),
-                          listInsets: .insets(bottom: listInsetBottom),
+                          listInsets: .insets(bottom: R.Size.ContentInsetBottomForSettingPage(showAsDetail: (UIDevice.isPad && !showClose) || UIDevice.isPhoneDuoInnerFullScreen)),
                           enableLongPress: true)
     }
     
@@ -972,12 +990,17 @@ class ShaderListView: BaseView {
     
     private func updateViewsContraits() {
         previewView.removeFromSuperview()
-        if prefferedLayoutStyle == .landscape, showClose {
+        if preferredLayoutStyle == .landscape, showClose {
             addSubview(previewView)
             previewView.snp.remakeConstraints { make in
                 make.top.equalTo(navigationView.snp.bottom)
-                make.leading.equalTo(navigationView)
-                make.bottom.equalTo(safeAreaLayoutGuide)
+                make.leading.equalToSuperview().inset(R.Size.ContentSpaceMedium)
+                if UIDevice.isPhoneDuo {
+                    make.bottom.equalToSuperview()
+                } else {
+                    make.bottom.equalTo(safeAreaLayoutGuide)
+                }
+                
             }
             listPageView.top = getTop()
             
@@ -985,7 +1008,11 @@ class ShaderListView: BaseView {
                 make.top.equalTo(navigationView.snp.bottom)
                 make.leading.equalTo(previewView.snp.trailing)
                 make.width.equalTo(previewView)
-                make.trailing.equalTo(safeAreaLayoutGuide)
+                if UIDevice.isPhoneDuo {
+                    make.trailing.equalToSuperview()
+                } else {
+                    make.trailing.equalTo(safeAreaLayoutGuide)
+                }
                 make.bottom.equalToSuperview()
             }
             

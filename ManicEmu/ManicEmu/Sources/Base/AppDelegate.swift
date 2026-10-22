@@ -40,17 +40,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Allowed interface orientations. Rotation follows this mask, not overlay windows.
     static var orientation: UIInterfaceOrientationMask = R.Config.DefaultOrientation {
         didSet {
-            if !OrientationLockPin.isPinned {
+            // Assignment re-reads the lock. During Tabletop, do not also follow the device.
+            let tabletop: Bool = {
+                guard #available(iOS 27.1, *) else { return false }
+                return DuoTabletopKit.isTabletopActive
+            }()
+            if !tabletop, !OrientationLockPin.isPinned {
                 UIViewController.attemptRotationToDeviceOrientation()
             }
             if #available(iOS 16.0, *) {
-                var vc = UIWindow.applicationWindow?.rootViewController
-                while let current = vc {
-                    current.setNeedsUpdateOfSupportedInterfaceOrientations()
-                    if #available(iOS 26.0, *) {
-                        current.setNeedsUpdateOfPrefersInterfaceOrientationLocked()
+                let roots: [UIViewController]
+                if tabletop {
+                    roots = (ApplicationSceneDelegate.applicationScene?.windows ?? []).compactMap(\.rootViewController)
+                } else if let root = UIWindow.applicationWindow?.rootViewController {
+                    roots = [root]
+                } else {
+                    roots = []
+                }
+                for root in roots {
+                    var vc: UIViewController? = root
+                    while let current = vc {
+                        current.setNeedsUpdateOfSupportedInterfaceOrientations()
+                        if #available(iOS 26.0, *) {
+                            current.setNeedsUpdateOfPrefersInterfaceOrientationLocked()
+                        }
+                        vc = current.presentedViewController
                     }
-                    vc = current.presentedViewController
                 }
             }
         }

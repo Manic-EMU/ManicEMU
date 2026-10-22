@@ -21,7 +21,7 @@ class SettingsTopView: BaseView {
     }
     
     func updateViewsConstraints() {
-        if UIDevice.isPhone, prefferedLayoutStyle == .landscape {
+        if (UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen), preferredLayoutStyle == .landscape {
             membershipView.snp.remakeConstraints { make in
                 make.leading.top.bottom.equalToSuperview()
             }

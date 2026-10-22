@@ -9,12 +9,14 @@ import UIKit
 import GameController
 import OAuthSwift
 import UniformTypeIdentifiers
+import ProHUD
 
 class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
     static weak var applicationScene: UIWindowScene?
     static weak var applicationWindow: UIWindow?
     var window: UIWindow?
     static var launchGameID: String? = nil
+    private var hingeChangeNotification: Any? = nil
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
@@ -23,6 +25,26 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
             ApplicationSceneDelegate.applicationWindow = window
             window?.tintColor = R.Color.Main
             installGamepadEventInteraction(on: window)
+            //setup ProHUD
+            AppContext.supportedInterfaceOrientations = {
+                OrientationLockPin.resolvedMask(for: nil)
+            }
+            if #available(iOS 26.0, *) {
+                AppContext.prefersInterfaceOrientationLocked = {
+                    if #available(iOS 27.1, *), DuoTabletopKit.isTabletopActive {
+                        return DuoTabletopKit.isTabletopOrientationLocked
+                    }
+                    return OrientationLockPin.prefersLocked
+                }
+            }
+            OrientationLockPin.onForcedLandscapeGeometry = {
+                AppContext.alignOverlayWindowsWithScene()
+            }
+            AppContext.prefersStatusBarHidden = { [weak self] presentedViewController in
+                guard let self else { return nil }
+                return UIViewController.shouldStatusBarHidden(window: self.window,
+                                                              presentedViewController: presentedViewController)
+            }
             let loadThenPresentHome = {
                 ResourcesKit.loadResources { isSuccess in
                     Database.setup {
@@ -61,12 +83,12 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
                         })
                         
 #if SIDE_LOAD
-                    StikJITHostCoordinator.shared.enableOnLaunchIfNeeded()
+                        StikJITHostCoordinator.shared.enableOnLaunchIfNeeded()
 #endif
-                    
                     }
                 }
             }
+            
             // Same unzip conditions as ResourcesKit; keep this read-only so the original extract path is unchanged.
             if Self.needsResourceExtract() {
                 window?.rootViewController = LaunchPlaceholderViewController()
@@ -76,8 +98,50 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
             } else {
                 loadThenPresentHome()
             }
+            
             let dropInteraction = UIDropInteraction(delegate: self)
             window?.addInteraction(dropInteraction)
+            
+            if #available(iOS 27.1, *), UIDevice.isPhoneDuo {
+                //Monitor changes to the hinge
+                window?.addInteraction(UIHingeInteraction(updateHandler: { interaction, update in
+                    DuoHingeKit.didHingeUpdate(interaction: interaction, update: update)
+                    DispatchQueue.once {
+                        /// try enter iPhone Duo Tabletop Mode
+                        if !PlayViewController.isGaming,
+                           UIDevice.isPhoneDuoInner,
+                           let hinge = DuoHingeKit.currentStatusHinge,
+                           hinge.status == .partiallyOpen {
+                            if UIDevice.isLandscape && !DuoTabletopKit.isTabletopMode {
+                                UIView.makeToast(message: R.string.localizable.tabletopModeDetected())
+                            } else {
+                                DuoTabletopKit.startTabletopMode()
+                            }
+                        }
+                    }
+                }))
+                hingeChangeNotification = NotificationCenter.default.addObserver(forName: R.NotificationName.DuoHingeChange, object: nil, queue: .main) { notification in
+                    guard !PlayViewController.isGaming else { return }
+                    if let transition = DuoHingeKit.transition(from: notification) {
+                        if transition.to.status == .partiallyOpen {
+                            if UIDevice.isLandscape && !DuoTabletopKit.isTabletopMode {
+                                UIView.makeToast(message: R.string.localizable.tabletopModeDetected())
+                                return
+                            } else {
+                                DuoTabletopKit.startTabletopMode()
+                            }
+                        } else if DuoTabletopKit.isTabletopMode {
+                            DuoTabletopKit.stopTabletopMode()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func sceneDidDisconnect(_ scene: UIScene) {
+        if let hingeChangeNotification {
+            NotificationCenter.default.removeObserver(hingeChangeNotification)
         }
     }
     
@@ -121,6 +185,9 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidBecomeActive(_ scene: UIScene) {
         FilesSyncManager.shared.handleDidBecomeActive()
+        if #available(iOS 27.1, *) {
+            DuoTabletopKit.resumeTabletopOnBecomeActiveIfNeeded()
+        }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -203,7 +270,27 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     @available(iOS 26.0, tvOS 26.0, *)
     func windowScene(_ windowScene: UIWindowScene, didUpdateEffectiveGeometry previousEffectiveGeometry: UIWindowScene.Geometry) {
-        //Use this method to handle the following geometry changes above iOS26.
+        if #available(iOS 27.1, *),
+            UIDevice.isPhoneDuoInnerFullScreen,
+            UIDevice.isPortrait,
+           let hinge = DuoHingeKit.currentStatusHinge,
+           hinge.status == .partiallyOpen,
+           !DuoTabletopKit.isTabletopMode,
+            let window = windowScene.keyWindow,
+            windowScene.screen.bounds.equalTo(window.bounds) {
+            DuoTabletopKit.startTabletopMode()
+        } else if #available(iOS 27.1, *),
+                  DuoTabletopKit.isTabletopMode,
+                  let hinge = DuoHingeKit.currentStatusHinge,
+                  hinge.status == .closed {
+            DuoTabletopKit.stopTabletopMode()
+        }
+        
+        guard #available(iOS 27.1, *), DuoTabletopKit.isTabletopActive else { return }
+        if windowScene.effectiveGeometry.interfaceOrientation == DuoTabletopKit.tabletopPendingOrientation {
+            DuoTabletopKit.finishTabletopOrientationFlip()
+        }
+        DuoTabletopKit.relayoutTabletopPanesIfNeeded()
     }
     
     @available(iOS 27.0, tvOS 27.0, *)

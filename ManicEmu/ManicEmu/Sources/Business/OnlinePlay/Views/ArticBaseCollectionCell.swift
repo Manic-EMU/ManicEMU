@@ -80,6 +80,11 @@ class ArticBaseCollectionCell: UICollectionViewCell {
                 UIView.makeToast(message: R.string.localizable.badIpAddress())
             }
         }
+        textField.isFocusable = true
+        textField.onFocusConfirm = { [weak self] in
+            self?.ipAddressTitleTextField.becomeFirstResponder()
+            return true
+        }
         return textField
     }()
     

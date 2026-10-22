@@ -248,7 +248,6 @@ class SteamGridDBContentsView: BaseView {
             sections: contentSections(),
             blankSlate: .init(detail: R.string.localizable.noGameCoverResult()),
             backgroundColor: .clear,
-            listInsets: .insets(bottom: R.Size.ContentInsetBottom(window: hostingWindow)),
             pageInsets: .insets(top: R.Size.SheetGrabberTopInset)
         )
     }

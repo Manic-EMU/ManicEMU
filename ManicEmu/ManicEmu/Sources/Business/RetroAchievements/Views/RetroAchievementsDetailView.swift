@@ -245,7 +245,12 @@ class RetroAchievementsDetailView: BaseView {
         addSubview(shareButton)
         shareButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(R.Size.SheetGrabberTopInset + R.Size.ContentSpaceExtraSmall)
-            make.trailing.equalTo(safeAreaLayoutGuide).offset(-R.Size.ContentSpaceMedium)
+            if UIDevice.isPhoneDuo {
+                make.trailing.equalToSuperview().offset(-R.Size.ContentSpaceMedium)
+            } else {
+                make.trailing.equalTo(safeAreaLayoutGuide).offset(-R.Size.ContentSpaceMedium)
+            }
+            
         }
         
     }

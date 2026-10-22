@@ -2081,6 +2081,10 @@
 		57F1D4FF2FFF58C700FC5B2A /* FocusKeyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4FB2FFF58B400FC5B2A /* FocusKeyObserver.swift */; };
 		57F1D5002FFF58C700FC5B2A /* FocusKeyObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1D4FB2FFF58B400FC5B2A /* FocusKeyObserver.swift */; };
 		57F1D52C2FFFCCC700FC5B2A /* DeltaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 57F1D52B2FFFCCC700FC5B2A /* DeltaCore */; };
+		57F2A8022F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2A8012F8E100100C62FF6 /* PurchaseBackgroundView.swift */; };
+		57F2A8032F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2A8012F8E100100C62FF6 /* PurchaseBackgroundView.swift */; };
+		57F2A8042F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2A8012F8E100100C62FF6 /* PurchaseBackgroundView.swift */; };
+		57F2A8052F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F2A8012F8E100100C62FF6 /* PurchaseBackgroundView.swift */; };
 		57F30CD82EC048880035327C /* ManufacturerCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F30CD62EC048780035327C /* ManufacturerCategoryView.swift */; };
 		57F30CDF2EC44F390035327C /* Manufacturer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F30CDD2EC44F340035327C /* Manufacturer.swift */; };
 		57F3BAEC2F6541C900ABF4B3 /* J2MESettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F3BAEA2F6541AB00ABF4B3 /* J2MESettingView.swift */; };
@@ -2189,10 +2193,42 @@
 		E520DED8306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
 		E520DED9306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
 		E520DEDA306E9606003F83BE /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */; };
+		E524FA5530879B06009885DA /* DuoTabletopControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA4F30879AB6009885DA /* DuoTabletopControlView.swift */; };
+		E524FA5630879B06009885DA /* DuoTabletopControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA4F30879AB6009885DA /* DuoTabletopControlView.swift */; };
+		E524FA5730879B06009885DA /* DuoTabletopControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA4F30879AB6009885DA /* DuoTabletopControlView.swift */; };
+		E524FA5830879B06009885DA /* DuoTabletopControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA4F30879AB6009885DA /* DuoTabletopControlView.swift */; };
+		E524FA8E30886485009885DA /* DuoTabletopControlWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA8D30886483009885DA /* DuoTabletopControlWindow.swift */; };
+		E524FA8F30886485009885DA /* DuoTabletopControlWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA8D30886483009885DA /* DuoTabletopControlWindow.swift */; };
+		E524FA9030886485009885DA /* DuoTabletopControlWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA8D30886483009885DA /* DuoTabletopControlWindow.swift */; };
+		E524FA9130886485009885DA /* DuoTabletopControlWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA8D30886483009885DA /* DuoTabletopControlWindow.swift */; };
+		E524FA993088649A009885DA /* DuoTabletopControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA9830886499009885DA /* DuoTabletopControlController.swift */; };
+		E524FA9A3088649A009885DA /* DuoTabletopControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA9830886499009885DA /* DuoTabletopControlController.swift */; };
+		E524FA9B3088649A009885DA /* DuoTabletopControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA9830886499009885DA /* DuoTabletopControlController.swift */; };
+		E524FA9C3088649A009885DA /* DuoTabletopControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FA9830886499009885DA /* DuoTabletopControlController.swift */; };
+		E524FAA4308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAA3308864B3009885DA /* TabletopSizeTransitionCoordinator.swift */; };
+		E524FAA5308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAA3308864B3009885DA /* TabletopSizeTransitionCoordinator.swift */; };
+		E524FAA6308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAA3308864B3009885DA /* TabletopSizeTransitionCoordinator.swift */; };
+		E524FAA7308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAA3308864B3009885DA /* TabletopSizeTransitionCoordinator.swift */; };
+		E524FAAF30886523009885DA /* DuoTabletopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAAE30886516009885DA /* DuoTabletopKit.swift */; };
+		E524FAB030886523009885DA /* DuoTabletopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAAE30886516009885DA /* DuoTabletopKit.swift */; };
+		E524FAB130886523009885DA /* DuoTabletopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAAE30886516009885DA /* DuoTabletopKit.swift */; };
+		E524FAB230886523009885DA /* DuoTabletopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FAAE30886516009885DA /* DuoTabletopKit.swift */; };
+		E524FABB308866D6009885DA /* DuoHingeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FABA308866D4009885DA /* DuoHingeKit.swift */; };
+		E524FABC308866D6009885DA /* DuoHingeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FABA308866D4009885DA /* DuoHingeKit.swift */; };
+		E524FABD308866D6009885DA /* DuoHingeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FABA308866D4009885DA /* DuoHingeKit.swift */; };
+		E524FABE308866D6009885DA /* DuoHingeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FABA308866D4009885DA /* DuoHingeKit.swift */; };
+		E524FB063088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
+		E524FB073088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
+		E524FB083088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
+		E524FB093088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
 		E5385955E04D43598CAC5694 /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E5A00BB23080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
 		E5A00BB33080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
 		E5A00BB43080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
+		E5D10A010000000000000011 /* DuoLayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D10A010000000000000001 /* DuoLayoutKit.swift */; };
+		E5D10A010000000000000012 /* DuoLayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D10A010000000000000001 /* DuoLayoutKit.swift */; };
+		E5D10A010000000000000013 /* DuoLayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D10A010000000000000001 /* DuoLayoutKit.swift */; };
+		E5D10A010000000000000014 /* DuoLayoutKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D10A010000000000000001 /* DuoLayoutKit.swift */; };
 		E977CAA1F3C34827833FAF30 /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 5713306D2D91AFE00043C28A /* XCGLogger */; };
 		EAE31C39F6FF42DE8F5BA497 /* Schedule in Frameworks */ = {isa = PBXBuildFile; productRef = 57C759192FD42D030093A2B3 /* Schedule */; };
 		EE7572E891E3420A86A7E33F /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 578E20902FD16DA500A2749A /* CollectionViewPagingLayout */; };
@@ -7393,6 +7429,7 @@
 		57F1D4A42FF630BF00FC5B2A /* GameOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOptionsView.swift; sourceTree = "<group>"; };
 		57F1D4D02FFE10CC00FC5B2A /* GameInfoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInfoDetailView.swift; sourceTree = "<group>"; };
 		57F1D4FB2FFF58B400FC5B2A /* FocusKeyObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusKeyObserver.swift; sourceTree = "<group>"; };
+		57F2A8012F8E100100C62FF6 /* PurchaseBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseBackgroundView.swift; sourceTree = "<group>"; };
 		57F30CD62EC048780035327C /* ManufacturerCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManufacturerCategoryView.swift; sourceTree = "<group>"; };
 		57F30CDD2EC44F340035327C /* Manufacturer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manufacturer.swift; sourceTree = "<group>"; };
 		57F3BAEA2F6541AB00ABF4B3 /* J2MESettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = J2MESettingView.swift; sourceTree = "<group>"; };
@@ -7451,7 +7488,15 @@
 		B2F4B7B12A147226003B0E07 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B93489E15EFD47F2AE825436 /* Amiga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amiga.swift; sourceTree = "<group>"; };
 		E520DED7306E95FC003F83BE /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		E524FA4F30879AB6009885DA /* DuoTabletopControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoTabletopControlView.swift; sourceTree = "<group>"; };
+		E524FA8D30886483009885DA /* DuoTabletopControlWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoTabletopControlWindow.swift; sourceTree = "<group>"; };
+		E524FA9830886499009885DA /* DuoTabletopControlController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoTabletopControlController.swift; sourceTree = "<group>"; };
+		E524FAA3308864B3009885DA /* TabletopSizeTransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletopSizeTransitionCoordinator.swift; sourceTree = "<group>"; };
+		E524FAAE30886516009885DA /* DuoTabletopKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoTabletopKit.swift; sourceTree = "<group>"; };
+		E524FABA308866D4009885DA /* DuoHingeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoHingeKit.swift; sourceTree = "<group>"; };
+		E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutButtonContainerView.swift; sourceTree = "<group>"; };
 		E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProHUDExtensions.swift; sourceTree = "<group>"; };
+		E5D10A010000000000000001 /* DuoLayoutKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoLayoutKit.swift; sourceTree = "<group>"; };
 		F0C500000000000000000101 /* FocusTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTypes.swift; sourceTree = "<group>"; };
 		F0C500000000000000000102 /* Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focusable.swift; sourceTree = "<group>"; };
 		F0C500000000000000000103 /* FocusContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusContainer.swift; sourceTree = "<group>"; };
@@ -7798,6 +7843,7 @@
 				57047A132D856DB000C62FF6 /* PriceView.swift */,
 				57047A0B2D852E7200C62FF6 /* FeaturesView.swift */,
 				57047A092D85217400C62FF6 /* PurchaseView.swift */,
+				57F2A8012F8E100100C62FF6 /* PurchaseBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -8241,6 +8287,7 @@
 				57A480E62E740301001D4598 /* CheevosChallengeView.swift */,
 				5771C2092E6569B60062EDE0 /* LeaderboardView.swift */,
 				5720CACB2DB5558B0090C0F6 /* ThreeDSKeyboardView.swift */,
+				E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -13849,6 +13896,7 @@
 				57E48D922D8D7395008000A3 /* CheersView.swift */,
 				57FD13F0301109D5007F211A /* LandscapeBackgroundView.swift */,
 				57D48250301702B20030A771 /* FileBrowserView.swift */,
+				E524FA4F30879AB6009885DA /* DuoTabletopControlView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -13901,6 +13949,7 @@
 				57F0D8402DE2CD7500760F57 /* Cores */,
 				F0C5000000000000000000FF /* FocusKit */,
 				57E8A110304A4A1100000014 /* JIT */,
+				E524FA843088644C009885DA /* DuoTabletop */,
 				A5A69BA9256E56FF00D51C09 /* Others */,
 				A5DE1F73256BDE140099425B /* Extensions */,
 			);
@@ -14005,6 +14054,8 @@
 				57B6ECD32D7984B0002E619C /* DolphinGameID.swift */,
 				57B6ECD62D7984B0002E619C /* DolphinCheatINI.swift */,
 				57BA59B42E3F13C900110849 /* EmulationCore.swift */,
+				E5D10A010000000000000001 /* DuoLayoutKit.swift */,
+				E524FABA308866D4009885DA /* DuoHingeKit.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -14106,6 +14157,17 @@
 				57E8A110304A4A1100000037 /* IOKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E524FA843088644C009885DA /* DuoTabletop */ = {
+			isa = PBXGroup;
+			children = (
+				E524FAAE30886516009885DA /* DuoTabletopKit.swift */,
+				E524FAA3308864B3009885DA /* TabletopSizeTransitionCoordinator.swift */,
+				E524FA9830886499009885DA /* DuoTabletopControlController.swift */,
+				E524FA8D30886483009885DA /* DuoTabletopControlWindow.swift */,
+			);
+			path = DuoTabletop;
 			sourceTree = "<group>";
 		};
 		F0C5000000000000000000FF /* FocusKit */ = {
@@ -14690,7 +14752,9 @@
 				00000000000051A100000083 /* CGSizeExtenstions.swift in Sources */,
 				00000000000051A100000084 /* GameInfoNavigationView.swift in Sources */,
 				00000000000051A100000085 /* DC.swift in Sources */,
+				E524FABE308866D6009885DA /* DuoHingeKit.swift in Sources */,
 				00000000000051A100000086 /* UIDeviceExtensions.swift in Sources */,
+				E5D10A010000000000000011 /* DuoLayoutKit.swift in Sources */,
 				00000000000051A100000087 /* ThreeDSKeyboardView.swift in Sources */,
 				00000000000051A100000088 /* PriceItemCollectionCell.swift in Sources */,
 				00000000000051A100000089 /* CategorySelectionView.swift in Sources */,
@@ -14799,6 +14863,7 @@
 				00000000000051A1000000F0 /* ASCornerStyle.swift in Sources */,
 				00000000000051A1000000F1 /* FileBrowserView.swift in Sources */,
 				00000000000051A1000000F2 /* PSXSBICollectionCell.swift in Sources */,
+				E524FAA7308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */,
 				00000000000051A1000000F3 /* SkinCollectionViewCell.swift in Sources */,
 				00000000000051A1000000F4 /* Shaders.metal in Sources */,
 				00000000000051A1000000F5 /* PersistedKit.swift in Sources */,
@@ -14913,6 +14978,7 @@
 				00000000000051A100000162 /* TriggerButton.swift in Sources */,
 				00000000000051A100000163 /* FilesSyncManager.swift in Sources */,
 				00000000000051A100000164 /* FilesSyncPolicy.swift in Sources */,
+				E524FAB230886523009885DA /* DuoTabletopKit.swift in Sources */,
 				00000000000051A100000165 /* FilesSyncIndex.swift in Sources */,
 				00000000000051A100000166 /* FilesSyncEngine.swift in Sources */,
 				00000000000051A100000167 /* FilesSyncIO.swift in Sources */,
@@ -14953,13 +15019,16 @@
 				00000000000051A10000018A /* SettingsBottomView.swift in Sources */,
 				00000000000051A10000018B /* GameInfoDetailView.swift in Sources */,
 				00000000000051A10000018C /* FileManagerExtensions.swift in Sources */,
+				E524FA9B3088649A009885DA /* DuoTabletopControlController.swift in Sources */,
 				00000000000051A10000018D /* GameMetadataKit.swift in Sources */,
 				00000000000051A10000018E /* CheevosProgressView.swift in Sources */,
 				00000000000051A10000018F /* PurchaseView.swift in Sources */,
+				57F2A8052F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */,
 				00000000000051A100000190 /* PlayHistoryBlankSlateView.swift in Sources */,
 				00000000000051A100000191 /* AddTriggerActionHoldView.swift in Sources */,
 				00000000000051A100000192 /* PSPNetworkingView.swift in Sources */,
 				00000000000051A100000193 /* AddTriggerMappingListView.swift in Sources */,
+				E524FA5730879B06009885DA /* DuoTabletopControlView.swift in Sources */,
 				00000000000051A100000194 /* JGenesisView.swift in Sources */,
 				00000000000051A100000195 /* GradientView.swift in Sources */,
 				00000000000051A100000196 /* SyncManager.swift in Sources */,
@@ -14984,11 +15053,13 @@
 				00000000000051A1000001A9 /* LandscapeStatusView.swift in Sources */,
 				00000000000051A1000001AA /* GameLandscapeCarouselCell.swift in Sources */,
 				00000000000051A1000001AB /* ShaderLIstView.swift in Sources */,
+				E524FB063088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */,
 				00000000000051A1000001AC /* ASRadio.swift in Sources */,
 				00000000000051A1000001AD /* ColorPickerView.swift in Sources */,
 				00000000000051A1000001AE /* ASRadioView.swift in Sources */,
 				00000000000051A1000001AF /* CheatCodeListView.swift in Sources */,
 				00000000000051A1000001B0 /* ShaderToy.swift in Sources */,
+				E524FA9130886485009885DA /* DuoTabletopControlWindow.swift in Sources */,
 				00000000000051A1000001B1 /* ZipHandlerView.swift in Sources */,
 				00000000000051A1000001B2 /* SettingsTopView.swift in Sources */,
 				00000000000051A1000001B3 /* Bimap.swift in Sources */,
@@ -15125,7 +15196,9 @@
 				579093EF303C7D9100A53656 /* CGSizeExtenstions.swift in Sources */,
 				579093F0303C7D9100A53656 /* GameInfoNavigationView.swift in Sources */,
 				579093F1303C7D9100A53656 /* DC.swift in Sources */,
+				E524FABB308866D6009885DA /* DuoHingeKit.swift in Sources */,
 				579093F2303C7D9100A53656 /* UIDeviceExtensions.swift in Sources */,
+				E5D10A010000000000000012 /* DuoLayoutKit.swift in Sources */,
 				579093F3303C7D9100A53656 /* ThreeDSKeyboardView.swift in Sources */,
 				579093F4303C7D9100A53656 /* PriceItemCollectionCell.swift in Sources */,
 				579093F5303C7D9100A53656 /* CategorySelectionView.swift in Sources */,
@@ -15234,6 +15307,7 @@
 				57909459303C7D9100A53656 /* ASCornerStyle.swift in Sources */,
 				5790945A303C7D9100A53656 /* FileBrowserView.swift in Sources */,
 				5790945B303C7D9100A53656 /* PSXSBICollectionCell.swift in Sources */,
+				E524FAA6308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */,
 				5790945C303C7D9100A53656 /* SkinCollectionViewCell.swift in Sources */,
 				5790945D303C7D9100A53656 /* Shaders.metal in Sources */,
 				5790945E303C7D9100A53656 /* PersistedKit.swift in Sources */,
@@ -15348,6 +15422,7 @@
 				579094CB303C7D9100A53656 /* TriggerButton.swift in Sources */,
 				57EBA5533052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
 				57EBA5613052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
+				E524FAB030886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57EBA5653052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
 				57EBA5693052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56D3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
@@ -15388,13 +15463,16 @@
 				579094EC303C7D9100A53656 /* SettingsBottomView.swift in Sources */,
 				579094ED303C7D9100A53656 /* GameInfoDetailView.swift in Sources */,
 				579094EE303C7D9100A53656 /* FileManagerExtensions.swift in Sources */,
+				E524FA993088649A009885DA /* DuoTabletopControlController.swift in Sources */,
 				579094EF303C7D9100A53656 /* GameMetadataKit.swift in Sources */,
 				579094F0303C7D9100A53656 /* CheevosProgressView.swift in Sources */,
 				579094F1303C7D9100A53656 /* PurchaseView.swift in Sources */,
+				57F2A8032F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */,
 				579094F2303C7D9100A53656 /* PlayHistoryBlankSlateView.swift in Sources */,
 				579094F3303C7D9100A53656 /* AddTriggerActionHoldView.swift in Sources */,
 				579094F4303C7D9100A53656 /* PSPNetworkingView.swift in Sources */,
 				579094F5303C7D9100A53656 /* AddTriggerMappingListView.swift in Sources */,
+				E524FA5830879B06009885DA /* DuoTabletopControlView.swift in Sources */,
 				579094F6303C7D9100A53656 /* JGenesisView.swift in Sources */,
 				579094F7303C7D9100A53656 /* GradientView.swift in Sources */,
 				579094F8303C7D9100A53656 /* SyncManager.swift in Sources */,
@@ -15419,11 +15497,13 @@
 				5790950A303C7D9100A53656 /* LandscapeStatusView.swift in Sources */,
 				5790950B303C7D9100A53656 /* GameLandscapeCarouselCell.swift in Sources */,
 				5790950C303C7D9100A53656 /* ShaderLIstView.swift in Sources */,
+				E524FB083088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */,
 				5790950D303C7D9100A53656 /* ASRadio.swift in Sources */,
 				5790950E303C7D9100A53656 /* ColorPickerView.swift in Sources */,
 				5790950F303C7D9100A53656 /* ASRadioView.swift in Sources */,
 				57909510303C7D9100A53656 /* CheatCodeListView.swift in Sources */,
 				57909511303C7D9100A53656 /* ShaderToy.swift in Sources */,
+				E524FA8F30886485009885DA /* DuoTabletopControlWindow.swift in Sources */,
 				57909512303C7D9100A53656 /* ZipHandlerView.swift in Sources */,
 				57909513303C7D9100A53656 /* SettingsTopView.swift in Sources */,
 				57909514303C7D9100A53656 /* Bimap.swift in Sources */,
@@ -15597,7 +15677,9 @@
 				57CDCDD62FD5CBD3005BA4C8 /* CGSizeExtenstions.swift in Sources */,
 				57F1D42D2FF381FB00FC5B2A /* GameInfoNavigationView.swift in Sources */,
 				57CDCDD72FD5CBD3005BA4C8 /* DC.swift in Sources */,
+				E524FABD308866D6009885DA /* DuoHingeKit.swift in Sources */,
 				57CDCDD92FD5CBD3005BA4C8 /* UIDeviceExtensions.swift in Sources */,
+				E5D10A010000000000000013 /* DuoLayoutKit.swift in Sources */,
 				57CDCDDB2FD5CBD3005BA4C8 /* ThreeDSKeyboardView.swift in Sources */,
 				57CDCDDC2FD5CBD3005BA4C8 /* PriceItemCollectionCell.swift in Sources */,
 				57F1D4052FF2160600FC5B2A /* CategorySelectionView.swift in Sources */,
@@ -15706,6 +15788,7 @@
 				5796DB122FE417E80051F661 /* ASCornerStyle.swift in Sources */,
 				57D48251301702BA0030A771 /* FileBrowserView.swift in Sources */,
 				57CDCE3F2FD5CBD3005BA4C8 /* PSXSBICollectionCell.swift in Sources */,
+				E524FAA4308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */,
 				57CDCE402FD5CBD3005BA4C8 /* SkinCollectionViewCell.swift in Sources */,
 				57CDCE412FD5CBD3005BA4C8 /* Shaders.metal in Sources */,
 				57CDCE422FD5CBD3005BA4C8 /* PersistedKit.swift in Sources */,
@@ -15820,6 +15903,7 @@
 				57CDCEB42FD5CBD3005BA4C8 /* TriggerButton.swift in Sources */,
 				57EBA5543052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
 				57EBA5623052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
+				E524FAB130886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57EBA5663052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
 				57EBA56A3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56E3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
@@ -15860,13 +15944,16 @@
 				57ABFBDD2FED227B001C1425 /* SettingsBottomView.swift in Sources */,
 				57F1D4D12FFE10D300FC5B2A /* GameInfoDetailView.swift in Sources */,
 				57CDCED72FD5CBD3005BA4C8 /* FileManagerExtensions.swift in Sources */,
+				E524FA9A3088649A009885DA /* DuoTabletopControlController.swift in Sources */,
 				5721F1A63027177100CAC638 /* GameMetadataKit.swift in Sources */,
 				57CDCED82FD5CBD3005BA4C8 /* CheevosProgressView.swift in Sources */,
 				57CDCED92FD5CBD3005BA4C8 /* PurchaseView.swift in Sources */,
+				57F2A8042F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */,
 				57CDCEDA2FD5CBD3005BA4C8 /* PlayHistoryBlankSlateView.swift in Sources */,
 				57D48421302311D00030A771 /* AddTriggerActionHoldView.swift in Sources */,
 				57CDCEDB2FD5CBD3005BA4C8 /* PSPNetworkingView.swift in Sources */,
 				57D483CE3021D6D30030A771 /* AddTriggerMappingListView.swift in Sources */,
+				E524FA5530879B06009885DA /* DuoTabletopControlView.swift in Sources */,
 				57CDCEDC2FD5CBD3005BA4C8 /* JGenesisView.swift in Sources */,
 				57CDCEDD2FD5CBD3005BA4C8 /* GradientView.swift in Sources */,
 				57CDCEDE2FD5CBD3005BA4C8 /* SyncManager.swift in Sources */,
@@ -15891,11 +15978,13 @@
 				5721F1E3302833FE00CAC638 /* LandscapeStatusView.swift in Sources */,
 				5721F1E6302833FE00CAC638 /* GameLandscapeCarouselCell.swift in Sources */,
 				57D481FF3014A2480030A771 /* ShaderLIstView.swift in Sources */,
+				E524FB093088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */,
 				5796DB3C2FE41A0A0051F661 /* ASRadio.swift in Sources */,
 				57CDCF042FD5CBD3005BA4C8 /* ColorPickerView.swift in Sources */,
 				57BF5EE12FDB09BC0073D318 /* ASRadioView.swift in Sources */,
 				57CDCF052FD5CBD3005BA4C8 /* CheatCodeListView.swift in Sources */,
 				5760A3A73029E813002CCF6B /* ShaderToy.swift in Sources */,
+				E524FA9030886485009885DA /* DuoTabletopControlWindow.swift in Sources */,
 				57CDCF062FD5CBD3005BA4C8 /* ZipHandlerView.swift in Sources */,
 				57ABFBD62FED20D1001C1425 /* SettingsTopView.swift in Sources */,
 				57D942CD302F1EC000C06208 /* Bimap.swift in Sources */,
@@ -16053,6 +16142,7 @@
 				57F1D42C2FF381FB00FC5B2A /* GameInfoNavigationView.swift in Sources */,
 				5771C28B2E6986C00062EDE0 /* DC.swift in Sources */,
 				A58C3F4F248E44AF0099E068 /* UIDeviceExtensions.swift in Sources */,
+				E5D10A010000000000000014 /* DuoLayoutKit.swift in Sources */,
 				5720CACC2DB555990090C0F6 /* ThreeDSKeyboardView.swift in Sources */,
 				57047A162D8571D600C62FF6 /* PriceItemCollectionCell.swift in Sources */,
 				57F1D4062FF2160600FC5B2A /* CategorySelectionView.swift in Sources */,
@@ -16088,6 +16178,7 @@
 				576C46312E16D9090008D087 /* MultiDiscDescCollectionCell.swift in Sources */,
 				57399AC52E40ACE100AB73DD /* PSXSBIImportView.swift in Sources */,
 				57BF60722FE278B80073D318 /* ASViewEffects.swift in Sources */,
+				E524FA5630879B06009885DA /* DuoTabletopControlView.swift in Sources */,
 				570F59152DC5BB48007BFD92 /* PlatformSortCollectionViewCell.swift in Sources */,
 				B2C97B4E2A09F3B900053A4C /* UIColorExtensions.swift in Sources */,
 				57B6ECF52D79F1EA002E619C /* SkinSettingsView.swift in Sources */,
@@ -16113,6 +16204,7 @@
 				57A480E72E74030E001D4598 /* CheevosChallengeView.swift in Sources */,
 				57B5E3142ECC625E00DE17E9 /* Arcade.swift in Sources */,
 				5720E7AA2E541F2000EC0DA5 /* RadialGradientView.swift in Sources */,
+				E524FB073088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */,
 				573CEE0E2F20D05800EA24F1 /* RomPatcherView.swift in Sources */,
 				5713300F2D90FF820043C28A /* BaseView.swift in Sources */,
 				57655C262DF6BCF3003E4A6E /* PlatformSelectionView.swift in Sources */,
@@ -16129,6 +16221,7 @@
 				5781F4992EEE71B500916D8B /* ShaderOrderView.swift in Sources */,
 				57FD13F530110A34007F211A /* LandscapeBackgroundView.swift in Sources */,
 				577005612D3CD3AC00762E8F /* UTTypeExtensions.swift in Sources */,
+				E524FAA5308864B4009885DA /* TabletopSizeTransitionCoordinator.swift in Sources */,
 				57D7CF952EA8E7EE00F41540 /* TriggerProView.swift in Sources */,
 				5706B0372DFBEC1E0066122E /* SG1000.swift in Sources */,
 				57BF5EDA2FDB09A80073D318 /* ASCheckView.swift in Sources */,
@@ -16223,6 +16316,7 @@
 				574ABE992E6021550045F76E /* GBC.swift in Sources */,
 				576F0E0C2D880DE600D2A1BA /* GradientImageView.swift in Sources */,
 				571BB8072DA4357D00830134 /* ThreeDS.swift in Sources */,
+				E524FA8E30886485009885DA /* DuoTabletopControlWindow.swift in Sources */,
 				576060222D24E07500A98B0C /* AnimatedGradientView.swift in Sources */,
 				570F59132DC5BB1D007BFD92 /* CoverStyleCollectionViewCell.swift in Sources */,
 				5771C20A2E6569BE0062EDE0 /* LeaderboardView.swift in Sources */,
@@ -16242,6 +16336,7 @@
 				57B5E3242ECCCD0800DE17E9 /* MAMEKit.swift in Sources */,
 				5796DB4A2FE41A630051F661 /* ASProgress.swift in Sources */,
 				57ABFB622FEBC335001C1425 /* SettingsMembershipView.swift in Sources */,
+				E524FABC308866D6009885DA /* DuoHingeKit.swift in Sources */,
 				573CEE912F23396400EA24F1 /* Jaguar.swift in Sources */,
 				57DA89322D8328510074052A /* CKAccountStatusExtensions.swift in Sources */,
 				5720E7652E540F7200EC0DA5 /* RetroAchievementsLoginView.swift in Sources */,
@@ -16283,6 +16378,7 @@
 				5781F47E2EEE572A00916D8B /* ShaderInfoView.swift in Sources */,
 				57C65AEB2FD6B2E300BB73E0 /* ASListItemView.swift in Sources */,
 				572D02722F87E45B000BD6F4 /* PretendoNetworkingConfig.swift in Sources */,
+				E524FA9C3088649A009885DA /* DuoTabletopControlController.swift in Sources */,
 				5796DB442FE41A300051F661 /* ASChevron.swift in Sources */,
 				57F632FE2D718236007270E8 /* SettingsListView.swift in Sources */,
 				578E4BA52F8A9B230027E6D0 /* TitleSortCollectionCell.swift in Sources */,
@@ -16292,6 +16388,7 @@
 				57CC35802DC0684500DF7418 /* DownloadManageView.swift in Sources */,
 				57913AF52D5D89CF004D51AA /* TouchController.swift in Sources */,
 				57CC33BE2DBCDF3400DF7418 /* CGRectExtensions.swift in Sources */,
+				E524FAAF30886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57399B192E42EDEA00AB73DD /* DeadZoneControl.swift in Sources */,
 				A392D5652E96682C00F920E7 /* DisabledTapSwitch.swift in Sources */,
 				57F632852D6EB485007270E8 /* UIScreenExtensions.swift in Sources */,
@@ -16318,6 +16415,7 @@
 				5721F1A73027177100CAC638 /* GameMetadataKit.swift in Sources */,
 				57D029192E6C9C5200BF1F9D /* CheevosProgressView.swift in Sources */,
 				57047A0A2D85217C00C62FF6 /* PurchaseView.swift in Sources */,
+				57F2A8022F8E100100C62FF6 /* PurchaseBackgroundView.swift in Sources */,
 				57EC6AB82D803810002920F0 /* PlayHistoryBlankSlateView.swift in Sources */,
 				57D48422302311D00030A771 /* AddTriggerActionHoldView.swift in Sources */,
 				578F28972F37856B00D2D998 /* PSPNetworkingView.swift in Sources */,

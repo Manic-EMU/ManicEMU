@@ -72,6 +72,9 @@ class ImportServiceListView: BaseView {
         view.delegate = self
         view.contentInset = getCollectionViewContentInset()
         view.isFocusable = true
+        if UIDevice.isPhoneDuo {
+            view.insetsLayoutMarginsFromSafeArea = false
+        }
         return view
     }()
     
@@ -120,10 +123,25 @@ class ImportServiceListView: BaseView {
         }
         
         addSubview(importNavigationView)
-        importNavigationView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+        updateNavigationViewConstraints()
+    }
+    
+    private func updateNavigationViewConstraints() {
+        importNavigationView.snp.remakeConstraints { make in
+            if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+                if let cameraArea = DuoLayoutKit.sideStrip()?.cameraArea() {
+                    make.leading.equalToSuperview().inset(cameraArea.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset((cameraArea.height - R.Size.NavigationHeight)/2)
+                } else {
+                    make.leading.equalToSuperview().inset(R.Size.iPhoneDuoOuterCameraEdge + R.Size.iPhoneDuoOuterCameraSize.width - R.Size.ContentSpaceMedium)
+                    make.top.equalToSuperview().offset(R.Size.iPhoneDuoOuterCameraEdge)
+                }
+                make.trailing.equalToSuperview()
+            } else {
+                make.leading.trailing.equalToSuperview()
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
+            }
             make.height.equalTo(R.Size.NavigationHeight)
-            make.top.equalToSuperview().offset(UIDevice.isPhone ? 0 : R.Size.ContentInsetTop(window: hostingWindow))
         }
     }
     
@@ -131,8 +149,11 @@ class ImportServiceListView: BaseView {
         super.layoutSubviews()
         if UIDevice.isPhone {
             importNavigationView.snp.updateConstraints { make in
-                make.top.equalToSuperview().offset(UIDevice.isPhone && isLandscapeLayout ? 0 : R.Size.ContentInsetTop(window: hostingWindow))
+                make.top.equalToSuperview().offset(R.Size.ContentInsetTop(window: hostingWindow))
             }
+        }
+        if UIDevice.isPhoneDuo {
+            updateNavigationViewConstraints()
         }
     }
     
@@ -141,7 +162,7 @@ class ImportServiceListView: BaseView {
     }
     
     private var isLandscapeLayout: Bool {
-        var isLandscape = prefferedLayoutStyle == .landscape
+        var isLandscape = preferredLayoutStyle == .landscape
         if isLandscape, UIDevice.isPad, isWindowHasEnoughSpaceforIpadMultiColumnLayout {
             isLandscape = false
         }
@@ -149,7 +170,9 @@ class ImportServiceListView: BaseView {
     }
     
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, env in
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
+        let layout = UICollectionViewCompositionalLayout(sectionProvider: { [weak self] sectionIndex, env in
             guard let self else { return nil }
             let isLandscape = self.isLandscapeLayout
             let widthDimension: NSCollectionLayoutDimension
@@ -203,7 +226,7 @@ class ImportServiceListView: BaseView {
             }
             return section
             
-        }
+        }, configuration: configuration)
         return layout
     }
     
@@ -218,26 +241,28 @@ class ImportServiceListView: BaseView {
         if isLandscapeLayout {
             top += (R.Size.NavigationHeight + R.Size.ContentSpaceLarge)
         }
+        if UIDevice.isPhoneDuoOuter && UIDevice.currentOrientation == .landscapeRight {
+            top += R.Size.ContentSpaceLarge
+        }
         let bottom = R.Size.ContentInsetBottom(window: hostingWindow) + R.Size.HomeTabBarSize.height + R.Size.ContentSpaceLarge
         return .insets(top: top, bottom: bottom)
     }
 }
 
 extension ImportServiceListView: ViewTransition {
-    func viewWillTransition() {
+    func viewAlongsideTransition() {
         if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? ImportMottoCollectionViewCell {
             cell.updateViews(isLandscape: isLandscapeLayout)
         }
-    }
-    
-    func viewAlongsideTransition() {
         if UIDevice.isPhone {
             importNavigationView.snp.updateConstraints { make in
                 make.top.equalToSuperview().offset(UIDevice.isPhone && isLandscapeLayout ? 0 : R.Size.ContentInsetTop(window: hostingWindow))
             }
-        } else if UIDevice.isPad, isLandscapeLayout {
-            collectionView.contentInset = getCollectionViewContentInset()
         }
+        collectionView.contentInset = getCollectionViewContentInset()
+        collectionView.reloadData({ [weak self] in
+            self?.collectionView.scrollToTop()
+        })
     }
 }
 

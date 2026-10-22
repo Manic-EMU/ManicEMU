@@ -43,8 +43,20 @@ class ImportViewController: BaseViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if UIDevice.isPad, hostingWindow != nil {
-            updateViewsForIpad()
+        if (UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen), hostingWindow != nil {
+            updateViewsForLargeScreen()
+        } else if UIDevice.isPhoneDuo {
+            addImportServiceView.removeFromSuperview()
+            cornerMaskViewForiPad.removeFromSuperview()
+            
+            importServiceListView.snp.remakeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                if UIDevice.isPhoneDuoCompactWidth {
+                    make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+                } else {
+                    make.leading.trailing.equalToSuperview()
+                }
+            }
         }
     }
     
@@ -72,11 +84,11 @@ class ImportViewController: BaseViewController {
         }
     }
     
-    private func updateViewsForIpad() {
-        guard UIDevice.isPad else { return }
+    private func updateViewsForLargeScreen() {
+        guard UIDevice.isPad || UIDevice.isPhoneDuoInnerFullScreen else { return }
         guard let hostingWindow else { return }
-        if view.isWindowHasEnoughSpaceforIpadMultiColumnLayout {
-            let sideMenuWidth = R.Size.SideMenuWidth(window: hostingWindow)*1.2
+        if view.isWindowHasEnoughSpaceforIpadMultiColumnLayout || UIDevice.isPhoneDuoInnerFullScreen {
+            let sideMenuWidth = R.Size.SideMenuWidth(window: hostingWindow)*(UIDevice.isPhoneDuoInnerFullScreen ? 1.0 : 1.2)
             importServiceListView.snp.remakeConstraints { make in
                 make.top.bottom.trailing.equalToSuperview()
                 if sideMenuWidth <= hostingWindow.width/2 {
@@ -94,10 +106,12 @@ class ImportViewController: BaseViewController {
                 make.trailing.equalTo(importServiceListView.snp.leading)
             }
             
-            cornerMaskViewForiPad.removeFromSuperview()
-            view.addSubview(cornerMaskViewForiPad)
-            cornerMaskViewForiPad.snp.remakeConstraints { make in
-                make.edges.equalTo(importServiceListView)
+            if UIDevice.isPad {
+                cornerMaskViewForiPad.removeFromSuperview()
+                view.addSubview(cornerMaskViewForiPad)
+                cornerMaskViewForiPad.snp.remakeConstraints { make in
+                    make.edges.equalTo(importServiceListView)
+                }
             }
         } else {
             importServiceListView.snp.remakeConstraints { make in
@@ -110,7 +124,7 @@ class ImportViewController: BaseViewController {
     }
     
     override func handleScreenPanGesture(edges: UIRectEdge, gesture: UIScreenEdgePanGestureRecognizer) {
-        if UIDevice.isPhone || (UIDevice.isPad && view.prefferedLayoutStyle == .portrait) {
+        if (UIDevice.isPhone && !UIDevice.isPhoneDuoInnerFullScreen) || (UIDevice.isPad && view.preferredLayoutStyle == .portrait && !view.isWindowHasEnoughSpaceforIpadMultiColumnLayout) {
             if edges == .left {
                 showSideMenu()
             }
