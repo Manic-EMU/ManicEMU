@@ -18,7 +18,7 @@ extension GameType {
 
 struct EmulatorInteractionKit {
     enum EmulatorType {
-        case meloNX, xeniOS, dukeX, armsx2
+        case meloNX, xeniOS, dukeX, armsx2, melocafe
     }
     
     /// Display name plus the public URL scheme. Extra ARMSX2 aliases stay in `supportedLaunchSchemes`.
@@ -102,6 +102,8 @@ struct EmulatorInteractionKit {
             return UIApplication.shared.canOpenURL(R.URLs.FetchARMSX2Games)
                 || UIApplication.shared.canOpenURL(URL(string: "\(R.Strings.ARMSX2Scheme)-ios://library")!)
                 || UIApplication.shared.canOpenURL(URL(string: "\(R.Strings.ARMSX2Scheme)ios://library")!)
+        case .melocafe:
+            return UIApplication.shared.canOpenURL(R.URLs.FetchMeloCafeGames)
         }
     }
     
@@ -116,6 +118,8 @@ struct EmulatorInteractionKit {
                 UIApplication.shared.open(R.URLs.DukeXGameLaunch(gameId: id))
             case .armsx2:
                 UIApplication.shared.open(R.URLs.ARMSX2GameLaunch(gameId: id))
+            case .melocafe:
+                UIApplication.shared.open(R.URLs.MeloCafeGameLaunch(gameId: id))
             }
         } else {
             DispatchQueue.main.asyncAfter(delay: 0.35) {
@@ -128,6 +132,8 @@ struct EmulatorInteractionKit {
                     UIView.makeToast(message: R.string.localizable.notInstall("DukeX"))
                 case .armsx2:
                     UIView.makeToast(message: R.string.localizable.notInstall("ARMSX2"))
+                case .melocafe:
+                    UIView.makeToast(message: R.string.localizable.notInstall("MeloCafe"))
                 }
             }
         }
@@ -144,6 +150,8 @@ struct EmulatorInteractionKit {
                 UIApplication.shared.open(R.URLs.FetchDukeXGames)
             case .armsx2:
                 UIApplication.shared.open(R.URLs.FetchARMSX2Games)
+            case .melocafe:
+                UIApplication.shared.open(R.URLs.FetchMeloCafeGames)
             }
             
         } else {
@@ -156,6 +164,8 @@ struct EmulatorInteractionKit {
                 UIView.makeToast(message: R.string.localizable.notInstall("DukeX"))
             case .armsx2:
                 UIView.makeToast(message: R.string.localizable.notInstall("ARMSX2"))
+            case .melocafe:
+                UIView.makeToast(message: R.string.localizable.notInstall("MeloCafe"))
             }
         }
     }
@@ -173,7 +183,7 @@ struct EmulatorInteractionKit {
             let realm = Database.realm
             for mg in fromGames {
                 if let _ = realm.object(ofType: Game.self, forPrimaryKey: mg.titleId) {
-                    Log.debug("MeloNX游戏已存在:\(mg.titleId) \(mg.titleName)")
+                    Log.debug("External game already exists: \(mg.titleId) \(mg.titleName)")
                 } else {
                     let game = Game()
                     switch type {
@@ -190,6 +200,11 @@ struct EmulatorInteractionKit {
                         let ext = URL(fileURLWithPath: mg.titleId).pathExtension.lowercased()
                         game.fileExtension = ext.isEmpty ? "iso" : ext
                         game.gameType = .ps2
+                    case .melocafe:
+                        // Launch key is the decimal title id. Extension is only for the library row.
+                        let ext = mg.fileExtension.lowercased()
+                        game.fileExtension = ext.isEmpty ? "wua" : ext
+                        game.gameType = .wiiu
                     }
                     game.id = mg.titleId
                     game.name = mg.titleName
@@ -216,6 +231,8 @@ struct EmulatorInteractionKit {
                         UIView.makeToast(message: R.string.localizable.biosImportSuccess("DukeX Games"))
                     case .armsx2:
                         UIView.makeToast(message: R.string.localizable.biosImportSuccess("ARMSX2 Games"))
+                    case .melocafe:
+                        UIView.makeToast(message: R.string.localizable.biosImportSuccess("MeloCafe Games"))
                     }
                 }
             }
@@ -231,14 +248,25 @@ struct GameScheme: Codable, Identifiable, Equatable, Hashable, Sendable {
     var developer: String
     var version: String
     var iconData: Data?
+    /// Set when the callback is MeloCafe's `GameInfoSwift` list. Not part of the shared JSON.
+    var fileExtension: String = ""
+    
+    enum CodingKeys: String, CodingKey {
+        case id, titleName, titleId, developer, version, iconData
+    }
     
     static func pullFromURL(_ url: URL) -> [GameScheme] {
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
             let items = components.queryItems ?? []
             if let text = items.first(where: { $0.name == "games" })?.value,
-                let data = GameScheme.base64URLDecode(text),
-                let decoded = try? JSONDecoder().decode([GameScheme].self, from: data) {
-                return decoded
+               let data = GameScheme.base64URLDecode(text) {
+                if let decoded = try? JSONDecoder().decode([GameScheme].self, from: data) {
+                    return decoded
+                }
+                // MeloCafe sends `[GameInfoSwift]` (`id`, `title`, `path`, `icon`).
+                if let library = try? JSONDecoder().decode([MeloCafeGame].self, from: data) {
+                    return library.map(\.gameScheme)
+                }
             }
             // ARMSX2 sends `payload` wrapping `{ games: [{ title, fileName, ... }] }`.
             if let text = items.first(where: { $0.name == "payload" })?.value,
@@ -258,6 +286,31 @@ struct GameScheme: Codable, Identifiable, Equatable, Hashable, Sendable {
             base64 = base64.appending("=")
         }
         return Data(base64Encoded: base64)
+    }
+}
+
+/// MeloCafe `GameInfoSwift`. Launch key is the decimal `id` (`melocafe://game?id=`).
+private struct MeloCafeGame: Decodable {
+    let id: UInt64
+    let title: String
+    let path: String
+    let icon: Data
+    
+    var gameScheme: GameScheme {
+        let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let fileURL = URL(fileURLWithPath: path)
+        let titleName = trimmedTitle.isEmpty
+            ? fileURL.deletingPathExtension().lastPathComponent
+            : trimmedTitle
+        return GameScheme(
+            id: String(id),
+            titleName: titleName,
+            titleId: String(id),
+            developer: "",
+            version: "1.0",
+            iconData: icon.isEmpty ? nil : icon,
+            fileExtension: fileURL.pathExtension
+        )
     }
 }
 

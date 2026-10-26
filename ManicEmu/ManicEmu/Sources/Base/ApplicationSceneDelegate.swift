@@ -209,6 +209,8 @@ class ApplicationSceneDelegate: UIResponder, UIWindowSceneDelegate {
                         EmulatorInteractionKit.processGames(type: .dukeX, callbackUrl: url)
                     } else if let host = url.host, host == R.Strings.ARMSX2Scheme {
                         EmulatorInteractionKit.processGames(type: .armsx2, callbackUrl: url)
+                    } else if let host = url.host, host == R.Strings.MeloCafeScheme {
+                        EmulatorInteractionKit.processGames(type: .melocafe, callbackUrl: url)
                     } else {
                         Self.launchGameID = url.lastPathComponent
                     }

@@ -101,6 +101,44 @@ extension GameType
 }
 
 struct ThreeDS: DeltaCoreProtocol {
+    /// Library entry for a Home Menu that already lives in NAND.
+    /// `.app` romUrl points at that NAND content, so copying it with replacement deletes the source.
+    static func registerInstalledHomeMenu(at fileURL: URL, identifier: UInt64) {
+        let titleLow = String(format: "%08x", UInt32(identifier & 0xFFFFFFFF))
+        let regionByTitle = [
+            "00008202": "JPN",
+            "00008f02": "USA",
+            "00009802": "EUR",
+            "0000a102": "CHN",
+            "0000a902": "KOR",
+            "0000b102": "TWN"
+        ]
+        guard let region = regionByTitle[titleLow] else { return }
+        guard let hash = FileHashUtil.truncatedHash(url: fileURL) else { return }
+        let realm = Database.realm
+        if let game = realm.object(ofType: Game.self, forPrimaryKey: hash) {
+            if game.isDeleted {
+                try? realm.write { game.isDeleted = false }
+            }
+            return
+        }
+        let game = Game()
+        game.id = hash
+        game.name = fileURL.deletingPathExtension().lastPathComponent
+        game.fileExtension = fileURL.pathExtension
+        game.gameType = ._3ds
+        game.extras = [
+            ExtraKey.identifier.rawValue: identifier,
+            ExtraKey.regions.rawValue: region
+        ].jsonData()
+        game.aliasName = "Home Menu (\(region))"
+        game.importDate = Date()
+        if let index = GlobalCoreSwitch.getConfig(realm: realm).getUsingCoreIndex(gameType: ._3ds) {
+            game.defaultCore = index
+        }
+        try? realm.write { realm.add(game) }
+    }
+
     static func generate3DSHomeMenu() {
         let homeMenus = [
             "JPN": "/00008202/",
@@ -224,6 +262,139 @@ struct ThreeDS: DeltaCoreProtocol {
 
             return Cheat(name: title, code: code)
         }
+    }
+
+    /// User-supplied key file Citra reads from sysdata. A copy left by an older build counts.
+    static var hasAesKeys: Bool {
+        FileManager.default.fileExists(atPath: R.Path.ThreeDSSystemData.appendingPathComponent("aes_keys.txt"))
+    }
+
+    /// Header-only. `.3dsx` and anything that is not an NCCH, NCSD, or CIA is reported as not encrypted.
+    static func isEncryptedROM(at url: URL) -> Bool {
+        let accessed = url.startAccessingSecurityScopedResource()
+        defer {
+            if accessed {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+        guard let handle = try? FileHandle(forReadingFrom: url) else { return false }
+        defer { try? handle.close() }
+        if url.pathExtension.lowercased() == "cia" {
+            return isEncryptedCIA(handle)
+        }
+        return ncchIsEncrypted(handle, at: 0)
+    }
+
+    /// `no_crypto` (NCCH flags bit 2) clear means ExHeader/ExeFS/RomFS are still ciphertext.
+    private static func ncchIsEncrypted(_ handle: FileHandle, at offset: UInt64) -> Bool {
+        guard let header = read(handle, at: offset, count: 0x200), header.count == 0x200 else { return false }
+        let magic = header.subdata(in: 0x100..<0x104)
+        if magic == Data("NCSD".utf8) {
+            // Only the file start is an NCSD. Partition 0 holds the game NCCH.
+            guard offset == 0 else { return false }
+            let partition = UInt64(u32LE(header, 0x120)) * 0x200
+            guard partition != 0 else { return false }
+            return ncchIsEncrypted(handle, at: partition)
+        }
+        guard magic == Data("NCCH".utf8) else { return false }
+        return (header[0x18F] & 0x04) == 0
+    }
+
+    /// CIA content encryption (TMD type bit 0) or an inner NCCH that is still encrypted.
+    private static func isEncryptedCIA(_ handle: FileHandle) -> Bool {
+        guard let header = read(handle, at: 0, count: 0x2020), header.count == 0x2020 else { return false }
+        let headerSize = UInt64(u32LE(header, 0x00))
+        let certSize = UInt64(u32LE(header, 0x08))
+        let ticketSize = UInt64(u32LE(header, 0x0C))
+        let tmdSize = UInt64(u32LE(header, 0x10))
+        guard headerSize >= 0x20, tmdSize > 0 else { return false }
+
+        let certificateOffset = align64(headerSize)
+        let ticketOffset = align64(certificateOffset + certSize)
+        let tmdOffset = align64(ticketOffset + ticketSize)
+        guard let signature = read(handle, at: tmdOffset, count: 4), signature.count == 4 else { return false }
+        let signatureSize: UInt64
+        switch u32BE(signature, 0) {
+        case 0x10000, 0x10003: signatureSize = 0x200
+        case 0x10001, 0x10004: signatureSize = 0x100
+        case 0x10002, 0x10005: signatureSize = 0x3C
+        default: return false
+        }
+        let body = align64(4 + signatureSize)
+        guard let countData = read(handle, at: tmdOffset + body + 0x9E, count: 2), countData.count == 2 else { return false }
+        let contentCount = Int(u16BE(countData, 0))
+        // Retail titles have a handful of contents. A huge count is a bad header, not an encrypted ROM.
+        guard contentCount > 0, contentCount <= 256 else { return false }
+        let chunksOffset = tmdOffset + body + 0x9C4
+        let chunksSize = contentCount * 0x30
+        guard chunksOffset + UInt64(chunksSize) <= tmdOffset + tmdSize,
+              let chunks = read(handle, at: chunksOffset, count: chunksSize),
+              chunks.count == chunksSize else { return false }
+
+        var contentOffset = align64(tmdOffset + tmdSize)
+        for index in 0..<contentCount {
+            let base = index * 0x30
+            let contentIndex = Int(u16BE(chunks, base + 4))
+            let type = u16BE(chunks, base + 6)
+            let size = u64BE(chunks, base + 8)
+            if ciaContains(header, contentIndex), (type & 1) != 0 {
+                return true
+            }
+            // Absent slots contribute no bytes, matching CIAContainer::GetContentOffset.
+            let slotSize = ciaContains(header, index) ? size : 0
+            if slotSize > 0, ncchIsEncrypted(handle, at: contentOffset) {
+                return true
+            }
+            contentOffset += slotSize
+        }
+        return false
+    }
+
+    /// CIA `content_present`: index 0 is the high bit of the first byte.
+    private static func ciaContains(_ header: Data, _ index: Int) -> Bool {
+        guard index >= 0, index < 0x10000 else { return false }
+        let byte = header[0x20 + (index >> 3)]
+        return (byte & UInt8(0x80 >> (index & 7))) != 0
+    }
+
+    private static func align64(_ value: UInt64) -> UInt64 {
+        (value + 0x3F) & ~0x3F
+    }
+
+    private static func read(_ handle: FileHandle, at offset: UInt64, count: Int) -> Data? {
+        guard count > 0 else { return Data() }
+        do {
+            try handle.seek(toOffset: offset)
+            return try handle.read(upToCount: count)
+        } catch {
+            return nil
+        }
+    }
+
+    private static func u16BE(_ data: Data, _ offset: Int) -> UInt16 {
+        (UInt16(data[offset]) << 8) | UInt16(data[offset + 1])
+    }
+
+    private static func u32LE(_ data: Data, _ offset: Int) -> UInt32 {
+        UInt32(data[offset])
+            | (UInt32(data[offset + 1]) << 8)
+            | (UInt32(data[offset + 2]) << 16)
+            | (UInt32(data[offset + 3]) << 24)
+    }
+
+    private static func u32BE(_ data: Data, _ offset: Int) -> UInt32 {
+        (UInt32(data[offset]) << 24)
+            | (UInt32(data[offset + 1]) << 16)
+            | (UInt32(data[offset + 2]) << 8)
+            | UInt32(data[offset + 3])
+    }
+
+    private static func u64BE(_ data: Data, _ offset: Int) -> UInt64 {
+        var value: UInt64 = 0
+        for byte in data[offset..<(offset + 8)] {
+            value = (value << 8) | UInt64(byte)
+        }
+        return value
     }
 }
 

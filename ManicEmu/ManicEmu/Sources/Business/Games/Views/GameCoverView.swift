@@ -349,6 +349,8 @@ class GameCoverView: BaseView {
                 image = style == .style2 ? R.image.amiga_cover_v() : R.image.amiga_cover_h()
             } else if gameType == .ps2 {
                 image = style == .style2 ? R.image.ps2_cover_v() : R.image.ps2_cover_h()
+            } else if gameType == .wiiu {
+                image = style == .style2 ? R.image.wiiu_cover_v() : R.image.wiiu_cover_h()
             }
             if scalePlatform,
                 coverSize != .zero,

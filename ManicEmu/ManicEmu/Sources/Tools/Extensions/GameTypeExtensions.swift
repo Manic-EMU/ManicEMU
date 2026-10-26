@@ -238,6 +238,8 @@ extension GameType {
             self = .ws
         } else if shortName.uppercased() == "FLASH" {
             self = .flash
+        } else if shortName.uppercased() == "WiiU".uppercased() {
+            self = .wiiu
         } else {
             return nil
         }
@@ -297,6 +299,7 @@ extension GameType {
         case .wsc: return "WonderSwan Color"
         case .ws: return "WonderSwan"
         case .flash: return "Adobe Flash"
+        case .wiiu: return "Nintendo WiiU"
         default: return ""
         }
     }
@@ -355,6 +358,7 @@ extension GameType {
         case .wsc: return  NSLocalizedString("WSC", comment: "")
         case .ws: return  NSLocalizedString("WS", comment: "")
         case .flash: return  NSLocalizedString("Flash", comment: "")
+        case .wiiu: return  NSLocalizedString("WiiU", comment: "")
         case .unknown: return R.string.localizable.unknownPlatform()
         default: return ""
         }
@@ -414,6 +418,7 @@ extension GameType {
         case .wsc: return 2000
         case .ws: return 1999
         case .flash: return 1996
+        case .wiiu: return 2012
         default: return 0
         }
     }
@@ -651,7 +656,7 @@ extension GameType {
     
     var manufacturer: Manufacturer {
         switch self {
-        case ._3ds, .ds, .gb, .gba, .gbc, .nes, .fds, .snes, .vb, .pm, .n64, .ns, .ngc, .wii:
+        case ._3ds, .ds, .gb, .gba, .gbc, .nes, .fds, .snes, .vb, .pm, .n64, .ns, .ngc, .wii, .wiiu:
             return .nintendo
         case .ps1, .ps2, .psp:
             return .sony
@@ -828,6 +833,8 @@ extension GameType {
                 image = R.image.flash_group_brand()
             } else if self == .ps2 {
                 image = R.image.ps2_group_brand()
+            } else if self == .wiiu{
+                image = R.image.wiiu_group_brand()
             }
             Self.brandImageCaches[key] = image
             return image
@@ -838,7 +845,8 @@ extension GameType {
         if self == .ns ||
             self == .xbox360 ||
             self == .xbox ||
-            self == .ps2 {
+            self == .ps2 ||
+            self == .wiiu {
             return true
         }
         return false

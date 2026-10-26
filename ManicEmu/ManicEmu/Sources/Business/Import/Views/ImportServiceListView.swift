@@ -40,7 +40,8 @@ class ImportServiceListView: BaseView {
                         .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromMeloNX()),
                         .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromXeniOS()),
                         .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromDukeX()),
-                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromARMSX2())
+                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromARMSX2()),
+                        .iconTitleChevronCell(title: R.string.localizable.fetchGamesFromMeloCafe())
                      ])
                 ], completion: { indexPath in
                     guard let indexPath else { return }
@@ -48,7 +49,7 @@ class ImportServiceListView: BaseView {
                         AddUrlGameView.show()
                         return
                     }
-                    let types: [EmulatorInteractionKit.EmulatorType] = [.meloNX, .xeniOS, .dukeX, .armsx2]
+                    let types: [EmulatorInteractionKit.EmulatorType] = [.meloNX, .xeniOS, .dukeX, .armsx2, .melocafe]
                     if types.indices.contains(indexPath.row) {
                         EmulatorInteractionKit.fetchGames(type: types[indexPath.row])
                     }

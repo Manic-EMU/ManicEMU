@@ -350,11 +350,10 @@ class BIOSCollectionViewCell: UICollectionViewCell {
         
         guard fileManager.fileExists(atPath: path, isDirectory: &isDirectory) else { return }
         
-        if path.pathExtension.lowercased() == "app", let tid = pathToTid(path) {
-            if R.Numbers.ThreeDSHomeMenuIdentifiers.contains(where: { $0 == tid }) {
-                //识别到了3dS的home menu
-                FilesImporter.importFiles(urls: [URL(fileURLWithPath: path)], silentMode: true, in: hostingWindowScene)
-            }
+        if path.pathExtension.lowercased() == "app", let tid = pathToTid(path),
+           R.Numbers.ThreeDSHomeMenuIdentifiers.contains(where: { $0 == tid }) {
+            // Leave the .app in NAND. Importing it as a ROM copies onto the same path and deletes it.
+            ThreeDS.registerInstalledHomeMenu(at: URL(fileURLWithPath: path), identifier: tid)
         }
         
         if isDirectory.boolValue {
@@ -365,7 +364,7 @@ class BIOSCollectionViewCell: UICollectionViewCell {
                     import3DSHomeMenu(at: fullPath)
                 }
             } catch {
-                print("无法读取目录: \(path), 错误: \(error)")
+                Log.debug("Failed to read NAND directory \(path): \(error)")
             }
         }
     }

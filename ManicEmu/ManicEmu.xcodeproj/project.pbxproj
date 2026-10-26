@@ -2221,6 +2221,10 @@
 		E524FB073088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
 		E524FB083088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
 		E524FB093088C9BD009885DA /* ShortcutButtonContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */; };
+		E524FBC8308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
+		E524FBC9308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
+		E524FBCA308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
+		E524FBCB308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
 		E5385955E04D43598CAC5694 /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E5A00BB23080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
 		E5A00BB33080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
@@ -7124,7 +7128,6 @@
 		57BA854D30356A620039E284 /* 7800.keymapping */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = 7800.keymapping; sourceTree = "<group>"; };
 		57BA854E30356A620039E284 /* 7800.manicskin */ = {isa = PBXFileReference; lastKnownFileType = file; path = 7800.manicskin; sourceTree = "<group>"; };
 		57BA854F30356A620039E284 /* 7800_FLEX.manicskin */ = {isa = PBXFileReference; lastKnownFileType = file; path = 7800_FLEX.manicskin; sourceTree = "<group>"; };
-		57BA855030356A620039E284 /* aes_keys.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = aes_keys.txt; sourceTree = "<group>"; };
 		57BA855130356A620039E284 /* Arcade.keymapping */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Arcade.keymapping; sourceTree = "<group>"; };
 		57BA855230356A620039E284 /* Arcade.manicskin */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arcade.manicskin; sourceTree = "<group>"; };
 		57BA855330356A620039E284 /* Arcade_FLEX.manicskin */ = {isa = PBXFileReference; lastKnownFileType = file; path = Arcade_FLEX.manicskin; sourceTree = "<group>"; };
@@ -7495,6 +7498,7 @@
 		E524FAAE30886516009885DA /* DuoTabletopKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoTabletopKit.swift; sourceTree = "<group>"; };
 		E524FABA308866D4009885DA /* DuoHingeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoHingeKit.swift; sourceTree = "<group>"; };
 		E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutButtonContainerView.swift; sourceTree = "<group>"; };
+		E524FBC7308F2B38009885DA /* WiiU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiiU.swift; sourceTree = "<group>"; };
 		E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProHUDExtensions.swift; sourceTree = "<group>"; };
 		E5D10A010000000000000001 /* DuoLayoutKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoLayoutKit.swift; sourceTree = "<group>"; };
 		F0C500000000000000000101 /* FocusTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTypes.swift; sourceTree = "<group>"; };
@@ -13297,7 +13301,6 @@
 				57BA854D30356A620039E284 /* 7800.keymapping */,
 				57BA854E30356A620039E284 /* 7800.manicskin */,
 				57BA854F30356A620039E284 /* 7800_FLEX.manicskin */,
-				57BA855030356A620039E284 /* aes_keys.txt */,
 				57BA855130356A620039E284 /* Arcade.keymapping */,
 				57BA855230356A620039E284 /* Arcade.manicskin */,
 				57BA855330356A620039E284 /* Arcade_FLEX.manicskin */,
@@ -13708,6 +13711,7 @@
 		57F0D8402DE2CD7500760F57 /* Cores */ = {
 			isa = PBXGroup;
 			children = (
+				E524FBC7308F2B38009885DA /* WiiU.swift */,
 				6809D2DE31034EF5B9135498 /* FLASH.swift */,
 				16B86ECC930242969A108735 /* WSC.swift */,
 				B93489E15EFD47F2AE825436 /* Amiga.swift */,
@@ -14800,6 +14804,7 @@
 				00000000000051A1000000B1 /* CloudDriveConnetor.swift in Sources */,
 				00000000000051A1000000B2 /* GamesSelectionView.swift in Sources */,
 				00000000000051A1000000B3 /* FlexBackground.swift in Sources */,
+				E524FBCB308F2B41009885DA /* WiiU.swift in Sources */,
 				00000000000051A1000000B4 /* SectionIndexView.swift in Sources */,
 				00000000000051A1000000B5 /* EmulatorBridgingBase.swift in Sources */,
 				00000000000051A1000000B6 /* LibretroNetplayAnalogDpad.swift in Sources */,
@@ -15244,6 +15249,7 @@
 				5790941B303C7D9100A53656 /* CloudDriveConnetor.swift in Sources */,
 				5790941C303C7D9100A53656 /* GamesSelectionView.swift in Sources */,
 				5790941D303C7D9100A53656 /* FlexBackground.swift in Sources */,
+				E524FBC9308F2B41009885DA /* WiiU.swift in Sources */,
 				5790941E303C7D9100A53656 /* SectionIndexView.swift in Sources */,
 				5790941F303C7D9100A53656 /* EmulatorBridgingBase.swift in Sources */,
 				57C81DAF2FD6082600A8D0A1 /* LibretroNetplayAnalogDpad.swift in Sources */,
@@ -15725,6 +15731,7 @@
 				57CDCDFC2FD5CBD3005BA4C8 /* CloudDriveConnetor.swift in Sources */,
 				57CDCDFE2FD5CBD3005BA4C8 /* GamesSelectionView.swift in Sources */,
 				57CDCDFF2FD5CBD3005BA4C8 /* FlexBackground.swift in Sources */,
+				E524FBC8308F2B41009885DA /* WiiU.swift in Sources */,
 				57CDCE002FD5CBD3005BA4C8 /* SectionIndexView.swift in Sources */,
 				57CDCE052FD5CBD3005BA4C8 /* EmulatorBridgingBase.swift in Sources */,
 				57C81DB02FD6082600A8D0A1 /* LibretroNetplayAnalogDpad.swift in Sources */,
@@ -16080,6 +16087,7 @@
 				57D482B33019D3330030A771 /* ASListCustomCollectionCell.swift in Sources */,
 				57C79DE22FE3EC49003C737F /* ASSheetView.swift in Sources */,
 				57D942E5302F72CE00C06208 /* CitraAdvancedSettingView.swift in Sources */,
+				E524FBCA308F2B41009885DA /* WiiU.swift in Sources */,
 				578F28832F3780BC00D2D998 /* WFCSettingView.swift in Sources */,
 				579076F02D8AAC2900ED90FB /* TransparentHoleView.swift in Sources */,
 				5742E1B52FDA9A330031A726 /* ASLabelView.swift in Sources */,

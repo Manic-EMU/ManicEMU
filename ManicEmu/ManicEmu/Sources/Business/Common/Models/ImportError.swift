@@ -58,7 +58,7 @@ enum ImportError: Error, LocalizedError {
         case .badFile(let string):
             R.string.localizable.gameImportBadFile(string)
         case .decryptFailed(let string):
-            R.string.localizable.game3DSDecryptFailed(string)
+            R.string.localizable.game3DSDecryptFailed(string) + "\n\n" + R.string.localizable.game3DSEncryptedTips()
         case .ciaGameNotExist(let string):
             R.string.localizable.game3DSGameNotExist(string)
         case .saveNoMatchGames(let url):

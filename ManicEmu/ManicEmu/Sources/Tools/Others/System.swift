@@ -11,6 +11,7 @@
 
 enum System: CaseIterable
 {
+    case wiiu
     case flash
     case wsc
     case ps2
@@ -171,6 +172,7 @@ extension System {
         case .ps2: return .ps2
         case .wsc: return .wsc
         case .flash: return .flash
+        case .wiiu: return .wiiu
         }
     }
 }

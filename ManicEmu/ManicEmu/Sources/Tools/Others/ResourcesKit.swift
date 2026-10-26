@@ -118,7 +118,6 @@ struct ResourcesKit {
                 Log.debug("资源解压结束:\(Date.now.timeIntervalSince1970ms)")
                 completion?(isSuccess)
                 if isSuccess {
-                    try? FileManager.safeCopyItem(at: URL(fileURLWithPath: R.Path.Resource.appendingPathComponent("aes_keys.txt")), to: URL(fileURLWithPath: R.Path.ThreeDSSystemData.appendingPathComponent("aes_keys.txt")), shouldReplace: true)
                     try? FileManager.safeCopyItem(at: URL(fileURLWithPath: R.Path.Resource.appendingPathComponent("seeddb.bin")), to: URL(fileURLWithPath: R.Path.ThreeDSSystemData.appendingPathComponent("seeddb.bin")), shouldReplace: true)
                     try? FileManager.safeCopyItem(at: URL(fileURLWithPath: R.Path.Resource.appendingPathComponent("shared_font.bin")), to: URL(fileURLWithPath: R.Path.ThreeDSSystemData.appendingPathComponent("shared_font.bin")), shouldReplace: true)
                     

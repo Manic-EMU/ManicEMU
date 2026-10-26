@@ -128,7 +128,6 @@ enum SpecialCoreOption: String {
     case mame_cheats_enable
     //isAzahar3DS
     case citra_use_cpu_jit
-    case citra_use_default_aes_key
     case citra_required_online_lle_modules
     case citra_touch_touchscreen
     case citra_input_type
@@ -138,6 +137,7 @@ enum SpecialCoreOption: String {
     case citra_large_screen_proportion
     case citra_custom_layout_config
     case citra_motion_rotation
+    case citra_use_fastinterp
     //a2600
     case stella_crop_hoverscan
     //a5200
@@ -356,7 +356,6 @@ enum SpecialCoreOption: String {
         } else if game.isAzahar3DS {
             return [
                 .citra_use_cpu_jit,
-                .citra_use_default_aes_key,
                 .citra_layout_option,
                 .citra_layout_option,
                 .citra_swap_screen,

@@ -186,6 +186,8 @@ class OnlineCoverManager {
                 boxArtUrl = host.appendingPathComponent("Commodore - 64/Named_Boxarts")
             case .amiga:
                 boxArtUrl = host.appendingPathComponent("Commodore - Amiga/Named_Boxarts")
+            case .wiiu:
+                boxArtUrl = host.appendingPathComponent("Nintendo - Wii U/Named_Boxarts")
             default:
                 boxArtUrl = nil
             }

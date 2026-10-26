@@ -163,7 +163,7 @@ class PlayViewController: GameViewController {
             game.handleTapAction(forceQuick: true, in: scene)
             return
         }
-        if game.gameType == .ns || game.gameType == .xbox360 || game.gameType == .xbox || game.gameType == .ps2 {
+        if game.gameType == .ns || game.gameType == .xbox360 || game.gameType == .xbox || game.gameType == .ps2 || game.gameType == .wiiu {
             holdTabletopPause = true
             if #available(iOS 27.1, *) {
                 DuoTabletopKit.markTabletopResumeWhenActive()
@@ -174,8 +174,10 @@ class PlayViewController: GameViewController {
                 EmulatorInteractionKit.startGame(type: .xeniOS, id: game.id)
             } else if game.gameType == .xbox {
                 EmulatorInteractionKit.startGame(type: .dukeX, id: game.id)
-            } else {
+            } else if game.gameType == .ps2 {
                 EmulatorInteractionKit.startGame(type: .armsx2, id: game.id)
+            } else if game.gameType == .wiiu {
+                EmulatorInteractionKit.startGame(type: .melocafe, id: game.id)
             }
             return
         }
@@ -183,6 +185,16 @@ class PlayViewController: GameViewController {
         game.ensurePS1BinCueSheet()
         if game.isRomExtsts || game.isNDSHomeMenuGame || game.isDOSHomeMenuGame {
             func showPlayView() {
+                if game.gameType == ._3ds, ThreeDS.isEncryptedROM(at: game.romUrl) {
+                    if game.isAzahar3DS {
+                        UIView.makeToast(message: R.string.localizable.azaharEncryptedRomUnsupported())
+                        return
+                    }
+                    if !ThreeDS.hasAesKeys {
+                        BIOSSelectionView.show(gameType: game.gameType)
+                        return
+                    }
+                }
                 if game.isBIOSMissing() {
                     //检查是否缺失BIOS
                     BIOSSelectionView.show(gameType: game.gameType)
@@ -774,46 +786,7 @@ class PlayViewController: GameViewController {
         //添加功能按钮容器按钮
         shortcutsButtonContainer.isHidden = true
         view.addSubview(shortcutsButtonContainer)
-//        shortcutsButtonContainer.snp.makeConstraints { make in
-//            if manicGame.gameType == .n64 && UIDevice.isPad {
-//                make.top.equalTo(gameView.snp.bottom).offset(-9)
-//            } else if manicGame.gameType == .j2me ||
-//                        manicGame.gameType == .gba || manicGame.gameType == .wsc {
-//                make.top.equalTo(gameView.snp.bottom).offset(3)
-//            } else if manicGame.gameType.usesDOSSkinLayout {
-//                if UIDevice.isStandardPhone {
-//                    make.top.equalTo(gameView.snp.bottom).offset(17)
-//                } else if UIDevice.isProMaxPhone {
-//                    make.top.equalTo(gameView.snp.bottom).offset(22)
-//                } else {
-//                    make.top.equalTo(gameView.snp.bottom).offset(19)
-//                }
-//            } else if manicGame.gameType == .symbian, UIDevice.isPhone {
-//                make.top.equalTo(gameView.snp.bottom).offset(4)
-//            } else if manicGame.isDolphinCore || manicGame.gameType == .flash {
-//                make.top.equalTo(gameView.snp.bottom).offset(5)
-//            } else if manicGame.gameType == .pce {
-//                make.top.equalTo(gameView.snp.bottom).offset(R.Size.ContentSpaceMedium)
-//            } else {
-//                make.top.equalTo(gameView.snp.bottom)
-//            }
-//            
-//            make.leading.trailing.equalTo(gameView)
-//            
-//            if manicGame.gameType == .j2me ||
-//                manicGame.gameType.usesDOSSkinLayout ||
-//                (manicGame.gameType == .symbian && UIDevice.isPhone) ||
-//                manicGame.gameType == .pce ||
-//                manicGame.gameType == .gba ||
-//                manicGame.gameType == .wsc {
-//                make.height.equalTo(R.Size.ItemHeightMicro)
-//            } else if manicGame.gameType == .ngp {
-//                make.height.equalTo(R.Size.ItemHeightTiny)
-//            } else {
-//                make.height.equalTo(R.Size.ItemHeightMedium)
-//            }
-//            
-//        }
+
         //设置外设控制器
         updateExternalGameController()
         // Load default core config after JIT is ready (sideload waits for CS_DEBUGGED first).
@@ -1958,7 +1931,6 @@ extension PlayViewController {
                 if manicGame.isAzahar3DS {
                     updateLibretroCoreConfigs(core: .Azahar, configs: [
                         .citra_use_cpu_jit: "disabled",
-                        .citra_use_default_aes_key: manicGame.isAzaharArticBase || manicGame.isArticBaseHomeMenu || manicGame.is3DSHomeMenuGame ? "enabled" : "disabled",
                         .citra_required_online_lle_modules: manicGame.isArticBaseHomeMenu ? "enabled" : "disabled",
                         .citra_motion_rotation: Self.motionRotationValue()
                     ], safeMode: true)
@@ -2259,12 +2231,12 @@ extension PlayViewController {
                     if enableJIT {
                         setupUniversalScript(gameType: ._3ds)
                     }
-                    let enableLLE = (manicGame.isArticBaseHomeMenu || (manicGame.getExtraInt(key: ExtraKey.emulationAccuracy.rawValue) ?? 0 == 1)) ? true : false
+                    let enableLLE = manicGame.isAzaharArticBase || (manicGame.getExtraInt(key: ExtraKey.emulationAccuracy.rawValue) ?? 0 == 1) ? true : false
                     updateLibretroCoreConfigs(core: .Azahar, configs: [
                         .citra_use_cpu_jit: enableJIT ? "enabled" : "disabled",
-                        .citra_use_default_aes_key: manicGame.isAzaharArticBase || manicGame.isArticBaseHomeMenu || manicGame.is3DSHomeMenuGame ? "enabled" : "disabled",
                         .citra_required_online_lle_modules: enableLLE ? "enabled" : "disabled",
-                        .citra_motion_rotation: Self.motionRotationValue()
+                        .citra_motion_rotation: Self.motionRotationValue(),
+                        .citra_use_fastinterp: enableLLE ? "disabled" : "enabled"
                     ])
                     // Never start Azahar with fast-forward; it can crash on boot.
                     Game.change { realm in
@@ -2731,173 +2703,6 @@ extension PlayViewController {
             })
         }
     }
-    
-//    private func updateShortcutsButton() {
-//        shortcutsButtonContainer.subviews.forEach { $0.removeFromSuperview() }
-//        if (manicGame.gameType == ._3ds && UIDevice.isPad) || manicGame.isAzaharArticBase {
-//            return
-//        }
-//        if let hostingWindow, UIDevice.isWindowAppIPad(window: hostingWindow) {
-//            return 
-//        }
-//        if let controllerSkin = controllerView.controllerSkin {
-//            if let skin = Database.realm.objects(Skin.self).first(where: { $0.identifier == controllerSkin.identifier }) {
-//                if skin.supportShortcut {
-//                    //当前使用的是默认皮肤 则添加功能按钮
-//                    var shortcuts = Prefference.defalut.getPrefference(kind: .gameShortcut,
-//                                                                       storeKey: .game(gameId: manicGame.id),
-//                                                                       bestEfforts: true)?.gameShortcutValue ?? GameOption.defaultShortcutOptions(for: manicGame)
-//                    let availableOptions = Set(GameOption.availableOptions(game: manicGame, scene: .gaming))
-//                    shortcuts = shortcuts.filter({ availableOptions.contains($0) })
-//                    
-//                    
-//                    guard shortcuts.count > 0 else { return }
-//                    let functionButtonCount = shortcuts.count
-//                    for (index, shortcut) in shortcuts.enumerated() {
-//                        var iconColor = UIColor.white.withAlphaComponent(0.25)
-//                        if (manicGame.gameType == .ds && UIDevice.isPad) ||
-//                            manicGame.gameType == .wii ||
-//                            manicGame.gameType == .ngc ||
-//                            (manicGame.gameType == .pce && view.preferredLayoutStyle == .portrait) ||
-//                            manicGame.gameType.usesDOSSkinLayout ||
-//                            manicGame.gameType == .wsc {
-//                            iconColor = .black.withAlphaComponent(0.25)
-//                        }
-//                        let buttonContainerView = UIView()
-//                        let button = ASButtonView(.iconOnlyWithSmallSize(icon: shortcut.icon.updateColorsIfNeed(colors: [iconColor], forceUpdate: true),
-//                                                                         background: .clear))
-//                        button.didTapButton = { [weak self] in
-//                            guard let self, shortcut != .rewind else { return }
-//                            shortcut.showSecondPromptIfNeed(continued: {
-//                                shortcut.performAction(with: [self.manicGame],
-//                                                       in: self.hostingWindowScene,
-//                                                       performImmediately: true)
-//                            })
-//                        }
-//                        button.didLongPressButton = { [weak self] state in
-//                            guard let self else { return }
-//                            var mapping: MappingOption? = nil
-//                            if shortcut == .fastForward {
-//                                mapping = .fastForward2x
-//                            } else if shortcut == .rewind {
-//                                mapping = .rewind
-//                            } else {
-//                                mapping = MappingOption.GameOptionMappings.key(forValue: shortcut)
-//                            }
-//                            guard let mapping else { return }
-//                            let input = AnyInput(stringValue: mapping.rawValue,
-//                                                 intValue: 1,
-//                                                 type: .controller(.controllerSkin))
-//                            if state == .began {
-//                                self.gameController(self.controllerView,
-//                                                    didActivate:input,
-//                                                    value: 1)
-//                            } else if state == .cancelled || state == .ended {
-//                                self.gameController(self.controllerView,
-//                                                    didDeactivate: input)
-//                            }
-//                        }
-//                        buttonContainerView.addSubview(button)
-//                        button.snp.makeConstraints { make in
-//                            make.center.equalToSuperview()
-//                        }
-//                        shortcutsButtonContainer.addSubview(buttonContainerView)
-//                        buttonContainerView.snp.makeConstraints { make in
-//                            if manicGame.gameType == .ds || manicGame.gameType == ._3ds {
-//                                if UIDevice.isPhone {
-//                                    make.width.equalTo(31)
-//                                    make.height.equalToSuperview().dividedBy(2)
-//                                    if index == 0 {
-//                                        make.leading.equalToSuperview()
-//                                        make.top.equalToSuperview()
-//                                    } else if index == 1 {
-//                                        make.leading.equalToSuperview()
-//                                        make.top.equalTo(shortcutsButtonContainer.subviews[index - 1].snp.bottom)
-//                                    } else if index == 2 {
-//                                        make.trailing.equalToSuperview()
-//                                        make.top.equalToSuperview()
-//                                    } else if index == 3 {
-//                                        make.trailing.equalToSuperview()
-//                                        make.top.equalTo(shortcutsButtonContainer.subviews[index - 1].snp.bottom)
-//                                    }
-//                                } else {
-//                                    make.width.equalTo(50)
-//                                    make.top.bottom.equalToSuperview()
-//                                    if index == 0 {
-//                                        make.leading.equalToSuperview()
-//                                    } else if index == 1 {
-//                                        make.leading.equalTo(shortcutsButtonContainer.subviews[index-1].snp.trailing)
-//                                    } else if index == 2 {
-//                                        make.trailing.equalToSuperview().inset(50)
-//                                    } else if index == 3 {
-//                                        make.trailing.equalToSuperview()
-//                                    }
-//                                }
-//                            } else {
-//                                if index == 0 {
-//                                    make.leading.equalToSuperview()
-//                                } else {
-//                                    make.leading.equalTo(shortcutsButtonContainer.subviews[index-1].snp.trailing)
-//                                }
-//                                make.top.bottom.equalToSuperview()
-//                                if index == functionButtonCount-1 && functionButtonCount == R.Numbers.GameFunctionButtonCount {
-//                                    make.trailing.equalToSuperview()
-//                                }
-//                                make.width.equalToSuperview().dividedBy(R.Numbers.GameFunctionButtonCount)
-//                            }
-//                        }
-//                        
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-//    private func updateShortcutButtonContainer() {
-//        if (manicGame.gameType == .ds || (UIDevice.isPhone && manicGame.gameType == ._3ds)) &&  UIDevice.isPhone {
-//            shortcutsButtonContainer.snp.remakeConstraints { make in
-//                if gameViews.count > 1 {
-//                    //iPhone ds布局比较特殊
-//                    if view.preferredLayoutStyle == .landscape {
-//                        make.leading.equalTo(gameViews[0]).inset(-33)
-//                        make.trailing.equalTo(gameViews[1]).inset(-33)
-//                        make.top.equalToSuperview()
-//                    } else {
-//                        make.leading.trailing.equalTo(gameViews[1]).inset(-33)
-//                        make.top.equalTo(gameViews[1])
-//                    }
-//                    
-//                    if manicGame.gameType == ._3ds {
-//                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard {
-//                            //小屏幕
-//                            make.height.equalTo(80)
-//                        } else {
-//                            //大屏幕
-//                            make.height.equalTo(96)
-//                        }
-//                    } else {
-//                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard, view.preferredLayoutStyle == .portrait {
-//                            make.height.equalTo(87)
-//                        } else {
-//                            make.height.equalTo(113)
-//                        }
-//                    }
-//                }
-//            }
-//        } else if manicGame.gameType.usesDOSSkinLayout, UIDevice.isPad {
-//            shortcutsButtonContainer.snp.updateConstraints { make in
-//                make.top.equalTo(gameView.snp.bottom).offset(view.preferredLayoutStyle == .landscape ? 30 : 40)
-//            }
-//        } else if manicGame.gameType == .ds, UIDevice.isPad {
-//            shortcutsButtonContainer.snp.updateConstraints { make in
-//                make.top.equalTo(gameView.snp.bottom).offset(view.preferredLayoutStyle == .landscape ? 25 : 40)
-//            }
-//        } else if manicGame.gameType == .pm && view.preferredLayoutStyle == .portrait {
-//            shortcutsButtonContainer.snp.updateConstraints { make in
-//                make.leading.trailing.equalTo(gameView).inset(50)
-//            }
-//        }
-//    }
     
     private func updateCitra3DSViews() {
 #if !SIMULATOR

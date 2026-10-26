@@ -100,6 +100,11 @@ class BIOSSelectionView: BaseView {
                     SymbianFirmwareView.show()
                 } else if gameType == .ngc {
                     self.showGamecubeIPLSheet(desc: gameType.biosItems.first?.desc)
+                } else if gameType == ._3ds,
+                          let items = self.biosItemMaps[gameType],
+                          indexPath.row < items.count,
+                          items[indexPath.row].fileName.lowercased() == "aes_keys.txt" {
+                    self.importAesKeys()
                 } else {
                     self.importBios(gameType: gameType)
                 }
@@ -225,6 +230,10 @@ class BIOSSelectionView: BaseView {
         let fileManager = FileManager.default
         guard var biosItems = self.biosItemMaps[gameType] else { return }
         for (index, bios) in biosItems.enumerated() {
+            if bios.fileName.lowercased() == "aes_keys.txt" {
+                biosItems[index].imported = fileManager.fileExists(atPath: R.Path.ThreeDSSystemData.appendingPathComponent("aes_keys.txt"))
+                continue
+            }
             var biosInLib = R.Path.System.appendingPathComponent(bios.fileName)
             if gameType == .ngc {
                 let imported = [R.Path.GamecubeUserEUR, R.Path.GamecubeUserJAP, R.Path.GamecubeUserUSA]
@@ -341,6 +350,37 @@ class BIOSSelectionView: BaseView {
         })
     }
     
+    private func importAesKeys() {
+        var types = UTType.binTypes
+        types.append(.plainText)
+        FilesImporter.shared.presentImportController(supportedTypes: types, allowsMultipleSelection: false, manualHandle: { urls in
+            UIView.makeLoading()
+            DispatchQueue.global().async {
+                let fileName = "aes_keys.txt"
+                let matched = urls.first { $0.lastPathComponent.lowercased() == fileName }
+                var success = false
+                if let matched {
+                    let destination = URL(fileURLWithPath: R.Path.ThreeDSSystemData.appendingPathComponent(fileName))
+                    do {
+                        try FileManager.safeCopyItem(at: matched, to: destination, shouldReplace: true)
+                        success = FileManager.default.fileExists(atPath: destination.path)
+                    } catch {
+                        success = false
+                    }
+                }
+                DispatchQueue.main.async { [weak self] in
+                    UIView.hideLoading()
+                    if success {
+                        UIView.makeToast(message: R.string.localizable.biosImportSuccess(fileName))
+                        self?.reloadImportState(gameType: ._3ds, updateViews: true)
+                    } else {
+                        UIView.makeToast(message: R.string.localizable.biosImportFailed())
+                    }
+                }
+            }
+        }, in: hostingWindowScene)
+    }
+
     private func importBios(gameType: GameType) {
         func importFromFiles() {
             FilesImporter.shared.presentImportController(supportedTypes: UTType.binTypes, allowsMultipleSelection: true, manualHandle: { [weak self] urls in
@@ -496,11 +536,10 @@ class BIOSSelectionView: BaseView {
         
         guard fileManager.fileExists(atPath: path, isDirectory: &isDirectory) else { return }
         
-        if path.pathExtension.lowercased() == "app", let tid = pathToTid(path) {
-            if R.Numbers.ThreeDSHomeMenuIdentifiers.contains(where: { $0 == tid }) {
-                //识别到了3dS的home menu
-                FilesImporter.importFiles(urls: [URL(fileURLWithPath: path)], silentMode: true, in: hostingWindowScene)
-            }
+        if path.pathExtension.lowercased() == "app", let tid = pathToTid(path),
+           R.Numbers.ThreeDSHomeMenuIdentifiers.contains(where: { $0 == tid }) {
+            // Leave the .app in NAND. Importing it as a ROM copies onto the same path and deletes it.
+            ThreeDS.registerInstalledHomeMenu(at: URL(fileURLWithPath: path), identifier: tid)
         }
         
         if isDirectory.boolValue {
@@ -511,7 +550,7 @@ class BIOSSelectionView: BaseView {
                     import3DSHomeMenu(at: fullPath)
                 }
             } catch {
-                print("无法读取目录: \(path), 错误: \(error)")
+                Log.debug("Failed to read NAND directory \(path): \(error)")
             }
         }
     }

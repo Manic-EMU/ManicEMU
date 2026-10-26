@@ -87,6 +87,7 @@ extension _R {
                 case .c64: return 0.7146
                 case .amiga: return 0.7052
                 case .flash: return 1.375
+                case .wiiu: return 0.714
                 default: return 1.0
                 }
             case .style2:
@@ -580,7 +581,7 @@ extension _R {
         static let EKA2L1DriveENGage = EKA2L1DriveE.appendingPathComponent("n-gage")
         static let Dolphin = Document.appendingPathComponent(EmulationCore.Dolphin.name)
         static let DolphinGameSettings = Dolphin.appendingPathComponent("User/GameSettings")
-        static let NimbusPath = Resource.appendingPathComponent("Nimbus210")
+        static let NimbusPath = Resource.appendingPathComponent("Nimbus220")
         static let Nimbus3DSPath = NimbusPath.appendingPathComponent("3ds")
         static let NimbusCiaPath = NimbusPath.appendingPathComponent("cias/nimbus.cia")
         static let GamecubeUser = Dolphin.appendingPathComponent("/User/GC")
@@ -669,6 +670,7 @@ extension _R {
         static let XeniOSScheme = "xenios"
         static let DukeXScheme = "dukex"
         static let ARMSX2Scheme = "armsx2"
+        static let MeloCafeScheme = "melocafe"
         static let J2MEScreenSizes = ["96x65", "96x96", "104x80", "128x128", "132x176", "128x160", "176x208", "176x220", "208x208", "240x320", "320x240", "240x400", "352x416", "360x640", "640x360", "480x800", "800x480"]
         static let DOSKeyboardSkinID = "public.aoshuang.game.dos.standard.keyboard"
         static let AzaharArticBaseGameID = "AzaharArticBase"
@@ -1333,6 +1335,10 @@ extension _R {
             components.queryItems = [URLQueryItem(name: "game", value: gameId)]
             return components.url!
         }
+        /// `melocafe://gameInfo?scheme=manicemu` — MeloCafe opens `manicemu://melocafe?games=`.
+        static let FetchMeloCafeGames = URL(string: "\(R.Strings.MeloCafeScheme)://gameInfo?scheme=\(R.Strings.ManicScheme)")!
+        /// `melocafe://game?id=` matches `GamesManager.handleDeepLink` (`UInt64` title id).
+        static func MeloCafeGameLaunch(gameId: String) -> URL { URL(string: "\(R.Strings.MeloCafeScheme)://game?id=\(gameId)")! }
 #if SIDE_LOAD
         static let EnableJITUrl = URL(string: "stikjit://enable-jit?bundle-id=com.aoshuang.manicemu&script-name=universal.js")!
 #endif
@@ -1412,7 +1418,8 @@ extension _R {
         ]
         
         static let ThreeDSBios = [
-            BIOSItem(fileName: "nand.zip", imported: false, desc: "The internal storage of 3DS ", required: false)
+            BIOSItem(fileName: "nand.zip", imported: false, desc: "The internal storage of 3DS ", required: false),
+            BIOSItem(fileName: "aes_keys.txt", imported: false, desc: R.string.localizable.aesKeysTxtDesc(), required: false)
         ]
         
         static let WiiBios = [

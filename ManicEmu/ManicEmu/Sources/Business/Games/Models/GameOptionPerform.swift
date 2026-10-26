@@ -11,6 +11,7 @@ import IceCream
 import Kingfisher
 import RealmSwift
 import Haptica
+import ProHUD
 
 extension GameOption {
     func performAction(with games: [Game],
@@ -1051,9 +1052,7 @@ extension GameOption {
 
         case .quit:
             PlayViewController.quit()
-            if !firstGame.isAzaharArticBase {
-                hideSheetInGaming()
-            }
+            hideSheetInGaming(hideAll: !firstGame.isAzaharArticBase)
             
         case .gameShortcut:
             pauseEmulationIfNeed()
@@ -1766,9 +1765,15 @@ extension GameOption {
         }
     }
     
-    private func hideSheetInGaming() {
+    private func hideSheetInGaming(hideAll: Bool = true) {
         if PlayViewController.isGaming {
-            UIView.hideAllAlert()
+            if hideAll {
+                UIView.hideAllAlert()
+            } else {
+                if GameOptionsView.hasShownInstance {
+                    SheetProvider.findAll().last?.pop()
+                }
+            }
         }
     }
     
