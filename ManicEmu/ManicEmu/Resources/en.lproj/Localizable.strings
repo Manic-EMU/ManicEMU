@@ -1206,3 +1206,18 @@ Press the controller button to complete mapping...";
 "game3DSEncryptedTips" = "Import the correct aes_keys.txt to read encrypted ROMs. Only the Citra core can run them.";
 
 "FetchGamesFromMeloCafe" = "Import Games from MeloCafe";
+
+"ListenWithBitBop" = "Listen with BitBop";
+"BitBopSendFailed" = "Couldn't send this to BitBop. Wait a moment and try again.";
+"BitBopTracksUnavailable" = "BitBop doesn't have tracks for this ROM.";
+"BitBopListenTitle" = "Keep the Soundtrack";
+"BitBopAlbumReady" = "「%@」 is already in BitBop";
+"BitBopAlbumTrackPreview" = "Start with %@.";
+"BitBopAlbumQuiet" = "「%@」 is already in BitBop, but the soundtrack isn't available to play.";
+"BitBopTrackCount" = "%d tracks";
+"BitBopParseRom" = "Some melodies don't have to end with the level. Send them to BitBop, and they become an album you can play anytime.";
+"BitBopScanRom" = "This cartridge may still hold music that was never heard on its own. BitBop will find it and turn it into an album.";
+"MoreFromManic" = "More from Manic";
+"BitBopPromoTitle" = "BitBop: Your Games, Your Music";
+"BitBopPromoDetail" = "Import your favorite classics and listen to the music that brings them to life.";
+"BitBopTryNow" = "Try Now";

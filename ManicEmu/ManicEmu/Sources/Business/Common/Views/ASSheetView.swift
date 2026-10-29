@@ -116,12 +116,16 @@ class ASSheetView: BaseView {
                        let detail,
                        let detailAlignment,
                        let buttonTitle,
-                       let destructiveButtonTitle):
+                       let buttonTitleColor,
+                       let destructiveButtonTitle,
+                       let destructiveButtonTitleColor):
                 updateText(title: title,
                            detail: detail,
                            detailAlignment: detailAlignment,
                            buttonTitle: buttonTitle,
+                           buttonTitleColor: buttonTitleColor,
                            destructiveButtonTitle: destructiveButtonTitle,
+                           destructiveButtonTitleColor: destructiveButtonTitleColor,
                            refreshData: refreshData)
                 
                 
@@ -538,7 +542,9 @@ class ASSheetView: BaseView {
                                    detail: String,
                                    detailAlignment: NSTextAlignment = .center,
                                    buttonTitle: String? = nil,
+                                   buttonTitleColor: UIColor = R.Color.LabelSecondary,
                                    destructiveButtonTitle: String? = nil,
+                                   destructiveButtonTitleColor: UIColor = R.Color.Main,
                                    refreshData: ASSheetRefreshData) {
         
         let contentView = refreshData.contentView
@@ -552,7 +558,9 @@ class ASSheetView: BaseView {
                                           detail: detail,
                                           detailAlignment: detailAlignment,
                                           buttonTitle: buttonTitle,
+                                          buttonTitleColor: buttonTitleColor,
                                           destructiveButtonTitle: destructiveButtonTitle,
+                                          destructiveButtonTitleColor: destructiveButtonTitleColor,
                                           enableGrabber: refreshData.sheetData.enableGrabber)
         contentView.addSubview(textSheetView)
         textSheetView.snp.makeConstraints { make in
@@ -561,12 +569,20 @@ class ASSheetView: BaseView {
         
         let updation: ASSheetViewUpdation = { [weak contentView, weak sheetView] updateData in
             guard let contentView, let sheetView else { return }
-            if case let .text(title, detail, detailAlignment, buttonTitle, destructiveButtonTitle) = updateData {
+            if case let .text(title,
+                              detail,
+                              detailAlignment,
+                              buttonTitle,
+                              buttonTitleColor,
+                              destructiveButtonTitle,
+                              destructiveButtonTitleColor) = updateData {
                 updateText(title: title,
                            detail: detail,
                            detailAlignment: detailAlignment,
                            buttonTitle: buttonTitle,
+                           buttonTitleColor: buttonTitleColor,
                            destructiveButtonTitle: destructiveButtonTitle,
+                           destructiveButtonTitleColor: destructiveButtonTitleColor,
                            refreshData: (contentView, sheetView, action, sheetData))
             }
         }
@@ -806,7 +822,9 @@ extension ASSheetView {
              detail: String,
              detailAlignment: NSTextAlignment = .center,
              buttonTitle: String? = nil,
+             buttonTitleColor: UIColor = R.Color.LabelSecondary,
              destructiveButtonTitle: String? = nil,
+             destructiveButtonTitleColor: UIColor = R.Color.Main,
              enableGrabber: Bool) {
             super.init(frame: .zero)
             
@@ -857,7 +875,7 @@ extension ASSheetView {
             verticalLine.backgroundColor = R.Color.Border
             
             let button = ASButtonView(.quickButton(title: buttonTitle,
-                                                   titleColor: R.Color.LabelSecondary,
+                                                   titleColor: buttonTitleColor,
                                                    titleFont: R.Font.Headline(),
                                                    titleAlignment: .center,
                                                    background: .clear,
@@ -870,7 +888,7 @@ extension ASSheetView {
             var destructiveButton: ASButtonView? = nil
             if let destructiveButtonTitle {
                 let view = ASButtonView(.quickButton(title: destructiveButtonTitle,
-                                                                  titleColor: R.Color.Main,
+                                                                  titleColor: destructiveButtonTitleColor,
                                                                   titleFont: R.Font.Headline(emphasis: true),
                                                                   titleAlignment: .center,
                                                                   background: .clear,

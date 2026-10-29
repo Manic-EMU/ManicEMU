@@ -85,7 +85,8 @@ enum GameOption: Int, CaseIterable {
          slowMotion,
          ndsLidToggle,
          editLink,
-         skinButtonBinding
+         skinButtonBinding,
+         bitbop
         
     //When adding a new option, make sure to add it at the end; otherwise, it might affect the existing Prefference configurations
     
@@ -235,6 +236,8 @@ enum GameOption: Int, CaseIterable {
                 .symbol(.squareTophalfFilled)
         case .skinButtonBinding:
                 .symbolImage(R.image.keyboard_iconSymbols())
+        case .bitbop:
+                .symbolImage(R.image.bitbop_iconSymbols(), colors: [R.Color.Red])
         }
     }
     
@@ -392,6 +395,8 @@ enum GameOption: Int, CaseIterable {
             R.string.localizable.ndsLidToggle()
         case .skinButtonBinding:
             R.string.localizable.skinButtonBinding()
+        case .bitbop:
+            R.string.localizable.listenWithBitBop()
         }
     }
     
@@ -469,6 +474,9 @@ enum GameOption: Int, CaseIterable {
     ]
     
     static let defaultGroupAndSort: [[Self]] = [
+        [
+            .bitbop
+        ],
         [
             .rename,
             .cover,
@@ -1011,7 +1019,8 @@ enum GameOption: Int, CaseIterable {
                 .coverScraping,
                 .ndsLidToggle,
                 .pspJitType,
-                .skinButtonBinding:
+                .skinButtonBinding,
+                .bitbop:
             break
         }
         return .chevron(nil)
@@ -1069,7 +1078,8 @@ enum GameOption: Int, CaseIterable {
                 .snesVRAM,
                 .symbianDevice,
                 .coverScraping,
-                .dolphinCpuCore
+                .dolphinCpuCore,
+                .bitbop
             ]
         }
     }
@@ -1328,6 +1338,10 @@ enum GameOption: Int, CaseIterable {
         
         if game.gameType != .flash {
             allOptions.remove(.skinButtonBinding)
+        }
+        
+        if !game.gameType.supportBitBop {
+            allOptions.remove(.bitbop)
         }
         
         allOptions.subtract(disableOptionsForScene(scene))

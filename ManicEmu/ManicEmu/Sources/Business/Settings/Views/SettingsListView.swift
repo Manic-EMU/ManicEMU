@@ -13,7 +13,7 @@ import MessageUI
 
 class SettingsListView: BaseView {
     enum SectionIndex: Int, CaseIterable {
-        case top, general, advance, support, others, bottom
+        case top, general, advance, support, others, moreFromManic, bottom
         var title: String {
             switch self {
             case .top, .bottom:
@@ -26,6 +26,8 @@ class SettingsListView: BaseView {
                 R.string.localizable.supportSettingTitle()
             case .others:
                 R.string.localizable.othersSettingTitle()
+            case .moreFromManic:
+                R.string.localizable.moreFromManic()
             }
         }
     }
@@ -59,7 +61,7 @@ class SettingsListView: BaseView {
         }
         
         for section in SectionIndex.allCases {
-            if section == .top || section == .bottom {
+            if section == .top || section == .bottom || section == .moreFromManic {
                 datas[section] = []
                 
             } else if section == .general {
@@ -196,6 +198,13 @@ class SettingsListView: BaseView {
                 }
                 let section = ASListPage.Section(cells: settingItems.map({ $0.cellData }), header: header)
                 sections.append(section)
+                
+            case .moreFromManic:
+                let promo = SettingsBitBopPromoView()
+                sections.append(ASListPage.Section(cells: [.custom(promo)],
+                                                   header: .defaultHeader(title: sectionIndex.title),
+                                                   decoration: .init(enable: false),
+                                                   itemLayout: .fixedHeight(100)))
                 
             case .bottom:
                 var cellHeight = 479.0
@@ -474,7 +483,7 @@ class SettingsListView: BaseView {
                         }
                     }
                     
-                case .bottom:
+                case .moreFromManic, .bottom:
                     break
                 }
             }
@@ -510,5 +519,84 @@ extension SettingsListView: MFMailComposeViewControllerDelegate {
             controller.dismiss(animated: true)
         }
         
+    }
+}
+
+/// Settings promo for BitBop. Layout follows the Settings-BitBop card: 100pt, 20pt corners, logo on the right.
+private final class SettingsBitBopPromoView: BaseView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layer.cornerRadius = R.Size.CornerRadiusLarge
+        clipsToBounds = true
+        
+        let backgroundView = UIImageView(image: R.image.bitbop_bg())
+        backgroundView.contentMode = .scaleAspectFill
+        addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        let logoView = UIImageView(image: R.image.bitbop_logo())
+        logoView.contentMode = .scaleAspectFill
+        logoView.layer.cornerRadius = R.Size.CornerRadiusMedium
+        logoView.clipsToBounds = true
+        addSubview(logoView)
+        logoView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(12)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(60)
+        }
+        
+        let titleLabel = UILabel()
+        titleLabel.text = R.string.localizable.bitBopPromoTitle()
+        titleLabel.font = R.Font.Body(emphasis: true)
+        titleLabel.textColor = R.Color.LabelPrimary.forceStyle(.dark)
+        titleLabel.numberOfLines = 1
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalTo(logoView.snp.leading).offset(-12)
+            make.top.equalToSuperview().offset(11)
+        }
+        
+        let detailLabel = UILabel()
+        detailLabel.text = R.string.localizable.bitBopPromoDetail()
+        detailLabel.font = R.Font.Caption()
+        detailLabel.textColor = R.Color.LabelSecondary.forceStyle(.dark)
+        detailLabel.numberOfLines = 2
+        addSubview(detailLabel)
+        detailLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(titleLabel)
+            make.top.equalToSuperview().offset(31)
+        }
+        
+        let tryNowLabel = UILabel()
+        tryNowLabel.text = R.string.localizable.bitBopTryNow()
+        tryNowLabel.font = R.Font.Caption()
+        tryNowLabel.textColor = R.Color.Red
+        let tryNowView = UIView()
+        tryNowView.isUserInteractionEnabled = false
+        tryNowView.backgroundColor = UIColor.white.withAlphaComponent(0.16)
+        tryNowView.layer.cornerRadius = 12
+        tryNowView.addSubview(tryNowLabel)
+        tryNowLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
+        }
+        addSubview(tryNowView)
+        tryNowView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel)
+            make.top.equalToSuperview().offset(65)
+            make.height.equalTo(24)
+        }
+        
+        addTapGesture { _ in
+            UIDevice.generateHaptic()
+            BitBopKit.openBitBop()
+        }
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

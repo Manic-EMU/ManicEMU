@@ -277,7 +277,9 @@ extension UIView {
                           detail: String,
                           detailAlignment: NSTextAlignment = .center,
                           cancelTitle: String = R.string.localizable.cancelTitle(),
+                          cancelTitleColor: UIColor = R.Color.LabelSecondary,
                           confirmTitle: String? = nil,
+                          confirmTitleColor: UIColor = R.Color.Main,
                           confirmAutoHide: Bool = true,
                           enableForceHide: Bool = true,
                           cancelAction: (()->Void)? = nil,
@@ -291,7 +293,9 @@ extension UIView {
                                          detail: detail,
                                          detailAlignment: detailAlignment,
                                          buttonTitle: cancelTitle,
-                                         destructiveButtonTitle: confirmTitle),
+                                         buttonTitleColor: cancelTitleColor,
+                                         destructiveButtonTitle: confirmTitle,
+                                         destructiveButtonTitleColor: confirmTitleColor),
                             enableGrabber: enableForceHide,
                             enableTapBackgroundDismiss: enableForceHide)
         let enableMultiInstance = identifier == nil

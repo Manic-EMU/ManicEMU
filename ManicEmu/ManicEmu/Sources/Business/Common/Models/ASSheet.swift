@@ -31,7 +31,9 @@ struct ASSheet {
                   detail: String,
                   detailAlignment: NSTextAlignment = .center,
                   buttonTitle: String? = nil,
-                  destructiveButtonTitle: String? = nil)
+                  buttonTitleColor: UIColor = R.Color.LabelSecondary,
+                  destructiveButtonTitle: String? = nil,
+                  destructiveButtonTitleColor: UIColor = R.Color.Main)
         case updation(title: String, detail: String)
         case step(title: String? = nil,
                   detail: String? = nil,

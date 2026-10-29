@@ -2225,6 +2225,10 @@
 		E524FBC9308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
 		E524FBCA308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
 		E524FBCB308F2B41009885DA /* WiiU.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FBC7308F2B38009885DA /* WiiU.swift */; };
+		E524FC023090E598009885DA /* BitBopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FC013090E591009885DA /* BitBopKit.swift */; };
+		E524FC033090E598009885DA /* BitBopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FC013090E591009885DA /* BitBopKit.swift */; };
+		E524FC043090E598009885DA /* BitBopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FC013090E591009885DA /* BitBopKit.swift */; };
+		E524FC053090E598009885DA /* BitBopKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E524FC013090E591009885DA /* BitBopKit.swift */; };
 		E5385955E04D43598CAC5694 /* vice.x64sc.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6A6021052A14459DA6F729AB /* vice.x64sc.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E5A00BB23080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
 		E5A00BB33080B2CC00E99223 /* ProHUDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */; };
@@ -7499,6 +7503,7 @@
 		E524FABA308866D4009885DA /* DuoHingeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoHingeKit.swift; sourceTree = "<group>"; };
 		E524FB053088C9BB009885DA /* ShortcutButtonContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutButtonContainerView.swift; sourceTree = "<group>"; };
 		E524FBC7308F2B38009885DA /* WiiU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiiU.swift; sourceTree = "<group>"; };
+		E524FC013090E591009885DA /* BitBopKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitBopKit.swift; sourceTree = "<group>"; };
 		E5A00BB13080B2C200E99223 /* ProHUDExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProHUDExtensions.swift; sourceTree = "<group>"; };
 		E5D10A010000000000000001 /* DuoLayoutKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuoLayoutKit.swift; sourceTree = "<group>"; };
 		F0C500000000000000000101 /* FocusTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTypes.swift; sourceTree = "<group>"; };
@@ -14060,6 +14065,7 @@
 				57BA59B42E3F13C900110849 /* EmulationCore.swift */,
 				E5D10A010000000000000001 /* DuoLayoutKit.swift */,
 				E524FABA308866D4009885DA /* DuoHingeKit.swift */,
+				E524FC013090E591009885DA /* BitBopKit.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -14782,6 +14788,7 @@
 				00000000000051A10000009B /* ASListToolView.swift in Sources */,
 				00000000000051A10000009C /* PhotoSaver.swift in Sources */,
 				00000000000051A10000009D /* PurchaseManager.swift in Sources */,
+				E524FC053090E598009885DA /* BitBopKit.swift in Sources */,
 				00000000000051A10000009E /* ProHUDExtensions.swift in Sources */,
 				00000000000051A10000009F /* FlexItemView.swift in Sources */,
 				00000000000051A1000000A0 /* BlankSlateCollectionView.swift in Sources */,
@@ -15227,6 +15234,7 @@
 				57909406303C7D9100A53656 /* ASListToolView.swift in Sources */,
 				57909407303C7D9100A53656 /* PhotoSaver.swift in Sources */,
 				57909408303C7D9100A53656 /* PurchaseManager.swift in Sources */,
+				E524FC033090E598009885DA /* BitBopKit.swift in Sources */,
 				E5A00BB43080B2CC00E99223 /* ProHUDExtensions.swift in Sources */,
 				57909409303C7D9100A53656 /* FlexItemView.swift in Sources */,
 				5790940A303C7D9100A53656 /* BlankSlateCollectionView.swift in Sources */,
@@ -15709,6 +15717,7 @@
 				57BF60962FE2ABF70073D318 /* ASListToolView.swift in Sources */,
 				57CDCDEA2FD5CBD3005BA4C8 /* PhotoSaver.swift in Sources */,
 				57CDCDEC2FD5CBD3005BA4C8 /* PurchaseManager.swift in Sources */,
+				E524FC023090E598009885DA /* BitBopKit.swift in Sources */,
 				E5A00BB23080B2CC00E99223 /* ProHUDExtensions.swift in Sources */,
 				577160AF30078D680088345B /* FlexItemView.swift in Sources */,
 				57CDCDED2FD5CBD3005BA4C8 /* BlankSlateCollectionView.swift in Sources */,
@@ -16355,6 +16364,7 @@
 				57E0C1A72D56580F00962555 /* UITextFieldExtensions.swift in Sources */,
 				5720E7CA2E54470000EC0DA5 /* ArrayExtensions.swift in Sources */,
 				57CC338E2DBC78AE00DF7418 /* FlexSkinSettingViewController.swift in Sources */,
+				E524FC043090E598009885DA /* BitBopKit.swift in Sources */,
 				5706AFC62DF7DABD0066122E /* BIOSCollectionViewCell.swift in Sources */,
 				579454232FE683F700D32DD6 /* ASTextView.swift in Sources */,
 				57E9632E2D6B0B8A0022914C /* SparkleSeperatorView.swift in Sources */,

@@ -631,6 +631,7 @@
 		<string>gba4ios</string>
 		<string>consolesapp</string>
 		<string>melocafe</string>
+		<string>bitbop</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

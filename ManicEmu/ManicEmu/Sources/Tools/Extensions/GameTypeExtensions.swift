@@ -913,6 +913,21 @@ extension GameType {
         }
         return []
     }
+    
+    var supportBitBop: Bool {
+        if self == .ds ||
+            self == .md ||
+            self == .n64 ||
+            self == .nes ||
+            self == .snes ||
+            self == .gb ||
+            self == .gbc ||
+            self == .gba ||
+            self == .vb {
+            return true
+        }
+        return false
+    }
 }
 
 ///让GameType支持realm的存储

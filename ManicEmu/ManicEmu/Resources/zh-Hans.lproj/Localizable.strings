@@ -1201,3 +1201,18 @@
 "game3DSEncryptedTips" = "请导入正确的 aes_keys.txt 以读取加密 ROM。仅 Citra 核心可以运行此类 ROM。";
 
 "FetchGamesFromMeloCafe" = "从 MeloCafe 导入游戏";
+
+"ListenWithBitBop" = "用 BitBop 聆听";
+"BitBopSendFailed" = "这次没能交给 BitBop。稍等片刻，再试一次。";
+"BitBopTracksUnavailable" = "BitBop 没有这款 ROM 的曲目。";
+"BitBopListenTitle" = "把配乐单独留下";
+"BitBopAlbumReady" = "「%@」已经在 BitBop 里";
+"BitBopAlbumTrackPreview" = "可以先从 %@ 听起。";
+"BitBopAlbumQuiet" = "「%@」已经在 BitBop 里，只是现在听不到配乐。";
+"BitBopTrackCount" = "%d 首曲目";
+"BitBopParseRom" = "游戏里有些旋律，本来就不必跟着关卡一起结束。交给 BitBop，它们会成为一张随时能听的专辑。";
+"BitBopScanRom" = "这张卡带里，也许还留着没被单独听过的配乐。BitBop 会把它找出来，做成一张专辑。";
+"MoreFromManic" = "更多来自 Manic";
+"BitBopPromoTitle" = "BitBop：你的游戏，你的音乐";
+"BitBopPromoDetail" = "导入你喜爱的经典游戏，聆听赋予它们生命的配乐。";
+"BitBopTryNow" = "立即体验";

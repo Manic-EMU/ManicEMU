@@ -39,7 +39,25 @@ class GameInfoCoverView: BaseView {
     }()
     
     private var game: Game
+    private var bitbopOffer: BitBopKit.CoverOffer = .hidden
     private var CoverImageSize: CGSize = .init(UIDevice.isPhone ? 236.0 : 200.0)
+    
+    private lazy var bitbopButton: ASButtonView = {
+        let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.bitbop_iconSymbols(),
+                                                                           colors: [R.Color.LabelPrimary.forceStyle(.dark)]),
+                                                       background: R.Color.Red))
+        view.cornerStyle = .circle
+        view.isHidden = true
+        view.accessibilityLabel = R.string.localizable.listenWithBitBop()
+        view.didTapButton = { [weak self] in
+            guard let self, self.bitbopOffer.showsButton else { return }
+            UIDevice.generateHaptic()
+            // Re-check at tap time so a library alert is not shown after BitBop has been removed.
+            let offer: BitBopKit.CoverOffer = BitBopKit.isBitBopInstalled ? self.bitbopOffer : .send(scansCartridge: false)
+            BitBopKit.presentCoverOffer(offer, for: self.game, in: self.hostingWindowScene)
+        }
+        return view
+    }()
     
     
     init(game: Game) {
@@ -85,6 +103,15 @@ class GameInfoCoverView: BaseView {
         maskTopView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        if game.gameType.supportBitBop {
+            addSubview(bitbopButton)
+            bitbopButton.snp.makeConstraints { make in
+                make.top.equalTo(coverContainerView).offset(R.Size.ContentSpaceExtraSmall)
+                make.trailing.equalTo(coverContainerView).offset(-R.Size.ContentSpaceExtraSmall)
+            }
+            refreshBitBopButton()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -98,6 +125,29 @@ class GameInfoCoverView: BaseView {
     
     func updateRating() {
         coverImageView.updateRating(esrp: GameMetadata.getGameMetadata(game: game)?.ESRPRating)
+    }
+    
+    /// The options list is transparent over the cover and sits above this view, so it steals taps on the lower half of the button.
+    func bitbopButton(at point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard game.gameType.supportBitBop, !bitbopButton.isHidden, bitbopButton.alpha > 0.01 else { return nil }
+        let local = bitbopButton.convert(point, from: self)
+        guard bitbopButton.point(inside: local, with: event) else { return nil }
+        return bitbopButton.hitTest(local, with: event)
+    }
+    
+    /// Sits on the cover art so it stays clear of the navigation close button.
+    private func refreshBitBopButton() {
+        let gameType = game.gameType
+        let romURL = game.romUrl
+        let bitbopInstalled = BitBopKit.isBitBopInstalled
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let offer = BitBopKit.prepareCoverOffer(gameType: gameType, romURL: romURL, bitbopInstalled: bitbopInstalled)
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.bitbopOffer = offer
+                self.bitbopButton.isHidden = !offer.showsButton
+            }
+        }
     }
     
     private func updateCoverContainerViewConstraints() {
