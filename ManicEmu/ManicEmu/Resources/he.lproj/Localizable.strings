@@ -1167,3 +1167,23 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "ICloudROMSizeLimitUnlimited" = "ללא הגבלה";
 "ICloudROMSizeLimitDesc" = "קבצי ROM גדולים מזה נשארים במכשיר זה בלבד, כדי שתמונת דיסק גדולה אחת לא תמלא את iCloud Drive. שמירות משחק, שמירות מיידיות, skin והגדרות אינם מושפעים.";
 "ICloudROMTransferLimitDesc" = "שתי המגבלות האלה חלות על קבצי ROM בלבד. שמירות משחק, שמירות מיידיות, skin והגדרות ממשיכים להסתנכרן בכל רשת ובכל גודל. פתיחת משחק תמיד מורידה את ה-ROM, גם אם מגבלה הייתה מונעת סנכרון.";
+
+"TabletopModeDetected" = "קפלו את המכשיר וסובבו את המסך למצב אנכי כדי להיכנס למצב Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar לא תומך ב-ROM מוצפנים. רק ליבת Citra יכולה להריץ אותם.";
+"AesKeysTxtDesc" = "נדרש כדי להריץ ROM מוצפנים של 3DS עם ליבת Citra.";
+"game3DSEncryptedTips" = "ייבאו את הקובץ aes_keys.txt הנכון כדי לקרוא ROM מוצפנים. רק ליבת Citra יכולה להריץ ROM כאלה.";
+"FetchGamesFromMeloCafe" = "ייבוא משחקים מ-MeloCafe";
+"ListenWithBitBop" = "האזנה עם BitBop";
+"BitBopSendFailed" = "לא הצלחנו לשלוח את זה ל-BitBop. המתינו רגע ונסו שוב.";
+"BitBopTracksUnavailable" = "ל-BitBop אין רצועות ל-ROM הזה.";
+"BitBopListenTitle" = "להשאיר את הפסקול";
+"BitBopAlbumReady" = "「%@」 כבר ב-BitBop";
+"BitBopAlbumTrackPreview" = "אפשר להתחיל מ-%@.";
+"BitBopAlbumQuiet" = "「%@」 כבר ב-BitBop, אבל אי אפשר להשמיע את הפסקול כרגע.";
+"BitBopTrackCount" = "%d רצועות";
+"BitBopParseRom" = "יש מנגינות שלא חייבות להסתיים יחד עם השלב. שלחו אותן ל-BitBop, והן יהפכו לאלבום שאפשר להאזין לו בכל זמן.";
+"BitBopScanRom" = "בקלטת הזאת אולי עוד יש מוזיקה שמעולם לא נשמעה בנפרד. BitBop ימצא אותה ויהפוך אותה לאלבום.";
+"MoreFromManic" = "עוד מ-Manic";
+"BitBopPromoTitle" = "BitBop: המשחקים שלך, המוזיקה שלך";
+"BitBopPromoDetail" = "ייבאו את הקלאסיקות האהובות עליכם והאזינו למוזיקה שמעניקה להן חיים.";
+"BitBopTryNow" = "נסו עכשיו";

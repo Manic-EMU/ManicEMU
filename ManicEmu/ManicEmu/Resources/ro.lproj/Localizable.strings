@@ -1165,3 +1165,23 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 "ICloudROMSizeLimitUnlimited" = "Fără limită";
 "ICloudROMSizeLimitDesc" = "ROM-urile mai mari decât această dimensiune rămân doar pe acest dispozitiv, ca o singură imagine de disc mare să nu umple iCloud Drive. Salvările de joc, salvările instant, skinurile și setările nu sunt niciodată afectate.";
 "ICloudROMTransferLimitDesc" = "Aceste două limite se aplică doar fișierelor ROM. Salvările de joc, salvările instant, skinurile și setările continuă să se sincronizeze pe orice rețea și la orice dimensiune. La deschiderea unui joc, ROM-ul este descărcat întotdeauna, chiar dacă o limită l-ar împiedica altfel să se sincronizeze.";
+
+"TabletopModeDetected" = "Pliați dispozitivul și rotiți-l în portret pentru a intra în modul Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar nu acceptă ROM-uri criptate. Doar nucleul Citra le poate rula.";
+"AesKeysTxtDesc" = "Necesar pentru a juca ROM-uri 3DS criptate cu nucleul Citra.";
+"game3DSEncryptedTips" = "Importați fișierul aes_keys.txt corect pentru a citi ROM-urile criptate. Doar nucleul Citra le poate rula.";
+"FetchGamesFromMeloCafe" = "Importă jocuri din MeloCafe";
+"ListenWithBitBop" = "Ascultă cu BitBop";
+"BitBopSendFailed" = "Nu s-a putut trimite către BitBop. Așteptați un moment și încercați din nou.";
+"BitBopTracksUnavailable" = "BitBop nu are piese pentru acest ROM.";
+"BitBopListenTitle" = "Păstrează coloana sonoră";
+"BitBopAlbumReady" = "「%@」 este deja în BitBop";
+"BitBopAlbumTrackPreview" = "Începe cu %@.";
+"BitBopAlbumQuiet" = "「%@」 este deja în BitBop, dar coloana sonoră nu poate fi redată.";
+"BitBopTrackCount" = "%d piese";
+"BitBopParseRom" = "Unele melodii nu trebuie să se termine odată cu nivelul. Trimite-le către BitBop și devin un album pe care îl poți asculta oricând.";
+"BitBopScanRom" = "Acest cartuș poate încă păstra muzică ce nu a fost ascultată niciodată de una singură. BitBop o va găsi și o va transforma într-un album.";
+"MoreFromManic" = "Mai multe de la Manic";
+"BitBopPromoTitle" = "BitBop: jocurile tale, muzica ta";
+"BitBopPromoDetail" = "Importă clasicele preferate și ascultă muzica care le dă viață.";
+"BitBopTryNow" = "Încearcă acum";

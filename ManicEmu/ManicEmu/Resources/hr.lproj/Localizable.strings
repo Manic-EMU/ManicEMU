@@ -1164,3 +1164,23 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 "ICloudROMSizeLimitUnlimited" = "Bez ograničenja";
 "ICloudROMSizeLimitDesc" = "ROM-ovi veći od ove veličine ostaju samo na ovom uređaju, da jedna velika slika diska ne popuni iCloud Drive. Spremanja igre, save stateovi, skinovi i postavke nikad nisu zahvaćeni.";
 "ICloudROMTransferLimitDesc" = "Ova dva ograničenja vrijede samo za ROM datoteke. Spremanja igre, save stateovi, skinovi i postavke i dalje se sinkroniziraju na bilo kojoj mreži i bilo koje veličine. Otvaranje igre uvijek preuzima ROM, čak i kad bi ograničenje inače spriječilo sinkronizaciju.";
+
+"TabletopModeDetected" = "Preklopite uređaj i okrenite zaslon u portret da biste ušli u način Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar ne podržava šifrirane ROM-ove. Može ih pokretati samo jezgra Citra.";
+"AesKeysTxtDesc" = "Potrebno za igranje šifriranih 3DS ROM-ova s jezgrom Citra.";
+"game3DSEncryptedTips" = "Uvezite ispravnu datoteku aes_keys.txt da biste čitali šifrirane ROM-ove. Takve ROM-ove pokreće samo jezgra Citra.";
+"FetchGamesFromMeloCafe" = "Uvezi igre iz MeloCafe";
+"ListenWithBitBop" = "Slušaj uz BitBop";
+"BitBopSendFailed" = "Ovo nije predano BitBopu. Pričekajte trenutak i pokušajte ponovno.";
+"BitBopTracksUnavailable" = "BitBop nema pjesama za ovaj ROM.";
+"BitBopListenTitle" = "Zadrži glazbu iz igre";
+"BitBopAlbumReady" = "「%@」 je već u BitBopu";
+"BitBopAlbumTrackPreview" = "Počnite s %@.";
+"BitBopAlbumQuiet" = "「%@」 je već u BitBopu, ali se glazba iz igre sada ne može reproducirati.";
+"BitBopTrackCount" = "%d pjesama";
+"BitBopParseRom" = "Neke melodije ne moraju završiti zajedno s razinom. Predajte ih BitBopu i postat će album koji možete slušati bilo kada.";
+"BitBopScanRom" = "U ovom ulošku možda još ima glazbe koja nikad nije slušana zasebno. BitBop će je pronaći i pretvoriti u album.";
+"MoreFromManic" = "Još od Manic";
+"BitBopPromoTitle" = "BitBop: vaše igre, vaša glazba";
+"BitBopPromoDetail" = "Uvezite omiljene klasike i slušajte glazbu koja ih oživljava.";
+"BitBopTryNow" = "Isprobaj";

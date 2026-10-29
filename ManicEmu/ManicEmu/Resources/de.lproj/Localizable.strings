@@ -1165,3 +1165,23 @@ Wenn Sie Ihr Setup verbessern möchten, ist PlayCase die perfekte Ergänzung zu 
 "ICloudROMSizeLimitUnlimited" = "Kein Limit";
 "ICloudROMSizeLimitDesc" = "ROMs, die größer sind als dieser Wert, bleiben nur auf diesem Gerät, damit ein einzelnes großes Disc-Image iCloud Drive nicht füllt. Spielstände, Savestates, Skins und Einstellungen sind nie betroffen.";
 "ICloudROMTransferLimitDesc" = "Diese beiden Limits gelten nur für ROM-Dateien. Spielstände, Savestates, Skins und Einstellungen werden weiterhin über jedes Netz und in jeder Größe synchronisiert. Beim Öffnen eines Spiels wird die ROM stets heruntergeladen, auch wenn ein Limit die Synchronisierung sonst verhindern würde.";
+
+"TabletopModeDetected" = "Falte das Gerät und drehe es ins Hochformat, um den Tabletop-Modus zu öffnen.";
+"AzaharEncryptedRomUnsupported" = "Azahar unterstützt keine verschlüsselten ROMs. Nur der Citra-Kern kann sie ausführen.";
+"AesKeysTxtDesc" = "Erforderlich, um verschlüsselte 3DS-ROMs mit dem Citra-Kern zu spielen.";
+"game3DSEncryptedTips" = "Importiere die richtige aes_keys.txt, um verschlüsselte ROMs zu lesen. Nur der Citra-Kern kann sie ausführen.";
+"FetchGamesFromMeloCafe" = "Spiele von MeloCafe importieren";
+"ListenWithBitBop" = "Mit BitBop hören";
+"BitBopSendFailed" = "Das konnte nicht an BitBop gesendet werden. Warte einen Moment und versuche es erneut.";
+"BitBopTracksUnavailable" = "BitBop hat keine Titel für dieses ROM.";
+"BitBopListenTitle" = "Soundtrack behalten";
+"BitBopAlbumReady" = "「%@」 ist schon in BitBop";
+"BitBopAlbumTrackPreview" = "Fang mit %@ an.";
+"BitBopAlbumQuiet" = "「%@」 ist schon in BitBop, aber der Soundtrack kann gerade nicht abgespielt werden.";
+"BitBopTrackCount" = "%d Titel";
+"BitBopParseRom" = "Manche Melodien müssen nicht mit dem Level enden. Schick sie an BitBop, dann werden sie zu einem Album, das du jederzeit hören kannst.";
+"BitBopScanRom" = "In diesem Spielmodul steckt vielleicht noch Musik, die nie für sich gehört wurde. BitBop findet sie und macht ein Album daraus.";
+"MoreFromManic" = "Mehr von Manic";
+"BitBopPromoTitle" = "BitBop: Deine Spiele, deine Musik";
+"BitBopPromoDetail" = "Importiere deine Lieblingsklassiker und hör die Musik, die sie zum Leben erweckt.";
+"BitBopTryNow" = "Jetzt ausprobieren";

@@ -185,10 +185,12 @@ class SkinSettingsView: BaseView {
         view.didTapTitle = { [weak self] in
             guard let self else { return }
             let allGameTypes = System.allGameTypes.filter({ !$0.externalType })
+            let cells = allGameTypes.map { gameType in
+                gameType.listCell(appending: .radio(.init(isSelected: gameType == self.gameType)))
+            }
             OptionsSheetView.show(icon: .symbolImage(R.image.controller_iconSymbols()),
                                   title: R.string.localizable.changeGameType(),
-                                  options: allGameTypes.map({ $0.localizedShortName }),
-                                  selectedIndex: allGameTypes.firstIndex(of: self.gameType),
+                                  cellOptions: cells,
                                   groupTogether: true,
                                   completion: { index in
                 if let index {

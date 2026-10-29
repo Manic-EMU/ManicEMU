@@ -600,17 +600,16 @@ class ShaderListView: BaseView {
         
         let prefference = Prefference.defalut.getGameTypePrefference(kind: .shader)
         
-        let cells: [[ASListPage.Cell]] = gameTypes.map({
+        let cells: [[ASListPage.Cell]] = gameTypes.map({ gameType in
             var isSelected = false
             if let prefference,
-               let key = Prefference.StoreKey.shaderKey(gameType: $0, isGlsl: isGlsl).key {
+               let key = Prefference.StoreKey.shaderKey(gameType: gameType, isGlsl: isGlsl).key {
                 let shaderPath = prefference[key]
                 if shaderPath == selectedShader.relativePath {
                     isSelected = true
                 }
             }
-            return [.iconTitleDetailRadioCell(title: $0.localizedShortName,
-                                              isSelected: isSelected)]
+            return [gameType.listCell(appending: .radio(.init(isSelected: isSelected)))]
         })
         
         var sheetStyle: ASSheet.Style = .simpleList(icon: .symbolImage(R.image.category_iconSymbols()),

@@ -1165,3 +1165,23 @@ Si vous voulez améliorer votre installation, PlayCase est le complément parfai
 "ICloudROMSizeLimitUnlimited" = "Aucune limite";
 "ICloudROMSizeLimitDesc" = "Les ROM plus volumineux que cette taille restent uniquement sur cet appareil, afin qu'une seule grande image disque ne remplisse pas iCloud Drive. Les sauvegardes, sauvegardes instantanées, skins et paramètres ne sont jamais touchés.";
 "ICloudROMTransferLimitDesc" = "Ces deux limites s'appliquent uniquement aux fichiers ROM. Les sauvegardes, sauvegardes instantanées, skins et paramètres continuent de se synchroniser sur n'importe quel réseau et peu importe leur taille. Ouvrir un jeu télécharge toujours son ROM, même si une limite l'empêcherait autrement de se synchroniser.";
+
+"TabletopModeDetected" = "Pliez l'appareil et passez en mode portrait pour accéder au mode Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar ne prend pas en charge les ROM chiffrées. Seul le cœur Citra peut les exécuter.";
+"AesKeysTxtDesc" = "Requis pour jouer à des ROM 3DS chiffrées avec le cœur Citra.";
+"game3DSEncryptedTips" = "Importez le bon fichier aes_keys.txt pour lire les ROM chiffrées. Seul le cœur Citra peut les exécuter.";
+"FetchGamesFromMeloCafe" = "Importer des jeux à partir de MeloCafe";
+"ListenWithBitBop" = "Écouter avec BitBop";
+"BitBopSendFailed" = "Impossible d'envoyer ceci à BitBop. Patientez un moment, puis réessayez.";
+"BitBopTracksUnavailable" = "BitBop n'a pas de pistes pour cette ROM.";
+"BitBopListenTitle" = "Garder la trame sonore";
+"BitBopAlbumReady" = "「%@」 est déjà dans BitBop";
+"BitBopAlbumTrackPreview" = "Commencez par %@.";
+"BitBopAlbumQuiet" = "「%@」 est déjà dans BitBop, mais la trame sonore ne peut pas être lue.";
+"BitBopTrackCount" = "%d pistes";
+"BitBopParseRom" = "Certaines mélodies n'ont pas à finir avec le niveau. Envoyez-les à BitBop et elles deviennent un album que vous pouvez écouter en tout temps.";
+"BitBopScanRom" = "Cette cartouche contient peut-être encore de la musique qui n'a jamais été écoutée seule. BitBop la trouvera et en fera un album.";
+"MoreFromManic" = "Plus de Manic";
+"BitBopPromoTitle" = "BitBop : vos jeux, votre musique";
+"BitBopPromoDetail" = "Importez vos classiques préférés et écoutez la musique qui leur donne vie.";
+"BitBopTryNow" = "Essayer maintenant";

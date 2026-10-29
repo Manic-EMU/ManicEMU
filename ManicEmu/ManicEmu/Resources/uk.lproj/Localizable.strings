@@ -1165,3 +1165,23 @@ PlayCase спеціалізується на високоякісних чохл
 "ICloudROMSizeLimitUnlimited" = "Без обмежень";
 "ICloudROMSizeLimitDesc" = "ROM, більші за цей розмір, залишаються лише на цьому пристрої, щоб один великий образ диска не заповнив iCloud Drive. Збереження, швидкі збереження, скіни та налаштування не зачіпаються.";
 "ICloudROMTransferLimitDesc" = "Ці два обмеження стосуються лише файлів ROM. Збереження, швидкі збереження, скіни та налаштування й далі синхронізуються в будь-якій мережі та за будь-якого розміру. Коли ви відкриваєте гру, ROM завжди завантажується, навіть якщо обмеження інакше не дало б йому синхронізуватися.";
+
+"TabletopModeDetected" = "Складіть пристрій і поверніть екран у книжковий режим, щоб увійти в режим Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar не підтримує зашифровані ROM. Їх може запускати лише ядро Citra.";
+"AesKeysTxtDesc" = "Потрібен, щоб запускати зашифровані ROM 3DS у ядрі Citra.";
+"game3DSEncryptedTips" = "Імпортуйте правильний файл aes_keys.txt, щоб читати зашифровані ROM. Такі ROM запускає лише ядро Citra.";
+"FetchGamesFromMeloCafe" = "Імпорт ігор з MeloCafe";
+"ListenWithBitBop" = "Слухати в BitBop";
+"BitBopSendFailed" = "Не вдалося передати це в BitBop. Зачекайте трохи і спробуйте знову.";
+"BitBopTracksUnavailable" = "У BitBop немає треків для цього ROM.";
+"BitBopListenTitle" = "Залишити саундтрек";
+"BitBopAlbumReady" = "「%@」 уже в BitBop";
+"BitBopAlbumTrackPreview" = "Можна почати з %@.";
+"BitBopAlbumQuiet" = "「%@」 уже в BitBop, але саундтрек зараз не можна відтворити.";
+"BitBopTrackCount" = "%d треків";
+"BitBopParseRom" = "Деяким мелодіям не обов’язково закінчуватися разом із рівнем. Передайте їх у BitBop — і вони стануть альбомом, який можна слухати будь-коли.";
+"BitBopScanRom" = "У цьому картриджі може лишитися музика, яку ще не слухали окремо. BitBop знайде її і зробить з неї альбом.";
+"MoreFromManic" = "Більше від Manic";
+"BitBopPromoTitle" = "BitBop: ваші ігри, ваша музика";
+"BitBopPromoDetail" = "Імпортуйте улюблену класику й слухайте музику, яка оживляє її.";
+"BitBopTryNow" = "Спробувати";

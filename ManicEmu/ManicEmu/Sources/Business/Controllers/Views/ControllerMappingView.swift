@@ -74,10 +74,12 @@ class ControllerMappingView: BaseView {
                 guard let self = self else { return }
                 //change gameTypes
                 let allGameTypes = System.allGameTypes.filter({ !$0.externalType })
+                let cells = allGameTypes.map { gameType in
+                    gameType.listCell(appending: .radio(.init(isSelected: gameType == self.gameType)))
+                }
                 OptionsSheetView.show(icon: .symbolImage(R.image.controller_iconSymbols()),
                                       title: R.string.localizable.changeGameType(),
-                                      options: allGameTypes.map({ $0.localizedShortName }),
-                                      selectedIndex: allGameTypes.firstIndex(of: self.gameType),
+                                      cellOptions: cells,
                                       groupTogether: true,
                                       completion: { index in
                     if let index {
@@ -154,7 +156,7 @@ class ControllerMappingView: BaseView {
     
     init(games: [Game], controller: GameController) {
         self.games = games
-        self.gameType = games.first?.gameType ?? System.allGameTypes.first!
+        self.gameType = games.first?.gameType ?? System.allGameTypes.filter({ !$0.externalType }).first!
         self.gameController = controller
         super.init(frame: .zero)
         setupInit()

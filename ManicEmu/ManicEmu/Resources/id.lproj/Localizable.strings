@@ -1157,3 +1157,23 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 "ICloudROMSizeLimitUnlimited" = "Tanpa batas";
 "ICloudROMSizeLimitDesc" = "ROM yang lebih besar dari ini hanya disimpan di perangkat ini, agar satu image cakram besar tidak memenuhi iCloud Drive. Simpanan, simpanan instan, skin, dan pengaturan tidak pernah terpengaruh.";
 "ICloudROMTransferLimitDesc" = "Kedua batas ini hanya berlaku untuk file ROM. Simpanan, simpanan instan, skin, dan pengaturan tetap tersinkron di jaringan apa pun dan ukuran apa pun. Membuka game selalu mengunduh ROM-nya, meski batas seharusnya menahan sinkronisasi.";
+
+"TabletopModeDetected" = "Lipat perangkat dan putar ke portrait untuk masuk ke Mode Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar tidak mendukung ROM terenkripsi. Hanya inti Citra yang dapat menjalankannya.";
+"AesKeysTxtDesc" = "Diperlukan untuk memainkan ROM 3DS terenkripsi dengan inti Citra.";
+"game3DSEncryptedTips" = "Impor aes_keys.txt yang benar untuk membaca ROM terenkripsi. ROM semacam ini hanya dapat dijalankan oleh inti Citra.";
+"FetchGamesFromMeloCafe" = "Impor Permainan dari MeloCafe";
+"ListenWithBitBop" = "Dengarkan dengan BitBop";
+"BitBopSendFailed" = "Kali ini tidak bisa dikirim ke BitBop. Tunggu sebentar, lalu coba lagi.";
+"BitBopTracksUnavailable" = "BitBop tidak punya lagu untuk ROM ini.";
+"BitBopListenTitle" = "Simpan lagu latarnya";
+"BitBopAlbumReady" = "「%@」 sudah ada di BitBop";
+"BitBopAlbumTrackPreview" = "Bisa mulai dari %@.";
+"BitBopAlbumQuiet" = "「%@」 sudah ada di BitBop, tetapi lagunya belum bisa diputar.";
+"BitBopTrackCount" = "%d lagu";
+"BitBopParseRom" = "Ada melodi yang tidak harus berakhir bersama level. Kirim ke BitBop, dan mereka menjadi album yang bisa diputar kapan saja.";
+"BitBopScanRom" = "Kartrid ini mungkin masih menyimpan musik yang belum pernah didengar sendiri. BitBop akan menemukannya dan menjadikannya album.";
+"MoreFromManic" = "Lainnya dari Manic";
+"BitBopPromoTitle" = "BitBop: Game Anda, Musik Anda";
+"BitBopPromoDetail" = "Impor game klasik favorit Anda dan dengarkan musik yang menghidupkannya.";
+"BitBopTryNow" = "Coba Sekarang";

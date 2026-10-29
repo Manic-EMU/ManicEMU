@@ -1158,3 +1158,23 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 "ICloudROMSizeLimitUnlimited" = "Không giới hạn";
 "ICloudROMSizeLimitDesc" = "ROM lớn hơn mức này chỉ giữ trên thiết bị này, để một ảnh đĩa lớn không làm đầy iCloud Drive. Bản lưu, lưu trữ tức thời, skin và cài đặt không bị ảnh hưởng.";
 "ICloudROMTransferLimitDesc" = "Hai giới hạn này chỉ áp dụng cho tệp ROM. Bản lưu, lưu trữ tức thời, skin và cài đặt vẫn đồng bộ trên mọi mạng và mọi dung lượng. Mở trò chơi luôn tải ROM, dù giới hạn lẽ ra sẽ chặn đồng bộ.";
+
+"TabletopModeDetected" = "Gập thiết bị và xoay dọc để vào chế độ Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar không hỗ trợ ROM đã mã hóa. Chỉ lõi Citra mới chạy được.";
+"AesKeysTxtDesc" = "Cần tập tin này để chơi ROM 3DS đã mã hóa bằng lõi Citra.";
+"game3DSEncryptedTips" = "Hãy nhập đúng aes_keys.txt để đọc ROM đã mã hóa. Chỉ lõi Citra mới chạy được các ROM này.";
+"FetchGamesFromMeloCafe" = "Nhập trò chơi từ MeloCafe";
+"ListenWithBitBop" = "Nghe với BitBop";
+"BitBopSendFailed" = "Lần này chưa gửi được cho BitBop. Hãy đợi một chút rồi thử lại.";
+"BitBopTracksUnavailable" = "BitBop không có bài nhạc cho ROM này.";
+"BitBopListenTitle" = "Giữ lại nhạc nền";
+"BitBopAlbumReady" = "「%@」 đã có trong BitBop";
+"BitBopAlbumTrackPreview" = "Có thể nghe từ %@ trước.";
+"BitBopAlbumQuiet" = "「%@」 đã có trong BitBop, nhưng hiện chưa nghe được nhạc nền.";
+"BitBopTrackCount" = "%d bài";
+"BitBopParseRom" = "Có những giai điệu không nhất thiết phải kết thúc cùng màn chơi. Gửi chúng cho BitBop, chúng sẽ thành một album nghe bất cứ lúc nào.";
+"BitBopScanRom" = "Trong băng này có thể còn nhạc chưa từng được nghe riêng. BitBop sẽ tìm ra và làm thành một album.";
+"MoreFromManic" = "Thêm từ Manic";
+"BitBopPromoTitle" = "BitBop: trò chơi của bạn, nhạc của bạn";
+"BitBopPromoDetail" = "Nhập những trò chơi kinh điển bạn yêu thích và nghe bản nhạc làm chúng sống động.";
+"BitBopTryNow" = "Trải nghiệm ngay";

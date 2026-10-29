@@ -132,4 +132,15 @@ enum Manufacturer: Int, CaseIterable {
             R.image.adobe_highlight()!
         }
     }
+    
+    var iconSize: CGFloat {
+        switch self {
+        case .nintendo, .arcade, .sun:
+            return 25
+        case .commodore:
+            return 20
+        default:
+            return 15
+        }
+    }
 }

@@ -34,11 +34,13 @@ class PlatformSelectionView: BaseView {
             
         }
         
+        let cells = options.enumerated().map { index, gameType in
+            gameType.listCell(appending: .radio(.init(isSelected: selectedIndexPath == index)))
+        }
         OptionsSheetView.show(icon: GameOption.platformChange.icon,
                                title: R.string.localizable.platformSelectionTitle(),
                                detail: R.string.localizable.platformSelectionDetail(detailString),
-                               options: options.map({ $0.localizedName }),
-                               selectedIndex: selectedIndexPath,
+                               cellOptions: cells,
                                cancelEnable: cancelEnable, completion: { index in
             if let index {
                 let gameType = options[index]

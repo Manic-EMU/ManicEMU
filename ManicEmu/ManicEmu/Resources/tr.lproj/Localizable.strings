@@ -1164,3 +1164,23 @@ Kurulumunuzu bir üst seviyeye taşımak istiyorsanız, PlayCase bu kaplama içi
 "ICloudROMSizeLimitUnlimited" = "Sınırsız";
 "ICloudROMSizeLimitDesc" = "Bu boyuttan büyük ROM’lar yalnızca bu cihazda tutulur, böylece tek bir büyük disk görüntüsü iCloud Drive’ı doldurmaz. Oyun kayıtları, anlık kayıtlar, skin’ler ve ayarlar etkilenmez.";
 "ICloudROMTransferLimitDesc" = "Bu iki sınır yalnızca ROM dosyalarına uygulanır. Oyun kayıtları, anlık kayıtlar, skin’ler ve ayarlar her ağda ve her boyutta senkron olmaya devam eder. Bir oyunu açmak, sınır senkronu engelleyecek olsa bile ROM’u her zaman indirir.";
+
+"TabletopModeDetected" = "Tabletop moduna girmek için cihazı katlayın ve dikey konuma çevirin.";
+"AzaharEncryptedRomUnsupported" = "Azahar şifreli ROM'ları desteklemez. Bunları yalnızca Citra çekirdeği çalıştırabilir.";
+"AesKeysTxtDesc" = "Citra çekirdeğiyle şifreli 3DS ROM'larını oynamak için gerekli.";
+"game3DSEncryptedTips" = "Şifreli ROM'ları okumak için doğru aes_keys.txt dosyasını içe aktarın. Bu tür ROM'ları yalnızca Citra çekirdeği çalıştırabilir.";
+"FetchGamesFromMeloCafe" = "MeloCafe'den Oyun İçe Aktar";
+"ListenWithBitBop" = "BitBop ile Dinle";
+"BitBopSendFailed" = "Bu sefer BitBop'a gönderilemedi. Biraz bekleyip yeniden deneyin.";
+"BitBopTracksUnavailable" = "BitBop'ta bu ROM için parça yok.";
+"BitBopListenTitle" = "Müziği yanında tut";
+"BitBopAlbumReady" = "「%@」 zaten BitBop'ta";
+"BitBopAlbumTrackPreview" = "%@ ile başlayın.";
+"BitBopAlbumQuiet" = "「%@」 zaten BitBop'ta, ama müzik şu an çalınamıyor.";
+"BitBopTrackCount" = "%d parça";
+"BitBopParseRom" = "Bazı melodilerin bölümle birlikte bitmesi gerekmez. Onları BitBop'a verin; istediğiniz zaman dinleyebileceğiniz bir albüm olurlar.";
+"BitBopScanRom" = "Bu kartuşta hiç tek başına dinlenmemiş müzik duruyor olabilir. BitBop onu bulup bir albüme dönüştürür.";
+"MoreFromManic" = "Manic'ten daha fazlası";
+"BitBopPromoTitle" = "BitBop: Oyunlarınız, müziğiniz";
+"BitBopPromoDetail" = "Sevdiğiniz klasikleri içe aktarın ve onlara hayat veren müziği dinleyin.";
+"BitBopTryNow" = "Hemen Dene";

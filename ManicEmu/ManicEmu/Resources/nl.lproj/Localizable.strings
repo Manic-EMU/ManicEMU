@@ -1165,3 +1165,23 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 "ICloudROMSizeLimitUnlimited" = "Geen limiet";
 "ICloudROMSizeLimitDesc" = "ROM's groter dan dit blijven alleen op dit apparaat, zodat één groot schijfimage iCloud Drive niet volloopt. Gameopslag, savestates, skins en instellingen worden nooit beïnvloed.";
 "ICloudROMTransferLimitDesc" = "Deze twee limieten gelden alleen voor ROM-bestanden. Gameopslag, savestates, skins en instellingen blijven synchroniseren via elk netwerk en bij elke grootte. Als je een game opent, wordt de ROM altijd gedownload, ook als een limiet de synchronisatie anders zou tegenhouden.";
+
+"TabletopModeDetected" = "Vouw het apparaat en draai het naar portret om de Tabletop-modus te openen.";
+"AzaharEncryptedRomUnsupported" = "Azahar ondersteunt geen versleutelde ROM's. Alleen de Citra-kern kan ze uitvoeren.";
+"AesKeysTxtDesc" = "Nodig om versleutelde 3DS-ROM's met de Citra-kern te spelen.";
+"game3DSEncryptedTips" = "Importeer het juiste aes_keys.txt-bestand om versleutelde ROM's te lezen. Alleen de Citra-kern kan ze uitvoeren.";
+"FetchGamesFromMeloCafe" = "Games importeren uit MeloCafe";
+"ListenWithBitBop" = "Luisteren met BitBop";
+"BitBopSendFailed" = "Dit kon niet naar BitBop worden gestuurd. Wacht even en probeer het opnieuw.";
+"BitBopTracksUnavailable" = "BitBop heeft geen nummers voor deze ROM.";
+"BitBopListenTitle" = "Bewaar de soundtrack";
+"BitBopAlbumReady" = "「%@」 staat al in BitBop";
+"BitBopAlbumTrackPreview" = "Begin met %@.";
+"BitBopAlbumQuiet" = "「%@」 staat al in BitBop, maar de soundtrack kan nu niet worden afgespeeld.";
+"BitBopTrackCount" = "%d nummers";
+"BitBopParseRom" = "Sommige melodieën hoeven niet te eindigen met het level. Stuur ze naar BitBop en ze worden een album dat je altijd kunt beluisteren.";
+"BitBopScanRom" = "Deze cassette bevat misschien nog muziek die nooit apart is gehoord. BitBop zoekt die op en maakt er een album van.";
+"MoreFromManic" = "Meer van Manic";
+"BitBopPromoTitle" = "BitBop: jouw games, jouw muziek";
+"BitBopPromoDetail" = "Importeer je favoriete klassiekers en luister naar de muziek die ze tot leven brengt.";
+"BitBopTryNow" = "Nu proberen";

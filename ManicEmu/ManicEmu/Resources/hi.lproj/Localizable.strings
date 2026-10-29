@@ -1166,3 +1166,23 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 "ICloudROMSizeLimitUnlimited" = "कोई सीमा नहीं";
 "ICloudROMSizeLimitDesc" = "इससे बड़े ROM सिर्फ़ इस डिवाइस पर रहते हैं, ताकि एक बड़ी डिस्क इमेज iCloud Drive न भर दे। गेम सेव, सेव स्टेट्स, स्किन और सेटिंग्स प्रभावित नहीं होते।";
 "ICloudROMTransferLimitDesc" = "ये दो सीमाएँ सिर्फ़ ROM फ़ाइलों पर लागू होती हैं। गेम सेव, सेव स्टेट्स, स्किन और सेटिंग्स किसी भी नेटवर्क और किसी भी आकार पर सिंक होते रहते हैं। गेम खोलने पर उसका ROM हमेशा डाउनलोड होता है, भले ही सीमा उसे सिंक होने से रोकती।";
+
+"TabletopModeDetected" = "डिवाइस को मोड़कर पोर्ट्रेट में घुमाएं, ताकि Tabletop मोड खुल जाए।";
+"AzaharEncryptedRomUnsupported" = "Azahar एन्क्रिप्टेड ROM को सपोर्ट नहीं करता। इन्हें केवल Citra कोर चला सकता है।";
+"AesKeysTxtDesc" = "Citra कोर से एन्क्रिप्टेड 3DS ROM चलाने के लिए यह फाइल जरूरी है।";
+"game3DSEncryptedTips" = "एन्क्रिप्टेड ROM पढ़ने के लिए सही aes_keys.txt इम्पोर्ट करें। ऐसे ROM केवल Citra कोर चला सकता है।";
+"FetchGamesFromMeloCafe" = "MeloCafe से गेम इम्पोर्ट करें";
+"ListenWithBitBop" = "BitBop के साथ सुनें";
+"BitBopSendFailed" = "इसे BitBop को भेजा नहीं जा सका। थोड़ी देर बाद फिर कोशिश करें।";
+"BitBopTracksUnavailable" = "BitBop के पास इस ROM के ट्रैक नहीं हैं।";
+"BitBopListenTitle" = "साउंडट्रैक अपने पास रखें";
+"BitBopAlbumReady" = "「%@」 पहले से BitBop में है";
+"BitBopAlbumTrackPreview" = "%@ से सुनना शुरू करें।";
+"BitBopAlbumQuiet" = "「%@」 पहले से BitBop में है, लेकिन साउंडट्रैक अभी चलाया नहीं जा सकता।";
+"BitBopTrackCount" = "%d ट्रैक";
+"BitBopParseRom" = "कुछ धुनों को लेवल के साथ खत्म होने की जरूरत नहीं। उन्हें BitBop को दे दें, और वे ऐसा एल्बम बन जाएंगी जिसे कभी भी सुना जा सकता है।";
+"BitBopScanRom" = "इस कार्ट्रिज में अब भी ऐसा संगीत हो सकता है जिसे अकेले कभी नहीं सुना गया। BitBop उसे ढूंढकर एल्बम बना देगा।";
+"MoreFromManic" = "Manic से और भी";
+"BitBopPromoTitle" = "BitBop: आपके गेम, आपका संगीत";
+"BitBopPromoDetail" = "अपने पसंदीदा क्लासिक गेम इम्पोर्ट करें और वह संगीत सुनें जो उन्हें जीवंत बनाता है।";
+"BitBopTryNow" = "अभी आजमाएं";

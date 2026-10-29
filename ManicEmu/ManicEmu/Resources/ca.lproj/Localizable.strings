@@ -1166,3 +1166,23 @@ Si voleu millorar la vostra configuració, PlayCase és el complement perfecte p
 "ICloudROMSizeLimitUnlimited" = "Sense límit";
 "ICloudROMSizeLimitDesc" = "Els ROM més grans que aquesta mida es queden només en aquest dispositiu, perquè una sola imatge de disc gran no ompli iCloud Drive. Les partides, els estats desats, les skins i la configuració no es veuen afectats.";
 "ICloudROMTransferLimitDesc" = "Aquests dos límits s'apliquen només als fitxers ROM. Les partides, els estats desats, les skins i la configuració continuen sincronitzant-se en qualsevol xarxa i amb qualsevol mida. En obrir un joc sempre es baixa el ROM, encara que un límit n'impedeixi la sincronització.";
+
+"TabletopModeDetected" = "Plega el dispositiu i gira'l en vertical per entrar al mode Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar no admet ROM encriptades. Només el nucli Citra les pot executar.";
+"AesKeysTxtDesc" = "Necessari per jugar a ROM 3DS encriptades amb el nucli Citra.";
+"game3DSEncryptedTips" = "Importa l'aes_keys.txt correcte per llegir les ROM encriptades. Només el nucli Citra les pot executar.";
+"FetchGamesFromMeloCafe" = "Importa jocs des de MeloCafe";
+"ListenWithBitBop" = "Escolta amb BitBop";
+"BitBopSendFailed" = "No s'ha pogut enviar això a BitBop. Espera un moment i torna-ho a provar.";
+"BitBopTracksUnavailable" = "BitBop no té pistes per a aquesta ROM.";
+"BitBopListenTitle" = "Conserva la banda sonora";
+"BitBopAlbumReady" = "「%@」 ja és a BitBop";
+"BitBopAlbumTrackPreview" = "Comença per %@.";
+"BitBopAlbumQuiet" = "「%@」 ja és a BitBop, però la banda sonora no es pot reproduir.";
+"BitBopTrackCount" = "%d pistes";
+"BitBopParseRom" = "Hi ha melodies que no han d'acabar amb el nivell. Envia-les a BitBop i es convertiran en un àlbum que pots escoltar quan vulguis.";
+"BitBopScanRom" = "Aquest cartutx potser encara guarda música que no s'ha escoltat mai sola. BitBop la trobarà i en farà un àlbum.";
+"MoreFromManic" = "Més de Manic";
+"BitBopPromoTitle" = "BitBop: els teus jocs, la teva música";
+"BitBopPromoDetail" = "Importa els teus clàssics preferits i escolta la música que els dona vida.";
+"BitBopTryNow" = "Prova-ho ara";

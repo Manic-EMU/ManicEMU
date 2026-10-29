@@ -1165,3 +1165,23 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "ICloudROMSizeLimitUnlimited" = "Bez limitu";
 "ICloudROMSizeLimitDesc" = "ROM väčšie ako táto veľkosť ostanú len na tomto zariadení, aby jediný veľký obraz disku nezaplnil iCloud Drive. Uloženia hier, okamžité uloženia, skiny a nastavenia nie sú nikdy ovplyvnené.";
 "ICloudROMTransferLimitDesc" = "Tieto dva limity platia len pre súbory ROM. Uloženia hier, okamžité uloženia, skiny a nastavenia sa ďalej synchronizujú v akejkoľvek sieti a pri akejkoľvek veľkosti. Otvorenie hry vždy stiahne ROM, aj keď by limit synchronizáciu inak zadržal.";
+
+"TabletopModeDetected" = "Zložte zariadenie a otočte ho na výšku, aby ste vstúpili do režimu Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar nepodporuje šifrované ROM. Spustiť ich vie len jadro Citra.";
+"AesKeysTxtDesc" = "Vyžaduje sa na hranie šifrovaných ROM 3DS v jadre Citra.";
+"game3DSEncryptedTips" = "Importujte správny súbor aes_keys.txt, aby sa dali čítať šifrované ROM. Takéto ROM spúšťa len jadro Citra.";
+"FetchGamesFromMeloCafe" = "Importovať hry z MeloCafe";
+"ListenWithBitBop" = "Počúvať s BitBop";
+"BitBopSendFailed" = "Toto sa nepodarilo odovzdať BitBop. Chvíľu počkajte a skúste to znova.";
+"BitBopTracksUnavailable" = "BitBop nemá skladby pre túto ROM.";
+"BitBopListenTitle" = "Nechať si soundtrack";
+"BitBopAlbumReady" = "「%@」 už je v BitBop";
+"BitBopAlbumTrackPreview" = "Začnite od %@.";
+"BitBopAlbumQuiet" = "「%@」 už je v BitBop, ale soundtrack sa teraz nedá prehrať.";
+"BitBopTrackCount" = "%d skladieb";
+"BitBopParseRom" = "Niektoré melódie nemusia skončiť spolu s úrovňou. Odovzdajte ich BitBop a stanú sa z nich album, ktorý si môžete kedykoľvek pustiť.";
+"BitBopScanRom" = "V tejto kazete môže ešte byť hudba, ktorú nikto nepočul samostatne. BitBop ju nájde a spraví z nej album.";
+"MoreFromManic" = "Ďalšie od Manic";
+"BitBopPromoTitle" = "BitBop: vaše hry, vaša hudba";
+"BitBopPromoDetail" = "Importujte obľúbené klasiky a počúvajte hudbu, ktorá ich oživuje.";
+"BitBopTryNow" = "Vyskúšať";

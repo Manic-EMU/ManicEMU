@@ -1156,3 +1156,23 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 "ICloudROMSizeLimitUnlimited" = "Ingen grense";
 "ICloudROMSizeLimitDesc" = "ROM-filer større enn dette blir bare på denne enheten, slik at ett stort plateavtrykk ikke fyller iCloud Drive. Lagring, savestates, skins og innstillinger påvirkes aldri.";
 "ICloudROMTransferLimitDesc" = "Disse to grensene gjelder bare ROM-filer. Lagring, savestates, skins og innstillinger fortsetter å synkroniseres over alle nettverk og uansett størrelse. Når du åpner et spill, lastes ROM-filen alltid ned, selv om en grense ellers ville hindret synkronisering.";
+
+"TabletopModeDetected" = "Brett enheten og roter til portrett for å gå inn i Tabletop-modus.";
+"AzaharEncryptedRomUnsupported" = "Azahar støtter ikke krypterte ROM-er. Bare Citra-kjernen kan kjøre dem.";
+"AesKeysTxtDesc" = "Kreves for å spille krypterte 3DS-ROM-er med Citra-kjernen.";
+"game3DSEncryptedTips" = "Importer riktig aes_keys.txt for å lese krypterte ROM-er. Bare Citra-kjernen kan kjøre dem.";
+"FetchGamesFromMeloCafe" = "Importer spill fra MeloCafe";
+"ListenWithBitBop" = "Lytt med BitBop";
+"BitBopSendFailed" = "Dette kunne ikke sendes til BitBop. Vent litt, og prøv igjen.";
+"BitBopTracksUnavailable" = "BitBop har ingen spor for denne ROM-en.";
+"BitBopListenTitle" = "Behold lydsporet";
+"BitBopAlbumReady" = "「%@」 er allerede i BitBop";
+"BitBopAlbumTrackPreview" = "Start med %@.";
+"BitBopAlbumQuiet" = "「%@」 er allerede i BitBop, men lydsporet kan ikke spilles av nå.";
+"BitBopTrackCount" = "%d spor";
+"BitBopParseRom" = "Noen melodier trenger ikke å slutte med nivået. Send dem til BitBop, så blir de et album du kan høre når som helst.";
+"BitBopScanRom" = "Denne kassetten kan fortsatt ha musikk som aldri er hørt alene. BitBop finner den og gjør den om til et album.";
+"MoreFromManic" = "Mer fra Manic";
+"BitBopPromoTitle" = "BitBop: spillene dine, musikken din";
+"BitBopPromoDetail" = "Importer favorittklassikerne dine og hør musikken som gir dem liv.";
+"BitBopTryNow" = "Prøv nå";

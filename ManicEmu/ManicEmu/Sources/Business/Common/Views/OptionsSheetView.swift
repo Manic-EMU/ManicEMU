@@ -44,7 +44,38 @@ class OptionsSheetView: BaseView {
                                                 selectedIndexPath: selectedIndexPath,
                                                 cancelEnable: cancelEnable,
                                                 optionsType: optionType))
+        present(sheetData, groupTogether: groupTogether, completion: completion)
+    }
+    
+    /// Same selection flow as string options. Cells already include radio, check, or chevron.
+    static func show(icon: ASIcon,
+                     title: String,
+                     detail: String? = nil,
+                     cellOptions: [ASListPage.Cell],
+                     cancelEnable: Bool = true,
+                     groupTogether: Bool = false,
+                     completion: ((_ index: Int?)->Void)? = nil) {
+        guard cellOptions.count > 0 else {
+            completion?(nil)
+            return
+        }
         
+        var detailText: ASText? = nil
+        if let detail {
+            detailText = .smallText(detail, numberOfLines: 0)
+        }
+        
+        let sheetData = ASSheet(style: .simpleList(icon: icon,
+                                                   title: title,
+                                                   detail: detailText,
+                                                   options: groupTogether ? [cellOptions] : cellOptions.map({ [$0] }),
+                                                   cancelEnable: cancelEnable))
+        present(sheetData, groupTogether: groupTogether, completion: completion)
+    }
+    
+    private static func present(_ sheetData: ASSheet,
+                                groupTogether: Bool,
+                                completion: ((_ index: Int?)->Void)?) {
         var didComplete = false
         
         ASSheetView.show(sheetData, action: { sheetAction, _ in

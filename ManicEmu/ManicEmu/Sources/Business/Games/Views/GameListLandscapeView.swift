@@ -626,18 +626,22 @@ class GameListLandscapeView: BaseView {
                 self?.syncCarouselFocusTargets()
             }
         } else {
-            listView.collectionViewLayout.invalidateLayout()
-            listView.reloadData()
             infoPanelView.isHidden = true
             applyShaderBackground(force: true)
         }
+        // List stays in the hierarchy under the carousel. Filter changes
+        // displaySections immediately, but a bounds change (sheet safe area,
+        // info-panel constraints while swiping) re-solves the compositional
+        // layout against the previous section count. Reload here so those
+        // indexes still exist.
+        listView.collectionViewLayout.invalidateLayout()
+        listView.reloadData()
     }
     
     //MARK: - navigation交互
     
-    ///筛选第一级：选择厂商 选中具体厂商后接着弹出GameType筛选
+    /// First filter level: manufacturers that have visible games. Brand style uses the logo.
     private func showManufacturerFilterSheet() {
-        //只展示有游戏的厂商
         let manufacturers = Theme.defalut.manufacturerOrder.filter { manufacturer in
             games.contains { game in
                 let type = game.effectiveGameType
@@ -646,16 +650,28 @@ class GameListLandscapeView: BaseView {
         }
         guard manufacturers.count > 0 else { return }
         
-        let options = [R.string.localizable.all()] + manufacturers.map { $0.title }
         var selectedIndex = 0
         if let selectedManufacturer, let index = manufacturers.firstIndex(of: selectedManufacturer) {
             selectedIndex = index + 1
         }
+        let useBrandIcon = R.Style.GamesGroupTitleStyle == .brand
+        var cells = [ASListPage.Cell.normal([
+            .title(.largeText(R.string.localizable.all())),
+            .radio(.init(isSelected: selectedIndex == 0))
+        ])]
+        cells.append(contentsOf: manufacturers.enumerated().map { offset, manufacturer in
+            let content: ASListPage.Cell.Style = useBrandIcon
+            ? .icon(.image(manufacturer.highlightImage), iconSize: .fixHeight(manufacturer.iconSize))
+                : .title(.largeText(manufacturer.title))
+            return .normal([
+                content,
+                .radio(.init(isSelected: selectedIndex == offset + 1))
+            ])
+        })
         
         OptionsSheetView.show(icon: .symbol(.line3HorizontalDecrease),
                               title: R.string.localizable.filterTitle(),
-                              options: options,
-                              selectedIndex: selectedIndex) { [weak self] index in
+                              cellOptions: cells) { [weak self] index in
             guard let self, let index else { return }
             let manufacturer: Manufacturer? = index == 0 ? nil : manufacturers[index - 1]
             if let manufacturer {
@@ -666,12 +682,12 @@ class GameListLandscapeView: BaseView {
                     self.reloadAll(keepFocus: false)
                 }
                 self.updateFilterButton()
-                //第二级：该厂商下有多个GameType时弹出类型筛选
+                // Several game types: open the second sheet.
                 if self.availableGameTypes.count > 1 {
                     self.showGameTypeFilterSheet(manufacturer: manufacturer)
                 }
             } else {
-                //选择All清空所有筛选
+                // All clears both filters.
                 guard self.selectedManufacturer != nil || self.selectedGameType != nil else { return }
                 self.selectedManufacturer = nil
                 self.selectedGameType = nil
@@ -681,19 +697,24 @@ class GameListLandscapeView: BaseView {
         }
     }
     
-    ///筛选第二级：选择GameType
+    /// Second filter level: pick a game type. The first row stays "All".
     private func showGameTypeFilterSheet(manufacturer: Manufacturer) {
         let gameTypes = availableGameTypes
-        let options = [R.string.localizable.all()] + gameTypes.map { $0.localizedShortName }
         var selectedIndex = 0
         if let selectedGameType, let index = gameTypes.firstIndex(of: selectedGameType) {
             selectedIndex = index + 1
         }
+        var cells = [ASListPage.Cell.normal([
+            .title(.largeText(R.string.localizable.all())),
+            .radio(.init(isSelected: selectedIndex == 0))
+        ])]
+        cells.append(contentsOf: gameTypes.enumerated().map { offset, gameType in
+            gameType.listCell(appending: .radio(.init(isSelected: selectedIndex == offset + 1)))
+        })
         
         OptionsSheetView.show(icon: .symbol(.line3HorizontalDecrease),
                               title: manufacturer.title,
-                              options: options,
-                              selectedIndex: selectedIndex) { [weak self] index in
+                              cellOptions: cells) { [weak self] index in
             guard let self, let index else { return }
             let gameType: GameType? = index == 0 ? nil : gameTypes[index - 1]
             if gameType != self.selectedGameType {
@@ -1389,7 +1410,12 @@ class GameListLandscapeView: BaseView {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         configuration.contentInsetsReference = UIDevice.isPhoneDuo ? .none : .safeArea
         return UICollectionViewCompositionalLayout(sectionProvider: { [weak self] sectionIndex, env in
-            guard let self, self.displaySections.indices.contains(sectionIndex) else { return nil }
+            // Nil here is an internal UIKit exception once the list still has
+            // content for this section. A filter can shrink displaySections
+            // before the hidden list finishes its deferred bounds resolve.
+            guard let self, self.displaySections.indices.contains(sectionIndex) else {
+                return Self.placeholderListSection()
+            }
             let gameType = self.displaySections[sectionIndex].gameType
             let itemSpacing = R.Size.ContentSpaceMedium - R.Size.GamesListSelectionEdge * 2
             let sectionInsetTop = R.Size.ContentSpaceTiny
@@ -1433,6 +1459,14 @@ class GameListLandscapeView: BaseView {
             section.boundarySupplementaryItems = [headerItem]
             return section
         }, configuration: configuration)
+    }
+    
+    /// Used when the solver asks for a section the current filter no longer has.
+    private static func placeholderListSection() -> NSCollectionLayoutSection {
+        let size = NSCollectionLayoutSize(widthDimension: .absolute(1), heightDimension: .absolute(1))
+        let item = NSCollectionLayoutItem(layoutSize: size)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitems: [item])
+        return NSCollectionLayoutSection(group: group)
     }
     
     /// Avoid `=== listView` / `=== carouselView` in data source — those lazy vars re-enter during init.

@@ -1167,3 +1167,23 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "ICloudROMSizeLimitUnlimited" = "Ei rajaa";
 "ICloudROMSizeLimitDesc" = "Tätä suuremmat ROM-tiedostot jäävät vain tälle laitteelle, jotta yksi suuri levykuva ei täytä iCloud Drivea. Pelitallennuksiin, pikatallennuksiin, skineihin ja asetuksiin tällä ei ole vaikutusta.";
 "ICloudROMTransferLimitDesc" = "Nämä kaksi rajoitusta koskevat vain ROM-tiedostoja. Pelitallennukset, pikatallennukset, skinit ja asetukset synkronoituvat edelleen kaikissa verkoissa ja kaikenkokoisina. Pelin avaaminen lataa ROM-tiedoston aina, vaikka rajoitus muuten estäisi synkronoinnin.";
+
+"TabletopModeDetected" = "Taita laite ja käännä se pystyasentoon, niin pääset Tabletop-tilaan.";
+"AzaharEncryptedRomUnsupported" = "Azahar ei tue salattuja ROM-tiedostoja. Vain Citra-ydin voi suorittaa ne.";
+"AesKeysTxtDesc" = "Tarvitaan salattujen 3DS-ROM-tiedostojen pelaamiseen Citra-ytimellä.";
+"game3DSEncryptedTips" = "Tuo oikea aes_keys.txt salattujen ROM-tiedostojen lukemista varten. Vain Citra-ydin voi suorittaa tällaiset ROM-tiedostot.";
+"FetchGamesFromMeloCafe" = "Tuo pelejä MeloCafestä";
+"ListenWithBitBop" = "Kuuntele BitBopilla";
+"BitBopSendFailed" = "Tätä ei saatu lähetettyä BitBopille. Odota hetki ja yritä uudelleen.";
+"BitBopTracksUnavailable" = "BitBopilla ei ole kappaleita tälle ROM-tiedostolle.";
+"BitBopListenTitle" = "Jätä soundtrack talteen";
+"BitBopAlbumReady" = "「%@」 on jo BitBopissa";
+"BitBopAlbumTrackPreview" = "Aloita kappaleella %@.";
+"BitBopAlbumQuiet" = "「%@」 on jo BitBopissa, mutta soundtrackia ei voi nyt toistaa.";
+"BitBopTrackCount" = "%d kappaletta";
+"BitBopParseRom" = "Joidenkin melodioiden ei tarvitse loppua kentän mukana. Lähetä ne BitBopille, niin niistä tulee albumi, jota voi kuunnella milloin tahansa.";
+"BitBopScanRom" = "Tässä kasetissa voi yhä olla musiikkia, jota ei ole kuunneltu erikseen. BitBop löytää sen ja tekee siitä albumin.";
+"MoreFromManic" = "Lisää Manicilta";
+"BitBopPromoTitle" = "BitBop: sinun pelisi, sinun musiikkisi";
+"BitBopPromoDetail" = "Tuo suosikkiklassikkosi ja kuuntele musiikkia, joka herättää ne eloon.";
+"BitBopTryNow" = "Kokeile nyt";

@@ -314,9 +314,12 @@ class TriggerProManageView: BaseView {
             }
             
             let allGameTypes = System.allGameTypes.filter({ !$0.externalType })
+            let cells = allGameTypes.map { gameType in
+                gameType.listCell(appending: .chevron(.init()))
+            }
             ChevronSheetView.show(icon: .symbolImage(R.image.category_iconSymbols()),
                                   title: R.string.localizable.platformSelectionTitle(),
-                                  stringOptions: allGameTypes.map({ $0.localizedShortName }),
+                                  cellOptions: cells,
                                   completion: { [weak self] index in
                 guard let self else { return }
                 guard let index else { return }

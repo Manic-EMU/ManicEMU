@@ -136,6 +136,8 @@ class PlayViewController: GameViewController {
     private var isFirstTimeSetGBPalette = true;
     
     private var aiplayScaledDimensions: CGSize = .zero
+    /// iOS 27 external-display registration. Held as Any because the type is iOS 27 only.
+    private var airPlaySceneRegistration: Any?
     
     private var currentSkinID: String? = nil
     
@@ -777,6 +779,9 @@ class PlayViewController: GameViewController {
         super.viewDidLoad()
         
         PlayViewController.currentPlayViewController = self
+        if #available(iOS 27.0, *) {
+            registerAirPlayScene()
+        }
         ExternalInputDispatch.sink = .gameplay
         FocusSystem.shared.isEnabled = false
         
@@ -875,6 +880,9 @@ class PlayViewController: GameViewController {
         PlayViewController.currentPlayViewController = nil
         PlayViewController.refreshExternalInputSink()
         if isBeingDismissed || isMovingFromParent {
+            if #available(iOS 27.0, *) {
+                unregisterAirPlayScene()
+            }
             if #available(iOS 27.1, *) {
                 DuoTabletopKit.resumeTabletopAfterPlayIfNeeded()
             }
@@ -2431,9 +2439,6 @@ extension PlayViewController {
         skinSwitchBindDatas["reverseScreens"] = manicGame.swapScreen
         skinSwitchBindDatas["volume"] = manicGame.volume
         skinSwitchBindDatas["toggleControlls"] = manicGame.forceFullSkin
-        
-        //配置屏幕的拉伸模式
-        updateScreenScaling()
     }
     
     /// Reload the controller skin for the current orientation and settings.
@@ -2659,6 +2664,26 @@ extension PlayViewController {
         }
         
         triggerProView?.hapticType = manicGame.haptic
+    }
+    
+    /// iOS 27 connects the noninteractive external scene only after this registration.
+    /// Older systems still create it automatically and go through AppDelegate.
+    @available(iOS 27.0, *)
+    private func registerAirPlayScene() {
+        guard airPlaySceneRegistration == nil else { return }
+        let configuration = UISceneConfiguration(name: "External Configuration")
+        configuration.delegateClass = ExternalSceneDelegate.self
+        let accessory = UISceneAccessory.externalNonInteractive(sceneConfiguration: configuration)
+        let registration = registerSceneAccessory(accessory)
+        registration.isEnabled = true
+        airPlaySceneRegistration = registration
+    }
+    
+    @available(iOS 27.0, *)
+    private func unregisterAirPlayScene() {
+        guard let registration = airPlaySceneRegistration as? UISceneAccessoryRegistration else { return }
+        unregisterSceneAccessory(registration)
+        airPlaySceneRegistration = nil
     }
     
     /// Move the game Metal view onto the AirPlay window, or back onto the phone.
@@ -2923,6 +2948,7 @@ extension PlayViewController {
                         self.gameMetalView?.isHidden = false
                         self.updateFilter()
                         self.updateAirPlay()
+                        self.updateScreenScaling()
                         if self.manicGame.gameType == .ps1 && manicGame.defaultCore == 0 {
                             self.updateAnalogMode(toastAllow: false, toggle: false)
                         } else if manicGame.gameType == .ds {

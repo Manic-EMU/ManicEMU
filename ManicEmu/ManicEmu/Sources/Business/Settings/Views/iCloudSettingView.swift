@@ -305,23 +305,14 @@ class ICloudSettingView: BaseView {
         guard gameTypes.count > 0 else { return }
         
         let cells: [[ASListPage.Cell]] = gameTypes.map { gameType in
-            if R.Style.GamesGroupTitleStyle == .brand {
-                let icon: ASIcon
-                let iconSize: ASListPage.Cell.Style.IconSize
-                if let image = gameType.brandImage {
-                    icon = .image(image)
-                    iconSize = .fixHeight(gameType == .lynx ? 16 : 20)
-                } else {
-                    icon = .symbolImage(R.image.category_iconSymbols())
-                    iconSize = .fixSize(CGSize(R.Size.ButtonExtraExtraSmall))
-                }
-                return [.iconTitleDetailSwitchCell(icon: icon,
-                                                   iconSize: iconSize,
+            switch gameType.display {
+            case .title(let title):
+                return [.iconTitleDetailSwitchCell(title: title,
                                                    state: FilesSyncPolicy.isPlatformROMSyncEnabled(gameType) ? .on : .off,
                                                    enablePressEffect: false)]
-            } else {
-                let title = R.Style.GamesGroupTitleStyle == .fullName ? gameType.localizedName : gameType.localizedShortName
-                return [.iconTitleDetailSwitchCell(title: title,
+            case .icon(let icon, let iconSize):
+                return [.iconTitleDetailSwitchCell(icon: icon,
+                                                   iconSize: iconSize,
                                                    state: FilesSyncPolicy.isPlatformROMSyncEnabled(gameType) ? .on : .off,
                                                    enablePressEffect: false)]
             }

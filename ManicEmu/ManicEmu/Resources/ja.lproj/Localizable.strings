@@ -1160,3 +1160,23 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "ICloudROMSizeLimitUnlimited" = "制限なし";
 "ICloudROMSizeLimitDesc" = "このサイズを超える ROM はこのデバイスにのみ保持され、大きなディスクイメージ 1 本で iCloud Drive がいっぱいになるのを防ぎます。セーブデータ、セーブステート、スキン、設定には影響しません。";
 "ICloudROMTransferLimitDesc" = "この 2 つの制限は ROM ファイルにのみ適用されます。セーブデータ、セーブステート、スキン、設定は、ネットワークの種類やサイズに関係なく同期を続けます。ゲームを開くと、制限で同期が止まっていても ROM は必ずダウンロードされます。";
+
+"TabletopModeDetected" = "デバイスを折りたたみ、縦画面に回転すると Tabletop モードに入れます。";
+"AzaharEncryptedRomUnsupported" = "Azahar は暗号化された ROM に対応していません。実行できるのは Citra コアだけです。";
+"AesKeysTxtDesc" = "Citra コアで暗号化された 3DS ROM を遊ぶために必要なファイルです。";
+"game3DSEncryptedTips" = "暗号化された ROM を読み込むには、正しい aes_keys.txt をインポートしてください。実行できるのは Citra コアだけです。";
+"FetchGamesFromMeloCafe" = "MeloCafe からゲームをインポート";
+"ListenWithBitBop" = "BitBop で聴く";
+"BitBopSendFailed" = "今回は BitBop に渡せませんでした。しばらくしてから、もう一度お試しください。";
+"BitBopTracksUnavailable" = "この ROM の曲は BitBop にありません。";
+"BitBopListenTitle" = "サウンドトラックを残す";
+"BitBopAlbumReady" = "「%@」はすでに BitBop にあります";
+"BitBopAlbumTrackPreview" = "まずは %@ から聴けます。";
+"BitBopAlbumQuiet" = "「%@」はすでに BitBop にありますが、いまはサウンドトラックを再生できません。";
+"BitBopTrackCount" = "%d 曲";
+"BitBopParseRom" = "ゲームの旋律は、ステージと一緒に終わらなくていい。BitBop に渡せば、いつでも聴けるアルバムになります。";
+"BitBopScanRom" = "このカセットには、まだ単体で聴いたことのない音楽が残っているかもしれません。BitBop が見つけ出して、アルバムにします。";
+"MoreFromManic" = "Manic のその他";
+"BitBopPromoTitle" = "BitBop：あなたのゲーム、あなたの音楽";
+"BitBopPromoDetail" = "好きな名作をインポートして、ゲームに命を吹き込む音楽を聴きましょう。";
+"BitBopTryNow" = "今すぐ体験";

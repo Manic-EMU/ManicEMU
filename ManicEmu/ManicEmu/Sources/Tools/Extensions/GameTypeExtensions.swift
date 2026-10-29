@@ -928,6 +928,42 @@ extension GameType {
         }
         return false
     }
+    
+    enum Display {
+        case title(String)
+        case icon(ASIcon, ASListPage.Cell.Style.IconSize)
+    }
+    
+    var display: Display {
+        switch R.Style.GamesGroupTitleStyle {
+        case .abbr:
+            return .title(localizedShortName)
+        case .fullName:
+            return .title(localizedName)
+        case .brand:
+            if let brandImage {
+                return .icon(.image(brandImage), .fixHeight(self == .lynx ? 16 : 20))
+            }
+            return .icon(.symbolImage(R.image.category_iconSymbols()), .fixSize(CGSize(R.Size.ButtonExtraExtraSmall)))
+        }
+    }
+    
+    /// Title or brand icon for a game-type row, based on `R.Style.GamesGroupTitleStyle`.
+    var listContentStyles: [ASListPage.Cell.Style] {
+        switch display {
+        case .title(let title):
+            return [.title(.largeText(title))]
+        case .icon(let icon, let iconSize):
+            return [.icon(icon, iconSize: iconSize)]
+        }
+    }
+    
+    /// Game-type row plus a trailing control. Radio and chevron stay the caller's choice.
+    func listCell(appending trailing: ASListPage.Cell.Style) -> ASListPage.Cell {
+        var styles = listContentStyles
+        styles.append(trailing)
+        return .normal(styles)
+    }
 }
 
 ///让GameType支持realm的存储

@@ -125,29 +125,8 @@ class AddUrlGameView: BaseView {
         return input
     }
     
-    private func gameTypeTitle(_ gameType: GameType) -> String {
-        R.Style.GamesGroupTitleStyle == .fullName ? gameType.localizedName : gameType.localizedShortName
-    }
-    
-    private func gameTypeBrandIcon(_ gameType: GameType) -> (ASIcon, ASListPage.Cell.Style.IconSize) {
-        if let image = gameType.brandImage {
-            return (.image(image), .fixHeight(gameType == .lynx ? 16 : 20))
-        }
-        return (.symbolImage(R.image.category_iconSymbols()), .fixSize(CGSize(R.Size.ButtonExtraExtraSmall)))
-    }
-    
-    private func gameTypeContentStyles(_ gameType: GameType) -> [ASListPage.Cell.Style] {
-        if R.Style.GamesGroupTitleStyle == .brand {
-            let (icon, iconSize) = gameTypeBrandIcon(gameType)
-            return [.icon(icon, iconSize: iconSize)]
-        }
-        return [.title(.largeText(gameTypeTitle(gameType)))]
-    }
-    
     private func makePlatformCell() -> ASListPage.Cell {
-        var styles = gameTypeContentStyles(selectedGameType)
-        styles.append(.chevron(.init()))
-        return .normal(styles)
+        selectedGameType.listCell(appending: .chevron(.init()))
     }
     
     private func makeListPage() -> ASListPage {
@@ -247,9 +226,7 @@ class AddUrlGameView: BaseView {
     
     private func showPlatformPicker() {
         let cells = selectableGameTypes.map { gameType -> ASListPage.Cell in
-            var styles = gameTypeContentStyles(gameType)
-            styles.append(.radio(.init(isSelected: gameType == selectedGameType)))
-            return .normal(styles)
+            gameType.listCell(appending: .radio(.init(isSelected: gameType == selectedGameType)))
         }
         ASSheetView.show(.init(style: .simpleList(icon: .symbolImage(R.image.category_iconSymbols()),
                                                   title: R.string.localizable.changeGameType(),

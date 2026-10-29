@@ -73,7 +73,7 @@ class ControllersSettingView: BaseView {
         } else if self.games.count > 0 {
             self.gameType = self.games.first!.gameType
         } else {
-            self.gameType = System.allGameTypes.first!
+            self.gameType = System.allGameTypes.filter({ !$0.externalType }).first!
         }
         super.init(frame: .zero)
         

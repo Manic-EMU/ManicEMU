@@ -1138,3 +1138,23 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "ICloudROMSizeLimitUnlimited" = "Tiada had";
 "ICloudROMSizeLimitDesc" = "ROM lebih besar daripada ini kekal pada peranti ini sahaja, supaya satu imej cakera besar tidak memenuhi iCloud Drive. Simpanan, simpanan segera, kulit dan tetapan tidak terjejas.";
 "ICloudROMTransferLimitDesc" = "Kedua-dua had ini hanya untuk fail ROM. Simpanan, simpanan segera, kulit dan tetapan terus disegerakkan pada mana-mana rangkaian dan saiz. Membuka permainan sentiasa memuat turun ROM, walaupun had sepatutnya menahan sync.";
+
+"TabletopModeDetected" = "Lipat peranti dan pusing ke mod potret untuk masuk ke Mod Tabletop.";
+"AzaharEncryptedRomUnsupported" = "Azahar tidak menyokong ROM yang disulitkan. Hanya teras Citra yang boleh menjalankannya.";
+"AesKeysTxtDesc" = "Diperlukan untuk bermain ROM 3DS yang disulitkan dengan teras Citra.";
+"game3DSEncryptedTips" = "Import aes_keys.txt yang betul untuk membaca ROM yang disulitkan. ROM jenis ini hanya boleh dijalankan oleh teras Citra.";
+"FetchGamesFromMeloCafe" = "Import Permainan dari MeloCafe";
+"ListenWithBitBop" = "Dengar dengan BitBop";
+"BitBopSendFailed" = "Kali ini tidak dapat dihantar kepada BitBop. Tunggu sebentar, kemudian cuba lagi.";
+"BitBopTracksUnavailable" = "BitBop tidak mempunyai lagu untuk ROM ini.";
+"BitBopListenTitle" = "Kekalkan runut bunyi";
+"BitBopAlbumReady" = "「%@」 sudah ada dalam BitBop";
+"BitBopAlbumTrackPreview" = "Boleh mulakan dengan %@.";
+"BitBopAlbumQuiet" = "「%@」 sudah ada dalam BitBop, tetapi runut bunyi tidak dapat dimainkan sekarang.";
+"BitBopTrackCount" = "%d lagu";
+"BitBopParseRom" = "Ada melodi yang tidak semestinya tamat bersama peringkat. Hantar kepada BitBop, dan ia menjadi album yang boleh didengar bila-bila masa.";
+"BitBopScanRom" = "Kartrij ini mungkin masih menyimpan muzik yang tidak pernah didengar secara berasingan. BitBop akan mencarinya dan menjadikannya album.";
+"MoreFromManic" = "Lagi daripada Manic";
+"BitBopPromoTitle" = "BitBop: Permainan anda, muzik anda";
+"BitBopPromoDetail" = "Import permainan klasik kegemaran anda dan dengar muzik yang menghidupkannya.";
+"BitBopTryNow" = "Cuba Sekarang";

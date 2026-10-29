@@ -1170,3 +1170,23 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "ICloudROMSizeLimitUnlimited" = "不限制";
 "ICloudROMSizeLimitDesc" = "超過此大小的 ROM 只會保留在本機，避免單一大型光碟映像檔佔滿 iCloud 雲碟。遊戲存檔、即時存檔、皮膚和設定不受影響。";
 "ICloudROMTransferLimitDesc" = "這兩項限制僅作用於 ROM 檔案。遊戲存檔、即時存檔、皮膚和設定會在任意網路、任意大小下繼續同步。開啟遊戲時始終會下載對應 ROM，即使限制本會阻止同步。";
+
+"TabletopModeDetected" = "摺疊裝置並將螢幕轉為直向，即可進入 Tabletop 模式。";
+"AzaharEncryptedRomUnsupported" = "Azahar 不支援加密 ROM，僅 Citra 核心可以執行。";
+"AesKeysTxtDesc" = "Citra 核心執行加密 3DS ROM 時需要此檔案。";
+"game3DSEncryptedTips" = "請匯入正確的 aes_keys.txt 以讀取加密 ROM。僅 Citra 核心可以執行此類 ROM。";
+"FetchGamesFromMeloCafe" = "從 MeloCafe 匯入遊戲";
+"ListenWithBitBop" = "用 BitBop 聆聽";
+"BitBopSendFailed" = "這次沒能交給 BitBop。請稍等片刻，再試一次。";
+"BitBopTracksUnavailable" = "BitBop 沒有這款 ROM 的曲目。";
+"BitBopListenTitle" = "把配樂單獨留下";
+"BitBopAlbumReady" = "「%@」已經在 BitBop 裡";
+"BitBopAlbumTrackPreview" = "可以先從 %@ 聽起。";
+"BitBopAlbumQuiet" = "「%@」已經在 BitBop 裡，只是現在聽不到配樂。";
+"BitBopTrackCount" = "%d 首曲目";
+"BitBopParseRom" = "遊戲裡有些旋律，本來就不必跟著關卡一起結束。交給 BitBop，它們會成為一張隨時能聽的專輯。";
+"BitBopScanRom" = "這張卡帶裡，也許還留著沒被單獨聽過的配樂。BitBop 會把它找出來，做成一張專輯。";
+"MoreFromManic" = "更多來自 Manic";
+"BitBopPromoTitle" = "BitBop：你的遊戲，你的音樂";
+"BitBopPromoDetail" = "匯入你喜愛的經典遊戲，聆聽賦予它們生命的配樂。";
+"BitBopTryNow" = "立即體驗";

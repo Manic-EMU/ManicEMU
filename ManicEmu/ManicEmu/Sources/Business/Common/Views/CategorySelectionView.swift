@@ -33,10 +33,12 @@ class CategorySelectionView: BaseView {
             
        }
         
+        let cells = supportedCategories.enumerated().map { index, gameType in
+            gameType.listCell(appending: .radio(.init(isSelected: selectedIndex == index)))
+        }
         OptionsSheetView.show(icon: GameOption.changeCategory.icon,
                                title: R.string.localizable.changeCategory(),
-                               options: supportedCategories.map({ $0.localizedName }),
-                               selectedIndex: selectedIndex,
+                               cellOptions: cells,
                                completion: { index in
             if let index  {
                 for game in games {
