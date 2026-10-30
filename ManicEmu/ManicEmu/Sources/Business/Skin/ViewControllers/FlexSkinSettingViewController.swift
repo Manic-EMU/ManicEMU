@@ -152,7 +152,7 @@ class FlexSkinSettingViewController: BaseViewController {
          gameId: String? = nil,
          gameType: GameType) {
         self.skin = skin
-        self.traits = traits
+        self.traits = skin.controllerSkin?.resolvedTraits(for: traits) ?? traits
         self.images = images
         self.gameId = gameId
         self.gameType = gameType
@@ -250,11 +250,7 @@ class FlexSkinSettingViewController: BaseViewController {
                     var originalInfoData = Data()
                     try _ = archive.extract(originalInfoEntry) { originalInfoData.append($0) }
                     
-                    var resetInfoPath = [String]()
-                    resetInfoPath.append("representations")
-                    resetInfoPath.append(traits.device == .iphone ? "iphone" : "ipad")
-                    resetInfoPath.append(traits.displayType == .standard ? "standard" : "edgeToEdge")
-                    resetInfoPath.append(isLandscapeTraits ? "landscape" : "portrait")
+                    let resetInfoPath = representationKeyPath(for: traits, in: originalInfoData)
                     Log.debug("重置路径:\(resetInfoPath)")
                     
                     if let originalDataForCurrentTraits = try getValueFromJSON(originalInfoData, keyPath: resetInfoPath), let currentInfoEntry = archive["info.json"] {
@@ -382,11 +378,7 @@ class FlexSkinSettingViewController: BaseViewController {
                     }
                 }
                 
-                var infoPath = [String]()
-                infoPath.append("representations")
-                infoPath.append(traits.device == .iphone ? "iphone" : "ipad")
-                infoPath.append(traits.displayType == .standard ? "standard" : "edgeToEdge")
-                infoPath.append(isLandscapeTraits ? "landscape" : "portrait")
+                let infoPath = representationKeyPath(for: traits, in: infoData)
                 Log.debug("生成info.json的访问路径:\(infoPath)")
                 
                 //需要修改screens和item里面的touchScreen
@@ -541,6 +533,20 @@ class FlexSkinSettingViewController: BaseViewController {
         // 3. 转回Data
         let updatedData = try JSONSerialization.data(withJSONObject: jsonObject, options: [])
         return updatedData
+    }
+    
+    /// info.json key path of the representation being edited, e.g. representations/iphone/edgeToEdge/portrait.
+    /// Duo skins may name the inner/outer representations "innie"/"outie".
+    private func representationKeyPath(for traits: ControllerSkin.Traits, in infoData: Data) -> [String] {
+        let device = traits.device == .iphone ? "iphone" : "ipad"
+        var displayType = traits.displayType.rawValue
+        let aliases: [ControllerSkin.DisplayType: String] = [.inner: "innie", .outer: "outie"]
+        if let alias = aliases[traits.displayType],
+           (try? getValueFromJSON(infoData, keyPath: ["representations", device, displayType])) == nil,
+           (try? getValueFromJSON(infoData, keyPath: ["representations", device, alias])) != nil {
+            displayType = alias
+        }
+        return ["representations", device, displayType, isLandscapeTraits ? "landscape" : "portrait"]
     }
     
     private func getValueFromJSON(_ jsonData: Data, keyPath: [String]) throws -> Any? {
@@ -999,11 +1005,11 @@ extension FlexSkinSettingViewController {
             let maxWidth = screensContainerView.frame.width
             let maxHeight = screensContainerView.frame.height
             
-            let edgeMinX = UIScreen.main.bounds.minX - screensContainerView.frame.minX
-            let edgeMaxX = UIScreen.main.bounds.width - screensContainerView.frame.maxX
+            let edgeMinX = UIScreen.current.bounds.minX - screensContainerView.frame.minX
+            let edgeMaxX = UIScreen.current.bounds.width - screensContainerView.frame.maxX
             
-            let edgeMinY = UIScreen.main.bounds.minY - screensContainerView.frame.minY
-            let edgeMaxY = UIScreen.main.bounds.height - screensContainerView.frame.maxY
+            let edgeMinY = UIScreen.current.bounds.minY - screensContainerView.frame.minY
+            let edgeMaxY = UIScreen.current.bounds.height - screensContainerView.frame.maxY
             
             // 保证位置在屏幕范围内
             var newFrame = view.frame
@@ -1028,8 +1034,8 @@ extension FlexSkinSettingViewController {
             }
         }
         
-        let maxWidth = UIScreen.main.bounds.width
-        let maxHeight = UIScreen.main.bounds.height
+        let maxWidth = UIScreen.current.bounds.width
+        let maxHeight = UIScreen.current.bounds.height
         
         // 如果视图超出屏幕边界，需要缩小
         if currentFrame.width > maxWidth || currentFrame.height > maxHeight {
@@ -1068,8 +1074,8 @@ extension FlexSkinSettingViewController {
         
         var isFixScreenOutside = false
         
-        let edgeMinX = UIScreen.main.bounds.minX - screensContainerView.frame.minX
-        let edgeMaxX = UIScreen.main.bounds.width - screensContainerView.frame.maxX
+        let edgeMinX = UIScreen.current.bounds.minX - screensContainerView.frame.minX
+        let edgeMaxX = UIScreen.current.bounds.width - screensContainerView.frame.maxX
         
         // Step 1: 超出屏幕边缘 - 调整回可见区域（最高优先）
         if frame.minX < edgeMinX {
@@ -1080,8 +1086,8 @@ extension FlexSkinSettingViewController {
             isFixScreenOutside = true
         }
         
-        let edgeMinY = UIScreen.main.bounds.minY - screensContainerView.frame.minY
-        let edgeMaxY = UIScreen.main.bounds.height - screensContainerView.frame.maxY
+        let edgeMinY = UIScreen.current.bounds.minY - screensContainerView.frame.minY
+        let edgeMaxY = UIScreen.current.bounds.height - screensContainerView.frame.maxY
         
         if frame.minY < edgeMinY {
             finalCenter.y += (-frame.minY + edgeMinY)
@@ -1317,10 +1323,10 @@ extension FlexSkinSettingViewController {
     }
     
     private func clampItemCenter(_ center: CGPoint, size: CGSize) -> CGPoint {
-        let edgeMinX = UIScreen.main.bounds.minX - buttonsContainerView.frame.minX
-        let edgeMaxX = UIScreen.main.bounds.width - buttonsContainerView.frame.maxX
-        let edgeMinY = UIScreen.main.bounds.minY - buttonsContainerView.frame.minY
-        let edgeMaxY = UIScreen.main.bounds.height - buttonsContainerView.frame.maxY
+        let edgeMinX = UIScreen.current.bounds.minX - buttonsContainerView.frame.minX
+        let edgeMaxX = UIScreen.current.bounds.width - buttonsContainerView.frame.maxX
+        let edgeMinY = UIScreen.current.bounds.minY - buttonsContainerView.frame.minY
+        let edgeMaxY = UIScreen.current.bounds.height - buttonsContainerView.frame.maxY
         
         let maxWidth = buttonsContainerView.frame.width
         let maxHeight = buttonsContainerView.frame.height
@@ -1441,10 +1447,10 @@ extension FlexSkinSettingViewController {
                 newWidth = newHeight * state.aspectRatio
             }
             
-            let edgeMinX = UIScreen.main.bounds.minX - buttonsContainerView.frame.minX
-            let edgeMaxX = UIScreen.main.bounds.width - buttonsContainerView.frame.maxX
-            //            let edgeMinY = UIScreen.main.bounds.minY - buttonsContainerView.frame.minY
-            let edgeMaxY = UIScreen.main.bounds.height - buttonsContainerView.frame.maxY
+            let edgeMinX = UIScreen.current.bounds.minX - buttonsContainerView.frame.minX
+            let edgeMaxX = UIScreen.current.bounds.width - buttonsContainerView.frame.maxX
+            //            let edgeMinY = UIScreen.current.bounds.minY - buttonsContainerView.frame.minY
+            let edgeMaxY = UIScreen.current.bounds.height - buttonsContainerView.frame.maxY
             
             let maxWidth = buttonsContainerView.frame.width + edgeMaxX - state.anchor.x
             let maxHeight = buttonsContainerView.frame.height + edgeMaxY - state.anchor.y
@@ -1577,10 +1583,10 @@ extension FlexSkinSettingViewController {
             let maxWidth = buttonsContainerView.frame.width
             let maxHeight = buttonsContainerView.frame.height
             
-            let edgeMinX = UIScreen.main.bounds.minX - buttonsContainerView.frame.minX
-            let edgeMaxX = UIScreen.main.bounds.width - buttonsContainerView.frame.maxX
-            let edgeMinY = UIScreen.main.bounds.minY - buttonsContainerView.frame.minY
-            let edgeMaxY = UIScreen.main.bounds.height - buttonsContainerView.frame.maxY
+            let edgeMinX = UIScreen.current.bounds.minX - buttonsContainerView.frame.minX
+            let edgeMaxX = UIScreen.current.bounds.width - buttonsContainerView.frame.maxX
+            let edgeMinY = UIScreen.current.bounds.minY - buttonsContainerView.frame.minY
+            let edgeMaxY = UIScreen.current.bounds.height - buttonsContainerView.frame.maxY
             
             var newFrame = view.frame
             var newOrigin = newFrame.origin
@@ -1612,8 +1618,8 @@ extension FlexSkinSettingViewController {
             return
         }
         
-        let maxWidth = UIScreen.main.bounds.width
-        let maxHeight = UIScreen.main.bounds.height
+        let maxWidth = UIScreen.current.bounds.width
+        let maxHeight = UIScreen.current.bounds.height
         
         if currentFrame.width > maxWidth || currentFrame.height > maxHeight {
             let widthScale = maxWidth / currentFrame.width
@@ -1640,10 +1646,10 @@ extension FlexSkinSettingViewController {
         var finalCenter = view.center
         var isFixScreenOutside = false
         
-        let edgeMinX = UIScreen.main.bounds.minX - buttonsContainerView.frame.minX
-        let edgeMaxX = UIScreen.main.bounds.width - buttonsContainerView.frame.maxX
-        let edgeMinY = UIScreen.main.bounds.minY - buttonsContainerView.frame.minY
-        let edgeMaxY = UIScreen.main.bounds.height - buttonsContainerView.frame.maxY
+        let edgeMinX = UIScreen.current.bounds.minX - buttonsContainerView.frame.minX
+        let edgeMaxX = UIScreen.current.bounds.width - buttonsContainerView.frame.maxX
+        let edgeMinY = UIScreen.current.bounds.minY - buttonsContainerView.frame.minY
+        let edgeMaxY = UIScreen.current.bounds.height - buttonsContainerView.frame.maxY
         
         if frame.minX < edgeMinX {
             finalCenter.x += (-frame.minX + edgeMinX)

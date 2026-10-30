@@ -177,6 +177,7 @@ class SkinCollectionViewCell: UICollectionViewCell {
                  isUsing: Bool,
                  isEditable: Bool,
                  renderGeneration: Int = 0) {
+        let traits = controllerSkin?.resolvedTraits(for: traits) ?? traits
         let needsSkinUpdate = appliedSkinIdentifier != controllerSkin?.identifier
             || appliedTraits != traits
             || appliedRenderGeneration != renderGeneration

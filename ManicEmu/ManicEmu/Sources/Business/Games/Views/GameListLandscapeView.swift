@@ -1361,13 +1361,20 @@ class GameListLandscapeView: BaseView {
             }
             
             let totleSpacing = (R.Size.ContentSpaceMedium - R.Size.GamesListSelectionEdge) * 2 + itemSpacing * (column - 1)
-            let itemEstimatedWidth = max((env.container.contentSize.width - totleSpacing) / column, 1)
+            //items are laid out in the safe-area width (e.g. the iPhone Duo outer screen insets the camera side), so size covers from it too
+            let itemEstimatedWidth = max((env.container.effectiveContentSize.width - totleSpacing) / column, 1)
             let coverWidth = max(itemEstimatedWidth - R.Size.GamesListSelectionEdge * 2, 1)
             let coverHeight = coverWidth / R.Size.GameCoverRatio(gameType: gameType)
             let titleHeight = hideTitle ? 0 : (R.Size.ContentSpaceSmall + R.Font.Footnote().lineHeight)
             let itemEstimatedHeight = R.Size.GamesListSelectionEdge + coverHeight + titleHeight + R.Size.GamesListSelectionEdge
-            self.listCoverSizes[gameType] = CGSize(width: coverWidth, height: coverHeight)
+            let coverSize = CGSize(width: coverWidth, height: coverHeight)
+            if let cached = self.listCoverSizes[gameType], cached != coverSize {
+                //the layout can run again once the safe area settles (e.g. unfolding the iPhone Duo); covers already on screen keep the old size otherwise
+                self.listView.reconfigureVisibleItemsLater()
+            }
+            self.listCoverSizes[gameType] = coverSize
             
+
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(itemEstimatedWidth),
                                                                                  heightDimension: .absolute(itemEstimatedHeight)))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(itemEstimatedWidth),

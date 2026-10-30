@@ -2827,7 +2827,7 @@ extension PlayViewController {
                     }
                     
                     if manicGame.gameType == ._3ds {
-                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard {
+                        if let traits = controllerView.controllerSkinTraits, traits.isSmallPhoneScreen {
                             //小屏幕
                             make.height.equalTo(80)
                         } else {
@@ -2835,7 +2835,7 @@ extension PlayViewController {
                             make.height.equalTo(96)
                         }
                     } else {
-                        if let displayType = controllerView.controllerSkinTraits?.displayType, displayType == .standard, !UIDevice.isLandscape {
+                        if let traits = controllerView.controllerSkinTraits, traits.isSmallPhoneScreen, !UIDevice.isLandscape {
                             make.height.equalTo(87)
                         } else {
                             make.height.equalTo(113)

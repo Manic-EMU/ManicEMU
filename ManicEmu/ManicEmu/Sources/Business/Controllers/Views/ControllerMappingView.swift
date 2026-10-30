@@ -432,7 +432,8 @@ class ControllerMappingView: BaseView {
     
     private func setupMappingBubble() {
         inputPopupView.subviews.forEach { $0.removeFromSuperview() }
-        let traits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.WindowSize)))
+        let defaultTraits = ControllerSkin.Traits.defaults(for: UIWindow.applicationWindow ?? UIWindow(frame: .init(origin: .zero, size: R.Size.WindowSize)))
+        let traits = controllerView.controllerSkin?.resolvedTraits(for: defaultTraits) ?? defaultTraits
         if let items = controllerView.controllerSkin?.items(for: traits) {
             for item in items {
                 let scaledFrame = item.frame.applying(.init(scaleX: inputPopupView.width, y: inputPopupView.height))

@@ -168,8 +168,8 @@ struct Effect: View {
                     lineWidth: width
                 )
                 .frame(
-                    width: UIScreen.main.bounds.width,
-                    height: UIScreen.main.bounds.height
+                    width: UIScreen.current.bounds.width,
+                    height: UIScreen.current.bounds.height
                 )
                 .blur(radius: blur)
         }
@@ -191,8 +191,8 @@ struct EffectNoBlur: View {
                     lineWidth: width
                 )
                 .frame(
-                    width: UIScreen.main.bounds.width,
-                    height: UIScreen.main.bounds.height
+                    width: UIScreen.current.bounds.width,
+                    height: UIScreen.current.bounds.height
                 )
         }
     }

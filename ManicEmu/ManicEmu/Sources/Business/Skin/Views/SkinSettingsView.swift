@@ -584,10 +584,10 @@ class SkinSettingsView: BaseView {
                     controllerSkin.isPlayCase = true
                     skin.controllerSkin = controllerSkin
                 }
-                if controllerSkin.supports(portraitTraits) {
+                if controllerSkin.resolvedTraits(for: portraitTraits) != nil {
                     portraitSkins.append(skin)
                 }
-                if controllerSkin.supports(landscapeTraits) {
+                if controllerSkin.resolvedTraits(for: landscapeTraits) != nil {
                     landscapeSkins.append(skin)
                 }
             }
@@ -677,8 +677,8 @@ class SkinSettingsView: BaseView {
         var unsupportSkinNames: String = ""
         for skin in skins {
             if let controllerSkin = ControllerSkin(fileURL: skin.fileURL) {
-                if !controllerSkin.supports(landscapeTraits) &&
-                    !controllerSkin.supports(portraitTraits) {
+                if controllerSkin.resolvedTraits(for: landscapeTraits) == nil &&
+                    controllerSkin.resolvedTraits(for: portraitTraits) == nil {
                     //获取不支持当前设备的皮肤
                     unsupportSkins.append(skin)
                     unsupportSkinNames.append(controllerSkin.name + "\n")

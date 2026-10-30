@@ -594,7 +594,8 @@ class GameListView: BaseView {
             let widthDimension: NSCollectionLayoutDimension = .fractionalWidth(1/column)
             //item布局
             let totleSpacing = (R.Size.ContentSpaceMedium-R.Size.GamesListSelectionEdge)*2 + itemSpacing*(column-1)//横向间距总和
-            let itemEstimatedWidth = (env.container.contentSize.width - totleSpacing)/column //一个item的宽
+            //items are laid out in the safe-area width (e.g. the iPhone Duo outer screen insets the camera side), so size covers from it too
+            let itemEstimatedWidth = (env.container.effectiveContentSize.width - totleSpacing)/column //一个item的宽
             let coverWidth = itemEstimatedWidth-R.Size.GamesListSelectionEdge*2
             let coverHeight = coverWidth/R.Size.GameCoverRatio(gameType: gameType) //封面的高度
             //一个item的高度 = 间距 + 封面高度 + 间距 + title高度 + 间距
@@ -604,6 +605,8 @@ class GameListView: BaseView {
                 //尺寸存在
                 if size != coverSize {
                     self.coverSizes[gameType] = coverSize
+                    //the layout can run again once the safe area settles (e.g. unfolding the iPhone Duo); covers already on screen keep the old size otherwise
+                    self.collectionView.reconfigureVisibleItemsLater()
                 }
             } else {
                 //尺寸不存在
@@ -1335,5 +1338,20 @@ extension GameListView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         //When long-press is triggered, disable the cell's tap response.
         return false
+    }
+}
+
+extension UICollectionView {
+    /// Re-runs cellForItemAt for the cells on screen once the current layout pass is over,
+    /// so they pick up a cover size the layout just changed.
+    func reconfigureVisibleItemsLater() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.window != nil else { return }
+            let visible = self.indexPathsForVisibleItems.filter {
+                $0.section < self.numberOfSections && $0.item < self.numberOfItems(inSection: $0.section)
+            }
+            guard !visible.isEmpty else { return }
+            UIView.performWithoutAnimation { self.reconfigureItems(at: visible) }
+        }
     }
 }

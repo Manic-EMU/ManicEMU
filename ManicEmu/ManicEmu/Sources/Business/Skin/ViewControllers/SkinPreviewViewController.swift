@@ -28,7 +28,7 @@ class SkinPreviewViewController: BaseViewController {
 
     init(skin: ControllerSkin, traits: ControllerSkin.Traits) {
         self.skin = skin
-        self.traits = traits
+        self.traits = skin.resolvedTraits(for: traits) ?? traits
         super.init(fullScreen: true)
         
         enableBackgroundMask = false

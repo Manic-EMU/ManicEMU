@@ -7,6 +7,7 @@
 //
 
 import CollectionViewPagingLayout
+@_spi(Internal) import DeltaCore // UIDevice.isDuo
 
 ///横屏轮播样式族（Scale / Stack / Snapshot）每种族下还有多种Layout预设
 enum LandscapeCarouselStyle: Int, CaseIterable {
@@ -23,8 +24,9 @@ enum LandscapeCarouselStyle: Int, CaseIterable {
     }
     
     /// Cover-flow carousel when true (default). Sectioned list rows when false.
+    /// The iPhone Duo's inner screen is iPad-sized in landscape, where a one-row carousel gets long with many games, so it defaults to the list.
     static var isCarouselEnabled: Bool {
-        get { Theme.defalut.getExtraBool(key: ExtraKey.landscapeCarouselEnabled.rawValue) ?? true }
+        get { Theme.defalut.getExtraBool(key: ExtraKey.landscapeCarouselEnabled.rawValue) ?? !UIDevice.current.isDuo }
         set { Theme.defalut.updateExtra(key: ExtraKey.landscapeCarouselEnabled.rawValue, value: newValue) }
     }
     

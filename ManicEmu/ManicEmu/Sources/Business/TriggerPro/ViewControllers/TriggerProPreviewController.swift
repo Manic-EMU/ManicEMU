@@ -15,11 +15,14 @@ class TriggerProPreviewController: BaseViewController {
     
     private var skin: ControllerSkin {
         didSet {
+            controlView.overrideControllerSkinTraits = skinTraits
             controlView.controllerSkin = skin
         }
     }
     private let defaultSkin: ControllerSkin
     private let traits: ControllerSkin.Traits
+    /// `traits` as the current skin draws them (iPhone Duo falls back to other representations).
+    private var skinTraits: ControllerSkin.Traits { skin.resolvedTraits(for: traits) ?? traits }
     private let trigger: Trigger ///不是真正的数据库对象
     private let isNewTrigger: Bool
     
@@ -27,7 +30,7 @@ class TriggerProPreviewController: BaseViewController {
         let realm = Database.realm
         let skins = realm.objects(Skin.self).where({ $0.gameType == self.skin.gameType })
         let controllerSkins = skins.compactMap({
-            if let cs = ControllerSkin(fileURL: $0.fileURL), cs.supports(self.traits) {
+            if let cs = ControllerSkin(fileURL: $0.fileURL), cs.resolvedTraits(for: self.traits) != nil {
                 return cs
             }
             return nil
@@ -37,7 +40,7 @@ class TriggerProPreviewController: BaseViewController {
     
     private lazy var controlView: ControllerView = {
         let view = ControllerView()
-        view.overrideControllerSkinTraits = traits
+        view.overrideControllerSkinTraits = skinTraits
         view.controllerSkin = skin
         view.alpha = hideControls ? 0 : 1
         return view
@@ -217,7 +220,7 @@ class TriggerProPreviewController: BaseViewController {
         if needToRotate {
             controlView.snp.makeConstraints { make in
                 make.center.equalToSuperview()
-                if let aspectRatio = skin.aspectRatio(for: traits) {
+                if let aspectRatio = skin.aspectRatio(for: skinTraits) {
                     let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: CGSize(width: R.Size.WindowHeight, height: R.Size.WindowWidth)))
                     make.size.equalTo(frame.size)
                 }
@@ -226,7 +229,7 @@ class TriggerProPreviewController: BaseViewController {
         } else {
             controlView.snp.makeConstraints { make in
                 make.center.equalToSuperview()
-                if let aspectRatio = skin.aspectRatio(for: traits) {
+                if let aspectRatio = skin.aspectRatio(for: skinTraits) {
                     let frame = AVMakeRect(aspectRatio: aspectRatio, insideRect: CGRect(origin: .zero, size: R.Size.WindowSize))
                     make.size.equalTo(frame.size)
                 }

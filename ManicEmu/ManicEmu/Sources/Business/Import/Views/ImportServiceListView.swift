@@ -130,7 +130,23 @@ class ImportServiceListView: BaseView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // The landscape top inset leaves room for the navigation bar. Keep it in step with
+        // rotation and fold changes on iPhone, otherwise a page first shown upright keeps its
+        // portrait inset sideways and the first row slides under the navigation buttons.
+        guard UIDevice.isPhone else { return }
+        let inset = getCollectionViewContentInset()
+        let oldInset = collectionView.contentInset
+        guard inset != oldInset else { return }
+        let wasAtTop = collectionView.contentOffset.y <= -oldInset.top + 1
+        collectionView.contentInset = inset
+        if wasAtTop {
+            collectionView.contentOffset.y = -inset.top
+        }
+    }
+
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, env in
             
