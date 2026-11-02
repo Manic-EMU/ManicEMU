@@ -1139,9 +1139,6 @@
 "ICloudROMTransferLimitDesc" = "ينطبق هذان الحدان على ملفات ROM فقط. يستمر حفظ اللعبة والحفظ الفوري والسكين والإعدادات بالمزامنة عبر أي شبكة وبأي حجم. فتح لعبة ينزّل ROM دائمًا، حتى إذا كان الحد سيمنع المزامنة.";
 
 "TabletopModeDetected" = "اطوِ الجهاز وأدر الشاشة إلى الوضع العمودي للدخول إلى وضع Tabletop.";
-"AzaharEncryptedRomUnsupported" = "لا يدعم Azahar ملفات ROM المشفّرة. يمكن تشغيلها فقط عبر نواة Citra.";
-"AesKeysTxtDesc" = "مطلوب لتشغيل ROM 3DS المشفّرة باستخدام نواة Citra.";
-"game3DSEncryptedTips" = "استورد ملف aes_keys.txt الصحيح لقراءة ROM المشفّرة. يمكن تشغيل هذا النوع من ROM فقط عبر نواة Citra.";
 "FetchGamesFromMeloCafe" = "استيراد الألعاب من MeloCafe";
 "ListenWithBitBop" = "الاستماع عبر BitBop";
 "BitBopSendFailed" = "تعذر إرسال هذا إلى BitBop. انتظر لحظة ثم حاول مرة أخرى.";
@@ -1157,3 +1154,6 @@
 "BitBopPromoTitle" = "BitBop: ألعابك، وموسيقاك";
 "BitBopPromoDetail" = "استورد ألعابك الكلاسيكية المفضلة واستمع إلى الموسيقى التي تمنحها الحياة.";
 "BitBopTryNow" = "جرّب الآن";
+
+"Game3DSEncryptedTips" = "استورد ملف aes_keys.txt الصحيح لقراءة ROM المشفّرة.";
+"AesKeysTxtDesc" = "مطلوب لتشغيل ROM 3DS المشفّرة.";

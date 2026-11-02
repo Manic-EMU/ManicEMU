@@ -198,7 +198,7 @@ enum SpecialCoreOption: String {
     case dolphin_wii_logi_microphone_enable
     case dolphin_bluetooth_passthrough
     case dolphin_language
-    /// 2 = mouse/pointer controls Wiimote IR (touch on the game image).
+    /// 0/1 = right stick IR, 2 = touch IR, 3 = touch plus relative right stick.
     case dolphin_ir_mode
     case dolphin_ir_yaw
     case dolphin_ir_pitch
@@ -377,7 +377,6 @@ enum SpecialCoreOption: String {
                                                .dolphin_cpu_core,
                                                .dolphin_skip_gc_bios,
                                                .dolphin_language,
-                                               .dolphin_ir_mode,
                                                .dolphin_ir_yaw,
                                                .dolphin_ir_pitch,
                                                .dolphin_motion_rotation]
@@ -519,6 +518,9 @@ enum SpecialCoreOption: String {
                     .dolphin_log_common: "disabled",
                     .dolphin_vi_skip: "disabled",
                     .dolphin_skip_gc_bios: "disabled",
+                    .dolphin_ir_mode: "3",
+                    .dolphin_ir_yaw: "40",
+                    .dolphin_ir_pitch: "30",
                 ]
             } else {
                 let enableManicInterpreter = game.getExtraBool(key: ExtraKey.dolphinManicInterpreter.rawValue) ?? true
@@ -581,11 +583,6 @@ enum SpecialCoreOption: String {
         // SoftGPU stays available; only its rasterizer JIT needs executable memory.
         if game.gameType == .psp, !LibretroCore.jitAvailable() || !game.jit {
             resolvedCoreConfigs[Self.ppsspp_software_rendering_jit.rawValue] = "disabled"
-        }
-        if game.gameType == .wii {
-            resolvedCoreConfigs[Self.dolphin_ir_mode.rawValue] = "2"
-            resolvedCoreConfigs[Self.dolphin_ir_yaw.rawValue] = "40"
-            resolvedCoreConfigs[Self.dolphin_ir_pitch.rawValue] = "30"
         }
         return resolvedCoreConfigs
     }

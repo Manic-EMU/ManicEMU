@@ -1166,9 +1166,6 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 "ICloudROMTransferLimitDesc" = "Ova dva ograničenja vrijede samo za ROM datoteke. Spremanja igre, save stateovi, skinovi i postavke i dalje se sinkroniziraju na bilo kojoj mreži i bilo koje veličine. Otvaranje igre uvijek preuzima ROM, čak i kad bi ograničenje inače spriječilo sinkronizaciju.";
 
 "TabletopModeDetected" = "Preklopite uređaj i okrenite zaslon u portret da biste ušli u način Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar ne podržava šifrirane ROM-ove. Može ih pokretati samo jezgra Citra.";
-"AesKeysTxtDesc" = "Potrebno za igranje šifriranih 3DS ROM-ova s jezgrom Citra.";
-"game3DSEncryptedTips" = "Uvezite ispravnu datoteku aes_keys.txt da biste čitali šifrirane ROM-ove. Takve ROM-ove pokreće samo jezgra Citra.";
 "FetchGamesFromMeloCafe" = "Uvezi igre iz MeloCafe";
 "ListenWithBitBop" = "Slušaj uz BitBop";
 "BitBopSendFailed" = "Ovo nije predano BitBopu. Pričekajte trenutak i pokušajte ponovno.";
@@ -1184,3 +1181,6 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 "BitBopPromoTitle" = "BitBop: vaše igre, vaša glazba";
 "BitBopPromoDetail" = "Uvezite omiljene klasike i slušajte glazbu koja ih oživljava.";
 "BitBopTryNow" = "Isprobaj";
+
+"Game3DSEncryptedTips" = "Uvezite ispravnu datoteku aes_keys.txt da biste čitali šifrirane ROM-ove.";
+"AesKeysTxtDesc" = "Potrebno za igranje šifriranih 3DS ROM-ova.";

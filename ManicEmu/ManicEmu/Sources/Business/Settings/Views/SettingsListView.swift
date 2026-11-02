@@ -550,7 +550,7 @@ private final class SettingsBitBopPromoView: BaseView {
         let titleLabel = UILabel()
         titleLabel.text = R.string.localizable.bitBopPromoTitle()
         titleLabel.font = R.Font.Body(emphasis: true)
-        titleLabel.textColor = R.Color.LabelPrimary.forceStyle(.dark)
+        titleLabel.textColor = R.Color.LabelPrimary
         titleLabel.numberOfLines = 1
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -562,7 +562,7 @@ private final class SettingsBitBopPromoView: BaseView {
         let detailLabel = UILabel()
         detailLabel.text = R.string.localizable.bitBopPromoDetail()
         detailLabel.font = R.Font.Caption()
-        detailLabel.textColor = R.Color.LabelSecondary.forceStyle(.dark)
+        detailLabel.textColor = R.Color.LabelSecondary
         detailLabel.numberOfLines = 2
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints { make in
@@ -573,10 +573,10 @@ private final class SettingsBitBopPromoView: BaseView {
         let tryNowLabel = UILabel()
         tryNowLabel.text = R.string.localizable.bitBopTryNow()
         tryNowLabel.font = R.Font.Caption()
-        tryNowLabel.textColor = R.Color.Red
+        tryNowLabel.textColor = R.Color.BitBop
         let tryNowView = UIView()
         tryNowView.isUserInteractionEnabled = false
-        tryNowView.backgroundColor = UIColor.white.withAlphaComponent(0.16)
+        tryNowView.backgroundColor = R.Color.BitBop.withAlphaComponent(0.1)
         tryNowView.layer.cornerRadius = 12
         tryNowView.addSubview(tryNowLabel)
         tryNowLabel.snp.makeConstraints { make in

@@ -1167,9 +1167,6 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "ICloudROMTransferLimitDesc" = "Ez a két korlát csak a ROM-fájlokra vonatkozik. A játékmentések, azonnali mentések, skinek és beállítások bármely hálózaton és bármilyen méretben tovább szinkronizálódnak. A játék megnyitásakor a ROM mindig letöltődik, még akkor is, ha a korlát egyébként megakadályozná a szinkronizálást.";
 
 "TabletopModeDetected" = "Hajtsa össze az eszközt, és forgassa álló módba, hogy belépjen a Tabletop módba.";
-"AzaharEncryptedRomUnsupported" = "Az Azahar nem támogatja a titkosított ROM-okat. Csak a Citra-mag tudja futtatni őket.";
-"AesKeysTxtDesc" = "Titkosított 3DS ROM-ok futtatásához kell a Citra-maggal.";
-"game3DSEncryptedTips" = "Importálja a helyes aes_keys.txt fájlt a titkosított ROM-ok olvasásához. Ilyen ROM-okat csak a Citra-mag tud futtatni.";
 "FetchGamesFromMeloCafe" = "Játékok importálása a MeloCafe-ből";
 "ListenWithBitBop" = "Hallgatás BitBoppal";
 "BitBopSendFailed" = "Most nem sikerült átadni a BitBopnak. Várjon egy kicsit, majd próbálja újra.";
@@ -1185,3 +1182,6 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "BitBopPromoTitle" = "BitBop: a játékai, a zenéje";
 "BitBopPromoDetail" = "Importálja kedvenc klasszikusait, és hallgassa a zenét, amely életre kelti őket.";
 "BitBopTryNow" = "Kipróbálás";
+
+"Game3DSEncryptedTips" = "Importálja a helyes aes_keys.txt fájlt a titkosított ROM-ok olvasásához.";
+"AesKeysTxtDesc" = "Titkosított 3DS ROM-ok futtatásához szükséges.";

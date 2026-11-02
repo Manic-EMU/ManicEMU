@@ -1201,9 +1201,6 @@ Press the controller button to complete mapping...";
 
 "TabletopModeDetected" = "Fold the device and rotate to portrait to enter Tabletop Mode.";
 
-"AzaharEncryptedRomUnsupported" = "Azahar does not support encrypted ROMs. Only the Citra core can run them.";
-"AesKeysTxtDesc" = "Required to play encrypted 3DS ROMs with the Citra core.";
-"game3DSEncryptedTips" = "Import the correct aes_keys.txt to read encrypted ROMs. Only the Citra core can run them.";
 
 "FetchGamesFromMeloCafe" = "Import Games from MeloCafe";
 
@@ -1221,3 +1218,6 @@ Press the controller button to complete mapping...";
 "BitBopPromoTitle" = "BitBop: Your Games, Your Music";
 "BitBopPromoDetail" = "Import your favorite classics and listen to the music that brings them to life.";
 "BitBopTryNow" = "Try Now";
+
+"Game3DSEncryptedTips" = "Import the correct aes_keys.txt to read encrypted ROMs.";
+"AesKeysTxtDesc" = "Required to play encrypted 3DS ROMs.";

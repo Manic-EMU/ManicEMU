@@ -471,6 +471,8 @@ extension _R {
         static let CoverEmpty = UIColor(.dm,
                                         light: UIColor(hexString: "#FAFAFA")!,
                                         dark: UIColor(hexString: "#1B1B20")!)
+        
+        static let BitBop = UIColor(hexString: "#7700FF")!
     }
     
     struct _Path {

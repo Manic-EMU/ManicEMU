@@ -1158,9 +1158,6 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 "ICloudROMTransferLimitDesc" = "Disse to grensene gjelder bare ROM-filer. Lagring, savestates, skins og innstillinger fortsetter å synkroniseres over alle nettverk og uansett størrelse. Når du åpner et spill, lastes ROM-filen alltid ned, selv om en grense ellers ville hindret synkronisering.";
 
 "TabletopModeDetected" = "Brett enheten og roter til portrett for å gå inn i Tabletop-modus.";
-"AzaharEncryptedRomUnsupported" = "Azahar støtter ikke krypterte ROM-er. Bare Citra-kjernen kan kjøre dem.";
-"AesKeysTxtDesc" = "Kreves for å spille krypterte 3DS-ROM-er med Citra-kjernen.";
-"game3DSEncryptedTips" = "Importer riktig aes_keys.txt for å lese krypterte ROM-er. Bare Citra-kjernen kan kjøre dem.";
 "FetchGamesFromMeloCafe" = "Importer spill fra MeloCafe";
 "ListenWithBitBop" = "Lytt med BitBop";
 "BitBopSendFailed" = "Dette kunne ikke sendes til BitBop. Vent litt, og prøv igjen.";
@@ -1176,3 +1173,6 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 "BitBopPromoTitle" = "BitBop: spillene dine, musikken din";
 "BitBopPromoDetail" = "Importer favorittklassikerne dine og hør musikken som gir dem liv.";
 "BitBopTryNow" = "Prøv nå";
+
+"Game3DSEncryptedTips" = "Importer riktig aes_keys.txt for å lese krypterte ROM-er.";
+"AesKeysTxtDesc" = "Kreves for å spille krypterte 3DS-ROM-er.";

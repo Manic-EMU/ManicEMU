@@ -1166,9 +1166,6 @@ Si quieres mejorar tu experiencia, PlayCase combina perfecto con esta funda.";
 "ICloudROMTransferLimitDesc" = "Estos dos límites se aplican solo a los archivos ROM. Los guardados, los estados de guardado, las skins y los ajustes siguen sincronizándose en cualquier red y con cualquier tamaño. Al abrir un juego siempre se descarga su ROM, aunque un límite impida sincronizarlo.";
 
 "TabletopModeDetected" = "Dobla el dispositivo y gíralo a vertical para entrar al modo Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar no admite ROM cifradas. Solo el núcleo Citra puede ejecutarlas.";
-"AesKeysTxtDesc" = "Necesario para jugar ROM 3DS cifradas con el núcleo Citra.";
-"game3DSEncryptedTips" = "Importa el aes_keys.txt correcto para leer las ROM cifradas. Solo el núcleo Citra puede ejecutarlas.";
 "FetchGamesFromMeloCafe" = "Importar juegos desde MeloCafe";
 "ListenWithBitBop" = "Escuchar con BitBop";
 "BitBopSendFailed" = "No se pudo enviar esto a BitBop. Espera un momento y vuelve a intentarlo.";
@@ -1184,3 +1181,6 @@ Si quieres mejorar tu experiencia, PlayCase combina perfecto con esta funda.";
 "BitBopPromoTitle" = "BitBop: tus juegos, tu música";
 "BitBopPromoDetail" = "Importa tus clásicos favoritos y escucha la música que les da vida.";
 "BitBopTryNow" = "Probar ahora";
+
+"Game3DSEncryptedTips" = "Importa el aes_keys.txt correcto para leer las ROM cifradas.";
+"AesKeysTxtDesc" = "Necesario para jugar ROM 3DS cifradas.";

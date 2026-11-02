@@ -45,7 +45,7 @@ class GameInfoCoverView: BaseView {
     private lazy var bitbopButton: ASButtonView = {
         let view = ASButtonView(.iconOnlyWithSmallSize(icon: .symbolImage(R.image.bitbop_iconSymbols(),
                                                                            colors: [R.Color.LabelPrimary.forceStyle(.dark)]),
-                                                       background: R.Color.Red))
+                                                       background: R.Color.Main))
         view.cornerStyle = .circle
         view.isHidden = true
         view.accessibilityLabel = R.string.localizable.listenWithBitBop()

@@ -1172,9 +1172,6 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "ICloudROMTransferLimitDesc" = "這兩項限制僅作用於 ROM 檔案。遊戲存檔、即時存檔、皮膚和設定會在任意網路、任意大小下繼續同步。開啟遊戲時始終會下載對應 ROM，即使限制本會阻止同步。";
 
 "TabletopModeDetected" = "摺疊裝置並將螢幕轉為直向，即可進入 Tabletop 模式。";
-"AzaharEncryptedRomUnsupported" = "Azahar 不支援加密 ROM，僅 Citra 核心可以執行。";
-"AesKeysTxtDesc" = "Citra 核心執行加密 3DS ROM 時需要此檔案。";
-"game3DSEncryptedTips" = "請匯入正確的 aes_keys.txt 以讀取加密 ROM。僅 Citra 核心可以執行此類 ROM。";
 "FetchGamesFromMeloCafe" = "從 MeloCafe 匯入遊戲";
 "ListenWithBitBop" = "用 BitBop 聆聽";
 "BitBopSendFailed" = "這次沒能交給 BitBop。請稍等片刻，再試一次。";
@@ -1190,3 +1187,6 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "BitBopPromoTitle" = "BitBop：你的遊戲，你的音樂";
 "BitBopPromoDetail" = "匯入你喜愛的經典遊戲，聆聽賦予它們生命的配樂。";
 "BitBopTryNow" = "立即體驗";
+
+"Game3DSEncryptedTips" = "請匯入正確的 aes_keys.txt 以讀取加密 ROM。";
+"AesKeysTxtDesc" = "執行加密 3DS ROM 時需要此檔案。";

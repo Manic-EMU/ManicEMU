@@ -1168,9 +1168,6 @@ Si voleu millorar la vostra configuració, PlayCase és el complement perfecte p
 "ICloudROMTransferLimitDesc" = "Aquests dos límits s'apliquen només als fitxers ROM. Les partides, els estats desats, les skins i la configuració continuen sincronitzant-se en qualsevol xarxa i amb qualsevol mida. En obrir un joc sempre es baixa el ROM, encara que un límit n'impedeixi la sincronització.";
 
 "TabletopModeDetected" = "Plega el dispositiu i gira'l en vertical per entrar al mode Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar no admet ROM encriptades. Només el nucli Citra les pot executar.";
-"AesKeysTxtDesc" = "Necessari per jugar a ROM 3DS encriptades amb el nucli Citra.";
-"game3DSEncryptedTips" = "Importa l'aes_keys.txt correcte per llegir les ROM encriptades. Només el nucli Citra les pot executar.";
 "FetchGamesFromMeloCafe" = "Importa jocs des de MeloCafe";
 "ListenWithBitBop" = "Escolta amb BitBop";
 "BitBopSendFailed" = "No s'ha pogut enviar això a BitBop. Espera un moment i torna-ho a provar.";
@@ -1186,3 +1183,6 @@ Si voleu millorar la vostra configuració, PlayCase és el complement perfecte p
 "BitBopPromoTitle" = "BitBop: els teus jocs, la teva música";
 "BitBopPromoDetail" = "Importa els teus clàssics preferits i escolta la música que els dona vida.";
 "BitBopTryNow" = "Prova-ho ara";
+
+"Game3DSEncryptedTips" = "Importa l'aes_keys.txt correcte per llegir les ROM encriptades.";
+"AesKeysTxtDesc" = "Necessari per jugar a ROM 3DS encriptades.";

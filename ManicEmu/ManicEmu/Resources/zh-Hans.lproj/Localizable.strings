@@ -1196,9 +1196,6 @@
 
 "TabletopModeDetected" = "折叠并将屏幕转为竖屏，即可进入 Tabletop 模式。";
 
-"AzaharEncryptedRomUnsupported" = "Azahar 不支持加密 ROM，仅 Citra 核心可以运行。";
-"AesKeysTxtDesc" = "Citra 核心运行加密 3DS ROM 时需要此文件。";
-"game3DSEncryptedTips" = "请导入正确的 aes_keys.txt 以读取加密 ROM。仅 Citra 核心可以运行此类 ROM。";
 
 "FetchGamesFromMeloCafe" = "从 MeloCafe 导入游戏";
 
@@ -1216,3 +1213,6 @@
 "BitBopPromoTitle" = "BitBop：你的游戏，你的音乐";
 "BitBopPromoDetail" = "导入你喜爱的经典游戏，聆听赋予它们生命的配乐。";
 "BitBopTryNow" = "立即体验";
+
+"Game3DSEncryptedTips" = "请导入正确的 aes_keys.txt 以读取加密 ROM。";
+"AesKeysTxtDesc" = "运行加密 3DS ROM 时需要此文件。";

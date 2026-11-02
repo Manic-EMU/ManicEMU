@@ -6,4 +6,4 @@
   Copyright © 2026 Manic EMU. All rights reserved.
 */
 
-"WhatsNewDetail" = "- Vylepšen výkon 3DS\n- Aktualizováno jádro Azahar; šifrované ROM se již nepodporují\n- Nimbus v Artic Base aktualizován na nejnovější verzi\n- Vylepšen výkon Home Menu na jádru Azahar\n- Opraveno chování ukazatele Wii\n- Přidána podpora MeloCafe Link\n- iPad nyní podporuje aplikace v oknech\n- Přepracován skin pro SNES\n- Přidán náhradní skin: iPad může používat skin pro iPhone\n- Podpora iOS 27\n- Podpora iPhone Duo\n- Opraven nefunkční AirPlay na iOS 27 a novějších\n- Další opravy chyb a vylepšení";
+"WhatsNewDetail" = "- Vylepšen výkon 3DS\n- Nimbus v Artic Base nyní podporuje nejnovější verzi Pretendo\n- Vylepšen výkon Home Menu na jádru Azahar\n- Opraveno chování ukazatele Wii u dotčených uživatelů\n- Přidána podpora MeloCafe Link\n- iPad nyní podporuje aplikace v oknech\n- Přepracován skin pro SNES\n- Přidán náhradní skin: iPad může používat skin pro iPhone\n- Podpora pro iPhone Duo\n- Opraven nefunkční AirPlay na iOS 27 a novějších\n- Přidán BitBop, nová sesterská aplikace Manic EMU pro hudbu z retro her\n- Další opravy chyb a vylepšení";

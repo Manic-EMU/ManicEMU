@@ -1167,9 +1167,6 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 "ICloudROMTransferLimitDesc" = "Aceste două limite se aplică doar fișierelor ROM. Salvările de joc, salvările instant, skinurile și setările continuă să se sincronizeze pe orice rețea și la orice dimensiune. La deschiderea unui joc, ROM-ul este descărcat întotdeauna, chiar dacă o limită l-ar împiedica altfel să se sincronizeze.";
 
 "TabletopModeDetected" = "Pliați dispozitivul și rotiți-l în portret pentru a intra în modul Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar nu acceptă ROM-uri criptate. Doar nucleul Citra le poate rula.";
-"AesKeysTxtDesc" = "Necesar pentru a juca ROM-uri 3DS criptate cu nucleul Citra.";
-"game3DSEncryptedTips" = "Importați fișierul aes_keys.txt corect pentru a citi ROM-urile criptate. Doar nucleul Citra le poate rula.";
 "FetchGamesFromMeloCafe" = "Importă jocuri din MeloCafe";
 "ListenWithBitBop" = "Ascultă cu BitBop";
 "BitBopSendFailed" = "Nu s-a putut trimite către BitBop. Așteptați un moment și încercați din nou.";
@@ -1185,3 +1182,6 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 "BitBopPromoTitle" = "BitBop: jocurile tale, muzica ta";
 "BitBopPromoDetail" = "Importă clasicele preferate și ascultă muzica care le dă viață.";
 "BitBopTryNow" = "Încearcă acum";
+
+"Game3DSEncryptedTips" = "Importați fișierul aes_keys.txt corect pentru a citi ROM-urile criptate.";
+"AesKeysTxtDesc" = "Necesar pentru a juca ROM-uri 3DS criptate.";

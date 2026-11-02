@@ -6,4 +6,4 @@
   Copyright © 2026 Manic EMU. All rights reserved.
 */
 
-"WhatsNewDetail" = "- 3DS 성능 개선\n- Azahar 코어를 업데이트하고, 암호화된 ROM은 더 이상 지원하지 않음\n- Artic Base의 Nimbus를 최신 버전으로 업데이트\n- Azahar 코어에서 Home Menu 성능 개선\n- Wii 포인터 동작 수정\n- MeloCafe Link 지원 추가\n- iPad에서 윈도우 앱 지원\n- SNES 스킨을 새로 디자인\n- 스킨 폴백 추가: iPad에서 iPhone 스킨 사용 가능\n- iOS 27 지원\n- iPhone Duo 지원\n- iOS 27 이상에서 AirPlay가 작동하지 않던 문제 수정\n- 기타 버그 수정 및 개선";
+"WhatsNewDetail" = "- 3DS 성능 개선\n- Artic Base의 Nimbus를 업데이트하고, 최신 Pretendo를 지원\n- Azahar 코어에서 Home Menu 성능 개선\n- 일부 사용자의 Wii 포인터 동작 수정\n- MeloCafe Link 지원 추가\n- iPad에서 윈도우 앱 지원\n- SNES 스킨을 새로 디자인\n- 스킨 폴백 추가: iPad에서 iPhone 스킨 사용 가능\n- iPhone Duo 지원\n- iOS 27 이상에서 AirPlay가 작동하지 않던 문제 수정\n- BitBop 지원 추가. 레트로 게임 음악을 감상할 수 있는 Manic EMU의 자매 앱\n- 기타 버그 수정 및 개선";

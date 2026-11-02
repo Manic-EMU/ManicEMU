@@ -6,4 +6,4 @@
   Copyright © 2026 Manic EMU. All rights reserved.
 */
 
-"WhatsNewDetail" = "- 优化 3DS 游戏运行效率\n- 更新 Azahar 核心，不再支持加密 ROM\n- Artic Base 中的 Nimbus 已更新到最新版\n- 优化 Azahar 核心下 Home Menu 的运行效率\n- 修复 Wii 指针行为\n- 新增 MeloCafe Link 支持\n- iPad 现已支持窗口化应用\n- 重新设计 SNES 皮肤\n- 新增皮肤回退：iPad 可使用 iPhone 皮肤\n- 适配 iOS 27\n- 适配 iPhone Duo\n- 修复 iOS 27 及更高版本上 AirPlay 失效的问题\n- 其他问题修复与改进";
+"WhatsNewDetail" = "- 优化 3DS 游戏运行效率\n- Artic Base 中的 Nimbus 已更新，支持最新的 Pretendo\n- 优化 Azahar 核心下 Home Menu 的运行效率\n- 修复部分用户的 Wii 指针异常\n- 新增 MeloCafe Link 支持\n- iPad 现已支持窗口化应用\n- 重新设计 SNES 皮肤\n- 新增皮肤回退：iPad 可使用 iPhone 皮肤\n- 适配 iPhone Duo\n- 修复 iOS 27 及更高版本上 AirPlay 失效的问题\n- 新增 BitBop 支持。BitBop 是 Manic EMU 的姊妹应用，用来聆听经典游戏配乐\n- 其他问题修复与改进";

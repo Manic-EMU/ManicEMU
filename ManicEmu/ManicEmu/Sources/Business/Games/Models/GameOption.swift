@@ -237,7 +237,7 @@ enum GameOption: Int, CaseIterable {
         case .skinButtonBinding:
                 .symbolImage(R.image.keyboard_iconSymbols())
         case .bitbop:
-                .symbolImage(R.image.bitbop_iconSymbols(), colors: [R.Color.Red])
+                .symbolImage(R.image.bitbop_iconSymbols(), colors: [R.Color.Main])
         }
     }
     

@@ -1159,9 +1159,6 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 "ICloudROMTransferLimitDesc" = "Kedua batas ini hanya berlaku untuk file ROM. Simpanan, simpanan instan, skin, dan pengaturan tetap tersinkron di jaringan apa pun dan ukuran apa pun. Membuka game selalu mengunduh ROM-nya, meski batas seharusnya menahan sinkronisasi.";
 
 "TabletopModeDetected" = "Lipat perangkat dan putar ke portrait untuk masuk ke Mode Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar tidak mendukung ROM terenkripsi. Hanya inti Citra yang dapat menjalankannya.";
-"AesKeysTxtDesc" = "Diperlukan untuk memainkan ROM 3DS terenkripsi dengan inti Citra.";
-"game3DSEncryptedTips" = "Impor aes_keys.txt yang benar untuk membaca ROM terenkripsi. ROM semacam ini hanya dapat dijalankan oleh inti Citra.";
 "FetchGamesFromMeloCafe" = "Impor Permainan dari MeloCafe";
 "ListenWithBitBop" = "Dengarkan dengan BitBop";
 "BitBopSendFailed" = "Kali ini tidak bisa dikirim ke BitBop. Tunggu sebentar, lalu coba lagi.";
@@ -1177,3 +1174,6 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 "BitBopPromoTitle" = "BitBop: Game Anda, Musik Anda";
 "BitBopPromoDetail" = "Impor game klasik favorit Anda dan dengarkan musik yang menghidupkannya.";
 "BitBopTryNow" = "Coba Sekarang";
+
+"Game3DSEncryptedTips" = "Impor aes_keys.txt yang benar untuk membaca ROM terenkripsi.";
+"AesKeysTxtDesc" = "Diperlukan untuk memainkan ROM 3DS terenkripsi.";

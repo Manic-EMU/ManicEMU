@@ -6,4 +6,4 @@
   Copyright © 2026 Manic EMU. All rights reserved.
 */
 
-"WhatsNewDetail" = "- Prestanda för 3DS förbättrad\n- Azahar-core uppdaterad; krypterade ROM stöds inte längre\n- Nimbus i Artic Base är nu uppdaterad till den senaste versionen\n- Prestanda för Home Menu på Azahar-core förbättrad\n- Wii-pekarens beteende åtgärdat\n- Stöd för MeloCafe Link tillagt\n- iPad stöder nu appar i fönster\n- SNES-skin omdesignat\n- Skin-fallback tillagd: iPad kan använda iPhone-skins\n- Stöd för iOS 27\n- Stöd för iPhone Duo\n- Åtgärdat att AirPlay inte fungerade på iOS 27 eller senare\n- Övriga buggfixar och förbättringar";
+"WhatsNewDetail" = "- Prestanda för 3DS förbättrad\n- Nimbus i Artic Base stöder nu den senaste Pretendo\n- Prestanda för Home Menu på Azahar-core förbättrad\n- Wii-pekarens beteende åtgärdat för berörda användare\n- Stöd för MeloCafe Link tillagt\n- iPad stöder nu appar i fönster\n- SNES-skin omdesignat\n- Skin-fallback tillagd: iPad kan använda iPhone-skins\n- Stöd för iPhone Duo\n- Åtgärdat att AirPlay inte fungerade på iOS 27 eller senare\n- BitBop tillagd, en ny systerapp till Manic EMU för retrospelmusik\n- Övriga buggfixar och förbättringar";

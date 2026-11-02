@@ -1162,9 +1162,6 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "ICloudROMTransferLimitDesc" = "この 2 つの制限は ROM ファイルにのみ適用されます。セーブデータ、セーブステート、スキン、設定は、ネットワークの種類やサイズに関係なく同期を続けます。ゲームを開くと、制限で同期が止まっていても ROM は必ずダウンロードされます。";
 
 "TabletopModeDetected" = "デバイスを折りたたみ、縦画面に回転すると Tabletop モードに入れます。";
-"AzaharEncryptedRomUnsupported" = "Azahar は暗号化された ROM に対応していません。実行できるのは Citra コアだけです。";
-"AesKeysTxtDesc" = "Citra コアで暗号化された 3DS ROM を遊ぶために必要なファイルです。";
-"game3DSEncryptedTips" = "暗号化された ROM を読み込むには、正しい aes_keys.txt をインポートしてください。実行できるのは Citra コアだけです。";
 "FetchGamesFromMeloCafe" = "MeloCafe からゲームをインポート";
 "ListenWithBitBop" = "BitBop で聴く";
 "BitBopSendFailed" = "今回は BitBop に渡せませんでした。しばらくしてから、もう一度お試しください。";
@@ -1180,3 +1177,6 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "BitBopPromoTitle" = "BitBop：あなたのゲーム、あなたの音楽";
 "BitBopPromoDetail" = "好きな名作をインポートして、ゲームに命を吹き込む音楽を聴きましょう。";
 "BitBopTryNow" = "今すぐ体験";
+
+"Game3DSEncryptedTips" = "暗号化された ROM を読み込むには、正しい aes_keys.txt をインポートしてください。";
+"AesKeysTxtDesc" = "暗号化された 3DS ROM を遊ぶために必要なファイルです。";

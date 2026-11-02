@@ -188,10 +188,6 @@ class PlayViewController: GameViewController {
         if game.isRomExtsts || game.isNDSHomeMenuGame || game.isDOSHomeMenuGame {
             func showPlayView() {
                 if game.gameType == ._3ds, ThreeDS.isEncryptedROM(at: game.romUrl) {
-                    if game.isAzahar3DS {
-                        UIView.makeToast(message: R.string.localizable.azaharEncryptedRomUnsupported())
-                        return
-                    }
                     if !ThreeDS.hasAesKeys {
                         BIOSSelectionView.show(gameType: game.gameType)
                         return

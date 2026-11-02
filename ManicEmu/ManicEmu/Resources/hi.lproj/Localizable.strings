@@ -1168,9 +1168,6 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 "ICloudROMTransferLimitDesc" = "ये दो सीमाएँ सिर्फ़ ROM फ़ाइलों पर लागू होती हैं। गेम सेव, सेव स्टेट्स, स्किन और सेटिंग्स किसी भी नेटवर्क और किसी भी आकार पर सिंक होते रहते हैं। गेम खोलने पर उसका ROM हमेशा डाउनलोड होता है, भले ही सीमा उसे सिंक होने से रोकती।";
 
 "TabletopModeDetected" = "डिवाइस को मोड़कर पोर्ट्रेट में घुमाएं, ताकि Tabletop मोड खुल जाए।";
-"AzaharEncryptedRomUnsupported" = "Azahar एन्क्रिप्टेड ROM को सपोर्ट नहीं करता। इन्हें केवल Citra कोर चला सकता है।";
-"AesKeysTxtDesc" = "Citra कोर से एन्क्रिप्टेड 3DS ROM चलाने के लिए यह फाइल जरूरी है।";
-"game3DSEncryptedTips" = "एन्क्रिप्टेड ROM पढ़ने के लिए सही aes_keys.txt इम्पोर्ट करें। ऐसे ROM केवल Citra कोर चला सकता है।";
 "FetchGamesFromMeloCafe" = "MeloCafe से गेम इम्पोर्ट करें";
 "ListenWithBitBop" = "BitBop के साथ सुनें";
 "BitBopSendFailed" = "इसे BitBop को भेजा नहीं जा सका। थोड़ी देर बाद फिर कोशिश करें।";
@@ -1186,3 +1183,6 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 "BitBopPromoTitle" = "BitBop: आपके गेम, आपका संगीत";
 "BitBopPromoDetail" = "अपने पसंदीदा क्लासिक गेम इम्पोर्ट करें और वह संगीत सुनें जो उन्हें जीवंत बनाता है।";
 "BitBopTryNow" = "अभी आजमाएं";
+
+"Game3DSEncryptedTips" = "एन्क्रिप्टेड ROM पढ़ने के लिए सही aes_keys.txt इम्पोर्ट करें।";
+"AesKeysTxtDesc" = "एन्क्रिप्टेड 3DS ROM चलाने के लिए यह फाइल जरूरी है।";

@@ -1140,9 +1140,6 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "ICloudROMTransferLimitDesc" = "Kedua-dua had ini hanya untuk fail ROM. Simpanan, simpanan segera, kulit dan tetapan terus disegerakkan pada mana-mana rangkaian dan saiz. Membuka permainan sentiasa memuat turun ROM, walaupun had sepatutnya menahan sync.";
 
 "TabletopModeDetected" = "Lipat peranti dan pusing ke mod potret untuk masuk ke Mod Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar tidak menyokong ROM yang disulitkan. Hanya teras Citra yang boleh menjalankannya.";
-"AesKeysTxtDesc" = "Diperlukan untuk bermain ROM 3DS yang disulitkan dengan teras Citra.";
-"game3DSEncryptedTips" = "Import aes_keys.txt yang betul untuk membaca ROM yang disulitkan. ROM jenis ini hanya boleh dijalankan oleh teras Citra.";
 "FetchGamesFromMeloCafe" = "Import Permainan dari MeloCafe";
 "ListenWithBitBop" = "Dengar dengan BitBop";
 "BitBopSendFailed" = "Kali ini tidak dapat dihantar kepada BitBop. Tunggu sebentar, kemudian cuba lagi.";
@@ -1158,3 +1155,6 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "BitBopPromoTitle" = "BitBop: Permainan anda, muzik anda";
 "BitBopPromoDetail" = "Import permainan klasik kegemaran anda dan dengar muzik yang menghidupkannya.";
 "BitBopTryNow" = "Cuba Sekarang";
+
+"Game3DSEncryptedTips" = "Import aes_keys.txt yang betul untuk membaca ROM yang disulitkan.";
+"AesKeysTxtDesc" = "Diperlukan untuk bermain ROM 3DS yang disulitkan.";

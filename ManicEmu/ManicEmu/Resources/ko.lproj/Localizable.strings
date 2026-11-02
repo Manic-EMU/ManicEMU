@@ -1170,9 +1170,6 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 "ICloudROMTransferLimitDesc" = "이 두 제한은 ROM 파일에만 적용됩니다. 게임 세이브, 세이브 스테이트, 스킨, 설정은 네트워크 종류와 크기에 관계없이 계속 동기화됩니다. 게임을 열면 제한 때문에 동기화되지 않았더라도 ROM을 항상 다운로드합니다.";
 
 "TabletopModeDetected" = "기기를 접고 화면을 세로로 돌리면 Tabletop 모드로 들어갈 수 있습니다.";
-"AzaharEncryptedRomUnsupported" = "Azahar는 암호화된 ROM을 지원하지 않습니다. Citra 코어에서만 실행할 수 있습니다.";
-"AesKeysTxtDesc" = "Citra 코어로 암호화된 3DS ROM을 실행할 때 필요한 파일입니다.";
-"game3DSEncryptedTips" = "암호화된 ROM을 읽으려면 올바른 aes_keys.txt를 가져와 주세요. 이러한 ROM은 Citra 코어에서만 실행할 수 있습니다.";
 "FetchGamesFromMeloCafe" = "MeloCafe에서 게임 가져오기";
 "ListenWithBitBop" = "BitBop으로 듣기";
 "BitBopSendFailed" = "이번에는 BitBop에 보내지 못했어요. 잠시 후 다시 시도해 보세요.";
@@ -1188,3 +1185,6 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 "BitBopPromoTitle" = "BitBop: 당신의 게임, 당신의 음악";
 "BitBopPromoDetail" = "좋아하는 명작을 가져와, 게임에 생명을 불어넣는 음악을 들어 보세요.";
 "BitBopTryNow" = "지금 체험하기";
+
+"Game3DSEncryptedTips" = "암호화된 ROM을 읽으려면 올바른 aes_keys.txt를 가져와 주세요.";
+"AesKeysTxtDesc" = "암호화된 3DS ROM을 실행할 때 필요한 파일입니다.";

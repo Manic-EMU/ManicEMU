@@ -473,15 +473,10 @@ extension FilesImporter {
             var ciaTitleUrl: URL? = nil
             let originalUrl = url
             var url = url
-            var encrypted3DSROM = false
 #if !SIMULATOR
             var threeDSGameInfo: CitraGameInformation? = nil
             if FileType.get3DSExtensions().contains([url.pathExtension.lowercased()]) {
-                if ThreeDS.isEncryptedROM(at: url) {
-                    // Azahar cannot run encrypted ROMs, so this import stays on Citra.
-                    encrypted3DSROM = true
-                }
-                if encrypted3DSROM, !ThreeDS.hasAesKeys {
+                if ThreeDS.isEncryptedROM(at: url), !ThreeDS.hasAesKeys {
                     Log.debug("Encrypted 3DS ROM imported without aes_keys.txt")
                     Self.discardRommPending(fileName: originalUrl.lastPathComponent)
                     completion?(nil, nil, .decryptFailed(fileName: url.lastPathComponent))
@@ -687,9 +682,6 @@ extension FilesImporter {
                         if let index = globalCoreSwitch.getUsingCoreIndex(gameType: gameType) {
                             Log.debug("[FilesImporter] using \(globalCoreSwitch.getUsingCoreName(gameType: gameType) ?? "Unknown")(\(index)) core for \(gameType.localizedShortName)")
                             game.defaultCore = index
-                        }
-                        if encrypted3DSROM {
-                            game.defaultCore = 0
                         }
                         
                         //j2me

@@ -1167,9 +1167,6 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "ICloudROMTransferLimitDesc" = "Tieto dva limity platia len pre súbory ROM. Uloženia hier, okamžité uloženia, skiny a nastavenia sa ďalej synchronizujú v akejkoľvek sieti a pri akejkoľvek veľkosti. Otvorenie hry vždy stiahne ROM, aj keď by limit synchronizáciu inak zadržal.";
 
 "TabletopModeDetected" = "Zložte zariadenie a otočte ho na výšku, aby ste vstúpili do režimu Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar nepodporuje šifrované ROM. Spustiť ich vie len jadro Citra.";
-"AesKeysTxtDesc" = "Vyžaduje sa na hranie šifrovaných ROM 3DS v jadre Citra.";
-"game3DSEncryptedTips" = "Importujte správny súbor aes_keys.txt, aby sa dali čítať šifrované ROM. Takéto ROM spúšťa len jadro Citra.";
 "FetchGamesFromMeloCafe" = "Importovať hry z MeloCafe";
 "ListenWithBitBop" = "Počúvať s BitBop";
 "BitBopSendFailed" = "Toto sa nepodarilo odovzdať BitBop. Chvíľu počkajte a skúste to znova.";
@@ -1185,3 +1182,6 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "BitBopPromoTitle" = "BitBop: vaše hry, vaša hudba";
 "BitBopPromoDetail" = "Importujte obľúbené klasiky a počúvajte hudbu, ktorá ich oživuje.";
 "BitBopTryNow" = "Vyskúšať";
+
+"Game3DSEncryptedTips" = "Importujte správny súbor aes_keys.txt, aby sa dali čítať šifrované ROM.";
+"AesKeysTxtDesc" = "Vyžaduje sa na hranie šifrovaných ROM 3DS.";

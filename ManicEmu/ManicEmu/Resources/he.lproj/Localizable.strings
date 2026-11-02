@@ -1169,9 +1169,6 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "ICloudROMTransferLimitDesc" = "שתי המגבלות האלה חלות על קבצי ROM בלבד. שמירות משחק, שמירות מיידיות, skin והגדרות ממשיכים להסתנכרן בכל רשת ובכל גודל. פתיחת משחק תמיד מורידה את ה-ROM, גם אם מגבלה הייתה מונעת סנכרון.";
 
 "TabletopModeDetected" = "קפלו את המכשיר וסובבו את המסך למצב אנכי כדי להיכנס למצב Tabletop.";
-"AzaharEncryptedRomUnsupported" = "Azahar לא תומך ב-ROM מוצפנים. רק ליבת Citra יכולה להריץ אותם.";
-"AesKeysTxtDesc" = "נדרש כדי להריץ ROM מוצפנים של 3DS עם ליבת Citra.";
-"game3DSEncryptedTips" = "ייבאו את הקובץ aes_keys.txt הנכון כדי לקרוא ROM מוצפנים. רק ליבת Citra יכולה להריץ ROM כאלה.";
 "FetchGamesFromMeloCafe" = "ייבוא משחקים מ-MeloCafe";
 "ListenWithBitBop" = "האזנה עם BitBop";
 "BitBopSendFailed" = "לא הצלחנו לשלוח את זה ל-BitBop. המתינו רגע ונסו שוב.";
@@ -1187,3 +1184,6 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "BitBopPromoTitle" = "BitBop: המשחקים שלך, המוזיקה שלך";
 "BitBopPromoDetail" = "ייבאו את הקלאסיקות האהובות עליכם והאזינו למוזיקה שמעניקה להן חיים.";
 "BitBopTryNow" = "נסו עכשיו";
+
+"Game3DSEncryptedTips" = "ייבאו את הקובץ aes_keys.txt הנכון כדי לקרוא ROM מוצפנים.";
+"AesKeysTxtDesc" = "נדרש כדי להריץ ROM מוצפנים של 3DS.";

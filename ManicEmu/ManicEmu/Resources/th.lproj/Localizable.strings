@@ -1156,9 +1156,6 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 "ICloudROMTransferLimitDesc" = "ข้อจำกัดสองข้อนี้ใช้กับไฟล์ ROM เท่านั้น เซฟเกม เซฟทันที สกิน และการตั้งค่ายังซิงค์ได้ทุกเครือข่ายและทุกขนาด การเปิดเกมจะดาวน์โหลด ROM เสมอ แม้ข้อจำกัดจะกันไม่ให้ซิงค์";
 
 "TabletopModeDetected" = "พับอุปกรณ์แล้วหมุนเป็นแนวตั้ง เพื่อเข้าสู่โหมด Tabletop";
-"AzaharEncryptedRomUnsupported" = "Azahar ไม่รองรับ ROM ที่เข้ารหัส รันได้เฉพาะคอร์ Citra เท่านั้น";
-"AesKeysTxtDesc" = "จำเป็นเมื่อจะเล่น ROM 3DS ที่เข้ารหัสด้วยคอร์ Citra";
-"game3DSEncryptedTips" = "นำเข้า aes_keys.txt ที่ถูกต้องเพื่ออ่าน ROM ที่เข้ารหัส ROM ประเภทนี้รันได้เฉพาะคอร์ Citra";
 "FetchGamesFromMeloCafe" = "นำเข้าเกมจาก MeloCafe";
 "ListenWithBitBop" = "ฟังด้วย BitBop";
 "BitBopSendFailed" = "ส่งให้ BitBop ไม่สำเร็จในครั้งนี้ รอสักครู่แล้วลองอีกครั้ง";
@@ -1174,3 +1171,6 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 "BitBopPromoTitle" = "BitBop: เกมของคุณ เพลงของคุณ";
 "BitBopPromoDetail" = "นำเข้าเกมคลาสสิกที่คุณชอบ แล้วฟังเพลงที่ทำให้เกมเหล่านั้นมีชีวิต";
 "BitBopTryNow" = "ลองเลย";
+
+"Game3DSEncryptedTips" = "นำเข้า aes_keys.txt ที่ถูกต้องเพื่ออ่าน ROM ที่เข้ารหัส";
+"AesKeysTxtDesc" = "จำเป็นเมื่อจะเล่น ROM 3DS ที่เข้ารหัส";

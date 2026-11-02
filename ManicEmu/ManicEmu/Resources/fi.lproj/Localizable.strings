@@ -1169,9 +1169,6 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "ICloudROMTransferLimitDesc" = "Nämä kaksi rajoitusta koskevat vain ROM-tiedostoja. Pelitallennukset, pikatallennukset, skinit ja asetukset synkronoituvat edelleen kaikissa verkoissa ja kaikenkokoisina. Pelin avaaminen lataa ROM-tiedoston aina, vaikka rajoitus muuten estäisi synkronoinnin.";
 
 "TabletopModeDetected" = "Taita laite ja käännä se pystyasentoon, niin pääset Tabletop-tilaan.";
-"AzaharEncryptedRomUnsupported" = "Azahar ei tue salattuja ROM-tiedostoja. Vain Citra-ydin voi suorittaa ne.";
-"AesKeysTxtDesc" = "Tarvitaan salattujen 3DS-ROM-tiedostojen pelaamiseen Citra-ytimellä.";
-"game3DSEncryptedTips" = "Tuo oikea aes_keys.txt salattujen ROM-tiedostojen lukemista varten. Vain Citra-ydin voi suorittaa tällaiset ROM-tiedostot.";
 "FetchGamesFromMeloCafe" = "Tuo pelejä MeloCafestä";
 "ListenWithBitBop" = "Kuuntele BitBopilla";
 "BitBopSendFailed" = "Tätä ei saatu lähetettyä BitBopille. Odota hetki ja yritä uudelleen.";
@@ -1187,3 +1184,6 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "BitBopPromoTitle" = "BitBop: sinun pelisi, sinun musiikkisi";
 "BitBopPromoDetail" = "Tuo suosikkiklassikkosi ja kuuntele musiikkia, joka herättää ne eloon.";
 "BitBopTryNow" = "Kokeile nyt";
+
+"Game3DSEncryptedTips" = "Tuo oikea aes_keys.txt salattujen ROM-tiedostojen lukemista varten.";
+"AesKeysTxtDesc" = "Tarvitaan salattujen 3DS-ROM-tiedostojen pelaamiseen.";

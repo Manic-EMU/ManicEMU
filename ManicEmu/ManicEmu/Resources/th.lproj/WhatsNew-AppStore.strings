@@ -6,4 +6,4 @@
   Copyright © 2026 Manic EMU. All rights reserved.
 */
 
-"WhatsNewDetail" = "- ปรับปรุงประสิทธิภาพ 3DS\n- อัปเดตคอร์ Azahar; ไม่รองรับ ROM ที่เข้ารหัสอีกต่อไป\n- อัปเดต Nimbus ใน Artic Base เป็นเวอร์ชันล่าสุดแล้ว\n- ปรับปรุงประสิทธิภาพ Home Menu บนคอร์ Azahar\n- แก้พฤติกรรมของตัวชี้ Wii\n- เพิ่มการรองรับ MeloCafe Link\n- iPad รองรับแอปแบบหน้าต่างแล้ว\n- ออกแบบ skin ของ SNES ใหม่\n- เพิ่ม skin สำรอง: iPad ใช้ skin ของ iPhone ได้\n- รองรับ iOS 27\n- รองรับ iPhone Duo\n- แก้ปัญหา AirPlay ไม่ทำงานบน iOS 27 ขึ้นไป\n- แก้ไขข้อบกพร่องและปรับปรุงอื่น ๆ";
+"WhatsNewDetail" = "- ปรับปรุงประสิทธิภาพ 3DS\n- Nimbus ใน Artic Base รองรับ Pretendo ล่าสุดแล้ว\n- ปรับปรุงประสิทธิภาพ Home Menu บนคอร์ Azahar\n- แก้พฤติกรรมของตัวชี้ Wii สำหรับผู้ใช้ที่ได้รับผลกระทบ\n- เพิ่มการรองรับ MeloCafe Link\n- iPad รองรับแอปแบบหน้าต่างแล้ว\n- ออกแบบ skin ของ SNES ใหม่\n- เพิ่ม skin สำรอง: iPad ใช้ skin ของ iPhone ได้\n- รองรับ iPhone Duo\n- แก้ปัญหา AirPlay ไม่ทำงานบน iOS 27 ขึ้นไป\n- เพิ่ม BitBop แอปพี่น้องใหม่ของ Manic EMU สำหรับฟังเพลงเกมย้อนยุค\n- แก้ไขข้อบกพร่องและปรับปรุงอื่น ๆ";
