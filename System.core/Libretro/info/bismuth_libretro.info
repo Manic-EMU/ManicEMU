@@ -1,0 +1,35 @@
+# Software Information
+display_name = "Nintendo - NES / Famicom (Bismuth)"
+authors = "StephenDev0"
+supported_extensions = "nes"
+corename = "Bismuth"
+license = "MIT (non-commercial)"
+permissions = ""
+categories = "Emulator"
+display_version = "1.0.0"
+
+# Hardware Information
+manufacturer = "Nintendo"
+systemname = "Nintendo Entertainment System"
+systemid = "nes"
+
+# Libretro Features
+supports_no_game = "false"
+savestate = "true"
+savestate_features = "deterministic"
+cheats = "true"
+input_descriptors = "true"
+memory_descriptors = "true"
+libretro_saves = "true"
+core_options = "true"
+load_subsystem = "false"
+hw_render = "false"
+needs_fullpath = "false"
+disk_control = "false"
+is_experimental = "false"
+database = "Nintendo - Nintendo Entertainment System"
+
+# Firmware / BIOS
+firmware_count = 0
+
+description = "A cycle-accurate NES / Famicom core written entirely in Swift. Dot-based PPU, cycle-stepped 6502 with DMA timing, full APU with expansion audio (VRC6, Sunsoft 5B, MMC5), 36 mapper numbers including MMC1-5, VRC2/4/6 and FME-7, NES Zapper (tap the screen to shoot, or a light gun), Four Score, Scale2x/3x/4x upscaling, band-limited alias-free audio, Game Genie and raw cheats, deterministic save states, NTSC/PAL/Dendy timing, a palette decoded from measured 2C02G composite levels, and RetroAchievements memory maps."

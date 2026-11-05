@@ -547,6 +547,7 @@ extension _R {
             return path
         }
         static let Stella = Document.appendingPathComponent(EmulationCore.Stella.name)
+        static let Bismuth = Document.appendingPathComponent(EmulationCore.Bismuth.name)
         static let Atari800 = Document.appendingPathComponent(EmulationCore.Atari800.name)
         static let ProSystem = Document.appendingPathComponent(EmulationCore.ProSystem.name)
         static let VirtualJaguar = Document.appendingPathComponent(EmulationCore.VirtualJaguar.name)

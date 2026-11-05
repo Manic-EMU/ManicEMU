@@ -1349,6 +1349,7 @@
 		57909583303C7D9100A53656 /* mednafen.saturn.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57DCE79D2E0C43310079E3AA /* mednafen.saturn.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57909584303C7D9100A53656 /* picodrive.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57655C1E2DF6B94C003E4A6E /* picodrive.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57909585303C7D9100A53656 /* nestopia.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7149EB8F0CB5A3BAFC59BE26 /* bismuth.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8D13DE6F7E2A39CBD821171 /* bismuth.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57909586303C7D9100A53656 /* ppsspp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE712DD3360A00AABF98 /* ppsspp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57909605303D793A00A53656 /* gpsp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57909600303D792500A53656 /* gpsp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57909608303D794200A53656 /* gpsp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57909600303D792500A53656 /* gpsp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1885,6 +1886,7 @@
 		57CDCF712FD5CBD3005BA4C8 /* mednafen.saturn.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57DCE79D2E0C43310079E3AA /* mednafen.saturn.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57CDCF722FD5CBD3005BA4C8 /* picodrive.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57655C1E2DF6B94C003E4A6E /* picodrive.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57CDCF732FD5CBD3005BA4C8 /* nestopia.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		13B251074C1F088EF2194299 /* bismuth.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8D13DE6F7E2A39CBD821171 /* bismuth.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57CDCF742FD5CBD3005BA4C8 /* ppsspp.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57BFBE712DD3360A00AABF98 /* ppsspp.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57CDCF852FD5CC08005BA4C8 /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCF842FD5CC08005BA4C8 /* FLEX */; };
 		57CDCF872FD5CC10005BA4C8 /* ShowTouches in Frameworks */ = {isa = PBXBuildFile; productRef = 57CDCF862FD5CC10005BA4C8 /* ShowTouches */; };
@@ -2054,6 +2056,7 @@
 		57EED0772ECB817C003971BD /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EED0752ECB8172003971BD /* IconView.swift */; };
 		57F0D81A2DE1C2D700760F57 /* GameListStyleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0D8192DE1C2C200760F57 /* GameListStyleCollectionViewCell.swift */; };
 		57F0D83E2DE2C5AE00760F57 /* nestopia.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BFA000CD1023267F3868FD1 /* bismuth.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8D13DE6F7E2A39CBD821171 /* bismuth.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57F0D8422DE2CD8D00760F57 /* NES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F0D8412DE2CD8B00760F57 /* NES.swift */; };
 		57F1A9182D7D25B900D0CC93 /* GameInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9172D7D25B600D0CC93 /* GameInfoView.swift */; };
 		57F1A9252D7D36D200D0CC93 /* GameViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F1A9242D7D36CD00D0CC93 /* GameViewExtensions.swift */; };
@@ -2433,6 +2436,7 @@
 				57909583303C7D9100A53656 /* mednafen.saturn.libretro.framework in Embed Frameworks */,
 				57909584303C7D9100A53656 /* picodrive.libretro.framework in Embed Frameworks */,
 				57909585303C7D9100A53656 /* nestopia.libretro.framework in Embed Frameworks */,
+				7149EB8F0CB5A3BAFC59BE26 /* bismuth.libretro.framework in Embed Frameworks */,
 				57909586303C7D9100A53656 /* ppsspp.libretro.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -2498,6 +2502,7 @@
 				57CDCF712FD5CBD3005BA4C8 /* mednafen.saturn.libretro.framework in Embed Frameworks */,
 				57CDCF722FD5CBD3005BA4C8 /* picodrive.libretro.framework in Embed Frameworks */,
 				57CDCF732FD5CBD3005BA4C8 /* nestopia.libretro.framework in Embed Frameworks */,
+				13B251074C1F088EF2194299 /* bismuth.libretro.framework in Embed Frameworks */,
 				57CDCF742FD5CBD3005BA4C8 /* ppsspp.libretro.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -2550,6 +2555,7 @@
 				57DCE7A12E0C434C0079E3AA /* mednafen.saturn.libretro.framework in Embed Frameworks */,
 				57655C222DF6B970003E4A6E /* picodrive.libretro.framework in Embed Frameworks */,
 				57F0D83E2DE2C5AE00760F57 /* nestopia.libretro.framework in Embed Frameworks */,
+				8BFA000CD1023267F3868FD1 /* bismuth.libretro.framework in Embed Frameworks */,
 				57BFBE732DD3361800AABF98 /* ppsspp.libretro.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -7421,6 +7427,7 @@
 		57EED0752ECB8172003971BD /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		57F0D8192DE1C2C200760F57 /* GameListStyleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListStyleCollectionViewCell.swift; sourceTree = "<group>"; };
 		57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = nestopia.libretro.framework; path = ../Cores/nestopia.libretro.framework; sourceTree = SOURCE_ROOT; };
+		F8D13DE6F7E2A39CBD821171 /* bismuth.libretro.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = bismuth.libretro.framework; path = ../Cores/bismuth.libretro.framework; sourceTree = SOURCE_ROOT; };
 		57F0D8412DE2CD8B00760F57 /* NES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NES.swift; sourceTree = "<group>"; };
 		57F1A9172D7D25B600D0CC93 /* GameInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInfoView.swift; sourceTree = "<group>"; };
 		57F1A9242D7D36CD00D0CC93 /* GameViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewExtensions.swift; sourceTree = "<group>"; };
@@ -13508,6 +13515,7 @@
 				57DCE79D2E0C43310079E3AA /* mednafen.saturn.libretro.framework */,
 				57655C1E2DF6B94C003E4A6E /* picodrive.libretro.framework */,
 				57F0D83C2DE2C59900760F57 /* nestopia.libretro.framework */,
+				F8D13DE6F7E2A39CBD821171 /* bismuth.libretro.framework */,
 				57BFBE712DD3360A00AABF98 /* ppsspp.libretro.framework */,
 				20B6A88FB41ED3142FD4FD9E /* prboom.libretro.framework */,
 				57909600303D792500A53656 /* gpsp.libretro.framework */,

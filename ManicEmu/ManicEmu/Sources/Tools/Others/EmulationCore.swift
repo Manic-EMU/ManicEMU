@@ -53,7 +53,8 @@ enum EmulationCore: CaseIterable {
          gpSP,
          MesenS,
          Symbian,
-         Ruffle
+         Ruffle,
+         Bismuth
     
     var name: String {
         switch self {
@@ -149,6 +150,8 @@ enum EmulationCore: CaseIterable {
             "Symbian"
         case .Ruffle:
             "Ruffle"
+        case .Bismuth:
+            "Bismuth"
         }
     }
     
@@ -164,7 +167,7 @@ enum EmulationCore: CaseIterable {
         }
 #endif
         switch self {
-        case .Nestopia:
+        case .Nestopia, .Bismuth:
             return [.nes]
         case .Snes9x, .bsnes, .bsnesJG:
             return [.snes]
@@ -271,6 +274,7 @@ enum EmulationCore: CaseIterable {
         guard isLibretroCore else { return false }
         switch self {
         case .Nestopia,
+                .Bismuth,
                 .Snes9x,
                 .PicoDrive,
                 .BeetleSaturn,

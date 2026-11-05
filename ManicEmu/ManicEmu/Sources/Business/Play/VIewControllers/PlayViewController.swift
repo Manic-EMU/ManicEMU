@@ -1802,7 +1802,7 @@ extension PlayViewController {
                     .ppsspp_cpu_core: "IR JIT",
                     .ppsspp_software_rendering_jit: "disabled"
                 ], safeMode: true)
-            } else if manicGame.gameType == .nes || manicGame.gameType == .fds {
+            } else if manicGame.libretroCore == .Nestopia {
                 updateLibretroCoreConfigs(core: .Nestopia, configs: [
                     .nestopia_palette: "cxa2025as"
                 ], safeMode: true)
@@ -2055,7 +2055,7 @@ extension PlayViewController {
                 ] + networkingConfigs)
                 updatePSPResolution(manicGame.resolution, reload: false)
                 
-            } else if manicGame.gameType == .nes || manicGame.gameType == .fds {
+            } else if manicGame.libretroCore == .Nestopia {
                 updateNESPalette(manicGame.currentNesPalette, firstInit: true)
                 updateLibretroCoreConfigs(core: .Nestopia, configs: [:])
             } else if manicGame.gameType == .snes {
@@ -2815,6 +2815,9 @@ extension PlayViewController {
             ExternalGameControllerManager.shared.isKeyboardInputEnabled = false
         } else if manicGame.gameType == .wii {
             // Empty overlay falls through to CocoaView POINTER (Wii IR).
+            controllerView.allowTapThroughIfButtonNotHit = true
+        } else if manicGame.libretroCore == .Bismuth {
+            // Taps that miss a skin button reach the core as a pointer: Bismuth fires the Zapper there.
             controllerView.allowTapThroughIfButtonNotHit = true
         }
         
@@ -3919,6 +3922,8 @@ extension PlayViewController {
     }
     
     private func updateNESPalette(_ nesPalette: Game.NESPalette, firstInit: Bool = false) {
+        // Palettes are a Nestopia feature; Bismuth draws with its built-in one.
+        guard manicGame.libretroCore == .Nestopia else { return }
         Log.debug("更新NES调色板:\(nesPalette.name) type:\(nesPalette.type)")
         manicGame.updateExtra(key: ExtraKey.nesPalette.rawValue, value: nesPalette.name)
         if nesPalette.type == .nestopia {
