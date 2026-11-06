@@ -257,6 +257,9 @@ class Game: Object, ObjectUpdatable {
                 }
             }
         } else if gameType == .nes {
+            if defaultCore == 1 {
+                return URL(fileURLWithPath: R.Path.Bismuth.appendingPathComponent("\(name).srm"))
+            }
             return URL(fileURLWithPath: R.Path.Nestopia.appendingPathComponent("\(name).srm"))
         } else if gameType == .fds {
             return URL(fileURLWithPath: R.Path.Nestopia.appendingPathComponent("\(name).sav"))
@@ -474,6 +477,8 @@ class Game: Object, ObjectUpdatable {
     var libretroCore: EmulationCore? {
         if gameType == .psp {
             return .PPSSPP
+        } else if gameType == .nes && defaultCore == 1 {
+            return .Bismuth
         } else if gameType == .nes || gameType == .fds  {
             return .Nestopia
         } else if gameType == .snes {
@@ -582,6 +587,8 @@ class Game: Object, ObjectUpdatable {
     var libretroCorePath: String? {
         if gameType == .psp {
             return Bundle.main.path(forResource: "ppsspp.libretro", ofType: "framework", inDirectory: "Frameworks")
+        } else if gameType == .nes && defaultCore == 1 {
+            return Bundle.main.path(forResource: "bismuth.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .nes || gameType == .fds  {
             return Bundle.main.path(forResource: "nestopia.libretro", ofType: "framework", inDirectory: "Frameworks")
         } else if gameType == .snes {
@@ -1387,7 +1394,7 @@ class Game: Object, ObjectUpdatable {
     }
     
     var supportPalette: Bool {
-        if gameType == .nes ||
+        if (gameType == .nes && defaultCore != 1) ||
             gameType == .fds ||
             (gameType == .gb && defaultCore != 3) ||
             gameType == .vb ||

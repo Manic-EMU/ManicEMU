@@ -556,7 +556,9 @@ extension GameType {
     }
     
     var supportCores: [String] {
-        if self == .ss {
+        if self == .nes {
+            return [EmulationCore.Nestopia.name, EmulationCore.Bismuth.name]
+        } else if self == .ss {
             return [EmulationCore.BeetleSaturn.name, EmulationCore.Yabause.name]
         } else if self == .gba {
             return [EmulationCore.mGBA.name, EmulationCore.VBAM.name, EmulationCore.gpSP.name]
