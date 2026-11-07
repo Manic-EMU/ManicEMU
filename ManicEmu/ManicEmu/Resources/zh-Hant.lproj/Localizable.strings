@@ -1155,7 +1155,7 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "RommTransferSuccess" = "完成，已更新 %d 個遊戲。";
 "RommTransferPartial" = "完成，成功 %d 個，失敗 %d 個。";
 "RommTransferFailed" = "同步失敗，請檢查伺服器連線。";
-"RommLanAddressOnly" = "RomM 目前僅支援區域網路 IP 位址（如 192.168.x.x、10.x.x.x 或 169.254.x.x），暫不支援主機名稱和公網 IP。";
+"RommLanOrTailscaleAddressOnly" = "請使用區域網路 IP、Tailscale IP 或 MagicDNS 名稱（如 romm.tailnet.ts.net）。使用 MagicDNS 時，請在此裝置上連線 Tailscale 並啟用 Tailscale DNS。";
 "LandServiceEditServerNamePlaceholder" = "我的伺服器";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus 橫握";
 "WiimoteDesc" = "預設皮膚中，Wiimote 對應關係：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「搖晃」\n「右搖桿」 -> 「傾斜」\n需要 MotionPlus 的遊戲（如《天空之劍》）請選擇 Wiimote+MotionPlus 控制器類型。";

@@ -1187,7 +1187,7 @@ Press the controller button to complete mapping...";
 "RommTransferSuccess" = "Finished. %d games updated.";
 "RommTransferPartial" = "Finished. %d succeeded, %d failed.";
 "RommTransferFailed" = "Transfer failed. Check the server connection.";
-"RommLanAddressOnly" = "RomM currently accepts LAN IP addresses only (such as 192.168.x.x, 10.x.x.x, or 169.254.x.x). Hostnames and public IPs are not supported yet.";
+"RommLanOrTailscaleAddressOnly" = "Use a LAN IP, a Tailscale IP, or a MagicDNS name such as romm.tailnet.ts.net. For MagicDNS, connect Tailscale on this device and enable Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "My Server";
 
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus Sideways";

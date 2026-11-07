@@ -1124,7 +1124,7 @@ Si quieres mejorar tu configuración, PlayCase es el complemento perfecto para e
 "RommTransferSuccess" = "Terminado. %d juegos actualizados.";
 "RommTransferPartial" = "Terminado. %d correctos, %d fallidos.";
 "RommTransferFailed" = "Error de transferencia. Comprueba la conexión del servidor.";
-"RommLanAddressOnly" = "RomM ahora mismo solo acepta direcciones IP de LAN (como 192.168.x.x, 10.x.x.x o 169.254.x.x). Los nombres de host y las IP públicas aún no son compatibles.";
+"RommLanOrTailscaleAddressOnly" = "Usa una IP de LAN, una IP de Tailscale o un nombre de MagicDNS como romm.tailnet.ts.net. Para MagicDNS, conecta Tailscale en este dispositivo y activa el DNS de Tailscale.";
 "LandServiceEditServerNamePlaceholder" = "Mi servidor";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus horizontal";
 "WiimoteDesc" = "En la skin predeterminada, asignaciones del Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Agitar」\n「Stick derecho」 -> 「Inclinar」\nLos juegos que requieren MotionPlus (como Skyward Sword) necesitan un tipo de mando Wiimote+MotionPlus.";

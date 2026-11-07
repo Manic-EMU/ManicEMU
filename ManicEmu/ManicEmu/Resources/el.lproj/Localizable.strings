@@ -1152,7 +1152,7 @@
 "RommTransferSuccess" = "Ολοκληρώθηκε. Ενημερώθηκαν %d παιχνίδια.";
 "RommTransferPartial" = "Ολοκληρώθηκε. %d επιτυχή, %d αποτυχημένα.";
 "RommTransferFailed" = "Η μεταφορά απέτυχε. Ελέγξτε τη σύνδεση διακομιστή.";
-"RommLanAddressOnly" = "Το RomM προς το παρόν δέχεται μόνο διευθύνσεις IP LAN (όπως 192.168.x.x, 10.x.x.x ή 169.254.x.x). Τα ονόματα κεντρικών υπολογιστών και οι δημόσιες IP δεν υποστηρίζονται ακόμη.";
+"RommLanOrTailscaleAddressOnly" = "Χρησιμοποιήστε IP LAN, IP Tailscale ή όνομα MagicDNS όπως romm.tailnet.ts.net. Για το MagicDNS, συνδέστε το Tailscale σε αυτήν τη συσκευή και ενεργοποιήστε το Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Ο Διακομιστής Μου";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus Οριζόντια";
 "WiimoteDesc" = "Στο προεπιλεγμένο skin, αντιστοιχίσεις Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Τινάγμα」\n「Δεξί Analog」 -> 「Κλίση」\nΠαιχνίδια που απαιτούν MotionPlus (όπως το Skyward Sword) χρειάζονται τύπο χειριστηρίου Wiimote+MotionPlus.";

@@ -1151,7 +1151,7 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 "RommTransferSuccess" = "पूरा। %d गेम अपडेट हुए।";
 "RommTransferPartial" = "पूरा। %d सफल, %d विफल।";
 "RommTransferFailed" = "ट्रांसफर विफल। सर्वर कनेक्शन जांचें।";
-"RommLanAddressOnly" = "RomM अभी केवल LAN IP पते स्वीकार करता है (जैसे 192.168.x.x, 10.x.x.x, या 169.254.x.x)। होस्टनेम और पब्लिक IP अभी समर्थित नहीं हैं।";
+"RommLanOrTailscaleAddressOnly" = "LAN IP, Tailscale IP, या romm.tailnet.ts.net जैसा MagicDNS नाम इस्तेमाल करें। MagicDNS के लिए, इस डिवाइस पर Tailscale कनेक्ट करें और Tailscale DNS चालू करें।";
 "LandServiceEditServerNamePlaceholder" = "मेरा सर्वर";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus साइडवेज़";
 "WiimoteDesc" = "डिफ़ॉल्ट स्किन में Wiimote मैपिंग:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「शेक」\n「राइट थंबस्टिक」 -> 「टिल्ट」\nजिन गेम्स को MotionPlus चाहिए (जैसे Skyward Sword) उनके लिए Wiimote+MotionPlus कंट्रोलर टाइप चुनें।";

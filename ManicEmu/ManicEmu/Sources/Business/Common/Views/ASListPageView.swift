@@ -802,7 +802,16 @@ extension ASListPageView {
             inputCell.setData(input: input)
             if didActionOccurred != nil {
                 inputCell.setActionCallback { [weak self] inputActionType in
-                    self?.didActionOccurred?(.inputItem(indexPath: indexPath, action: inputActionType))
+                    guard let self else { return }
+                    switch inputActionType {
+                    case .textChange(let text):
+                        self.storeInputText(text ?? "", at: indexPath)
+                    case .tapClear:
+                        self.storeInputText("", at: indexPath)
+                    case .tapReturn:
+                        break
+                    }
+                    self.didActionOccurred?(.inputItem(indexPath: indexPath, action: inputActionType))
                 }
             } else {
                 inputCell.setActionCallback(nil)
@@ -812,6 +821,15 @@ extension ASListPageView {
             guard let customCell = cell as? ASListCustomCollectionCell else { return }
             customCell.setData(customView: view)
         }
+    }
+    
+    /// Input cells are reused while scrolling, so typed text has to live in the data source.
+    private func storeInputText(_ text: String, at indexPath: IndexPath) {
+        guard indexPath.section < listPage.sections.count,
+              indexPath.row < listPage.sections[indexPath.section].cells.count,
+              var input = listPage.sections[indexPath.section].cells[indexPath.row].inputValue else { return }
+        input.textAttributes.text = text
+        listPage.sections[indexPath.section].cells[indexPath.row] = .input(input)
     }
     
     func updateSectionData(_ sectionData: ASListPage.Section, section: Int, reloadView: Bool = true) {

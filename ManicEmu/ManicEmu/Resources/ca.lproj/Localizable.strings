@@ -1151,7 +1151,7 @@ Si voleu millorar la vostra configuració, PlayCase és el complement perfecte p
 "RommTransferSuccess" = "Acabat. %d jocs actualitzats.";
 "RommTransferPartial" = "Acabat. %d correctes, %d fallits.";
 "RommTransferFailed" = "La transferència ha fallat. Comprova la connexió del servidor.";
-"RommLanAddressOnly" = "RomM de moment només accepta adreces IP de LAN (com ara 192.168.x.x, 10.x.x.x o 169.254.x.x). Els noms d'amfitrió i les IP públiques encara no són compatibles.";
+"RommLanOrTailscaleAddressOnly" = "Fes servir una IP de LAN, una IP de Tailscale o un nom MagicDNS com ara romm.tailnet.ts.net. Per a MagicDNS, connecta Tailscale en aquest dispositiu i activa el DNS de Tailscale.";
 "LandServiceEditServerNamePlaceholder" = "El meu servidor";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus horitzontal";
 "WiimoteDesc" = "A la skin per defecte, assignacions del Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Sacsejar」\n「Stick dret」 -> 「Inclinar」\nEls jocs que requereixen MotionPlus (com Skyward Sword) necessiten un tipus de controlador Wiimote+MotionPlus.";

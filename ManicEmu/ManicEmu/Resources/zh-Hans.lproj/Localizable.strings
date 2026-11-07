@@ -1176,7 +1176,7 @@
 "RommTransferSuccess" = "完成，已更新 %d 个游戏。";
 "RommTransferPartial" = "完成，成功 %d 个，失败 %d 个。";
 "RommTransferFailed" = "同步失败，请检查服务器连接。";
-"RommLanAddressOnly" = "RomM 目前仅支持局域网 IP 地址（如 192.168.x.x、10.x.x.x 或 169.254.x.x），暂不支持主机名和公网 IP。";
+"RommLanOrTailscaleAddressOnly" = "请使用局域网 IP、Tailscale IP 或 MagicDNS 名称（如 romm.tailnet.ts.net）。使用 MagicDNS 时，请在此设备上连接 Tailscale 并启用 Tailscale DNS。";
 "LandServiceEditServerNamePlaceholder" = "我的服务器";
 
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus 横握";

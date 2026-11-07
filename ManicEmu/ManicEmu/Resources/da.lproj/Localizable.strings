@@ -1147,7 +1147,7 @@ Hvis du vil forbedre dit setup, er PlayCase et perfekt match til dette skin.";
 "RommTransferSuccess" = "Færdig. %d spil opdateret.";
 "RommTransferPartial" = "Færdig. %d lykkedes, %d mislykkedes.";
 "RommTransferFailed" = "Overførsel mislykkedes. Tjek serverforbindelsen.";
-"RommLanAddressOnly" = "RomM accepterer i øjeblikket kun LAN-IP-adresser (f.eks. 192.168.x.x, 10.x.x.x eller 169.254.x.x). Værtsnavne og offentlige IP'er understøttes endnu ikke.";
+"RommLanOrTailscaleAddressOnly" = "Brug en LAN-IP, en Tailscale-IP eller et MagicDNS-navn som romm.tailnet.ts.net. Til MagicDNS: forbind Tailscale på denne enhed, og slå Tailscale DNS til.";
 "LandServiceEditServerNamePlaceholder" = "Min server";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus på langs";
 "WiimoteDesc" = "I standard-skinnet gælder disse Wiimote-tilknytninger:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Ryst」\n「Højre thumbstick」 -> 「Vip」\nSpil, der kræver MotionPlus (f.eks. Skyward Sword), skal bruge controller-typen Wiimote+MotionPlus.";

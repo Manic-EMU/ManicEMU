@@ -1145,7 +1145,7 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 "RommTransferSuccess" = "完了しました。%d 件のゲームを更新しました。";
 "RommTransferPartial" = "完了しました。成功 %d 件、失敗 %d 件。";
 "RommTransferFailed" = "転送に失敗しました。サーバー接続を確認してください。";
-"RommLanAddressOnly" = "RomM は現在 LAN IP アドレスのみ受け付けます（192.168.x.x、10.x.x.x、169.254.x.x など）。ホスト名とパブリック IP はまだサポートされていません。";
+"RommLanOrTailscaleAddressOnly" = "LAN IP、Tailscale IP、または romm.tailnet.ts.net のような MagicDNS 名を使用してください。MagicDNS を使う場合は、このデバイスで Tailscale に接続し、Tailscale DNS を有効にしてください。";
 "LandServiceEditServerNamePlaceholder" = "マイサーバー";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus 横持ち";
 "WiimoteDesc" = "デフォルトスキンでの Wiimote 割り当て：\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「シェイク」\n「右スティック」 -> 「傾き」\nMotionPlus が必要なゲーム（『スカイウォードソード』など）では、Wiimote+MotionPlus のコントローラータイプを選んでください。";

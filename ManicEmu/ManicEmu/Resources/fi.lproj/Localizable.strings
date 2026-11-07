@@ -1152,7 +1152,7 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "RommTransferSuccess" = "Valmis. %d peliä päivitetty.";
 "RommTransferPartial" = "Valmis. %d onnistui, %d epäonnistui.";
 "RommTransferFailed" = "Siirto epäonnistui. Tarkista palvelinyhteys.";
-"RommLanAddressOnly" = "RomM hyväksyy toistaiseksi vain LAN-IP-osoitteita (kuten 192.168.x.x, 10.x.x.x tai 169.254.x.x). Isäntänimiä ja julkisia IP-osoitteita ei vielä tueta.";
+"RommLanOrTailscaleAddressOnly" = "Käytä LAN-IP-osoitetta, Tailscale-IP-osoitetta tai MagicDNS-nimeä, kuten romm.tailnet.ts.net. MagicDNS-nimiä varten yhdistä Tailscale tällä laitteella ja ota Tailscale DNS käyttöön.";
 "LandServiceEditServerNamePlaceholder" = "Oma palvelin";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus vaakasuunnassa";
 "WiimoteDesc" = "Oletusskinissä Wiimote-määritykset:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Ravistus」\n「Oikea analoginen」 -> 「Kallistus」\nMotionPlusia vaativat pelit (kuten Skyward Sword) tarvitsevat Wiimote+MotionPlus-ohjaintyypin.";

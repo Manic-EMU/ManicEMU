@@ -1149,7 +1149,7 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 "RommTransferSuccess" = "Završeno. Ažurirano igara: %d.";
 "RommTransferPartial" = "Završeno. Uspjelo %d, nije uspjelo %d.";
 "RommTransferFailed" = "Prijenos nije uspio. Provjerite vezu sa poslužiteljem.";
-"RommLanAddressOnly" = "RomM trenutačno prihvaća samo LAN IP adrese (npr. 192.168.x.x, 10.x.x.x ili 169.254.x.x). Nazivi hostova i javne IP adrese još nisu podržani.";
+"RommLanOrTailscaleAddressOnly" = "Upotrijebite LAN IP, Tailscale IP ili MagicDNS naziv kao što je romm.tailnet.ts.net. Za MagicDNS povežite Tailscale na ovom uređaju i uključite Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Moj poslužitelj";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus vodoravno";
 "WiimoteDesc" = "U zadanom skinu, Wiimote mapiranja:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Protresanje」\n「Desni analogni stick」 -> 「Nagib」\nIgre koje zahtijevaju MotionPlus (npr. Skyward Sword) trebaju vrstu kontrolera Wiimote+MotionPlus.";

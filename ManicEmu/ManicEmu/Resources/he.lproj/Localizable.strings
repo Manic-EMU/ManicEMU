@@ -1152,7 +1152,7 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 "RommTransferSuccess" = "הסתיים. %d משחקים עודכנו.";
 "RommTransferPartial" = "הסתיים. %d הצליחו, %d נכשלו.";
 "RommTransferFailed" = "ההעברה נכשלה. בדוק את חיבור השרת.";
-"RommLanAddressOnly" = "RomM מקבל כרגע רק כתובות IP ב-LAN (כגון 192.168.x.x, 10.x.x.x או 169.254.x.x). שמות מארח וכתובות IP ציבוריות עדיין אינם נתמכים.";
+"RommLanOrTailscaleAddressOnly" = "השתמש בכתובת IP ב-LAN, בכתובת IP של Tailscale או בשם MagicDNS כגון romm.tailnet.ts.net. עבור MagicDNS, חבר את Tailscale במכשיר זה והפעל את Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "השרת שלי";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus לרוחב";
 "WiimoteDesc" = "ב-skin ברירת המחדל, מיפויי Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「ניעור」\n「סטיק ימני」 -> 「הטיה」\nמשחקים שדורשים MotionPlus (כגון Skyward Sword) צריכים סוג בקר Wiimote+MotionPlus.";

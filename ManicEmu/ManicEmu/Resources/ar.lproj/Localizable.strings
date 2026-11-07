@@ -1122,7 +1122,7 @@
 "RommTransferSuccess" = "اكتمل. تم تحديث %d ألعاب.";
 "RommTransferPartial" = "اكتمل. نجح %d، وفشل %d.";
 "RommTransferFailed" = "فشل النقل. تحقق من اتصال الخادم.";
-"RommLanAddressOnly" = "يقبل RomM حاليًا عناوين IP على LAN فقط (مثل 192.168.x.x أو 10.x.x.x أو 169.254.x.x). أسماء المضيفين وعناوين IP العامة غير مدعومة بعد.";
+"RommLanOrTailscaleAddressOnly" = "استخدم عنوان IP على LAN أو عنوان IP من Tailscale أو اسم MagicDNS مثل romm.tailnet.ts.net. لاستخدام MagicDNS، اتصل بـ Tailscale على هذا الجهاز وفعّل Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "خادمي";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus أفقي";
 "WiimoteDesc" = "في السكين الافتراضي، تعيينات Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「هز」\n「العصا اليمنى」 -> 「إمالة」\nالألعاب التي تتطلب MotionPlus (مثل Skyward Sword) تحتاج إلى نوع وحدة تحكم Wiimote+MotionPlus.";

@@ -1150,7 +1150,7 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 "RommTransferSuccess" = "Voltooid. %d games bijgewerkt.";
 "RommTransferPartial" = "Voltooid. %d geslaagd, %d mislukt.";
 "RommTransferFailed" = "Overdracht mislukt. Controleer de serververbinding.";
-"RommLanAddressOnly" = "RomM accepteert momenteel alleen LAN-IP-adressen (zoals 192.168.x.x, 10.x.x.x of 169.254.x.x). Hostnamen en openbare IP's worden nog niet ondersteund.";
+"RommLanOrTailscaleAddressOnly" = "Gebruik een LAN-IP, een Tailscale-IP of een MagicDNS-naam zoals romm.tailnet.ts.net. Voor MagicDNS: verbind Tailscale op dit apparaat en schakel Tailscale DNS in.";
 "LandServiceEditServerNamePlaceholder" = "Mijn server";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus dwars";
 "WiimoteDesc" = "In de standaardskin gelden deze Wiimote-toewijzingen:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Schudden」\n「Rechter thumbstick」 -> 「Kantelen」\nGames die MotionPlus vereisen (zoals Skyward Sword) hebben het controllertype Wiimote+MotionPlus nodig.";
