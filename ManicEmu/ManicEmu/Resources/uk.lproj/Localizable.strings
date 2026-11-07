@@ -1150,7 +1150,7 @@ PlayCase спеціалізується на високоякісних чохл
 "RommTransferSuccess" = "Завершено. Оновлено ігор: %d.";
 "RommTransferPartial" = "Завершено. Успішно: %d, з помилкою: %d.";
 "RommTransferFailed" = "Передачу не виконано. Перевірте підключення до сервера.";
-"RommLanAddressOnly" = "RomM наразі приймає лише LAN IP-адреси (наприклад, 192.168.x.x, 10.x.x.x або 169.254.x.x). Імена хостів і публічні IP поки не підтримуються.";
+"RommLanOrTailscaleAddressOnly" = "Використовуйте LAN IP, IP Tailscale або ім’я MagicDNS, наприклад romm.tailnet.ts.net. Для MagicDNS підключіть Tailscale на цьому пристрої та ввімкніть Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Мій сервер";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus горизонтально";
 "WiimoteDesc" = "У типовому скіні відповідності Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Струс」\n「Правий стік」 -> 「Нахил」\nІгри, яким потрібен MotionPlus (наприклад, Skyward Sword), потребують типу контролера Wiimote+MotionPlus.";

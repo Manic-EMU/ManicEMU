@@ -1141,7 +1141,7 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 "RommTransferSuccess" = "Ferdig. %d spill oppdatert.";
 "RommTransferPartial" = "Ferdig. %d lyktes, %d mislyktes.";
 "RommTransferFailed" = "Overføring mislyktes. Sjekk servertilkoblingen.";
-"RommLanAddressOnly" = "RomM godtar for øyeblikket bare LAN-IP-adresser (for eksempel 192.168.x.x, 10.x.x.x eller 169.254.x.x). Vertsnavn og offentlige IP-er støttes ikke ennå.";
+"RommLanOrTailscaleAddressOnly" = "Bruk en LAN-IP, en Tailscale-IP eller et MagicDNS-navn som romm.tailnet.ts.net. For MagicDNS: koble til Tailscale på denne enheten og slå på Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Min server";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus på tvers";
 "WiimoteDesc" = "I standard-skinnet gjelder disse Wiimote-tilordningene:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Rist」\n「Høyre thumbstick」 -> 「Vipp」\nSpill som krever MotionPlus (for eksempel Skyward Sword) trenger kontrollertypen Wiimote+MotionPlus.";

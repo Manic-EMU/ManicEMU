@@ -1149,7 +1149,7 @@ Kurulumunuzu bir üst seviyeye taşımak istiyorsanız, PlayCase bu kaplama içi
 "RommTransferSuccess" = "Bitti. %d oyun güncellendi.";
 "RommTransferPartial" = "Bitti. %d başarılı, %d başarısız.";
 "RommTransferFailed" = "Aktarım başarısız. Sunucu bağlantısını kontrol edin.";
-"RommLanAddressOnly" = "RomM şu anda yalnızca LAN IP adreslerini kabul eder (örneğin 192.168.x.x, 10.x.x.x veya 169.254.x.x). Ana bilgisayar adları ve genel IP’ler henüz desteklenmez.";
+"RommLanOrTailscaleAddressOnly" = "Bir LAN IP’si, Tailscale IP’si veya romm.tailnet.ts.net gibi bir MagicDNS adı kullanın. MagicDNS için bu cihazda Tailscale’e bağlanın ve Tailscale DNS’i etkinleştirin.";
 "LandServiceEditServerNamePlaceholder" = "Sunucum";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus Yatay";
 "WiimoteDesc" = "Varsayılan skinde Wiimote eşlemeleri:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Salla」\n「Sağ Analog」 -> 「Eğ」\nMotionPlus gerektiren oyunlar (örneğin Skyward Sword) Wiimote+MotionPlus kontrolcü türüne ihtiyaç duyar.";

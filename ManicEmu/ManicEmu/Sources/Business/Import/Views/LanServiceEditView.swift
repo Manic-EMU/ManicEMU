@@ -26,15 +26,24 @@ class LanServiceEditView: BaseView {
             var input = ASInput.large(placeholder: $0.placeholderString)
             input.keyboardType = $0.keyboardType
             input.returnKeyType = $0.returnKeyType
+            if $0.type != .title {
+                input.autocapitalizationType = .none
+                input.autocorrectionType = .no
+            }
             return ASListPage.Section(cells: [.input(input)],
                                       header: .defaultHeader(title: $0.title),
+                                      footer: service.type == .romm && $0.type == .url
+                                        ? .texts([.smallText(R.string.localizable.rommLanOrTailscaleAddressOnly(), numberOfLines: 0)], pin: false)
+                                        : nil,
                                       decoration: .init(style: .primary))
         })
         let view = ASListPageView(.init(navigation: .defaultNavigation(title: service.title, titleIcon: .image(service.iconImage)),
                                         sections: sections,
                                         bottom: getBottom(isValid: false),
                                         backgroundColor: .clear,
-                                        pageInsets: .insets(top: R.Size.SheetGrabberTopInset)))
+                                        listInsets: .insets(bottom: R.Size.ContentSpaceMedium),
+                                        pageInsets: .insets(top: R.Size.SheetGrabberTopInset),
+                                        enableSafeAreaBottomInsets: false))
         view.didActionOccurred = { [weak self] action in
             guard let self else { return }
             if let inputValue = action.inputValue {
@@ -45,26 +54,26 @@ class LanServiceEditView: BaseView {
                 case .textChange(let text):
                     self.validateInput(item: item, string: text ?? "")
                     
+                case .tapClear:
+                    self.validateInput(item: item, string: "")
+
                 case .tapReturn(_):
                     let isLast = (index == editItems.count - 1)
-                    let handleIndex = isLast ? index : index + 1
-                    if let cell = self.listPageView.collectionView.cellForItem(at: IndexPath(row: 0, section: handleIndex)) as? ASListInputCollectionCell {
-                        if isLast {
-                            cell.resignFirstResponder()
-                        } else {
-                            cell.becomeFirstResponder()
-                        }
+                    if isLast {
+                        self.listPageView.collectionView.endEditing(true)
+                    } else {
+                        let nextIndexPath = IndexPath(row: 0, section: index + 1)
+                        self.listPageView.collectionView.scrollToItem(at: nextIndexPath, at: .centeredVertically, animated: false)
+                        self.listPageView.collectionView.layoutIfNeeded()
+                        self.listPageView.collectionView.cellForItem(at: nextIndexPath)?.becomeFirstResponder()
                     }
-                    
-                default:
-                    break
                 }
             } else if action.isBottom {
                 // Connect after the form validates.
                 self.listPageView.collectionView.endEditing(true)
                 UIView.makeLoading()
                 func handleServiceDetail() {
-                    if self.service.detail == nil {
+                    if self.service.detail?.isEmpty ?? true {
                         var deltaiString = ""
                         if let host = self.service.host {
                             deltaiString += host
@@ -188,7 +197,9 @@ class LanServiceEditView: BaseView {
                  type: .title,
                  returnKeyType: .next),
         EditItem(title: R.string.localizable.landServiceEditHost(),
-                 placeholderString: R.string.localizable.landServiceEditRequiredPlaceholder(),
+                 placeholderString: service.type == .romm
+                    ? "http://192.168.1.10:8080"
+                    : R.string.localizable.landServiceEditRequiredPlaceholder(),
                  keyboardType: .URL,
                  requiredField: true,
                  type: .url,
@@ -223,8 +234,10 @@ class LanServiceEditView: BaseView {
         
         addSubview(listPageView)
         listPageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(keyboardLayoutGuide.snp.top)
         }
+        listPageView.collectionView.keyboardDismissMode = .interactive
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -252,7 +265,10 @@ class LanServiceEditView: BaseView {
                         break
                     }
                 case .url:
-                    if let components = inputUrl?.validateAndExtractURLComponents {
+                    if var components = inputUrl?.validateAndExtractURLComponents {
+                        if service.type == .romm, components.scheme == nil {
+                            components.scheme = "http"
+                        }
                         if service.type == .samba {
                             if let scheme = components.scheme, scheme.lowercased() != "smb" {
                                 // Reject a non-smb scheme when one is provided.
@@ -269,7 +285,7 @@ class LanServiceEditView: BaseView {
                                 isValid = false
                                 break
                             }
-                            if service.type == .romm, !Self.isLanIPv4Host(components.host) {
+                            if service.type == .romm, !Self.isSupportedRommHost(components.host) {
                                 isValid = false
                                 break
                             }
@@ -311,11 +327,13 @@ class LanServiceEditView: BaseView {
         return button
     }
 
-    /// Temporary add-form gate: private IPv4 only. Hostnames and public IPs are rejected.
-    private static func isLanIPv4Host(_ host: String) -> Bool {
+    /// Add-form gate: private IPv4 (including Tailscale's 100.64.0.0/10), single-label hostnames
+    /// such as MagicDNS short names, and full MagicDNS names (`device.tailnet.ts.net`).
+    private static func isSupportedRommHost(_ host: String) -> Bool {
         let folded = host.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        if folded == "localhost" { return true }
         let parts = folded.split(separator: ".", omittingEmptySubsequences: false)
+        if parts.count == 1, folded.rangeOfCharacter(from: .letters) != nil { return true }
+        if parts.count == 4, folded.hasSuffix(".ts.net") { return true }
         guard parts.count == 4,
               let b1 = UInt8(parts[0]), let b2 = UInt8(parts[1]),
               UInt8(parts[2]) != nil, UInt8(parts[3]) != nil else { return false }
@@ -324,6 +342,7 @@ class LanServiceEditView: BaseView {
         if b1 == 169 && b2 == 254 { return true }
         if b1 == 192 && b2 == 168 { return true }
         if b1 == 172 && (16...31).contains(b2) { return true }
+        if b1 == 100 && (64...127).contains(b2) { return true }
         return false
     }
 }

@@ -1143,7 +1143,7 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 "RommTransferSuccess" = "Xong. Đã cập nhật %d trò chơi.";
 "RommTransferPartial" = "Xong. Thành công %d, thất bại %d.";
 "RommTransferFailed" = "Chuyển thất bại. Kiểm tra kết nối máy chủ.";
-"RommLanAddressOnly" = "Hiện RomM chỉ nhận địa chỉ IP LAN (như 192.168.x.x, 10.x.x.x hoặc 169.254.x.x). Chưa hỗ trợ tên máy chủ và IP công cộng.";
+"RommLanOrTailscaleAddressOnly" = "Dùng IP LAN, IP Tailscale hoặc tên MagicDNS như romm.tailnet.ts.net. Với MagicDNS, hãy kết nối Tailscale trên thiết bị này và bật Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Máy chủ của tôi";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus ngang";
 "WiimoteDesc" = "Trong skin mặc định, ánh xạ Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Lắc」\n「Analog phải」 -> 「Nghiêng」\nTrò chơi cần MotionPlus (như Skyward Sword) phải dùng loại tay cầm Wiimote+MotionPlus.";

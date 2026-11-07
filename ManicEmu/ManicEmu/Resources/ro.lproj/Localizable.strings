@@ -1150,7 +1150,7 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 "RommTransferSuccess" = "Finalizat. %d jocuri actualizate.";
 "RommTransferPartial" = "Finalizat. %d reușite, %d eșuate.";
 "RommTransferFailed" = "Transferul a eșuat. Verificați conexiunea la server.";
-"RommLanAddressOnly" = "RomM acceptă momentan doar adrese IP LAN (cum ar fi 192.168.x.x, 10.x.x.x sau 169.254.x.x). Numele de gazdă și IP-urile publice nu sunt încă acceptate.";
+"RommLanOrTailscaleAddressOnly" = "Folosiți un IP LAN, un IP Tailscale sau un nume MagicDNS, cum ar fi romm.tailnet.ts.net. Pentru MagicDNS, conectați Tailscale pe acest dispozitiv și activați Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Serverul meu";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus orizontal";
 "WiimoteDesc" = "În skinul implicit, mapările Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Scuturare」\n「Stick dreapta」 -> 「Înclinare」\nJocurile care necesită MotionPlus (precum Skyward Sword) au nevoie de un tip de controller Wiimote+MotionPlus.";

@@ -1150,7 +1150,7 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "RommTransferSuccess" = "Hotovo. Aktualizovaných hier: %d.";
 "RommTransferPartial" = "Hotovo. Úspešných %d, neúspešných %d.";
 "RommTransferFailed" = "Prenos zlyhal. Skontrolujte pripojenie k serveru.";
-"RommLanAddressOnly" = "RomM momentálne prijíma iba LAN IP adresy (napríklad 192.168.x.x, 10.x.x.x alebo 169.254.x.x). Názvy hostiteľov a verejné IP zatiaľ nie sú podporované.";
+"RommLanOrTailscaleAddressOnly" = "Použite LAN IP, IP adresu Tailscale alebo názov MagicDNS, napríklad romm.tailnet.ts.net. Pre MagicDNS pripojte na tomto zariadení Tailscale a zapnite Tailscale DNS.";
 "LandServiceEditServerNamePlaceholder" = "Môj server";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus vodorovne";
 "WiimoteDesc" = "V predvolenom skine mapovania Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Zatrasenie」\n「Pravá analógová páčka」 -> 「Naklonenie」\nHry, ktoré vyžadujú MotionPlus (napríklad Skyward Sword), potrebujú typ ovládača Wiimote+MotionPlus.";

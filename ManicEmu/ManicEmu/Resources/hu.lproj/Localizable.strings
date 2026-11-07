@@ -1150,7 +1150,7 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 "RommTransferSuccess" = "Kész. %d játék frissítve.";
 "RommTransferPartial" = "Kész. %d sikeres, %d sikertelen.";
 "RommTransferFailed" = "Az átvitel sikertelen. Ellenőrizze a szerverkapcsolatot.";
-"RommLanAddressOnly" = "A RomM jelenleg csak LAN IP-címeket fogad el (például 192.168.x.x, 10.x.x.x vagy 169.254.x.x). A gazdanevek és a nyilvános IP-k még nem támogatottak.";
+"RommLanOrTailscaleAddressOnly" = "Használjon LAN IP-címet, Tailscale IP-címet vagy MagicDNS-nevet, például romm.tailnet.ts.net. A MagicDNS-hez csatlakozzon a Tailscale-hez ezen az eszközön, és kapcsolja be a Tailscale DNS-t.";
 "LandServiceEditServerNamePlaceholder" = "Saját szerver";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus fektetve";
 "WiimoteDesc" = "Az alapértelmezett skinben a Wiimote-leképezések:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Rázás」\n「Jobb hüvelykkar」 -> 「Döntés」\nA MotionPlus-t igénylő játékokhoz (például Skyward Sword) Wiimote+MotionPlus vezérlőtípust kell választani.";

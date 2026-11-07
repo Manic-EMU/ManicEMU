@@ -1153,7 +1153,7 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 "RommTransferSuccess" = "완료되었습니다. %d개 게임을 업데이트했습니다.";
 "RommTransferPartial" = "완료되었습니다. 성공 %d개, 실패 %d개.";
 "RommTransferFailed" = "전송에 실패했습니다. 서버 연결을 확인하세요.";
-"RommLanAddressOnly" = "RomM은 현재 LAN IP 주소만 허용합니다(예: 192.168.x.x, 10.x.x.x, 169.254.x.x). 호스트 이름과 공인 IP는 아직 지원되지 않습니다.";
+"RommLanOrTailscaleAddressOnly" = "LAN IP, Tailscale IP 또는 romm.tailnet.ts.net 같은 MagicDNS 이름을 사용하세요. MagicDNS를 사용하려면 이 기기에서 Tailscale에 연결하고 Tailscale DNS를 활성화하세요.";
 "LandServiceEditServerNamePlaceholder" = "내 서버";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus 가로 잡기";
 "WiimoteDesc" = "기본 스킨에서 Wiimote 매핑:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「흔들기」\n「오른쪽 스틱」 -> 「기울이기」\nMotionPlus가 필요한 게임(예: 스카이워드 소드)은 Wiimote+MotionPlus 컨트롤러 유형이 필요합니다.";

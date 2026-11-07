@@ -100,7 +100,7 @@ extension String {
         
         // Extract scheme (Group 2)
         let schemeRange = Range(match.range(at: 2), in: trimmedInput)
-        let scheme = schemeRange.flatMap { String(trimmedInput[$0]) }
+        let scheme = schemeRange.flatMap { String(trimmedInput[$0]).lowercased() }
         
         // Extract host (Group 3 contains square brackets, the actual host is in Group 4 or 5)
         var host: String?
@@ -121,14 +121,19 @@ extension String {
         let isDomainValid = NSPredicate(format: "SELF MATCHES %@", #"^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"#).evaluate(with: adjustedHost)
         let isIPv4Valid = NSPredicate(format: "SELF MATCHES %@", #"^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$"#).evaluate(with: adjustedHost)
         let isIPv6Valid = isIPv6 && NSPredicate(format: "SELF MATCHES %@", #"^[0-9a-fA-F:]+$"#).evaluate(with: adjustedHost)
+        // Single-label names such as `nas`. Digit-only and 0x… labels are rejected because resolvers parse them as IPv4.
+        let isSingleLabelHostValid = NSPredicate(format: "SELF MATCHES %@", #"^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$"#).evaluate(with: adjustedHost)
+            && adjustedHost.rangeOfCharacter(from: .letters) != nil
+            && adjustedHost.range(of: #"^0[xX][0-9a-fA-F]+$"#, options: .regularExpression) == nil
         
-        guard isIPv6Valid || isIPv4Valid || isDomainValid else {
+        guard isIPv6Valid || isIPv4Valid || isDomainValid || isSingleLabelHostValid else {
             return nil
         }
         
         // Extract port (Group 6)
         let portString = Range(match.range(at: 6), in: trimmedInput).flatMap { String(trimmedInput[$0]) }
         let port = portString.flatMap { Int($0) }.flatMap { (1...65535).contains($0) ? $0 : nil }
+        guard portString == nil || port != nil else { return nil }
         
         // Extract path (Group 7)
         let path = Range(match.range(at: 7), in: trimmedInput).flatMap {

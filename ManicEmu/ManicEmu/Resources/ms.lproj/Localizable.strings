@@ -1123,7 +1123,7 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 "RommTransferSuccess" = "Selesai. %d permainan dikemas kini.";
 "RommTransferPartial" = "Selesai. %d berjaya, %d gagal.";
 "RommTransferFailed" = "Pemindahan gagal. Semak sambungan pelayan.";
-"RommLanAddressOnly" = "RomM buat masa ini hanya menerima alamat IP LAN (seperti 192.168.x.x, 10.x.x.x atau 169.254.x.x). Nama hos dan IP awam belum disokong.";
+"RommLanOrTailscaleAddressOnly" = "Gunakan IP LAN, IP Tailscale atau nama MagicDNS seperti romm.tailnet.ts.net. Untuk MagicDNS, sambungkan Tailscale pada peranti ini dan dayakan DNS Tailscale.";
 "LandServiceEditServerNamePlaceholder" = "Pelayan Saya";
 "WiimoteMotionPlusSideways" = "Wiimote+MotionPlus Melintang";
 "WiimoteDesc" = "Dalam kulit lalai, pemetaan Wiimote:\n「X」 -> 「1」\n「Y」 -> 「2」\n「ZL」 -> 「Goncang」\n「Thumbstick Kanan」 -> 「Condong」\nPermainan yang memerlukan MotionPlus (seperti Skyward Sword) perlukan jenis pengawal Wiimote+MotionPlus.";
