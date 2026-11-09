@@ -64,7 +64,9 @@ class RommServiceProvider: CloudServiceProvider {
                     }
                 } else {
                     let platformID = Int(directory.id) ?? 0
-                    items = try await client.roms(platformID: platformID).map { rom in
+                    // Skip ROMs RomM marks missing from disk: their content endpoint returns 404, and one
+                    // failed task leaves the whole download batch unimported (DownloadManager imports on .success).
+                    items = try await client.roms(platformID: platformID).filter { $0.missing_from_fs != true }.map { rom in
                         let item = CloudItem(id: "\(rom.id)/\(rom.fs_name)",
                                              name: rom.fs_name,
                                              path: romContentPath(romID: rom.id, fileName: rom.fs_name),
