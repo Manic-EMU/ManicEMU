@@ -105,6 +105,8 @@ struct RommRom: Decodable {
     let name: String?
     let fs_name: String
     let fs_size_bytes: Int64?
+    /// True when RomM still lists the ROM but its file is gone from disk.
+    let missing_from_fs: Bool?
     let summary: String?
     let path_cover_small: String?
     let path_cover_large: String?
@@ -118,7 +120,7 @@ struct RommRom: Decodable {
     let rom_user: RommUser?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, fs_name, fs_size_bytes, summary
+        case id, name, fs_name, fs_size_bytes, missing_from_fs, summary
         case path_cover_small, path_cover_large, url_cover
         case has_manual, path_manual, url_manual
         case platform_display_name, metadatum, igdb_metadata, rom_user
@@ -130,6 +132,7 @@ struct RommRom: Decodable {
         name = try container.decodeIfPresent(String.self, forKey: .name)
         fs_name = try container.decode(String.self, forKey: .fs_name)
         fs_size_bytes = try container.decodeIfPresent(Int64.self, forKey: .fs_size_bytes)
+        missing_from_fs = try? container.decode(Bool.self, forKey: .missing_from_fs)
         summary = try container.decodeIfPresent(String.self, forKey: .summary)
         path_cover_small = try container.decodeIfPresent(String.self, forKey: .path_cover_small)
         path_cover_large = try container.decodeIfPresent(String.self, forKey: .path_cover_large)
