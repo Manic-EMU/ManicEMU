@@ -2262,6 +2262,14 @@
 		F9A3C32228B84AD391F34585 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D32FD41D9300A2749A /* NVActivityIndicatorView */; };
 		FDD0064DAC7645118F826ED7 /* Closures in Frameworks */ = {isa = PBXBuildFile; productRef = 578E231F2FD288C600A2749A /* Closures */; };
 		FFD8F5F4CE02425E8BA80296 /* mednafen.pce.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7B0200010000000000000001 /* SaveSyncReadiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0200000000000000000001 /* SaveSyncReadiness.swift */; };
+		7B0200010000000000000002 /* SaveSyncReadiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0200000000000000000001 /* SaveSyncReadiness.swift */; };
+		7B0200010000000000000003 /* SaveSyncReadiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0200000000000000000001 /* SaveSyncReadiness.swift */; };
+		7B0200010000000000000004 /* SaveSyncReadiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0200000000000000000001 /* SaveSyncReadiness.swift */; };
+		7C1000010000000000000001 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7C1000010000000000000002 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7C1000010000000000000003 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7C1000010000000000000004 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -7514,6 +7522,8 @@
 		F0C500000000000000000106 /* FocusCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCollectionView.swift; sourceTree = "<group>"; };
 		F0C500000000000000000107 /* FocusSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSystem.swift; sourceTree = "<group>"; };
 		F0C500000000000000000108 /* FocusSystem+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSystem+UIViewController.swift"; sourceTree = "<group>"; };
+		7B0200000000000000000001 /* SaveSyncReadiness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/SaveSyncReadiness.swift"; sourceTree = "<group>"; };
+		7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/FilesSyncPullCoordinator.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -13704,6 +13714,8 @@
 			children = (
 				57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */,
 				57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */,
+				7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */,
+				7B0200000000000000000001 /* SaveSyncReadiness.swift */,
 				57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */,
 				57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */,
 				57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */,
@@ -14992,6 +15004,8 @@
 				00000000000051A100000164 /* FilesSyncPolicy.swift in Sources */,
 				E524FAB230886523009885DA /* DuoTabletopKit.swift in Sources */,
 				00000000000051A100000165 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000001 /* FilesSyncPullCoordinator.swift in Sources */,
+				7B0200010000000000000001 /* SaveSyncReadiness.swift in Sources */,
 				00000000000051A100000166 /* FilesSyncEngine.swift in Sources */,
 				00000000000051A100000167 /* FilesSyncIO.swift in Sources */,
 				00000000000051A100000168 /* FilesSyncWatchers.swift in Sources */,
@@ -15438,6 +15452,8 @@
 				57EBA5613052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
 				E524FAB030886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57EBA5653052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000002 /* FilesSyncPullCoordinator.swift in Sources */,
+				7B0200010000000000000002 /* SaveSyncReadiness.swift in Sources */,
 				57EBA5693052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56D3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
 				57EBA5713052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
@@ -15921,6 +15937,8 @@
 				57EBA5623052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
 				E524FAB130886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57EBA5663052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000003 /* FilesSyncPullCoordinator.swift in Sources */,
+				7B0200010000000000000003 /* SaveSyncReadiness.swift in Sources */,
 				57EBA56A3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56E3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
 				57EBA5723052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
@@ -16346,6 +16364,8 @@
 				57EBA5553052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
 				57EBA5633052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
 				57EBA5673052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000004 /* FilesSyncPullCoordinator.swift in Sources */,
+				7B0200010000000000000004 /* SaveSyncReadiness.swift in Sources */,
 				57EBA56B3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56F3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
 				57EBA5733052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,

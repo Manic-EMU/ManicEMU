@@ -1190,3 +1190,5 @@ PlayCase 專注於製造高品質 iPhone 手機殼，設計時已充分考慮配
 
 "Game3DSEncryptedTips" = "請導入正確的 aes_keys.txt 以讀取加密 ROM。";
 "AesKeysTxtDesc" = "運行加密 3DS ROM 時需要此檔案。";
+
+"verifiedSaveSyncNeedsAttention" = "存檔同步需要處理（%ld）";

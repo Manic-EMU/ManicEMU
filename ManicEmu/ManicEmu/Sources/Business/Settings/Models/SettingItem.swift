@@ -317,6 +317,8 @@ struct SettingItem {
             switch progress.phase {
             case .idle:
                 return R.string.localizable.iCloudSynced()
+            case .needsAttention:
+                return String(format: NSLocalizedString("verifiedSaveSyncNeedsAttention", comment: ""), progress.unresolvedCount)
             case .paused:
                 return R.string.localizable.iCloudSyncPaused()
             case .unavailable:

@@ -12,13 +12,7 @@ import Network
 import RealmSwift
 
 struct FilesSyncProgress {
-    enum Phase: String {
-        case idle
-        case scanning
-        case syncing
-        case paused
-        case unavailable
-    }
+    typealias Phase = FilesSyncReadinessPhase
     
     var phase: Phase = .idle
     var completedCount: Int = 0
@@ -26,6 +20,7 @@ struct FilesSyncProgress {
     var bytesTransferred: Int64 = 0
     var bytesTotal: Int64 = 0
     var currentFileName: String?
+    var unresolvedCount: Int = 0
     
     var fraction: Float {
         if totalCount <= 0 {
@@ -84,7 +79,7 @@ final class FilesSyncManager {
             return .idle
         case .scanning, .syncing:
             return .syncing
-        case .unavailable:
+        case .unavailable, .needsAttention:
             return .undefine
         }
     }
@@ -343,6 +338,7 @@ final class FilesSyncManager {
     }
     
     func handleDidBecomeActive() {
+        if engine.needsInitialIntentPull { SyncManager.shared.refreshIntentRecords() }
         Log.debug("[iCloud Sync] Manager.handleDidBecomeActive main=\(Thread.isMainThread)")
         engine.handleDidBecomeActive()
     }
@@ -353,6 +349,7 @@ final class FilesSyncManager {
         stop()
         if Settings.iCloudSyncEnableValue {
             start()
+            SyncManager.shared.refreshIntentRecords()
         }
     }
     
@@ -389,6 +386,7 @@ final class FilesSyncManager {
             if becameSatisfied {
                 Log.debug("[iCloud Sync] network became satisfied expensive=\(path.isExpensive) constrained=\(path.isConstrained)")
                 self.engine.handleNetworkSatisfied()
+                if self.engine.needsInitialIntentPull { SyncManager.shared.refreshIntentRecords() }
             } else if !satisfied {
                 Log.debug("[iCloud Sync] network unsatisfied")
             }
@@ -404,6 +402,12 @@ final class FilesSyncManager {
         Log.debug("[iCloud Sync] network path monitor stopped")
     }
     
+    var intentSession: UInt64 { engine.intentSession }
+
+    func initialIntentPullFinished(session: UInt64, error: Error?) {
+        engine.initialIntentPullFinished(session: session, error: error)
+    }
+
     private func observeIntentRecords() {
 #if SIDE_LOAD
         return
@@ -411,8 +415,8 @@ final class FilesSyncManager {
         intentToken = Database.realm.objects(FilesSyncRecord.self).where { !$0.isDeleted }.observe(on: intentQueue) { [weak self] changes in
             guard let self else { return }
             switch changes {
-            case .initial:
-                break
+            case .initial(let collection):
+                self.engine.handleIntentPaths(collection.map(\.path))
             case .update(let collection, _, let insertions, let modifications):
                 var paths: [String] = []
                 paths.reserveCapacity(insertions.count + modifications.count)

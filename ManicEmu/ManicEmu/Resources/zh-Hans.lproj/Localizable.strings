@@ -1216,3 +1216,5 @@
 
 "Game3DSEncryptedTips" = "请导入正确的 aes_keys.txt 以读取加密 ROM。";
 "AesKeysTxtDesc" = "运行加密 3DS ROM 时需要此文件。";
+
+"verifiedSaveSyncNeedsAttention" = "存档同步需要处理（%ld）";

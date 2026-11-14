@@ -117,6 +117,7 @@ final class FilesSyncEngine {
     /// Buffered `present` intents. Written in one Realm transaction so IceCream emits a
     /// single CloudKit operation instead of one long-lived operation per file.
     private var pendingIntentMarks: [String: Int64] = [:]
+    private var intentReadiness = FilesSyncIntentReadiness()
     private let persistQueue = DispatchQueue(label: "com.aoshuang.manicemu.files-sync-persist", qos: .utility)
     private let intentFlushThreshold = 64
     /// How long after a successful transfer the cloud listing may still miss the item.
@@ -207,6 +208,7 @@ final class FilesSyncEngine {
             pendingLocalRemovals.removeAll()
             pendingInventory = nil
             pendingIntentMarks.removeAll()
+            intentReadiness.resetSession()
             cloudListingReady = false
             nextOpToken = 0
             repairInFlight = false
@@ -290,7 +292,7 @@ final class FilesSyncEngine {
             if stats.queued > 0 {
                 await self.waitUntilIdle()
             }
-            let remaining = self.withLock { self.deferred.count }
+            let remaining = self.withLock { self.deferred.count + self.intentReadiness.waiting.count }
             Log.debug("[iCloud Sync] repair completed remaining=\(remaining)")
             DispatchQueue.main.async {
                 handler(.completed(uploaded: stats.uploads, downloaded: stats.downloads, remaining: remaining))
@@ -333,14 +335,33 @@ final class FilesSyncEngine {
         }
     }
     
+    var intentSession: UInt64 { withLock { intentReadiness.session } }
+    var needsInitialIntentPull: Bool { withLock { !intentReadiness.pullReady } }
+
     func handleIntentPaths(_ paths: [String]) {
-        guard isStarted, !paths.isEmpty else { return }
-        Log.debug("[iCloud Sync] intent records changed count=\(paths.count)")
-        enqueueWork("intentRecords") { [weak self] in
-            await self?.applyIntentPaths(paths)
+        withLock { intentReadiness.enqueue(paths) }
+        enqueueWork("intentRecords") { [weak self] in _ = await self?.drainIntentPathsIfReady() }
+    }
+
+    func initialIntentPullFinished(session: UInt64, error: Error?) {
+        let accepted = withLock { intentReadiness.finishPull(session: session, succeeded: error == nil) }
+        guard accepted else { return }
+        enqueueWork("intent pull finished") { [weak self] in
+            guard let self else { return }
+            if !(await self.drainIntentPathsIfReady()) { self.publish({ _ in }, settleIfQuiescent: true) }
         }
     }
-    
+
+    @discardableResult
+    private func drainIntentPathsIfReady(settleAfterReplay: Bool = true) async -> Bool {
+        guard isStarted, !withLock({ pausedForGameplay }) else { return false }
+        let paths = withLock { intentReadiness.drain(inventoryReady: cloudListingReady) }
+        guard !paths.isEmpty else { return false }
+        // Stay in the current work chain so status cannot settle ahead of this replay.
+        await applyIntentPaths(paths, settleAfterReplay: settleAfterReplay)
+        return true
+    }
+
     func excludeCloudCopies(urls: [URL]) {
         guard isStarted else { return }
         Log.debug("[iCloud Sync] excludeCloudCopies count=\(urls.count)")
@@ -465,6 +486,7 @@ final class FilesSyncEngine {
         } else {
             allCloud = [:]
         }
+        await drainIntentPathsIfReady(settleAfterReplay: false)
         let cloudForDecide: [String: FilesSyncFingerprint]
         if saveRootsOnly, !full {
             cloudForDecide = allCloud.filter { !FilesSyncPolicy.shouldSkipOnSaveScan(relativePath: $0.key) }
@@ -706,12 +728,20 @@ final class FilesSyncEngine {
             Log.debug("[iCloud Sync] cloud inventory stored, reconcile deferred started=\(isStarted) paused=\(withLock { pausedForGameplay })")
             return
         }
+        await drainIntentPathsIfReady(settleAfterReplay: false)
         // Upload percent ticks keep size/mtime the same. Skip a full decide pass.
         if previous == inventory.files, previousNotDownloaded == inventory.notDownloaded {
+            if inventory.uploading.isEmpty, inventory.downloading.isEmpty {
+                publish({ _ in }, settleIfQuiescent: true)
+            }
             Log.debug("[iCloud Sync] cloud inventory progress-only files=\(inventory.files.count)")
             return
         }
         await reconcileCloudDelta(previous: previous, inventory: inventory)
+        // A changed listing can also decide only skips and leave no transfer to finish.
+        if inventory.uploading.isEmpty, inventory.downloading.isEmpty {
+            publish({ _ in }, settleIfQuiescent: true)
+        }
     }
     
     private func reconcileCloudDelta(previous: [String: FilesSyncFingerprint], inventory: FilesSyncCloudInventory) async {
@@ -778,6 +808,16 @@ final class FilesSyncEngine {
     @discardableResult
     private func decide(relativePath: String, local: FilesSyncFingerprint?, cloud: FilesSyncFingerprint?) -> FilesSyncDecideAction {
         let intent = FilesSyncIntentStore.snapshot(relativePath: relativePath)
+        if local == nil, cloud != nil, intent == nil, ThreeDSSavePolicy.saveRoot(relativePath) != nil {
+            withLock {
+                intentReadiness.waitForIntent(relativePath)
+                pending[relativePath] = nil
+                deferred[relativePath] = nil
+            }
+            publish { _ in }
+            return .skip
+        }
+        withLock { intentReadiness.resolved(relativePath) }
         let applied = FilesSyncIndex.appliedGeneration(for: relativePath)
         let ledgerEntry = FilesSyncIndex.store.files[relativePath]
         let ledger = ledgerEntry?.fingerprint
@@ -922,7 +962,7 @@ final class FilesSyncEngine {
         return localWins ? .upload : .download
     }
     
-    private func applyIntentPaths(_ paths: [String]) async {
+    private func applyIntentPaths(_ paths: [String], settleAfterReplay: Bool = true) async {
         refreshROMExclusion()
         let cloud = withLock { latestCloudFiles }
         for relative in Set(paths) {
@@ -934,6 +974,8 @@ final class FilesSyncEngine {
         }
         schedulePersistQueuedOps()
         pump()
+        // Nested replay belongs to an unfinished scan; only its caller may settle status.
+        if settleAfterReplay { publish({ _ in }, settleIfQuiescent: true) }
     }
     
     @discardableResult
@@ -1486,10 +1528,15 @@ final class FilesSyncEngine {
     
     /// Single writer for `_progress`. Drain and the metadata work chain run concurrently,
     /// so the read-modify-write must happen under the lock.
-    private func publish(_ update: (inout FilesSyncProgress) -> Void) {
+    private func publish(_ update: (inout FilesSyncProgress) -> Void, settleIfQuiescent: Bool = false) {
         let result = withLock { () -> (next: FilesSyncProgress, describe: Bool, post: Bool) in
             var next = _progress
             update(&next)
+            next.unresolvedCount = intentReadiness.waiting.count
+            next.phase = intentReadiness.reportedPhase(current: next.phase,
+                inventoryReady: cloudListingReady, started: started, paused: pausedForGameplay,
+                hasActiveWork: !pending.isEmpty || !inFlight.isEmpty,
+                unresolvedCount: next.unresolvedCount, settleIfQuiescent: settleIfQuiescent)
             let phaseChanged = next.phase != _progress.phase
             let describe = phaseChanged
                 || next.currentFileName != _progress.currentFileName

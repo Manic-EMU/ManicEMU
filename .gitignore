@@ -115,3 +115,7 @@ Scripts/find_unused_types.py
 
 #vscode
 .vscode
+
+# Credential-free production sync tests
+.build/
+.swiftpm/
