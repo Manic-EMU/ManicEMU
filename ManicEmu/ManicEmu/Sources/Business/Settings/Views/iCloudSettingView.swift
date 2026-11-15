@@ -205,7 +205,7 @@ class ICloudSettingView: BaseView {
         case .paused:
             title = R.string.localizable.iCloudSyncPaused()
         case .needsAttention:
-            title = String(format: NSLocalizedString("verifiedSaveSyncNeedsAttention", comment: ""), progress.unresolvedCount)
+            title = String(format: NSLocalizedString("verifiedSaveSyncNeedsAttention", comment: "Save sync status; %ld is the number of unresolved save files."), progress.unresolvedCount)
         case .unavailable:
             title = R.string.localizable.iCloudNotEnable()
         case .scanning, .syncing:
