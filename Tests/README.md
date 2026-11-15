@@ -1,8 +1,9 @@
 # Save sync core tests
 
-The `SaveSyncCoreTests` scheme in the existing Xcode project compiles the same
+The `SaveSyncCoreTests` target in the existing Xcode project compiles the same
 production shared sources as the app. It has no app host or app dependencies.
-Run it on an available iOS simulator (or use `-destination 'platform=macOS'`):
+Its shared scheme makes the test command work without relying on each user's
+automatically generated schemes. Run it on an available iOS simulator:
 
 ```sh
 xcodebuild -project ManicEmu/ManicEmu.xcodeproj -scheme SaveSyncCoreTests \

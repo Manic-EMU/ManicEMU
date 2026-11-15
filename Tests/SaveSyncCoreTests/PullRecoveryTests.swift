@@ -17,36 +17,44 @@ final class PullRecoveryTests: XCTestCase {
         func expire() { for job in jobs where !job.cancelled { job.action() } }
     }
 
-    func testMissingCallbackTimesOutThenSameAccountRetryReleasesQueuedIntent() {
-        let clock = Clock()
-        let pulls = FilesSyncPullCoordinator(timeout: 1, schedule: clock.schedule)
-        var readiness = FilesSyncIntentReadiness()
-        readiness.enqueue(["save"])
-        var firstCallback: ((Error?) -> Void)?
-        var completions = 0
-        let finish: (Error?) -> Void = { error in
-            completions += 1
-            readiness.finishPull(session: 0, succeeded: error == nil)
+    func testFailedOrMissingCallbackCanRetryWithoutLosingQueuedIntent() {
+        for missingCallback in [false, true] {
+            let clock = Clock()
+            let pulls = FilesSyncPullCoordinator(timeout: 1, schedule: clock.schedule)
+            var readiness = FilesSyncIntentReadiness()
+            readiness.enqueue(["save"])
+            var firstCallback: ((Error?) -> Void)?
+            var completions = 0
+            let finish: (Error?) -> Void = { error in
+                completions += 1
+                readiness.finishPull(session: 0, succeeded: error == nil)
+            }
+            XCTAssertTrue(pulls.perform(session: 0, operation: { firstCallback = $0 }, completion: finish))
+            if missingCallback {
+                // IceCream's terminal-error path can omit its completion entirely.
+                clock.expire()
+            } else {
+                firstCallback?(NSError(domain: "pull", code: 1))
+            }
+            XCTAssertEqual(completions, 1)
+            XCTAssertTrue(readiness.pullFailed)
+            XCTAssertFalse(readiness.pullReady)
+            XCTAssertTrue(readiness.drain(inventoryReady: true).isEmpty)
+            var retryCallback: ((Error?) -> Void)?
+            XCTAssertTrue(pulls.perform(session: 0, operation: { retryCallback = $0 }, completion: finish))
+            firstCallback?(nil) // Old success cannot finish the new attempt.
+            XCTAssertEqual(completions, 1)
+            XCTAssertFalse(pulls.perform(session: 0, operation: { _ in XCTFail("overlapping retry") }, completion: finish))
+            retryCallback?(nil)
+            XCTAssertEqual(completions, 2)
+            XCTAssertFalse(readiness.pullFailed)
+            XCTAssertEqual(readiness.drain(inventoryReady: true), ["save"])
+            firstCallback?(NSError(domain: "late", code: 1))
+            retryCallback?(nil)
+            clock.expire()
+            XCTAssertEqual(completions, 2)
+            XCTAssertTrue(readiness.pullReady)
         }
-        XCTAssertTrue(pulls.perform(session: 0, operation: { firstCallback = $0 }, completion: finish))
-        // IceCream's terminal-error path can omit its completion entirely.
-        clock.expire()
-        XCTAssertEqual(completions, 1)
-        XCTAssertTrue(readiness.pullFailed)
-        XCTAssertTrue(readiness.drain(inventoryReady: true).isEmpty)
-        var retryCallback: ((Error?) -> Void)?
-        XCTAssertTrue(pulls.perform(session: 0, operation: { retryCallback = $0 }, completion: finish))
-        firstCallback?(nil) // Old success cannot finish the new attempt.
-        XCTAssertEqual(completions, 1)
-        XCTAssertFalse(pulls.perform(session: 0, operation: { _ in XCTFail("overlapping retry") }, completion: finish))
-        retryCallback?(nil)
-        XCTAssertEqual(completions, 2)
-        XCTAssertEqual(readiness.drain(inventoryReady: true), ["save"])
-        firstCallback?(NSError(domain: "late", code: 1))
-        retryCallback?(nil)
-        clock.expire()
-        XCTAssertEqual(completions, 2)
-        XCTAssertTrue(readiness.pullReady)
     }
 
     func testStopStartInSameAccountCancelsWatchdogAndFencesOldCallback() {
@@ -73,16 +81,32 @@ final class PullRecoveryTests: XCTestCase {
     func testAccountReplacementFencesPreviousTimeoutAndCompletion() {
         let clock = Clock()
         let pulls = FilesSyncPullCoordinator(schedule: clock.schedule)
+        var readiness = FilesSyncIntentReadiness()
+        let oldSession = readiness.session
+        readiness.waitForIntent("old")
         var old: ((Error?) -> Void)?
-        pulls.perform(session: 0, operation: { old = $0 }, completion: { _ in XCTFail("old account") })
+        pulls.perform(session: oldSession, operation: { old = $0 }, completion: { _ in XCTFail("old account") })
+        readiness.resetSession()
+        XCTAssertTrue(readiness.waiting.isEmpty)
+        readiness.enqueue(["new"])
+        let newSession = readiness.session
+        var current: ((Error?) -> Void)?
         var finished = false
-        pulls.perform(session: 1, operation: { finish in finish(nil) }, completion: { error in
+        XCTAssertTrue(pulls.perform(session: newSession, operation: { current = $0 }, completion: { error in
             XCTAssertNil(error)
+            XCTAssertTrue(readiness.finishPull(session: newSession, succeeded: error == nil))
             finished = true
-        })
-        XCTAssertTrue(finished)
+        }))
         old?(nil)
         clock.jobs[0].action()
+        XCTAssertFalse(finished)
+        // Session fencing also protects readiness if an old caller reaches it directly.
+        XCTAssertFalse(readiness.finishPull(session: oldSession, succeeded: true))
+        XCTAssertFalse(readiness.pullReady)
+        XCTAssertTrue(readiness.drain(inventoryReady: true).isEmpty)
+        current?(nil)
+        XCTAssertTrue(finished)
+        XCTAssertEqual(readiness.drain(inventoryReady: true), ["new"])
         XCTAssertTrue(clock.jobs.allSatisfy(\.cancelled))
     }
 

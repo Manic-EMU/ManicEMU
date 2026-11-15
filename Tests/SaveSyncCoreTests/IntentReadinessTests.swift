@@ -27,27 +27,6 @@ final class IntentReadinessTests: XCTestCase {
         state.resolved("save")
         XCTAssertTrue(state.waiting.isEmpty)
     }
-    func testFailedPullCanRetryWithoutLosingWork() {
-        var state = FilesSyncIntentReadiness()
-        state.enqueue(["save"])
-        state.finishPull(session: 0, succeeded: false)
-        XCTAssertTrue(state.pullFailed)
-        XCTAssertTrue(state.drain(inventoryReady: true).isEmpty)
-        state.finishPull(session: 0, succeeded: true)
-        XCTAssertFalse(state.pullFailed)
-        XCTAssertEqual(state.drain(inventoryReady: true), ["save"])
-    }
-    func testOldAccountCallbackCannotReleaseNewAccountWork() {
-        var state = FilesSyncIntentReadiness()
-        state.waitForIntent("old")
-        state.resetSession()
-        state.enqueue(["new"])
-        XCTAssertFalse(state.finishPull(session: 0, succeeded: true))
-        XCTAssertTrue(state.waiting.isEmpty)
-        XCTAssertTrue(state.drain(inventoryReady: true).isEmpty)
-        state.finishPull(session: 1, succeeded: true)
-        XCTAssertEqual(state.drain(inventoryReady: true), ["new"])
-    }
     func testScopeExcludesROMsAndOtherCores() {
         let path = "3DS/sdmc/Nintendo 3DS/" + String(repeating: "0", count: 32) + "/" + String(repeating: "1", count: 32) + "/title/00040000/00123400/data/save.dat"
         XCTAssertNotNil(ThreeDSSavePolicy.saveRoot(path))
