@@ -1,5 +1,4 @@
 import XCTest
-@testable import SaveSyncCore
 
 final class IntentReadinessTests: XCTestCase {
     func testIntentBeforeInventoryWaitsThenDrainsOnce() {

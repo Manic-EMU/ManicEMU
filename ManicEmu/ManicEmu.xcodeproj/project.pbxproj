@@ -2270,6 +2270,10 @@
 		7C1000010000000000000002 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
 		7C1000010000000000000003 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
 		7C1000010000000000000004 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7D1100000000000000000201 /* SaveSyncReadiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0200000000000000000001 /* SaveSyncReadiness.swift */; };
+		7D1100000000000000000202 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7D1100000000000000000203 /* IntentReadinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1100000000000000000101 /* IntentReadinessTests.swift */; };
+		7D1100000000000000000204 /* PullRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1100000000000000000102 /* PullRecoveryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -7524,6 +7528,9 @@
 		F0C500000000000000000108 /* FocusSystem+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSystem+UIViewController.swift"; sourceTree = "<group>"; };
 		7B0200000000000000000001 /* SaveSyncReadiness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/SaveSyncReadiness.swift"; sourceTree = "<group>"; };
 		7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/FilesSyncPullCoordinator.swift"; sourceTree = "<group>"; };
+		7D1100000000000000000002 /* SaveSyncCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SaveSyncCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D1100000000000000000101 /* IntentReadinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentReadinessTests.swift; sourceTree = "<group>"; };
+		7D1100000000000000000102 /* PullRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullRecoveryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -7831,6 +7838,12 @@
 				57F8A0B12FD31C0100A274A1 /* Unrar in Frameworks */,
 				576C8D9A30335C8100AEB08F /* AttributedString in Frameworks */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D1100000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -13980,6 +13993,7 @@
 		A5A001E624555A5F006E0F0E = {
 			isa = PBXGroup;
 			children = (
+				7D1100000000000000000003 /* SaveSyncCoreTests */,
 				A5A001F124555A5F006E0F0E /* ManicEmu */,
 				57B591E42FD06473003C4235 /* ManicEmuTV */,
 				57C75ACA2FD571A10093A2B3 /* Libretro */,
@@ -13992,6 +14006,7 @@
 		A5A001F024555A5F006E0F0E /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				7D1100000000000000000002 /* SaveSyncCoreTests.xctest */,
 				A5A001EF24555A5F006E0F0E /* ManicEmu.app */,
 				57BFBE172DD32F7700AABF98 /* Libretro.framework */,
 				57B5917A2FD06468003C4235 /* ManicEmuTV.app */,
@@ -14210,6 +14225,15 @@
 			path = FocusKit;
 			sourceTree = "<group>";
 		};
+		7D1100000000000000000003 /* SaveSyncCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				7D1100000000000000000101 /* IntentReadinessTests.swift */,
+				7D1100000000000000000102 /* PullRecoveryTests.swift */,
+			);
+			path = "../Tests/SaveSyncCoreTests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -14378,6 +14402,20 @@
 			productReference = A5A001EF24555A5F006E0F0E /* ManicEmu.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7D1100000000000000000001 /* SaveSyncCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D1100000000000000000006 /* Build configuration list for PBXNativeTarget "SaveSyncCoreTests" */;
+			buildPhases = (
+				7D1100000000000000000004 /* Sources */,
+				7D1100000000000000000005 /* Frameworks */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = SaveSyncCoreTests;
+			productName = SaveSyncCoreTests;
+			productReference = 7D1100000000000000000002 /* SaveSyncCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -14512,6 +14550,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				7D1100000000000000000001 /* SaveSyncCoreTests */,
 				57CDCD872FD5CBD3005BA4C8 /* ManicEmuDebug */,
 				00000000000051A100000001 /* ManicEmuSimulator */,
 				A5A001EE24555A5F006E0F0E /* ManicEmuRelease */,
@@ -16495,6 +16534,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7D1100000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D1100000000000000000201 /* SaveSyncReadiness.swift in Sources */,
+				7D1100000000000000000202 /* FilesSyncPullCoordinator.swift in Sources */,
+				7D1100000000000000000203 /* IntentReadinessTests.swift in Sources */,
+				7D1100000000000000000204 /* PullRecoveryTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -17892,6 +17942,57 @@
 			};
 			name = Release;
 		};
+		7D1100000000000000000301 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.manicemu.SaveSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SAVE_SYNC_TESTING";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7D1100000000000000000302 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.manicemu.SaveSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SAVE_SYNC_TESTING";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7D1100000000000000000303 /* SideloadRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.manicemu.SaveSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SAVE_SYNC_TESTING";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = SideloadRelease;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -17971,6 +18072,16 @@
 				A5A0020424555A5F006E0F0E /* Debug */,
 				A5A0020524555A5F006E0F0E /* Release */,
 				575A3A3F2DCEE98500B28FC2 /* SideloadRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7D1100000000000000000006 /* Build configuration list for PBXNativeTarget "SaveSyncCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D1100000000000000000301 /* Debug */,
+				7D1100000000000000000302 /* Release */,
+				7D1100000000000000000303 /* SideloadRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

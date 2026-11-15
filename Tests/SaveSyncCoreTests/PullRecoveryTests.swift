@@ -1,5 +1,4 @@
 import XCTest
-@testable import SaveSyncCore
 
 /// Drives the production pull adapter and readiness/phase logic without CloudKit credentials.
 final class PullRecoveryTests: XCTestCase {
