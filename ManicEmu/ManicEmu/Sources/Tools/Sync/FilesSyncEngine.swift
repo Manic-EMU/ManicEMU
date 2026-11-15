@@ -292,7 +292,7 @@ final class FilesSyncEngine {
             if stats.queued > 0 {
                 await self.waitUntilIdle()
             }
-            let remaining = self.withLock { self.deferred.count + self.intentReadiness.waiting.count }
+            let remaining = self.withLock { self.deferred.count + self.intentReadiness.pathsAwaitingIntent.count }
             Log.debug("[iCloud Sync] repair completed remaining=\(remaining)")
             DispatchQueue.main.async {
                 handler(.completed(uploaded: stats.uploads, downloaded: stats.downloads, remaining: remaining))
@@ -336,15 +336,15 @@ final class FilesSyncEngine {
     }
     
     var intentSession: UInt64 { withLock { intentReadiness.session } }
-    var needsInitialIntentPull: Bool { withLock { !intentReadiness.pullReady } }
+    var needsInitialIntentPull: Bool { withLock { !intentReadiness.intentPullSucceeded } }
 
     func handleIntentPaths(_ paths: [String]) {
-        withLock { intentReadiness.enqueue(paths) }
+        withLock { intentReadiness.enqueueIntentPaths(paths) }
         enqueueWork("intentRecords") { [weak self] in _ = await self?.drainIntentPathsIfReady() }
     }
 
     func initialIntentPullFinished(session: UInt64, error: Error?) {
-        let accepted = withLock { intentReadiness.finishPull(session: session, succeeded: error == nil) }
+        let accepted = withLock { intentReadiness.finishIntentPull(session: session, succeeded: error == nil) }
         guard accepted else { return }
         enqueueWork("intent pull finished") { [weak self] in
             guard let self else { return }
@@ -355,7 +355,7 @@ final class FilesSyncEngine {
     @discardableResult
     private func drainIntentPathsIfReady(settleAfterReplay: Bool = true) async -> Bool {
         guard isStarted, !withLock({ pausedForGameplay }) else { return false }
-        let paths = withLock { intentReadiness.drain(inventoryReady: cloudListingReady) }
+        let paths = withLock { intentReadiness.takeReconciliationPaths(driveInventoryReady: cloudListingReady) }
         guard !paths.isEmpty else { return false }
         // Stay in the current work chain so status cannot settle ahead of this replay.
         await applyIntentPaths(paths, settleAfterReplay: settleAfterReplay)
@@ -817,7 +817,7 @@ final class FilesSyncEngine {
             publish { _ in }
             return .skip
         }
-        withLock { intentReadiness.resolved(relativePath) }
+        withLock { intentReadiness.markPathResolved(relativePath) }
         let applied = FilesSyncIndex.appliedGeneration(for: relativePath)
         let ledgerEntry = FilesSyncIndex.store.files[relativePath]
         let ledger = ledgerEntry?.fingerprint
@@ -1532,9 +1532,9 @@ final class FilesSyncEngine {
         let result = withLock { () -> (next: FilesSyncProgress, describe: Bool, post: Bool) in
             var next = _progress
             update(&next)
-            next.unresolvedCount = intentReadiness.waiting.count
+            next.unresolvedCount = intentReadiness.pathsAwaitingIntent.count
             next.phase = intentReadiness.reportedPhase(current: next.phase,
-                inventoryReady: cloudListingReady, started: started, paused: pausedForGameplay,
+                driveInventoryReady: cloudListingReady, started: started, paused: pausedForGameplay,
                 hasActiveWork: !pending.isEmpty || !inFlight.isEmpty,
                 unresolvedCount: next.unresolvedCount, settleIfQuiescent: settleIfQuiescent)
             let phaseChanged = next.phase != _progress.phase

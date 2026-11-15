@@ -22,12 +22,12 @@ final class PullRecoveryTests: XCTestCase {
             let clock = Clock()
             let pulls = FilesSyncPullCoordinator(timeout: 1, schedule: clock.schedule)
             var readiness = FilesSyncIntentReadiness()
-            readiness.enqueue(["save"])
+            readiness.enqueueIntentPaths(["save"])
             var firstCallback: ((Error?) -> Void)?
             var completions = 0
             let finish: (Error?) -> Void = { error in
                 completions += 1
-                readiness.finishPull(session: 0, succeeded: error == nil)
+                readiness.finishIntentPull(session: 0, succeeded: error == nil)
             }
             XCTAssertTrue(pulls.perform(session: 0, operation: { firstCallback = $0 }, completion: finish))
             if missingCallback {
@@ -37,9 +37,9 @@ final class PullRecoveryTests: XCTestCase {
                 firstCallback?(NSError(domain: "pull", code: 1))
             }
             XCTAssertEqual(completions, 1)
-            XCTAssertTrue(readiness.pullFailed)
-            XCTAssertFalse(readiness.pullReady)
-            XCTAssertTrue(readiness.drain(inventoryReady: true).isEmpty)
+            XCTAssertTrue(readiness.intentPullFailed)
+            XCTAssertFalse(readiness.intentPullSucceeded)
+            XCTAssertTrue(readiness.takeReconciliationPaths(driveInventoryReady: true).isEmpty)
             var retryCallback: ((Error?) -> Void)?
             XCTAssertTrue(pulls.perform(session: 0, operation: { retryCallback = $0 }, completion: finish))
             firstCallback?(nil) // Old success cannot finish the new attempt.
@@ -47,13 +47,13 @@ final class PullRecoveryTests: XCTestCase {
             XCTAssertFalse(pulls.perform(session: 0, operation: { _ in XCTFail("overlapping retry") }, completion: finish))
             retryCallback?(nil)
             XCTAssertEqual(completions, 2)
-            XCTAssertFalse(readiness.pullFailed)
-            XCTAssertEqual(readiness.drain(inventoryReady: true), ["save"])
+            XCTAssertFalse(readiness.intentPullFailed)
+            XCTAssertEqual(readiness.takeReconciliationPaths(driveInventoryReady: true), ["save"])
             firstCallback?(NSError(domain: "late", code: 1))
             retryCallback?(nil)
             clock.expire()
             XCTAssertEqual(completions, 2)
-            XCTAssertTrue(readiness.pullReady)
+            XCTAssertTrue(readiness.intentPullSucceeded)
         }
     }
 
@@ -87,26 +87,26 @@ final class PullRecoveryTests: XCTestCase {
         var old: ((Error?) -> Void)?
         pulls.perform(session: oldSession, operation: { old = $0 }, completion: { _ in XCTFail("old account") })
         readiness.resetSession()
-        XCTAssertTrue(readiness.waiting.isEmpty)
-        readiness.enqueue(["new"])
+        XCTAssertTrue(readiness.pathsAwaitingIntent.isEmpty)
+        readiness.enqueueIntentPaths(["new"])
         let newSession = readiness.session
         var current: ((Error?) -> Void)?
         var finished = false
         XCTAssertTrue(pulls.perform(session: newSession, operation: { current = $0 }, completion: { error in
             XCTAssertNil(error)
-            XCTAssertTrue(readiness.finishPull(session: newSession, succeeded: error == nil))
+            XCTAssertTrue(readiness.finishIntentPull(session: newSession, succeeded: error == nil))
             finished = true
         }))
         old?(nil)
         clock.jobs[0].action()
         XCTAssertFalse(finished)
         // Session fencing also protects readiness if an old caller reaches it directly.
-        XCTAssertFalse(readiness.finishPull(session: oldSession, succeeded: true))
-        XCTAssertFalse(readiness.pullReady)
-        XCTAssertTrue(readiness.drain(inventoryReady: true).isEmpty)
+        XCTAssertFalse(readiness.finishIntentPull(session: oldSession, succeeded: true))
+        XCTAssertFalse(readiness.intentPullSucceeded)
+        XCTAssertTrue(readiness.takeReconciliationPaths(driveInventoryReady: true).isEmpty)
         current?(nil)
         XCTAssertTrue(finished)
-        XCTAssertEqual(readiness.drain(inventoryReady: true), ["new"])
+        XCTAssertEqual(readiness.takeReconciliationPaths(driveInventoryReady: true), ["new"])
         XCTAssertTrue(clock.jobs.allSatisfy(\.cancelled))
     }
 
@@ -116,38 +116,38 @@ final class PullRecoveryTests: XCTestCase {
         var state = FilesSyncIntentReadiness()
         var phase = FilesSyncReadinessPhase.scanning
         pulls.perform(session: 0, operation: { $0(nil) }, completion: { error in
-            state.finishPull(session: 0, succeeded: error == nil)
-            phase = state.reportedPhase(current: phase, inventoryReady: false, started: true,
+            state.finishIntentPull(session: 0, succeeded: error == nil)
+            phase = state.reportedPhase(current: phase, driveInventoryReady: false, started: true,
                 paused: false, hasActiveWork: false, unresolvedCount: 0, settleIfQuiescent: true)
         })
         XCTAssertEqual(phase, .scanning)
-        XCTAssertTrue(state.drain(inventoryReady: true).isEmpty) // Empty listing or a changed listing whose decisions are all skips.
-        XCTAssertEqual(state.reportedPhase(current: phase, inventoryReady: true, started: true,
+        XCTAssertTrue(state.takeReconciliationPaths(driveInventoryReady: true).isEmpty) // Empty listing or a changed listing whose decisions are all skips.
+        XCTAssertEqual(state.reportedPhase(current: phase, driveInventoryReady: true, started: true,
             paused: false, hasActiveWork: false, unresolvedCount: 0, settleIfQuiescent: true), .idle)
     }
 
     func testNestedNoOpReplayDoesNotSettleBeforeOuterScanFinishes() {
         var state = FilesSyncIntentReadiness()
-        state.finishPull(session: 0, succeeded: true)
-        let duringReplay = state.reportedPhase(current: .scanning, inventoryReady: true,
+        state.finishIntentPull(session: 0, succeeded: true)
+        let duringReplay = state.reportedPhase(current: .scanning, driveInventoryReady: true,
             started: true, paused: false, hasActiveWork: false, unresolvedCount: 0,
             settleIfQuiescent: false)
         XCTAssertEqual(duringReplay, .scanning)
         // The remaining scan discovers a missing-intent path after replay did no work.
         state.waitForIntent("another-save")
-        XCTAssertEqual(state.reportedPhase(current: duringReplay, inventoryReady: true,
-            started: true, paused: false, hasActiveWork: false, unresolvedCount: state.waiting.count,
+        XCTAssertEqual(state.reportedPhase(current: duringReplay, driveInventoryReady: true,
+            started: true, paused: false, hasActiveWork: false, unresolvedCount: state.pathsAwaitingIntent.count,
             settleIfQuiescent: true), .needsAttention)
     }
 
     func testNoOpIntentReplaySettlesButPendingTransfersAndPauseArePreserved() {
         var state = FilesSyncIntentReadiness()
-        state.enqueue(["already-applied"])
-        state.finishPull(session: 0, succeeded: true)
-        XCTAssertEqual(state.drain(inventoryReady: true), ["already-applied"])
+        state.enqueueIntentPaths(["already-applied"])
+        state.finishIntentPull(session: 0, succeeded: true)
+        XCTAssertEqual(state.takeReconciliationPaths(driveInventoryReady: true), ["already-applied"])
         func phase(_ current: FilesSyncReadinessPhase, active: Bool = false,
                    paused: Bool = false, unresolved: Int = 0) -> FilesSyncReadinessPhase {
-            state.reportedPhase(current: current, inventoryReady: true, started: true,
+            state.reportedPhase(current: current, driveInventoryReady: true, started: true,
                 paused: paused, hasActiveWork: active, unresolvedCount: unresolved, settleIfQuiescent: true)
         }
         XCTAssertEqual(phase(.scanning), .idle)
