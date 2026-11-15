@@ -15,6 +15,7 @@ import CloudKit
 class SyncManager: NSObject {
     static let shared = SyncManager()
     private var realmSyncEngine: SyncEngine?
+    private let intentPulls = FilesSyncPullCoordinator()
     var iCloudServiceEnable: Bool? = nil
     private var iCloudAccountChangedNotification: Any?
     
@@ -48,6 +49,7 @@ class SyncManager: NSObject {
     }
     
     func stopSync() {
+        intentPulls.cancel()
         realmSyncEngine = nil
         FilesSyncManager.shared.stop()
     }
@@ -56,7 +58,8 @@ class SyncManager: NSObject {
         guard realmSyncEngine == nil else { return }
         IceCream.shared.logAction = { Log.debug($0) }
         let configuration = Database.realm.configuration
-        realmSyncEngine = SyncEngine(objects: [
+        let setupSession = FilesSyncManager.shared.intentSession
+        let engine = SyncEngine(objects: [
             SyncObject(realmConfiguration: configuration, type: Game.self, uListElementType: GameSaveState.self, vListElementType: GameCheat.self),
             SyncObject(realmConfiguration: configuration, type: GameCheat.self),
             SyncObject(realmConfiguration: configuration, type: Skin.self),
@@ -70,16 +73,47 @@ class SyncManager: NSObject {
             SyncObject(realmConfiguration: configuration, type: Prefference.self),
             SyncObject(realmConfiguration: configuration, type: FilesSyncRecord.self)
         ])
-        realmSyncEngine?.setupCompletion = { error in
-            if let error = error {
-                Log.debug("[iCloud Sync]数据库同步初始化结束 error:\(error)")
-            } else {
-                Skin.polishSkinsAfterRealmSync()
-                Log.debug("[iCloud Sync]数据库同步初始化结束")
+        realmSyncEngine = engine
+        intentPulls.perform(session: setupSession, operation: { finish in
+            engine.setupCompletion = { [weak self, weak engine] error in
+                finish(error)
+                DispatchQueue.main.async {
+                    guard let self, let engine, self.realmSyncEngine === engine,
+                          setupSession == FilesSyncManager.shared.intentSession else { return }
+                    if let error {
+                        Log.debug("[iCloud Sync]数据库同步初始化结束 error:\(error)")
+                    } else {
+                        Skin.polishSkinsAfterRealmSync()
+                        Log.debug("[iCloud Sync]数据库同步初始化结束")
+                    }
+                }
             }
+        }, completion: { [weak self, weak engine] error in
+            self?.completeIntentPull(engine: engine, session: setupSession, error: error)
+        })
+    }
+
+    /// A watchdog releases attempts even when IceCream does not invoke completion.
+    func refreshIntentRecords() {
+        DispatchQueue.main.async {
+            guard let engine = self.realmSyncEngine else { return }
+            let session = FilesSyncManager.shared.intentSession
+            self.intentPulls.perform(session: session, operation: { finish in
+                engine.pull(completionHandler: finish)
+            }, completion: { [weak self, weak engine] error in
+                self?.completeIntentPull(engine: engine, session: session, error: error)
+            })
         }
     }
-    
+
+    private func completeIntentPull(engine: SyncEngine?, session: UInt64, error: Error?) {
+        DispatchQueue.main.async { [weak self, weak engine] in
+            guard let self, let engine, self.realmSyncEngine === engine,
+                  session == FilesSyncManager.shared.intentSession else { return }
+            FilesSyncManager.shared.initialIntentPullFinished(session: session, error: error)
+        }
+    }
+
     private func updateiCloudAccountstatus() {
 #if !SIDE_LOAD
         CKContainer.default().accountStatus { [weak self] status, error in

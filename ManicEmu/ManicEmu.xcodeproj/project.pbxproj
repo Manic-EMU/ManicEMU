@@ -2262,6 +2262,12 @@
 		F9A3C32228B84AD391F34585 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = 578E26D32FD41D9300A2749A /* NVActivityIndicatorView */; };
 		FDD0064DAC7645118F826ED7 /* Closures in Frameworks */ = {isa = PBXBuildFile; productRef = 578E231F2FD288C600A2749A /* Closures */; };
 		FFD8F5F4CE02425E8BA80296 /* mednafen.pce.libretro.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9408D7BF872544CFABE4D652 /* mednafen.pce.libretro.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7C1000010000000000000001 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7C1000010000000000000002 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7C1000010000000000000003 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7C1000010000000000000004 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7D1100000000000000000202 /* FilesSyncPullCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */; };
+		7D1100000000000000000204 /* PullRecoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D1100000000000000000102 /* PullRecoveryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -7514,6 +7520,9 @@
 		F0C500000000000000000106 /* FocusCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCollectionView.swift; sourceTree = "<group>"; };
 		F0C500000000000000000107 /* FocusSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSystem.swift; sourceTree = "<group>"; };
 		F0C500000000000000000108 /* FocusSystem+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSystem+UIViewController.swift"; sourceTree = "<group>"; };
+		7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/FilesSyncPullCoordinator.swift"; sourceTree = "<group>"; };
+		7D1100000000000000000002 /* SaveSyncCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = SaveSyncCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D1100000000000000000102 /* PullRecoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullRecoveryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -7821,6 +7830,12 @@
 				57F8A0B12FD31C0100A274A1 /* Unrar in Frameworks */,
 				576C8D9A30335C8100AEB08F /* AttributedString in Frameworks */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D1100000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -13704,6 +13719,7 @@
 			children = (
 				57EBA5523052D8AA0017A6C3 /* FilesSyncManager.swift */,
 				57EBA5603052D8AA0017A6C3 /* FilesSyncPolicy.swift */,
+				7C1000000000000000000001 /* FilesSyncPullCoordinator.swift */,
 				57EBA5643052D8AA0017A6C3 /* FilesSyncIndex.swift */,
 				57EBA5683052D8AA0017A6C3 /* FilesSyncEngine.swift */,
 				57EBA56C3052D8AA0017A6C3 /* FilesSyncIO.swift */,
@@ -13968,6 +13984,7 @@
 		A5A001E624555A5F006E0F0E = {
 			isa = PBXGroup;
 			children = (
+				7D1100000000000000000003 /* SaveSyncCoreTests */,
 				A5A001F124555A5F006E0F0E /* ManicEmu */,
 				57B591E42FD06473003C4235 /* ManicEmuTV */,
 				57C75ACA2FD571A10093A2B3 /* Libretro */,
@@ -13980,6 +13997,7 @@
 		A5A001F024555A5F006E0F0E /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				7D1100000000000000000002 /* SaveSyncCoreTests.xctest */,
 				A5A001EF24555A5F006E0F0E /* ManicEmu.app */,
 				57BFBE172DD32F7700AABF98 /* Libretro.framework */,
 				57B5917A2FD06468003C4235 /* ManicEmuTV.app */,
@@ -14198,6 +14216,14 @@
 			path = FocusKit;
 			sourceTree = "<group>";
 		};
+		7D1100000000000000000003 /* SaveSyncCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				7D1100000000000000000102 /* PullRecoveryTests.swift */,
+			);
+			path = "../Tests/SaveSyncCoreTests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -14366,6 +14392,20 @@
 			productReference = A5A001EF24555A5F006E0F0E /* ManicEmu.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7D1100000000000000000001 /* SaveSyncCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7D1100000000000000000006 /* Build configuration list for PBXNativeTarget "SaveSyncCoreTests" */;
+			buildPhases = (
+				7D1100000000000000000004 /* Sources */,
+				7D1100000000000000000005 /* Frameworks */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = SaveSyncCoreTests;
+			productName = SaveSyncCoreTests;
+			productReference = 7D1100000000000000000002 /* SaveSyncCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -14500,6 +14540,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				7D1100000000000000000001 /* SaveSyncCoreTests */,
 				57CDCD872FD5CBD3005BA4C8 /* ManicEmuDebug */,
 				00000000000051A100000001 /* ManicEmuSimulator */,
 				A5A001EE24555A5F006E0F0E /* ManicEmuRelease */,
@@ -14992,6 +15033,7 @@
 				00000000000051A100000164 /* FilesSyncPolicy.swift in Sources */,
 				E524FAB230886523009885DA /* DuoTabletopKit.swift in Sources */,
 				00000000000051A100000165 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000001 /* FilesSyncPullCoordinator.swift in Sources */,
 				00000000000051A100000166 /* FilesSyncEngine.swift in Sources */,
 				00000000000051A100000167 /* FilesSyncIO.swift in Sources */,
 				00000000000051A100000168 /* FilesSyncWatchers.swift in Sources */,
@@ -15438,6 +15480,7 @@
 				57EBA5613052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
 				E524FAB030886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57EBA5653052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000002 /* FilesSyncPullCoordinator.swift in Sources */,
 				57EBA5693052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56D3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
 				57EBA5713052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
@@ -15921,6 +15964,7 @@
 				57EBA5623052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
 				E524FAB130886523009885DA /* DuoTabletopKit.swift in Sources */,
 				57EBA5663052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000003 /* FilesSyncPullCoordinator.swift in Sources */,
 				57EBA56A3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56E3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
 				57EBA5723052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
@@ -16346,6 +16390,7 @@
 				57EBA5553052D8AA0017A6C3 /* FilesSyncManager.swift in Sources */,
 				57EBA5633052D8AA0017A6C3 /* FilesSyncPolicy.swift in Sources */,
 				57EBA5673052D8AA0017A6C3 /* FilesSyncIndex.swift in Sources */,
+				7C1000010000000000000004 /* FilesSyncPullCoordinator.swift in Sources */,
 				57EBA56B3052D8AA0017A6C3 /* FilesSyncEngine.swift in Sources */,
 				57EBA56F3052D8AA0017A6C3 /* FilesSyncIO.swift in Sources */,
 				57EBA5733052D8AA0017A6C3 /* FilesSyncWatchers.swift in Sources */,
@@ -16472,6 +16517,15 @@
 				57D942CC302F1EC000C06208 /* Bimap.swift in Sources */,
 				5754D8C82E27A864001EA5ED /* VB.swift in Sources */,
 				7E864E4CE64E0E64CCE47550 /* DOOM.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D1100000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D1100000000000000000202 /* FilesSyncPullCoordinator.swift in Sources */,
+				7D1100000000000000000204 /* PullRecoveryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -17872,6 +17926,48 @@
 			};
 			name = Release;
 		};
+		7D1100000000000000000301 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.manicemu.SaveSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7D1100000000000000000302 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.manicemu.SaveSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7D1100000000000000000303 /* SideloadRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.manicemu.SaveSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = SideloadRelease;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -17951,6 +18047,16 @@
 				A5A0020424555A5F006E0F0E /* Debug */,
 				A5A0020524555A5F006E0F0E /* Release */,
 				575A3A3F2DCEE98500B28FC2 /* SideloadRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7D1100000000000000000006 /* Build configuration list for PBXNativeTarget "SaveSyncCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D1100000000000000000301 /* Debug */,
+				7D1100000000000000000302 /* Release */,
+				7D1100000000000000000303 /* SideloadRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
