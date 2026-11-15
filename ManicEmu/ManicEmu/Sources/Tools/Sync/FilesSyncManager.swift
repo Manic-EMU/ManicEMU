@@ -343,6 +343,7 @@ final class FilesSyncManager {
     }
     
     func handleDidBecomeActive() {
+        if engine.needsInitialIntentPull { SyncManager.shared.refreshIntentRecords() }
         Log.debug("[iCloud Sync] Manager.handleDidBecomeActive main=\(Thread.isMainThread)")
         engine.handleDidBecomeActive()
     }
@@ -353,6 +354,7 @@ final class FilesSyncManager {
         stop()
         if Settings.iCloudSyncEnableValue {
             start()
+            SyncManager.shared.refreshIntentRecords()
         }
     }
     
@@ -389,6 +391,7 @@ final class FilesSyncManager {
             if becameSatisfied {
                 Log.debug("[iCloud Sync] network became satisfied expensive=\(path.isExpensive) constrained=\(path.isConstrained)")
                 self.engine.handleNetworkSatisfied()
+                if self.engine.needsInitialIntentPull { SyncManager.shared.refreshIntentRecords() }
             } else if !satisfied {
                 Log.debug("[iCloud Sync] network unsatisfied")
             }
@@ -404,6 +407,12 @@ final class FilesSyncManager {
         Log.debug("[iCloud Sync] network path monitor stopped")
     }
     
+    var intentSession: UInt64 { engine.intentSession }
+
+    func initialIntentPullFinished(session: UInt64, error: Error?) {
+        engine.initialIntentPullFinished(session: session, error: error)
+    }
+
     private func observeIntentRecords() {
 #if SIDE_LOAD
         return

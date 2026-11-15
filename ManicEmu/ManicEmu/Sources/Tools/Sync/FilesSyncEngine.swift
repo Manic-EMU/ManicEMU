@@ -117,6 +117,8 @@ final class FilesSyncEngine {
     /// Buffered `present` intents. Written in one Realm transaction so IceCream emits a
     /// single CloudKit operation instead of one long-lived operation per file.
     private var pendingIntentMarks: [String: Int64] = [:]
+    private var intentPullSession: UInt64 = 0
+    private var intentPullSucceeded = false
     private let persistQueue = DispatchQueue(label: "com.aoshuang.manicemu.files-sync-persist", qos: .utility)
     private let intentFlushThreshold = 64
     /// How long after a successful transfer the cloud listing may still miss the item.
@@ -207,6 +209,8 @@ final class FilesSyncEngine {
             pendingLocalRemovals.removeAll()
             pendingInventory = nil
             pendingIntentMarks.removeAll()
+            intentPullSession &+= 1
+            intentPullSucceeded = false
             cloudListingReady = false
             nextOpToken = 0
             repairInFlight = false
@@ -333,6 +337,16 @@ final class FilesSyncEngine {
         }
     }
     
+    var intentSession: UInt64 { withLock { intentPullSession } }
+    var needsInitialIntentPull: Bool { withLock { !intentPullSucceeded } }
+
+    func initialIntentPullFinished(session: UInt64, error: Error?) {
+        withLock {
+            guard intentPullSession == session else { return }
+            intentPullSucceeded = error == nil
+        }
+    }
+
     func handleIntentPaths(_ paths: [String]) {
         guard isStarted, !paths.isEmpty else { return }
         Log.debug("[iCloud Sync] intent records changed count=\(paths.count)")
