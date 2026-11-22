@@ -1187,3 +1187,5 @@ PlayCase מתמקדת במעטפות iPhone איכותיות, המיוצרות �
 
 "Game3DSEncryptedTips" = "ייבאו את הקובץ aes_keys.txt הנכון כדי לקרוא ROM מוצפנים.";
 "AesKeysTxtDesc" = "נדרש כדי להריץ ROM מוצפנים של 3DS.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

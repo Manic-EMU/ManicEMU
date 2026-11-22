@@ -1157,3 +1157,5 @@
 
 "Game3DSEncryptedTips" = "استورد ملف aes_keys.txt الصحيح لقراءة ROM المشفّرة.";
 "AesKeysTxtDesc" = "مطلوب لتشغيل ROM 3DS المشفّرة.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

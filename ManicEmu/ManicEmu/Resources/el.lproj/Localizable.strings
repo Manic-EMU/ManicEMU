@@ -1187,3 +1187,5 @@
 
 "Game3DSEncryptedTips" = "Εισαγάγετε το σωστό aes_keys.txt για να διαβαστούν οι κρυπτογραφημένες ROM.";
 "AesKeysTxtDesc" = "Απαιτείται για να παίξετε κρυπτογραφημένες ROM 3DS.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

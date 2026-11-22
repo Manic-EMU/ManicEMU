@@ -1185,3 +1185,5 @@ Dacă vrei să îți îmbunătățești setup-ul, PlayCase este potrivirea perfe
 
 "Game3DSEncryptedTips" = "Importați fișierul aes_keys.txt corect pentru a citi ROM-urile criptate.";
 "AesKeysTxtDesc" = "Necesar pentru a juca ROM-uri 3DS criptate.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

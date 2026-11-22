@@ -1221,3 +1221,5 @@ Press the controller button to complete mapping...";
 
 "Game3DSEncryptedTips" = "Import the correct aes_keys.txt to read encrypted ROMs.";
 "AesKeysTxtDesc" = "Required to play encrypted 3DS ROMs.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

@@ -1187,3 +1187,5 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 
 "Game3DSEncryptedTips" = "Tuo oikea aes_keys.txt salattujen ROM-tiedostojen lukemista varten.";
 "AesKeysTxtDesc" = "Tarvitaan salattujen 3DS-ROM-tiedostojen pelaamiseen.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

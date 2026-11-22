@@ -1180,3 +1180,5 @@ PlayCaseは、アクセサリーやスキンとの互換性を考慮して作ら
 
 "Game3DSEncryptedTips" = "暗号化された ROM を読み込むには、正しい aes_keys.txt をインポートしてください。";
 "AesKeysTxtDesc" = "暗号化された 3DS ROM を遊ぶために必要なファイルです。";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

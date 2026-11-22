@@ -1184,3 +1184,5 @@ Si quieres mejorar tu experiencia, PlayCase combina perfecto con esta funda.";
 
 "Game3DSEncryptedTips" = "Importa el aes_keys.txt correcto para leer las ROM cifradas.";
 "AesKeysTxtDesc" = "Necesario para jugar ROM 3DS cifradas.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

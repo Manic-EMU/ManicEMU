@@ -1186,3 +1186,5 @@ PlayCase हाई-क्वालिटी iPhone केसों पर के
 
 "Game3DSEncryptedTips" = "एन्क्रिप्टेड ROM पढ़ने के लिए सही aes_keys.txt इम्पोर्ट करें।";
 "AesKeysTxtDesc" = "एन्क्रिप्टेड 3DS ROM चलाने के लिए यह फाइल जरूरी है।";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

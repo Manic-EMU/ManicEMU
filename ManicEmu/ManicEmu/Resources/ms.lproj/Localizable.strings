@@ -1158,3 +1158,5 @@ Jika anda ingin meningkatkan persediaan anda, PlayCase adalah padanan sempurna u
 
 "Game3DSEncryptedTips" = "Import aes_keys.txt yang betul untuk membaca ROM yang disulitkan.";
 "AesKeysTxtDesc" = "Diperlukan untuk bermain ROM 3DS yang disulitkan.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

@@ -1174,3 +1174,5 @@ PlayCase มุ่งเน้นที่เคส iPhone คุณภาพส
 
 "Game3DSEncryptedTips" = "นำเข้า aes_keys.txt ที่ถูกต้องเพื่ออ่าน ROM ที่เข้ารหัส";
 "AesKeysTxtDesc" = "จำเป็นเมื่อจะเล่น ROM 3DS ที่เข้ารหัส";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

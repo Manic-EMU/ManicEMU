@@ -1177,3 +1177,5 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 
 "Game3DSEncryptedTips" = "Impor aes_keys.txt yang benar untuk membaca ROM terenkripsi.";
 "AesKeysTxtDesc" = "Diperlukan untuk memainkan ROM 3DS terenkripsi.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

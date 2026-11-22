@@ -1179,3 +1179,5 @@ Pokud chcete vylepšit své nastavení, PlayCase je perfektním doplňkem tohoto
 
 "Game3DSEncryptedTips" = "Importujte správný soubor aes_keys.txt, aby bylo možné číst šifrované ROM.";
 "AesKeysTxtDesc" = "Vyžadováno ke hraní šifrovaných ROM 3DS.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

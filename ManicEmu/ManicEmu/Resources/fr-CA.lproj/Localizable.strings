@@ -1185,3 +1185,5 @@ Si vous voulez améliorer votre installation, PlayCase est le complément parfai
 
 "Game3DSEncryptedTips" = "Importez le bon fichier aes_keys.txt pour lire les ROM chiffrées.";
 "AesKeysTxtDesc" = "Requis pour jouer à des ROM 3DS chiffrées.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

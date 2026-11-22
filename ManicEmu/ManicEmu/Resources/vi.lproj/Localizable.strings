@@ -1178,3 +1178,5 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 
 "Game3DSEncryptedTips" = "Hãy nhập đúng aes_keys.txt để đọc ROM đã mã hóa.";
 "AesKeysTxtDesc" = "Cần tập tin này để chơi ROM 3DS đã mã hóa.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

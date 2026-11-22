@@ -1182,3 +1182,5 @@ Hvis du vil forbedre dit setup, er PlayCase et perfekt match til dette skin.";
 
 "Game3DSEncryptedTips" = "Importér den rigtige aes_keys.txt for at læse krypterede ROM'er.";
 "AesKeysTxtDesc" = "Kræves for at spille krypterede 3DS-ROM'er.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

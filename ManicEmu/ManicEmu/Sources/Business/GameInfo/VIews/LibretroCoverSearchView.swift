@@ -14,7 +14,16 @@ class LibretroCoverSearchView: BaseView {
     
     private lazy var navigationView: ASNavigationView = {
         let view = ASNavigationView(.defaultNavigation(title: R.string.localizable.searchCover(),
-                                                       titleIcon: .image(R.image.libretro_icon())))
+                                                       titleIcon: .image(R.image.libretro_icon()),
+                                                       tools: [Self.normaliseNamesIcon(isOn: normaliseNames)]))
+        view.didTapTools = { [weak self] _ in
+            guard let self else { return }
+            UIDevice.generateHaptic()
+            self.normaliseNames.toggle()
+            self.navigationView.toolButtons = [Self.normaliseNamesIcon(isOn: self.normaliseNames)]
+            UIView.makeToast(message: self.normaliseNames ? R.string.localizable.coverNormaliseNamesOn() : R.string.localizable.coverNormaliseNamesOff())
+            self.performSearch(text: self.searchView.text)
+        }
         view.didTapClose = { [weak self] in
             guard let self = self else { return }
             if self.showAsSheet {
@@ -34,23 +43,37 @@ class LibretroCoverSearchView: BaseView {
         view.didTapReturn = { [weak self] searchText in
             guard let self else { return }
             self.searchView.resignFirstResponder()
-            if let text = searchText?.trimmed,
-                !PurchaseManager.isMember,
-                !text.isEnglishLanguage() {
-                UIView.makeAlert(identifier: R.Strings.PlayPurchaseAlertIdentifier,
-                                 detail: R.string.localizable.aiCoverSearchDesc(),
-                                 confirmTitle: R.string.localizable.goToUpgrade(),
-                                 confirmAutoHide: false,
-                                 confirmAction: { [weak self] in
-                    guard let self else { return }
-                    topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(), animated: true)
-                })
-            } else {
-                self.searchCover(text: searchText)
-            }
+            self.performSearch(text: searchText)
         }
         return view
     }()
+
+    /// Opt-in normalised name matching, remembered between searches
+    private var normaliseNames: Bool {
+        get { UserDefaults.standard.bool(forKey: R.DefaultKey.CoverSearchNormaliseNames) }
+        set { UserDefaults.standard.set(newValue, forKey: R.DefaultKey.CoverSearchNormaliseNames) }
+    }
+
+    private static func normaliseNamesIcon(isOn: Bool) -> ASIcon {
+        .symbol(.sparkles, colors: [isOn ? R.Color.Main : R.Color.LabelSecondary])
+    }
+
+    private func performSearch(text searchText: String?) {
+        if let text = searchText?.trimmed,
+            !PurchaseManager.isMember,
+            !text.isEnglishLanguage() {
+            UIView.makeAlert(identifier: R.Strings.PlayPurchaseAlertIdentifier,
+                             detail: R.string.localizable.aiCoverSearchDesc(),
+                             confirmTitle: R.string.localizable.goToUpgrade(),
+                             confirmAutoHide: false,
+                             confirmAction: { [weak self] in
+                guard let self else { return }
+                topViewController(in: self.hostingWindowScene)?.present(PurchaseViewController(), animated: true)
+            })
+        } else {
+            self.searchCover(text: searchText)
+        }
+    }
     
     lazy var collectionView: BlankSlateCollectionView = {
         let view = BlankSlateCollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -112,6 +135,7 @@ class LibretroCoverSearchView: BaseView {
             let gameType = game.effectiveGameType
             let id = game.id
             let fileExtension = game.fileExtension
+            let normaliseNames = self.normaliseNames
             DispatchQueue.global().async { [weak self] in
                 guard let self else { return }
                 OnlineCoverManager.MatchOperation.searchCovers(coverMatch: OnlineCoverManager.CoverMatch(gameType: gameType,
@@ -119,7 +143,9 @@ class LibretroCoverSearchView: BaseView {
                                                                                                          gameName: text,
                                                                                                          fileExtension: fileExtension),
                                                                persistentedTranslation: false,
-                                                               isCallBackMain: true, completion: { [weak self] urls, _ in
+                                                               isCallBackMain: true,
+                                                               normaliseNames: normaliseNames,
+                                                               completion: { [weak self] urls, _ in
                     UIView.hideLoading()
                     guard let self = self else { return }
                     let games = urls.map {

@@ -1185,3 +1185,5 @@ Ha fejleszteni szeretnéd a beállításod, a PlayCase tökéletes kiegészítő
 
 "Game3DSEncryptedTips" = "Importálja a helyes aes_keys.txt fájlt a titkosított ROM-ok olvasásához.";
 "AesKeysTxtDesc" = "Titkosított 3DS ROM-ok futtatásához szükséges.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

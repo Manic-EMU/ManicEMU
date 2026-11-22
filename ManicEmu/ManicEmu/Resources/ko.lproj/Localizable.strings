@@ -1188,3 +1188,5 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 
 "Game3DSEncryptedTips" = "암호화된 ROM을 읽으려면 올바른 aes_keys.txt를 가져와 주세요.";
 "AesKeysTxtDesc" = "암호화된 3DS ROM을 실행할 때 필요한 파일입니다.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

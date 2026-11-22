@@ -1185,3 +1185,5 @@ PlayCase спеціалізується на високоякісних чохл
 
 "Game3DSEncryptedTips" = "Імпортуйте правильний файл aes_keys.txt, щоб читати зашифровані ROM.";
 "AesKeysTxtDesc" = "Потрібен, щоб запускати зашифровані ROM 3DS.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

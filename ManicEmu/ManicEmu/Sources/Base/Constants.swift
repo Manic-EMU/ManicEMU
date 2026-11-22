@@ -597,6 +597,7 @@ extension _R {
         static let AppGroupIsPremiumKey = "AppGroupIsPremiumKey"
         static let HasShowCheatCodeWarning = "HasShowCheatCodeWarning"
         static let HadSavedSnapshot = "HadSavedSnapshot"
+        static let CoverSearchNormaliseNames = "CoverSearchNormaliseNames"
         static let ShowRequestReviewDate = "ShowRequestReviewDate"
         static let SystemCoreVersion = "SystemCoreVersion"
         static let SystemCoreBuildVersion = "SystemCoreBuildVersion"

@@ -1184,3 +1184,5 @@ Ako želite unaprijediti svoju postavu, PlayCase je savršen dodatak ovom skinu.
 
 "Game3DSEncryptedTips" = "Uvezite ispravnu datoteku aes_keys.txt da biste čitali šifrirane ROM-ove.";
 "AesKeysTxtDesc" = "Potrebno za igranje šifriranih 3DS ROM-ova.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";

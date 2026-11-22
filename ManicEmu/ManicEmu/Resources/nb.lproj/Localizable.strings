@@ -1176,3 +1176,5 @@ Hvis du vil forbedre oppsettet ditt, er PlayCase et perfekt tilbehør til dette 
 
 "Game3DSEncryptedTips" = "Importer riktig aes_keys.txt for å lese krypterte ROM-er.";
 "AesKeysTxtDesc" = "Kreves for å spille krypterte 3DS-ROM-er.";
+"CoverNormaliseNamesOn" = "Normalise Names: On";
+"CoverNormaliseNamesOff" = "Normalise Names: Off";
