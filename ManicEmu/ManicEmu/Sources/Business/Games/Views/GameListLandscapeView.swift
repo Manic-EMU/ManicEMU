@@ -1637,6 +1637,17 @@ class GameListLandscapeView: BaseView {
         return cell.focusContentView
     }
 
+    /// Default focus target when the screen first gains controller focus: the game row,
+    /// not the top-leading filter button, so left/right immediately browse games.
+    func preferredFocusView() -> UIView? {
+        if isCarouselEnabled {
+            syncCarouselFocusTargets()
+            guard let card = currentCarouselFocusView, card.fk_canFocus else { return nil }
+            return card
+        }
+        return listView.canEnterFocus ? listView : nil
+    }
+
     /// Current cover is the only focusable target. Left/right change pages via the paging layout.
     /// Do not put press/focus lift on `cardView` — the carousel layout owns that transform.
     private func syncCarouselFocusTargets() {

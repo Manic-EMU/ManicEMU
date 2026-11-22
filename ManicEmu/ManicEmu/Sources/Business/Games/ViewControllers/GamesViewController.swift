@@ -385,6 +385,14 @@ class GamesViewController: BaseViewController {
         }
     }
     
+    /// Landscape: land controller focus on the game row. Portrait keeps the default search.
+    func preferredFocusView() -> UIView? {
+        guard view.preferredLayoutStyle == .landscape,
+              let landscapeView = gameListLandscapeView,
+              landscapeView.superview != nil else { return nil }
+        return landscapeView.preferredFocusView()
+    }
+
     func scrollToFirstGame() {
         if view.preferredLayoutStyle == .landscape {
             gameListLandscapeView?.scrollToFirstGame()

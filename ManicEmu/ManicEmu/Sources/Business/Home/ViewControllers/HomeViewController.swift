@@ -417,6 +417,12 @@ class HomeViewController: BaseViewController {
                 })
             ])
             
+            if let gamesViewController = viewController as? GamesViewController {
+                context.preferredFocusView = { [weak gamesViewController] in
+                    gamesViewController?.preferredFocusView()
+                }
+            }
+
             if self.homeTabBar.currentSelection == .games {
                 let commands = [FocusCommand(key: FocusKey("l1"), title: R.string.localizable.scrollToFirstGame(), action: { [weak self] in
                     self?.gamesViewController.scrollToFirstGame()
