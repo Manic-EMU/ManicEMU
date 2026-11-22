@@ -77,6 +77,7 @@ enum ExtraKey: String {
     case hasQueryMetadata
     case hideGameRating
     case rewind
+    case rewindByDefault
     case nickname
     case joinDate
     case symbianFirmwareCode

@@ -920,10 +920,10 @@ enum GameOption: Int, CaseIterable {
             }
             
         case .rewind:
-            let rewind = firstGame.getExtraBool(key: ExtraKey.rewind.rawValue) ?? false
+            let rewind = firstGame.isRewindEnabled
             if games.count == 1 {
                 return .switch(rewind ? .on : .off)
-            } else if games.allSatisfy({ ($0.getExtraBool(key: ExtraKey.rewind.rawValue) ?? false) == rewind }) {
+            } else if games.allSatisfy({ ($0.isRewindEnabled) == rewind }) {
                 return .chevron(rewind ? R.string.localizable.on() : R.string.localizable.off())
             }
             

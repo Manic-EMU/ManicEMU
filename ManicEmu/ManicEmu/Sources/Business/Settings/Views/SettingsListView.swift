@@ -69,6 +69,7 @@ class SettingsListView: BaseView {
                                   .init(type: .theme),
                                   .init(type: .quickGame),
                                   .init(type: .autoSaveState),
+                                  .init(type: .rewindByDefault),
                                   .init(type: .skin),
                                   .init(type: .coverScraping)]
                 
@@ -453,6 +454,11 @@ class SettingsListView: BaseView {
                         case .rumble:
                             let value = upateSwitchSettings(extraValue: subActions?.extraValue, cellData: cellData, indexPath: indexPath)
                             Settings.defalut.updateExtra(key: ExtraKey.rumble.rawValue, value: value)
+
+                        case .rewindByDefault:
+                            let value = upateSwitchSettings(extraValue: subActions?.extraValue, cellData: cellData, indexPath: indexPath)
+                            Settings.defalut.updateExtra(key: ExtraKey.rewindByDefault.rawValue, value: value)
+                            PlayViewController.updateRewind()
                             
                         case .appearance:
                             if let index = subActions?.extraValue as? Int {

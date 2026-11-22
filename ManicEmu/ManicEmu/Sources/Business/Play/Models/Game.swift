@@ -1458,6 +1458,11 @@ class Game: Object, ObjectUpdatable {
         aliasName ?? name
     }
     
+    /// Effective rewind state: the per-game override if set, otherwise the global default.
+    var isRewindEnabled: Bool {
+        getExtraBool(key: ExtraKey.rewind.rawValue) ?? Settings.defalut.rewindByDefault
+    }
+
     /// Whether rewind is available. Requires savestate_features of serialized or higher.
     var supportRewind: Bool {
         // Non-libretro, external platforms, and URL shortcuts do not support rewind.

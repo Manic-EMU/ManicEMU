@@ -1141,7 +1141,7 @@ extension GameOption {
         } else if self == .hideControls {
             firstGameTimeConsumingValue = (firstGame.getExtraBool(key: ExtraKey.forceFullSkin.rawValue) ?? false)
         } else if self == .rewind {
-            firstGameTimeConsumingValue = (firstGame.getExtraBool(key: ExtraKey.rewind.rawValue) ?? false)
+            firstGameTimeConsumingValue = (firstGame.isRewindEnabled)
         }
         
         if games.count == 1 {
@@ -1196,7 +1196,7 @@ extension GameOption {
                 self == .volume && $0.volume == firstGame.volume ||
                 self == .swapScreen && $0.swapScreen == firstGame.swapScreen ||
                 self == .hideControls && ($0.getExtraBool(key: ExtraKey.forceFullSkin.rawValue) ?? false) == (firstGameTimeConsumingValue ?? false) ||
-                self == .rewind && ($0.getExtraBool(key: ExtraKey.rewind.rawValue) ?? false) == (firstGameTimeConsumingValue ?? false)
+                self == .rewind && ($0.isRewindEnabled) == (firstGameTimeConsumingValue ?? false)
             }) {
                 if self == .jit {
                     selectedIndex = firstGame.jit ? 0 : 1

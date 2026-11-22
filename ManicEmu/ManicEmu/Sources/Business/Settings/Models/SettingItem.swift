@@ -14,6 +14,7 @@ struct SettingItem {
              theme,
              quickGame,
              autoSaveState,
+             rewindByDefault,
              skin,
              airPlay,
              iCloud,
@@ -98,6 +99,8 @@ struct SettingItem {
             return .switch(.init(state: (Settings.defalut.getExtraBool(key: ExtraKey.rumble.rawValue) ?? false) ? .on : .off))
         case .skinSound:
             return .switch(.init(state: (Settings.defalut.getExtraBool(key: ExtraKey.skinSoundEffects.rawValue) ?? true) ? .on : .off))
+        case .rewindByDefault:
+            return .switch(.init(state: Settings.defalut.rewindByDefault ? .on : .off))
         default:
             return nil
         }
@@ -112,6 +115,7 @@ struct SettingItem {
                 .respectSilentMode,
                 .rumble,
                 .skinSound,
+                .rewindByDefault,
                 .appearance:
             return nil
             
@@ -132,7 +136,7 @@ struct SettingItem {
             [R.Color.Purple]
         case .theme, .onlinePlay, .FAQ, .featuredItems:
             [R.Color.Orange]
-        case .autoSaveState, .rumble, .feedback, .resetTips:
+        case .autoSaveState, .rewindByDefault, .rumble, .feedback, .resetTips:
             [R.Color.Green]
         case .skin, .skinSound, .about:
             [R.Color.Pink]
@@ -195,6 +199,8 @@ struct SettingItem {
             ASIcon.symbolImage(R.image.retroachievements_iconSymbols(), colors: iconColors)
         case .rumble:
             ASIcon.symbolImage(R.image.rumble_iconSymbols(), colors: iconColors)
+        case .rewindByDefault:
+            ASIcon.symbolImage(R.image.rewind_iconSymbols(), colors: iconColors)
         case .appearance:
             ASIcon.symbolImage(R.image.appearance_iconSymbols(), colors: iconColors)
         case .triggerPro:
@@ -264,6 +270,8 @@ struct SettingItem {
             "RetroAchievements"
         case .rumble:
             "Rumble"
+        case .rewindByDefault:
+            R.string.localizable.rewind()
         case .appearance:
             R.string.localizable.appearance()
         case .triggerPro:
@@ -302,6 +310,8 @@ struct SettingItem {
             return R.string.localizable.respectSilentModeDesc()
         } else if type == .rumble {
             return R.string.localizable.rumbleDetail()
+        } else if type == .rewindByDefault {
+            return "Enable rewind for all games by default. A game's own Rewind setting overrides this."
         } else if type == .appearance {
             return Settings.appearance.desc
         } else if type == .triggerPro {

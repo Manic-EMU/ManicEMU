@@ -4261,7 +4261,7 @@ extension PlayViewController {
             default:     return 256  // 6GB+ new device
             }
         }
-        LibretroCore.sharedInstance().setRewindEnable(manicGame.getExtraBool(key: ExtraKey.rewind.rawValue) ?? false,
+        LibretroCore.sharedInstance().setRewindEnable(manicGame.isRewindEnabled,
                                                       granularity: 3,
                                                       bufferSizeMB: rewindBufferSizeMB(),
                                                       bufferSizeStepMB: 10,

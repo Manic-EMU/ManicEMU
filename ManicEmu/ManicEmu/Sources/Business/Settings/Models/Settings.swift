@@ -162,6 +162,11 @@ class Settings: Object, ObjectUpdatable {
         NotificationCenter.default.post(name: R.NotificationName.PlatformVisibleChange, object: platform)
     }
     
+    /// Global rewind default, used by games without a per-game rewind override.
+    var rewindByDefault: Bool {
+        getExtraBool(key: ExtraKey.rewindByDefault.rawValue) ?? false
+    }
+
     var SteamGridDBAPIKey: String? {
         Settings.defalut.getExtraString(key: ExtraKey.steamGridDBAPIKey.rawValue)
     }
