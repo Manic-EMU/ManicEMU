@@ -23,7 +23,7 @@ under WiFi (for example `192.168.1.20:6969`) and pass `--host http://192.168.1.2
 | `info GAME` | Details: size, import date, last played, play time, save, save states, cheats |
 | `update GAME [--name N] [--sound on\|off] [--haptic H] [--orientation O]` | Rename a game or change its settings |
 | `find-game QUERY` | Search the library by name |
-| `put FILE...` | Upload files. The app imports them into the library straight away |
+| `put FILE... [--platform P]` | Upload files. The app imports them into the library straight away |
 | `remove GAME... [--yes]` | Remove games by name, file name or id. Without `--yes` it only shows what would go |
 | `sync DIR [--platform P] [--ext .zip] [--delete] [--yes]` | Upload files in DIR the library doesn't have. Dry run without `--yes` |
 | `pending` / `cancel NAME...` | Uploads not yet imported, and cancelling them |
@@ -47,6 +47,19 @@ Platform ids are the app's own, such as `nes`, `snes`, `gb`, `gbc`, `gba`, `ds`,
 - `--haptic` is the vibration when on-screen buttons are pressed. `--orientation` locks the game screen.
 - A game that's being played can't be updated. Ask the user to close it and retry.
 
+## Choosing the platform
+
+Pass `--platform` to `put` and `sync` whenever you know the platform. The files then import as that
+platform instead of one the app guesses from the extension, and the app doesn't stop to ask on the phone:
+
+- Extensions several platforms share (`.bin`, `.iso`, `.chd`, `.cue`, `.zip` and others) import as the
+  platform you gave.
+- Archives that platform runs zipped (arcade, DOS, C64, Amiga) stay zipped, without the ZIP File
+  Handling dialog. Always use `--platform arcade` for MAME zips: builds made from the public source
+  can't look MAME titles up, so without it every zip stops on that dialog.
+- A file the platform doesn't use is rejected with the reason. That includes zipped ROMs for platforms
+  that don't run zips (a `.zip` for `gba`, say): upload the ROM itself, or leave out `--platform`.
+
 ## Syncing a folder
 
 - Matching is by file name without the extension, so `Tetris.gb` locally matches `Tetris.gb` in the
@@ -68,4 +81,7 @@ For anything the script doesn't cover:
 - `POST /library/update` form `id=ID` plus any of `name=`, `sound=true|false`,
   `haptic=off|soft|light|medium|heavy|rigid`, `orientation=auto|portrait|landscape`, with the same
   header: returns the updated game. Listings include `sound`, `haptic` and `orientation` too.
+- `POST /library/upload` multipart `files[]` plus optional `platform=ID`, with the same header:
+  saves and imports the files as that platform, returns `{accepted: [fileName], rejected: [{fileName, error}]}`.
+  An unknown id returns 400 with the list of known ids.
 - From Git Bash, set `MSYS_NO_PATHCONV=1` so `/` paths aren't rewritten.

@@ -6,6 +6,8 @@ The app serves this API on port 6969 while its Wi-Fi transfer screen is open:
   POST /library/delete id=ID[,ID]   remove games (needs header X-Manic-EMU: 1)
   POST /library/update id=ID name= sound= haptic= orientation=
                                     rename a game or change its settings (same header)
+  POST /library/upload (multipart: platform=, files[])
+                                    upload and import as that platform (same header)
   GET  /list?path=  POST /upload (multipart: path, files[])  POST /delete path=
                                     the transfer folder: uploads waiting to be imported
 
@@ -130,12 +132,18 @@ def update_game(host, game_id, fields):
     return _post_form(host, "library/update", {"id": game_id, **fields}, AGENT_HEADER)
 
 
-def upload(host, local_file, remote_dir="/"):
+def upload(host, local_file, platform=None, remote_dir="/"):
+    """Upload one file. With a platform it goes through /library/upload and imports as that platform,
+    so arcade zips import as MAME ROMs without the app's ZIP File Handling dialog. Without one it
+    uses /upload and the app guesses the platform."""
+    platform = platform.lower() if platform else None
+    hinted = platform is not None
     boundary = uuid.uuid4().hex
     name = os.path.basename(local_file).replace('"', "_")
     size = os.path.getsize(local_file)
+    field = f"name=\"platform\"\r\n\r\n{platform}" if hinted else f"name=\"path\"\r\n\r\n{norm_dir(remote_dir)}"
     head = (
-        f"--{boundary}\r\nContent-Disposition: form-data; name=\"path\"\r\n\r\n{norm_dir(remote_dir)}\r\n"
+        f"--{boundary}\r\nContent-Disposition: form-data; {field}\r\n"
         f"--{boundary}\r\nContent-Disposition: form-data; name=\"files[]\"; filename=\"{name}\"\r\n"
         f"Content-Type: application/octet-stream\r\n\r\n"
     ).encode()
@@ -148,11 +156,19 @@ def upload(host, local_file, remote_dir="/"):
                 yield chunk
         yield tail
 
-    req = urllib.request.Request(_url(host, "upload"), data=gen(), method="POST")
+    req = urllib.request.Request(_url(host, "library/upload" if hinted else "upload"), data=gen(), method="POST",
+                                 headers=AGENT_HEADER if hinted else {})
     req.add_header("Content-Type", f"multipart/form-data; boundary={boundary}")
     req.add_header("Content-Length", str(len(head) + size + len(tail)))
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        r.read()
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+            r.read()
+    except urllib.error.HTTPError as e:
+        body = e.read().decode(errors="replace")
+        if hinted and e.code in (404, 405):
+            raise RuntimeError("this app version has no /library/upload; update Manic EMU, "
+                               "or upload without --platform (the app will ask how to handle zips)") from None
+        raise RuntimeError(f"Manic EMU returned {e.code}: {body}") from None
 
 
 # ---- commands ----------------------------------------------------------------------------
@@ -280,7 +296,7 @@ def cmd_sync(host, local_dir, platform, exts, delete_extra, yes):
     for i, p in enumerate(to_up, 1):
         print(f"[{i}/{len(to_up)}] upload {os.path.basename(p)}", flush=True)
         try:
-            upload(host, p)
+            upload(host, p, platform)
         except Exception as e:
             print(f"  FAILED: {e}", flush=True)
             failed.append(os.path.basename(p))
@@ -306,6 +322,7 @@ def main():
     s.add_argument("query"); s.add_argument("--platform")
     s = sp.add_parser("put", help="upload files; the app imports them into the library")
     s.add_argument("files", nargs="+")
+    s.add_argument("--platform", help="import as this platform id, e.g. arcade, gba, ps1 (arcade zips skip the app's zip dialog)")
     s = sp.add_parser("remove", help="remove games from the library (dry run without --yes)")
     s.add_argument("games", nargs="+", help="name, file name or id")
     s.add_argument("--platform"); s.add_argument("--yes", action="store_true")
@@ -320,7 +337,8 @@ def main():
     s.add_argument("names", nargs="+")
     s = sp.add_parser("sync", help="upload local files missing from the library (dry run without --yes)")
     s.add_argument("local_dir")
-    s.add_argument("--platform", help="limit the library side to one platform (required with --delete)")
+    s.add_argument("--platform", help="compare with this platform's games and import uploads as it "
+                                      "(required with --delete)")
     s.add_argument("--ext", action="append", help="only these extensions, e.g. --ext .zip")
     s.add_argument("--delete", action="store_true", help="also remove library games of --platform that aren't in local_dir")
     s.add_argument("--yes", action="store_true")
@@ -347,7 +365,7 @@ def main():
     elif a.cmd == "put":
         for f in a.files:
             print(f"upload {f}", flush=True)
-            upload(h, f)
+            upload(h, f, a.platform)
     elif a.cmd == "remove":
         return cmd_remove(h, a.games, a.platform, a.yes)
     elif a.cmd == "update":

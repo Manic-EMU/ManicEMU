@@ -81,6 +81,9 @@ extension WebServer: GCDWebUploaderDelegate {
 //      Removes games exactly like the in-app Remove Game action: ROM, saves, save states and cheats.
 // POST /library/update id=ID [name=] [sound=true|false] [haptic=] [orientation=] (header X-Manic-EMU: 1)
 //      Renames a game or changes its simple per-game settings. Returns the updated game.
+// POST /library/upload multipart files[] [platform=ID] (header X-Manic-EMU: 1)
+//      Uploads and imports files, as the given platform if there is one. Archives that platform runs
+//      zipped (arcade, DOS, C64, Amiga) are kept zipped without asking.
 //
 // Handlers added after GCDWebUploader's own take priority over them.
 extension WebServer {
@@ -171,6 +174,92 @@ extension WebServer {
                 done(WebServer.updateGame(arguments: args))
             }
         }
+
+        server.addHandler(forMethod: "POST", path: "/library/upload", request: GCDWebServerMultiPartFormRequest.self) { [weak self] request in
+            guard WebServer.isLocalHost(request) else { return WebServer.json(["error": "Forbidden host"], status: 403) }
+            guard WebServer.header(WebServer.agentHeader, in: request) != nil else {
+                return WebServer.json(["error": "Missing \(WebServer.agentHeader) header"], status: 403)
+            }
+            guard let form = request as? GCDWebServerMultiPartFormRequest else {
+                return WebServer.json(["error": "Expected multipart/form-data"], status: 400)
+            }
+            return WebServer.upload(form: form, in: self?.scene)
+        }
+    }
+
+    /// True if `gameType` uses files with this extension. Archives count only for platforms that run
+    /// them zipped; others are refused, because the app would unzip them and the files inside could be anything.
+    private static func canImport(fileExtension ext: String, as gameType: GameType) -> Bool {
+        if GameType.gameTypes(multiPlatformFileExtension: ext).contains(gameType) {
+            return true
+        }
+        if FileType.zip.extensions.contains(ext) {
+            return false
+        }
+        return GameType(fileExtension: ext) == gameType
+    }
+
+    /// Moves uploaded files into the transfer folder and imports them. With `platform=ID` (an id from
+    /// `GET /library`) each file must be one that platform uses. The files then import as that platform
+    /// instead of one guessed from the extension, and archives the platform runs zipped (arcade, DOS,
+    /// C64, Amiga) stay zipped without the ZIP File Handling dialog, even when the app can't look an
+    /// arcade title up in its MAME list.
+    private static func upload(form: GCDWebServerMultiPartFormRequest, in scene: UIWindowScene?) -> GCDWebServerResponse {
+        let platform = form.firstArgument(forControlName: "platform")?.string?.lowercased() ?? ""
+        var chosenType: GameType?
+        if !platform.isEmpty {
+            guard let gameType = System.allCases.map({ $0.gameType }).first(where: { platformID($0) == platform }) else {
+                let ids = System.allCases.map { platformID($0.gameType) }.sorted().joined(separator: ", ")
+                return json(["error": "Unknown platform \(platform). Known platforms: \(ids)"], status: 400)
+            }
+            chosenType = gameType
+        }
+        let files = form.files.filter { !$0.fileName.isEmpty }
+        guard !files.isEmpty else { return json(["error": "No files given"], status: 400) }
+
+        let allowed = Set(FileType.allSupportFileExtension().map { $0.lowercased() })
+        var accepted = [String]()
+        var rejected = [[String: String]]()
+        var paths = [String]()
+        for file in files {
+            let name = (file.fileName as NSString).lastPathComponent
+            let ext = (name as NSString).pathExtension.lowercased()
+            if let chosenType {
+                if !canImport(fileExtension: ext, as: chosenType) {
+                    let reason = FileType.zip.extensions.contains(ext)
+                        ? "\(platform) games can't be imported from a .\(ext); upload the ROM itself, or leave out platform"
+                        : "\(platform) doesn't use .\(ext) files"
+                    rejected.append(["fileName": name, "error": reason])
+                    continue
+                }
+            } else if !allowed.contains(ext) {
+                rejected.append(["fileName": name, "error": "Unsupported file type"])
+                continue
+            }
+            let destination = (R.Path.UploadWorkSpace as NSString).appendingPathComponent(name)
+            if FileManager.default.fileExists(atPath: destination) {
+                rejected.append(["fileName": name, "error": "Already waiting to be imported"])
+                continue
+            }
+            do {
+                try FileManager.default.moveItem(atPath: file.temporaryPath, toPath: destination)
+            } catch {
+                rejected.append(["fileName": name, "error": "Could not save the file"])
+                continue
+            }
+            if let chosenType {
+                FilesImporter.setImportPlatform(chosenType, path: destination)
+            }
+            accepted.append(name)
+            paths.append(destination)
+        }
+        if !paths.isEmpty {
+            let urls = paths.map { URL(fileURLWithPath: $0) }
+            DispatchQueue.main.async {
+                FilesImporter.importFiles(urls: urls, in: scene)
+            }
+        }
+        return json(["accepted": accepted, "rejected": rejected], status: accepted.isEmpty ? 400 : 200)
     }
 
     /// Main thread only.
