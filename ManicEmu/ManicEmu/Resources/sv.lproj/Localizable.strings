@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = ":s värld";
 "GamesListEmptyWarnning" = "Se till att ROM-filer kommer från lagliga källor";
 "LandscapeEmptyAddGame" = "Lägg till spel";
+"LandscapeSearchNoResults" = "Inga resultat";
 "DeleteGameAlertDetail" = "ROM, sparningar och fuskkoder raderas permanent!";
 "DeleteSkinAlertDetail" = "Skin tas bort permanent!";
 "DeleteGameGameStateAlertDetail" = "Snabbsparning raderas permanent!";

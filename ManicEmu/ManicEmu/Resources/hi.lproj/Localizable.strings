@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "की दुनिया में आपका स्वागत है";
 "GamesListEmptyWarnning" = "कृपया कानूनी स्रोतों से गेम ROM फाइल्स प्राप्त करने का ध्यान रखें";
 "LandscapeEmptyAddGame" = "गेम जोड़ें";
+"LandscapeSearchNoResults" = "कोई परिणाम नहीं";
 "DeleteGameAlertDetail" = "गेम ROM, सेव और चीट कोड डेटा सभी हटा दिए जाएंगे, यह क्रिया वापस नहीं की जा सकती!";
 "DeleteSkinAlertDetail" = "स्किन हटाने के बाद पुनर्प्राप्त नहीं की जा सकती!";
 "DeleteGameGameStateAlertDetail" = "मैन्युअल सेव स्टेट हटाने के बाद पुनर्प्राप्त नहीं की जा सकती!";

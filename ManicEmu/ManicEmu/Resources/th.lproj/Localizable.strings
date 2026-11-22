@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "โปรดมั่นใจว่าได้รับไฟล์ ROM เกมผ่านช่องทางที่ถูกกฎหมาย";
 "LandscapeEmptyAddGame" = "เพิ่มเกม";
+"LandscapeSearchNoResults" = "ไม่พบผลลัพธ์";
 "DeleteGameAlertDetail" = "ข้อมูล ROM, เซฟ และ Cheat Code จะถูกลบทั้งหมด และไม่สามารถกู้คืนได้!";
 "DeleteSkinAlertDetail" = "สกินที่ถูกลบจะไม่สามารถกู้คืนได้!";
 "DeleteGameGameStateAlertDetail" = "เซฟทันทีที่ถูกลบจะไม่สามารถกู้คืนได้!";

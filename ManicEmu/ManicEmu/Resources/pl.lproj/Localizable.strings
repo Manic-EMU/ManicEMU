@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Upewnij się, że posiadasz legalne kopie plików ROM";
 "LandscapeEmptyAddGame" = "Dodaj grę";
+"LandscapeSearchNoResults" = "Brak wyników";
 "DeleteGameAlertDetail" = "ROM, zapisy i kody Cheat zostaną trwale usunięte!";
 "DeleteSkinAlertDetail" = "Usunięte skóry nie mogą zostać przywrócone!";
 "DeleteGameGameStateAlertDetail" = "Usunięte zapisy stanu nie mogą zostać przywrócone!";

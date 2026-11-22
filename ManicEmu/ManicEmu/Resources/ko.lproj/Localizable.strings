@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "의 세계에 오신 것을 환영합니다";
 "GamesListEmptyWarnning" = "게임 ROM 파일은 합법적인 경로로 획득하시기 바랍니다";
 "LandscapeEmptyAddGame" = "게임 추가";
+"LandscapeSearchNoResults" = "결과 없음";
 "DeleteGameAlertDetail" = "게임 ROM, 세이브 및 치트 코드 등 모든 데이터가 영구 삭제되며 복구할 수 없습니다!";
 "DeleteSkinAlertDetail" = "스킨 삭제 후 복구할 수 없습니다!";
 "DeleteGameGameStateAlertDetail" = "수동 세이브 삭제 후 복구할 수 없습니다!";

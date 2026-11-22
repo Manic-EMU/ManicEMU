@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Uistite sa, že hry ROM získavate z legálnych zdrojov";
 "LandscapeEmptyAddGame" = "Pridať hru";
+"LandscapeSearchNoResults" = "Žiadne výsledky";
 "DeleteGameAlertDetail" = "ROM hry, uloženia a cheat kódy budú natrvalo odstránené!";
 "DeleteSkinAlertDetail" = "Skin po odstránení nebude možné obnoviť!";
 "DeleteGameGameStateAlertDetail" = "Okamžité uloženie po odstránení nebude možné obnoviť!";

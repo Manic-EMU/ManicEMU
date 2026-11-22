@@ -253,8 +253,11 @@ class GameLandscapeCarouselCell: UICollectionViewCell {
         }
     }
     
-    func setEmptyPlaceholder(cardSize: CGSize) {
-        snapshotKey = "empty"
+    /// - Parameter isNoSearchResults: the library has games but the current search matched none.
+    func setEmptyPlaceholder(cardSize: CGSize, isNoSearchResults: Bool = false) {
+        snapshotKey = isNoSearchResults ? "empty-search" : "empty"
+        emptyIconView.icon = .symbol(isNoSearchResults ? .magnifyingglass : .plusCircle, colors: [R.Color.LabelSecondary])
+        emptyTitleLabel.text = isNoSearchResults ? R.string.localizable.landscapeSearchNoResults() : R.string.localizable.landscapeEmptyAddGame()
         coverView.isHidden = true
         emptyCardView.isHidden = false
         emptyContentStack.isHidden = false

@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Будь ласка, отримуйте ROM-файли ігор лише з легальних джерел";
 "LandscapeEmptyAddGame" = "Додати гру";
+"LandscapeSearchNoResults" = "Немає результатів";
 "DeleteGameAlertDetail" = "Файл гри ROM, збереження та чіт-коди будуть видалені без можливості відновлення!";
 "DeleteSkinAlertDetail" = "Скін буде видалено без можливості відновлення!";
 "DeleteGameGameStateAlertDetail" = "Швидке збереження буде видалено без можливості відновлення!";

@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "يرجى التأكد من الحصول على ملفات ROM عبر قنوات قانونية";
 "LandscapeEmptyAddGame" = "إضافة لعبة";
+"LandscapeSearchNoResults" = "لا توجد نتائج";
 "DeleteGameAlertDetail" = "سيتم حذف ملفات ROM والحفظ وأكواد الغش بشكل نهائي!";
 "DeleteSkinAlertDetail" = "لا يمكن استعادة السكين بعد الإزالة!";
 "DeleteGameGameStateAlertDetail" = "لا يمكن استعادة الحفظ الفوري بعد الإزالة!";

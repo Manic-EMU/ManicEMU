@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "的世界";
 "GamesListEmptyWarnning" = "請確保通過合法渠道獲取遊戲ROM檔案";
 "LandscapeEmptyAddGame" = "新增遊戲";
+"LandscapeSearchNoResults" = "沒有結果";
 "DeleteGameAlertDetail" = "遊戲 ROM、存檔和金手指等數據將一併刪除，此操作不可逆！";
 "DeleteSkinAlertDetail" = "皮膚移除後將不可恢復！";
 "DeleteGameGameStateAlertDetail" = "即時存檔移除後將不可恢復！";

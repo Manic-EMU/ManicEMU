@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Asigurați-vă că obțineți fișierele ROM din surse legale";
 "LandscapeEmptyAddGame" = "Adaugă joc";
+"LandscapeSearchNoResults" = "Niciun rezultat";
 "DeleteGameAlertDetail" = "ROM-ul jocului, salvările și cheat code-urile vor fi șterse permanent!";
 "DeleteSkinAlertDetail" = "Skin-ul eliminat nu poate fi recuperat!";
 "DeleteGameGameStateAlertDetail" = "Salvarea instant eliminată nu poate fi recuperată!";

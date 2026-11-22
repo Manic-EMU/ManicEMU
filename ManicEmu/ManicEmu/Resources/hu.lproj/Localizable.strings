@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = " világa";
 "GamesListEmptyWarnning" = "Győződjön meg arról, hogy a játék ROM fájlokat legális forrásból szerzi be";
 "LandscapeEmptyAddGame" = "Játék hozzáadása";
+"LandscapeSearchNoResults" = "Nincs találat";
 "DeleteGameAlertDetail" = "A játék ROM, mentések és cheat kódok véglegesen törlődnek!";
 "DeleteSkinAlertDetail" = "A skin eltávolítása után nem állítható vissza!";
 "DeleteGameGameStateAlertDetail" = "Az azonnali mentés eltávolítása után nem állítható vissza!";

@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "-Welt";
 "GamesListEmptyWarnning" = "Bitte stellen Sie sicher, dass Sie ROMs legal erworben haben";
 "LandscapeEmptyAddGame" = "Spiel hinzufügen";
+"LandscapeSearchNoResults" = "Keine Ergebnisse";
 "DeleteGameAlertDetail" = "ROM, Spielstände und Cheat-Codes werden unwiderruflich gelöscht!";
 "DeleteSkinAlertDetail" = "Skin wird unwiderruflich entfernt!";
 "DeleteGameGameStateAlertDetail" = "Spielstand wird unwiderruflich entfernt!";

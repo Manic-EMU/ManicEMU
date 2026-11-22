@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "s verden";
 "GamesListEmptyWarnning" = "Sikr dig at ROM-filer er erhvervet lovligt";
 "LandscapeEmptyAddGame" = "Tilføj spil";
+"LandscapeSearchNoResults" = "Ingen resultater";
 "DeleteGameAlertDetail" = "ROM-filer, gemte tilstande og cheat codes vil blive slettet – handlingen kan ikke fortrydes!";
 "DeleteSkinAlertDetail" = "Slettede skins kan ikke gendannes!";
 "DeleteGameGameStateAlertDetail" = "Slettede øjeblikkelige gemte tilstande kan ikke gendannes!";

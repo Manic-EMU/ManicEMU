@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Đảm bảo ROM được lấy từ nguồn hợp pháp";
 "LandscapeEmptyAddGame" = "Thêm trò chơi";
+"LandscapeSearchNoResults" = "Không có kết quả";
 "DeleteGameAlertDetail" = "ROM, lưu trữ và cheat code sẽ bị xóa vĩnh viễn!";
 "DeleteSkinAlertDetail" = "Skin đã xóa không thể khôi phục!";
 "DeleteGameGameStateAlertDetail" = "Lưu trữ tức thời đã xóa không thể khôi phục!";

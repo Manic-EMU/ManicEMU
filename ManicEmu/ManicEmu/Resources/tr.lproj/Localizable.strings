@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "dünyasına hoş geldin";
 "GamesListEmptyWarnning" = "Lütfen oyun ROM dosyalarını yasal kaynaklardan edindiğinizden emin olun";
 "LandscapeEmptyAddGame" = "Oyun Ekle";
+"LandscapeSearchNoResults" = "Sonuç yok";
 "DeleteGameAlertDetail" = "Oyun ROM'u, kayıtlar ve cheat kodları gibi tüm veriler kalıcı olarak silinecek!";
 "DeleteSkinAlertDetail" = "Skin kaldırıldıktan sonra geri alınamaz!";
 "DeleteGameGameStateAlertDetail" = "Anlık kayıtlar kalıcı olarak silinecek!";

@@ -128,6 +128,7 @@
 "GamesListEmptyWelcomeRight" = "の世界へようこそ";
 "GamesListEmptyWarnning" = "ゲームROMは合法的な手段で取得してください";
 "LandscapeEmptyAddGame" = "ゲームを追加";
+"LandscapeSearchNoResults" = "結果なし";
 "DeleteGameAlertDetail" = "ゲームROM/セーブデータ/チートコードなどが完全削除されます（復元不可）";
 "DeleteSkinAlertDetail" = "スキンを削除すると復元できません！";
 "DeleteGameGameStateAlertDetail" = "セーブステートを削除すると復元できません！";

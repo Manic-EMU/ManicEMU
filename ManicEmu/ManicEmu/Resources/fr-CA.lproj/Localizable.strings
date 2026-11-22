@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Assurez-vous d'obtenir les fichiers ROM de jeu par des moyens légaux";
 "LandscapeEmptyAddGame" = "Ajouter un jeu";
+"LandscapeSearchNoResults" = "Aucun résultat";
 "DeleteGameAlertDetail" = "Le ROM du jeu, les sauvegardes et les données de triche seront définitivement supprimés !";
 "DeleteSkinAlertDetail" = "Le skin supprimé ne pourra pas être récupéré !";
 "DeleteGameGameStateAlertDetail" = "Le save state supprimé ne pourra pas être récupéré !";

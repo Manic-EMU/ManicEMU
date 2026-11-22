@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Zorg ervoor dat je ROMs legaal verkregen zijn";
 "LandscapeEmptyAddGame" = "Game toevoegen";
+"LandscapeSearchNoResults" = "Geen resultaten";
 "DeleteGameAlertDetail" = "ROM, opslag en cheatcodes worden permanent verwijderd!";
 "DeleteSkinAlertDetail" = "Skin wordt permanent verwijderd!";
 "DeleteGameGameStateAlertDetail" = "Handmatige opslagstatus wordt permanent verwijderd!";

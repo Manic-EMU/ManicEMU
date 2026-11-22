@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Pastikan anda mendapatkan ROM secara sah";
 "LandscapeEmptyAddGame" = "Tambah Permainan";
+"LandscapeSearchNoResults" = "Tiada hasil";
 "DeleteGameAlertDetail" = "ROM, simpanan dan data cheat code akan dipadam selama-lamanya!";
 "DeleteSkinAlertDetail" = "Kulit yang dipadam tidak boleh dipulihkan!";
 "DeleteGameGameStateAlertDetail" = "Simpanan segera akan dipadam selama-lamanya!";

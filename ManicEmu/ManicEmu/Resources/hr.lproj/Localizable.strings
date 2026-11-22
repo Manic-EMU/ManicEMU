@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "-a";
 "GamesListEmptyWarnning" = "Provjerite da ROM datoteke dobivate na legalan način";
 "LandscapeEmptyAddGame" = "Dodaj igru";
+"LandscapeSearchNoResults" = "Nema rezultata";
 "DeleteGameAlertDetail" = "ROM igre, save datoteke i cheat code-ovi će biti trajno izbrisani, ova radnja je nepovratna!";
 "DeleteSkinAlertDetail" = "Skin će biti trajno uklonjen!";
 "DeleteGameGameStateAlertDetail" = "Instant save će biti trajno uklonjen!";

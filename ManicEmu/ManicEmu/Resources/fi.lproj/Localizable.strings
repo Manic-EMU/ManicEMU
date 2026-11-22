@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = ":n maailmaan";
 "GamesListEmptyWarnning" = "Varmista, että saat peli-ROMit laillisista lähteistä";
 "LandscapeEmptyAddGame" = "Lisää peli";
+"LandscapeSearchNoResults" = "Ei tuloksia";
 "DeleteGameAlertDetail" = "Peli ROM, tallennukset ja cheat codet poistetaan pysyvästi!";
 "DeleteSkinAlertDetail" = "Skinin poistamista ei voi peruuttaa!";
 "DeleteGameGameStateAlertDetail" = "Pikatallennuksen poistamista ei voi peruuttaa!";

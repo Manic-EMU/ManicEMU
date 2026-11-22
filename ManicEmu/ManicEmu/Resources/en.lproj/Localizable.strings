@@ -128,6 +128,7 @@
 "GamesListEmptyWelcomeRight" = "'s World";
 "GamesListEmptyWarnning" = "Ensure game ROMs are legally obtained";
 "LandscapeEmptyAddGame" = "Add Game";
+"LandscapeSearchNoResults" = "No Results";
 "DeleteGameAlertDetail" = "All game data including ROMs, saves, and cheat codes will be permanently deleted!";
 "DeleteSkinAlertDetail" = "Skin removal is irreversible!";
 "DeleteGameGameStateAlertDetail" = "Save states cannot be recovered!";

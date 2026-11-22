@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Assicurati di ottenere i file ROM da fonti legali";
 "LandscapeEmptyAddGame" = "Aggiungi gioco";
+"LandscapeSearchNoResults" = "Nessun risultato";
 "DeleteGameAlertDetail" = "ROM, salvataggi e cheat code verranno eliminati definitivamente!";
 "DeleteSkinAlertDetail" = "La skin verrà rimossa definitivamente!";
 "DeleteGameGameStateAlertDetail" = "Il save state verrà eliminato definitivamente!";

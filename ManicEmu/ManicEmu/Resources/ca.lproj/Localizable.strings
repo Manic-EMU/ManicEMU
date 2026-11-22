@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Assegura't d'obtenir les ROMs dels jocs de manera legal";
 "LandscapeEmptyAddGame" = "Afegir joc";
+"LandscapeSearchNoResults" = "Cap resultat";
 "DeleteGameAlertDetail" = "La ROM del joc, les partides i les dades dels trucs s'eliminaran permanentment. Aquesta acció no es pot desfer!";
 "DeleteSkinAlertDetail" = "L'aparença s'eliminarà permanentment!";
 "DeleteGameGameStateAlertDetail" = "La partida s'eliminarà permanentment!";

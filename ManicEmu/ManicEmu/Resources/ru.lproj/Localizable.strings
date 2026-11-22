@@ -130,6 +130,7 @@
 "GamesListEmptyWelcomeRight" = "";
 "GamesListEmptyWarnning" = "Убедитесь в легальности источников получения ROM-файлов";
 "LandscapeEmptyAddGame" = "Добавить игру";
+"LandscapeSearchNoResults" = "Нет результатов";
 "DeleteGameAlertDetail" = "Все данные игры (ROM, сохранения, чит-коды) будут удалены безвозвратно!";
 "DeleteSkinAlertDetail" = "Скин будет удалён безвозвратно!";
 "DeleteGameGameStateAlertDetail" = "Сейв будет удалён безвозвратно!";

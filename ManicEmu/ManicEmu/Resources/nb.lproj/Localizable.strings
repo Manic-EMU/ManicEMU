@@ -129,6 +129,7 @@
 "GamesListEmptyWelcomeRight" = "s verden";
 "GamesListEmptyWarnning" = "Sørg for at ROM-filer er lovlig anskaffet";
 "LandscapeEmptyAddGame" = "Legg til spill";
+"LandscapeSearchNoResults" = "Ingen resultater";
 "DeleteGameAlertDetail" = "ROM, lagringer og cheat codes vil bli slettet – handlingen kan ikke angres!";
 "DeleteSkinAlertDetail" = "Skin vil bli fjernet permanent!";
 "DeleteGameGameStateAlertDetail" = "Lagringstilstander vil bli slettet permanent!";
