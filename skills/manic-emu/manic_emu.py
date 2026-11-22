@@ -137,8 +137,9 @@ def load_names(source):
     holding that command's output (lines like: mslug3  "Metal Slug 3 (NGM-2560)")."""
     if os.path.splitext(source)[1].lower() == ".exe" or (os.name != "nt" and os.access(source, os.X_OK)):
         import subprocess
-        text = subprocess.run([source, "-listfull"], capture_output=True, text=True, encoding="utf-8",
-                              errors="replace", check=True).stdout
+        exe = os.path.abspath(source)  # Windows won't start a relative path written with /
+        text = subprocess.run([exe, "-listfull"], capture_output=True, text=True, encoding="utf-8",
+                              errors="replace", check=True, cwd=os.path.dirname(exe)).stdout
     else:
         with open(source, encoding="utf-8", errors="replace") as f:
             text = f.read()
