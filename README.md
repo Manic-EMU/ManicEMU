@@ -106,17 +106,20 @@ More platforms are planned upstream.
 | Rewind | Rewind the game progress and keep tweaking the levels. |
 | Landscape Mode | Supports dynamic backgrounds, background music, a wide variety of game cover carousel styles, and full customization. |
 | Global Navigation and Focus | Fully operate the UI using a keyboard or controller. |
-| Wi-Fi library | Upload games and remove them from the library from a browser on the same network. |
-| AI agents | Let an AI agent list, upload and remove games over Wi-Fi with the [manic-emu skill](skills/manic-emu/SKILL.md). |
+| Wi-Fi library | Upload, list and remove games from a browser, a command-line script or an AI agent on the same network. See the [Wi-Fi library guide](docs/wifi-library.md). |
 
-### Using an AI agent
+### Managing your library over Wi-Fi
 
 1. In Manic EMU, open the **Import** tab, turn on **WiFi** and keep the app open.
-2. Give your agent the [`skills/manic-emu`](skills/manic-emu) folder. In Claude Code, copy it into
-   `~/.claude/skills/`, or ask Claude to install the skill from this repository's `skills/manic-emu`.
-3. Ask things like "What games are on my Manic EMU?" or "Remove Pac-Man from Manic EMU".
+2. Open the address it shows (for example `http://192.168.1.20:6969`) in a browser on your computer
+   to upload games, see your library and remove games.
+3. For big uploads, whole folders or arcade sets, use the
+   [`manic_emu.py`](skills/manic-emu/manic_emu.py) script (Python 3.8+, nothing to install). It's
+   also a [skill](skills/manic-emu/SKILL.md) that lets an AI agent such as Claude Code do it for you:
+   "What games are on my Manic EMU?", "Remove Pac-Man from Manic EMU".
 
-The browser page at the address shown under WiFi has the same steps.
+The [Wi-Fi library guide](docs/wifi-library.md) covers every option, platform ids, MAME names and
+troubleshooting.
 
 ## Development Notes
 
@@ -172,6 +175,7 @@ through the [Daiuno repositories](https://github.com/Daiuno?tab=repositories).
 ## Documentation
 
 - [Manic EMU upstream README](https://github.com/Manic-EMU/ManicEMU/blob/main/README.md)
+- [Wi-Fi library guide](docs/wifi-library.md)
 - [Anti-piracy policy](https://github.com/Manic-EMU/ManicEMU/blob/main/ANTI_PIRACY.md)
 - [Contributing guide](https://github.com/Manic-EMU/ManicEMU/blob/main/CONTRIBUTING.md)
 - [Code of conduct](https://github.com/Manic-EMU/ManicEMU/blob/main/CODE_OF_CONDUCT.md)
