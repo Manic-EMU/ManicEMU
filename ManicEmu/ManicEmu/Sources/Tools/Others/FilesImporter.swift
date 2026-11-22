@@ -132,6 +132,7 @@ extension FilesImporter {
     static func importFiles(urls: [URL],
                             preErrors: [ImportError] = [],
                             silentMode: Bool = PlayViewController.isGaming,
+                            askAboutZips: Bool = true,
                             in scene: UIWindowScene?,
                             importCompletion: (()->Void)? = nil) {
         if urls.isEmpty {
@@ -150,7 +151,7 @@ extension FilesImporter {
         }
         
         //Process the zip file.
-        handleZip(urls: urls, silentMode: silentMode) { unzipUrls in
+        handleZip(urls: urls, silentMode: silentMode, askAboutZips: askAboutZips) { unzipUrls in
             var urls = urls.filter({ !FileType.zip.extensions.contains($0.pathExtension.lowercased()) }) + unzipUrls
             //First, handle the cue and m3u.
             let (multiFileResultUrls, multiFileResultError, multiFileResultItems) = handleMultiFiles(urls: urls)
@@ -994,7 +995,9 @@ extension FilesImporter {
         }
     }
     
-    static func handleZip(urls: [URL], silentMode: Bool, completion: @escaping ([URL])->Void) {
+    /// With `askAboutZips` false, zips that would need the ZIP File Handling dialog are imported as they are,
+    /// the same as confirming the dialog with nothing ticked.
+    static func handleZip(urls: [URL], silentMode: Bool, askAboutZips: Bool = true, completion: @escaping ([URL])->Void) {
         DispatchQueue.global().async {
             var results = [URL]()
             var needToHandleUrls = [URL]()
@@ -1073,7 +1076,12 @@ extension FilesImporter {
                     }
                 }
             }
-            
+
+            if !askAboutZips {
+                results.append(contentsOf: needToHandleUrls)
+                needToHandleUrls.removeAll()
+            }
+
             if needToHandleUrls.count > 0 {
                 DispatchQueue.main.async {
                     UIView.hideLoading()

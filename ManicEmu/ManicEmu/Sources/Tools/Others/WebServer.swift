@@ -81,9 +81,10 @@ extension WebServer: GCDWebUploaderDelegate {
 //      Removes games exactly like the in-app Remove Game action: ROM, saves, save states and cheats.
 // POST /library/update id=ID [name=] [sound=true|false] [haptic=] [orientation=] (header X-Manic-EMU: 1)
 //      Renames a game or changes its simple per-game settings. Returns the updated game.
-// POST /library/upload multipart files[] [platform=ID] (header X-Manic-EMU: 1)
+// POST /library/upload multipart files[] [platform=ID] [bulk=1] (header X-Manic-EMU: 1)
 //      Uploads and imports files, as the given platform if there is one. Archives that platform runs
-//      zipped (arcade, DOS, C64, Amiga) are kept zipped without asking.
+//      zipped (arcade, DOS, C64, Amiga) are kept zipped without asking. bulk=1 imports without any
+//      alerts or dialogs on the phone.
 //
 // Handlers added after GCDWebUploader's own take priority over them.
 extension WebServer {
@@ -203,7 +204,9 @@ extension WebServer {
     /// `GET /library`) each file must be one that platform uses. The files then import as that platform
     /// instead of one guessed from the extension, and archives the platform runs zipped (arcade, DOS,
     /// C64, Amiga) stay zipped without the ZIP File Handling dialog, even when the app can't look an
-    /// arcade title up in its MAME list.
+    /// arcade title up in its MAME list. With `bulk=1` the import shows nothing on the phone: no progress,
+    /// no "import successful" alert, no error alerts, no platform picker and no ZIP File Handling dialog
+    /// (zips that would need it are imported as they are). Cover search still runs in the background.
     private static func upload(form: GCDWebServerMultiPartFormRequest, in scene: UIWindowScene?) -> GCDWebServerResponse {
         let platform = form.firstArgument(forControlName: "platform")?.string?.lowercased() ?? ""
         var chosenType: GameType?
@@ -214,6 +217,8 @@ extension WebServer {
             }
             chosenType = gameType
         }
+        let bulkValue = form.firstArgument(forControlName: "bulk")?.string?.lowercased() ?? ""
+        let bulk = ["1", "true", "yes", "on"].contains(bulkValue)
         let files = form.files.filter { !$0.fileName.isEmpty }
         guard !files.isEmpty else { return json(["error": "No files given"], status: 400) }
 
@@ -256,7 +261,11 @@ extension WebServer {
         if !paths.isEmpty {
             let urls = paths.map { URL(fileURLWithPath: $0) }
             DispatchQueue.main.async {
-                FilesImporter.importFiles(urls: urls, in: scene)
+                if bulk {
+                    FilesImporter.importFiles(urls: urls, silentMode: true, askAboutZips: false, in: scene)
+                } else {
+                    FilesImporter.importFiles(urls: urls, in: scene)
+                }
             }
         }
         return json(["accepted": accepted, "rejected": rejected], status: accepted.isEmpty ? 400 : 200)

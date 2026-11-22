@@ -6,8 +6,8 @@ The app serves this API on port 6969 while its Wi-Fi transfer screen is open:
   POST /library/delete id=ID[,ID]   remove games (needs header X-Manic-EMU: 1)
   POST /library/update id=ID name= sound= haptic= orientation=
                                     rename a game or change its settings (same header)
-  POST /library/upload (multipart: platform=, files[])
-                                    upload and import as that platform (same header)
+  POST /library/upload (multipart: platform=, bulk=1, files[])
+                                    upload and import as that platform, bulk without alerts (same header)
   GET  /list?path=  POST /upload (multipart: path, files[])  POST /delete path=
                                     the transfer folder: uploads waiting to be imported
 
@@ -132,18 +132,20 @@ def update_game(host, game_id, fields):
     return _post_form(host, "library/update", {"id": game_id, **fields}, AGENT_HEADER)
 
 
-def upload(host, local_file, platform=None, remote_dir="/"):
-    """Upload one file. With a platform it goes through /library/upload and imports as that platform,
-    so arcade zips import as MAME ROMs without the app's ZIP File Handling dialog. Without one it
-    uses /upload and the app guesses the platform."""
+def upload(host, local_file, platform=None, bulk=False, remote_dir="/"):
+    """Upload one file. With a platform or bulk it goes through /library/upload: a platform imports it
+    as that platform (arcade zips skip the app's ZIP File Handling dialog), and bulk shows nothing on
+    the phone. Otherwise it uses /upload and the app guesses the platform and shows its usual alerts."""
     platform = platform.lower() if platform else None
-    hinted = platform is not None
+    hinted = platform is not None or bulk
     boundary = uuid.uuid4().hex
     name = os.path.basename(local_file).replace('"', "_")
     size = os.path.getsize(local_file)
-    field = f"name=\"platform\"\r\n\r\n{platform}" if hinted else f"name=\"path\"\r\n\r\n{norm_dir(remote_dir)}"
+    fields = {"platform": platform, "bulk": "1" if bulk else None} if hinted else {"path": norm_dir(remote_dir)}
+    head = "".join(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n"
+                   for k, v in fields.items() if v is not None)
     head = (
-        f"--{boundary}\r\nContent-Disposition: form-data; {field}\r\n"
+        head +
         f"--{boundary}\r\nContent-Disposition: form-data; name=\"files[]\"; filename=\"{name}\"\r\n"
         f"Content-Type: application/octet-stream\r\n\r\n"
     ).encode()
@@ -167,7 +169,7 @@ def upload(host, local_file, platform=None, remote_dir="/"):
         body = e.read().decode(errors="replace")
         if hinted and e.code in (404, 405):
             raise RuntimeError("this app version has no /library/upload; update Manic EMU, "
-                               "or upload without --platform (the app will ask how to handle zips)") from None
+                               "or upload without --platform and --bulk") from None
         raise RuntimeError(f"Manic EMU returned {e.code}: {body}") from None
 
 
@@ -274,7 +276,7 @@ def cmd_update(host, query, platform, fields):
     return 0
 
 
-def cmd_sync(host, local_dir, platform, exts, delete_extra, yes):
+def cmd_sync(host, local_dir, platform, exts, delete_extra, yes, bulk=False):
     lib = library(host, platform)
     have = {stem(g["fileName"]) for g in library(host)} | {stem(e["name"]) for e in pending(host)}
     local = {}
@@ -296,7 +298,7 @@ def cmd_sync(host, local_dir, platform, exts, delete_extra, yes):
     for i, p in enumerate(to_up, 1):
         print(f"[{i}/{len(to_up)}] upload {os.path.basename(p)}", flush=True)
         try:
-            upload(host, p, platform)
+            upload(host, p, platform, bulk)
         except Exception as e:
             print(f"  FAILED: {e}", flush=True)
             failed.append(os.path.basename(p))
@@ -323,6 +325,7 @@ def main():
     s = sp.add_parser("put", help="upload files; the app imports them into the library")
     s.add_argument("files", nargs="+")
     s.add_argument("--platform", help="import as this platform id, e.g. arcade, gba, ps1 (arcade zips skip the app's zip dialog)")
+    s.add_argument("--bulk", action="store_true", help="import without any alerts or dialogs on the phone")
     s = sp.add_parser("remove", help="remove games from the library (dry run without --yes)")
     s.add_argument("games", nargs="+", help="name, file name or id")
     s.add_argument("--platform"); s.add_argument("--yes", action="store_true")
@@ -339,6 +342,7 @@ def main():
     s.add_argument("local_dir")
     s.add_argument("--platform", help="compare with this platform's games and import uploads as it "
                                       "(required with --delete)")
+    s.add_argument("--bulk", action="store_true", help="import without any alerts or dialogs on the phone")
     s.add_argument("--ext", action="append", help="only these extensions, e.g. --ext .zip")
     s.add_argument("--delete", action="store_true", help="also remove library games of --platform that aren't in local_dir")
     s.add_argument("--yes", action="store_true")
@@ -365,7 +369,7 @@ def main():
     elif a.cmd == "put":
         for f in a.files:
             print(f"upload {f}", flush=True)
-            upload(h, f, a.platform)
+            upload(h, f, a.platform, a.bulk)
     elif a.cmd == "remove":
         return cmd_remove(h, a.games, a.platform, a.yes)
     elif a.cmd == "update":
@@ -383,7 +387,7 @@ def main():
         if a.delete and not a.platform:
             ap.error("--delete needs --platform, so games of other platforms are never removed")
         exts = {x.lower() if x.startswith(".") else "." + x.lower() for x in a.ext} if a.ext else None
-        return cmd_sync(h, a.local_dir, a.platform, exts, a.delete, a.yes)
+        return cmd_sync(h, a.local_dir, a.platform, exts, a.delete, a.yes, a.bulk)
     return 0
 
 

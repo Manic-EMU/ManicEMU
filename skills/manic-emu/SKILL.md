@@ -23,9 +23,9 @@ under WiFi (for example `192.168.1.20:6969`) and pass `--host http://192.168.1.2
 | `info GAME` | Details: size, import date, last played, play time, save, save states, cheats |
 | `update GAME [--name N] [--sound on\|off] [--haptic H] [--orientation O]` | Rename a game or change its settings |
 | `find-game QUERY` | Search the library by name |
-| `put FILE... [--platform P]` | Upload files. The app imports them into the library straight away |
+| `put FILE... [--platform P] [--bulk]` | Upload files. The app imports them into the library straight away |
 | `remove GAME... [--yes]` | Remove games by name, file name or id. Without `--yes` it only shows what would go |
-| `sync DIR [--platform P] [--ext .zip] [--delete] [--yes]` | Upload files in DIR the library doesn't have. Dry run without `--yes` |
+| `sync DIR [--platform P] [--ext .zip] [--bulk] [--delete] [--yes]` | Upload files in DIR the library doesn't have. Dry run without `--yes` |
 | `pending` / `cancel NAME...` | Uploads not yet imported, and cancelling them |
 | `find` | Print the phone's address |
 
@@ -60,6 +60,15 @@ platform instead of one the app guesses from the extension, and the app doesn't 
 - A file the platform doesn't use is rejected with the reason. That includes zipped ROMs for platforms
   that don't run zips (a `.zip` for `gba`, say): upload the ROM itself, or leave out `--platform`.
 
+## Uploading many files
+
+Pass `--bulk` when uploading more than a handful of files. Without it every file gets its own
+"import successful" alert on the phone, and errors, the platform picker and the ZIP File Handling
+dialog each wait for a tap. With `--bulk` the phone shows nothing: games import quietly, cover art is
+still looked up in the background, and zips the app would have asked about are imported as they are.
+Failures aren't reported anywhere, so check `library` afterwards. Games whose platform the app can't
+tell import as unknown, so pass `--platform` too when you know it.
+
 ## Syncing a folder
 
 - Matching is by file name without the extension, so `Tetris.gb` locally matches `Tetris.gb` in the
@@ -81,7 +90,8 @@ For anything the script doesn't cover:
 - `POST /library/update` form `id=ID` plus any of `name=`, `sound=true|false`,
   `haptic=off|soft|light|medium|heavy|rigid`, `orientation=auto|portrait|landscape`, with the same
   header: returns the updated game. Listings include `sound`, `haptic` and `orientation` too.
-- `POST /library/upload` multipart `files[]` plus optional `platform=ID`, with the same header:
-  saves and imports the files as that platform, returns `{accepted: [fileName], rejected: [{fileName, error}]}`.
-  An unknown id returns 400 with the list of known ids.
+- `POST /library/upload` multipart `files[]` plus optional `platform=ID` and `bulk=1`, with the same
+  header: saves and imports the files as that platform, without alerts when `bulk=1`. Returns
+  `{accepted: [fileName], rejected: [{fileName, error}]}` before the import finishes. An unknown id
+  returns 400 with the list of known ids.
 - From Git Bash, set `MSYS_NO_PATHCONV=1` so `/` paths aren't rewritten.
