@@ -92,6 +92,20 @@ extension FilesImporter {
     //Platforms the sender chose for files (Wi-Fi library upload). Such files import as that platform
     //instead of one guessed from the extension, and archives the platform runs zipped skip the ZIP dialog.
     private static var importPlatforms = [String: GameType]()
+    //Names the sender chose for files (Wi-Fi library upload), shown instead of the file name and used for cover search.
+    private static var importNames = [String: String]()
+
+    static func setImportName(_ name: String, path: String) {
+        stateLock.lock()
+        importNames[URL(fileURLWithPath: path).standardizedFileURL.path] = name
+        stateLock.unlock()
+    }
+
+    private static func importName(for url: URL) -> String? {
+        stateLock.lock()
+        defer { stateLock.unlock() }
+        return importNames[url.standardizedFileURL.path]
+    }
 
     static func setImportPlatform(_ gameType: GameType, path: String) {
         stateLock.lock()
@@ -108,6 +122,7 @@ extension FilesImporter {
     private static func endImportPlatform(_ url: URL) {
         stateLock.lock()
         importPlatforms.removeValue(forKey: url.standardizedFileURL.path)
+        importNames.removeValue(forKey: url.standardizedFileURL.path)
         stateLock.unlock()
     }
 
@@ -705,7 +720,11 @@ extension FilesImporter {
                             game.aliasName = mameInfo.name
                         }
                     }
-                    
+
+                    if let chosenName = importName(for: originalUrl) {
+                        game.aliasName = chosenName
+                    }
+
                     if gameType != .notSupport {
                         game.gameType = gameType
                         ///Handling game info for specific game types.

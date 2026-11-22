@@ -81,10 +81,10 @@ extension WebServer: GCDWebUploaderDelegate {
 //      Removes games exactly like the in-app Remove Game action: ROM, saves, save states and cheats.
 // POST /library/update id=ID [name=] [sound=true|false] [haptic=] [orientation=] (header X-Manic-EMU: 1)
 //      Renames a game or changes its simple per-game settings. Returns the updated game.
-// POST /library/upload multipart files[] [platform=ID] [bulk=1] (header X-Manic-EMU: 1)
+// POST /library/upload multipart files[] [platform=ID] [bulk=1] [name=] (header X-Manic-EMU: 1)
 //      Uploads and imports files, as the given platform if there is one. Archives that platform runs
 //      zipped (arcade, DOS, C64, Amiga) are kept zipped without asking. bulk=1 imports without any
-//      alerts or dialogs on the phone.
+//      alerts or dialogs on the phone. name= (one file only) sets the game's display name.
 //
 // Handlers added after GCDWebUploader's own take priority over them.
 extension WebServer {
@@ -207,6 +207,8 @@ extension WebServer {
     /// arcade title up in its MAME list. With `bulk=1` the import shows nothing on the phone: no progress,
     /// no "import successful" alert, no error alerts, no platform picker and no ZIP File Handling dialog
     /// (zips that would need it are imported as they are). Cover search still runs in the background.
+    /// `name=` (one file only) sets the name shown in the library, which cover search also looks for.
+    /// It applies when the game is new to the library.
     private static func upload(form: GCDWebServerMultiPartFormRequest, in scene: UIWindowScene?) -> GCDWebServerResponse {
         let platform = form.firstArgument(forControlName: "platform")?.string?.lowercased() ?? ""
         var chosenType: GameType?
@@ -221,6 +223,17 @@ extension WebServer {
         let bulk = ["1", "true", "yes", "on"].contains(bulkValue)
         let files = form.files.filter { !$0.fileName.isEmpty }
         guard !files.isEmpty else { return json(["error": "No files given"], status: 400) }
+        var chosenName: String?
+        if let raw = form.firstArgument(forControlName: "name")?.string {
+            let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard files.count == 1 else {
+                return json(["error": "name can only be given when uploading one file"], status: 400)
+            }
+            guard !trimmed.isEmpty, trimmed.count <= R.Size.GameNameMaxCount else {
+                return json(["error": "name must be 1-\(R.Size.GameNameMaxCount) characters"], status: 400)
+            }
+            chosenName = trimmed
+        }
 
         let allowed = Set(FileType.allSupportFileExtension().map { $0.lowercased() })
         var accepted = [String]()
@@ -254,6 +267,9 @@ extension WebServer {
             }
             if let chosenType {
                 FilesImporter.setImportPlatform(chosenType, path: destination)
+            }
+            if let chosenName {
+                FilesImporter.setImportName(chosenName, path: destination)
             }
             accepted.append(name)
             paths.append(destination)

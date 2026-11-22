@@ -132,17 +132,39 @@ def update_game(host, game_id, fields):
     return _post_form(host, "library/update", {"id": game_id, **fields}, AGENT_HEADER)
 
 
-def upload(host, local_file, platform=None, bulk=False, remote_dir="/"):
-    """Upload one file. With a platform or bulk it goes through /library/upload: a platform imports it
-    as that platform (arcade zips skip the app's ZIP File Handling dialog), and bulk shows nothing on
-    the phone. Otherwise it uses /upload and the app guesses the platform and shows its usual alerts."""
+def load_names(source):
+    """Map ROM name -> full title from `mame -listfull`. `source` is a MAME executable, or a text file
+    holding that command's output (lines like: mslug3  "Metal Slug 3 (NGM-2560)")."""
+    if os.path.splitext(source)[1].lower() == ".exe" or (os.name != "nt" and os.access(source, os.X_OK)):
+        import subprocess
+        text = subprocess.run([source, "-listfull"], capture_output=True, text=True, encoding="utf-8",
+                              errors="replace", check=True).stdout
+    else:
+        with open(source, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+    names = {}
+    for line in text.splitlines():
+        rom, _, rest = line.strip().partition(" ")
+        rest = rest.strip()
+        if rom and rest.startswith('"') and rest.endswith('"') and len(rest) > 1:
+            names[rom.lower()] = rest[1:-1]
+    return names
+
+
+def upload(host, local_file, platform=None, bulk=False, title=None, remote_dir="/"):
+    """Upload one file. With a platform, bulk or title it goes through /library/upload: a platform
+    imports it as that platform (arcade zips skip the app's ZIP File Handling dialog), bulk shows
+    nothing on the phone, and title becomes the name shown in the library and searched for cover art.
+    Otherwise it uses /upload and the app guesses the platform and shows its usual alerts."""
     platform = platform.lower() if platform else None
-    hinted = platform is not None or bulk
+    hinted = platform is not None or bulk or title is not None
     boundary = uuid.uuid4().hex
     name = os.path.basename(local_file).replace('"', "_")
     size = os.path.getsize(local_file)
-    fields = {"platform": platform, "bulk": "1" if bulk else None} if hinted else {"path": norm_dir(remote_dir)}
-    head = "".join(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n"
+    fields = ({"platform": platform, "bulk": "1" if bulk else None, "name": title} if hinted
+              else {"path": norm_dir(remote_dir)})
+    head = "".join(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n"
+                   f"Content-Type: text/plain; charset=utf-8\r\n\r\n{v}\r\n"
                    for k, v in fields.items() if v is not None)
     head = (
         head +
@@ -276,7 +298,7 @@ def cmd_update(host, query, platform, fields):
     return 0
 
 
-def cmd_sync(host, local_dir, platform, exts, delete_extra, yes, bulk=False):
+def cmd_sync(host, local_dir, platform, exts, delete_extra, yes, bulk=False, names=None):
     lib = library(host, platform)
     have = {stem(g["fileName"]) for g in library(host)} | {stem(e["name"]) for e in pending(host)}
     local = {}
@@ -287,8 +309,10 @@ def cmd_sync(host, local_dir, platform, exts, delete_extra, yes, bulk=False):
     to_up = [p for s, p in local.items() if s not in have]
     to_del = [g for g in lib if stem(g["fileName"]) not in local] if delete_extra else []
     print(f"local={len(local)} library={len(lib)} upload={len(to_up)} remove={len(to_del)}")
+    names = names or {}
     for p in to_up:
-        print(f"  upload {os.path.basename(p)} ({os.path.getsize(p) / 1e6:.1f} MB)")
+        title = names.get(stem(os.path.basename(p)))
+        print(f"  upload {os.path.basename(p)} ({os.path.getsize(p) / 1e6:.1f} MB)" + (f" as {title!r}" if title else ""))
     for g in to_del:
         print(f"  remove {g['name']} [{g['fileName']}]")
     if not yes:
@@ -298,7 +322,7 @@ def cmd_sync(host, local_dir, platform, exts, delete_extra, yes, bulk=False):
     for i, p in enumerate(to_up, 1):
         print(f"[{i}/{len(to_up)}] upload {os.path.basename(p)}", flush=True)
         try:
-            upload(host, p, platform, bulk)
+            upload(host, p, platform, bulk, names.get(stem(os.path.basename(p))))
         except Exception as e:
             print(f"  FAILED: {e}", flush=True)
             failed.append(os.path.basename(p))
@@ -307,6 +331,10 @@ def cmd_sync(host, local_dir, platform, exts, delete_extra, yes, bulk=False):
         print("failed uploads: " + ", ".join(failed))
         return 1
     return rc
+
+
+NAMES_HELP = ("MAME executable, or a file of its -listfull output: new arcade games get their full "
+              "titles, which cover art search looks for")
 
 
 def main():
@@ -326,6 +354,7 @@ def main():
     s.add_argument("files", nargs="+")
     s.add_argument("--platform", help="import as this platform id, e.g. arcade, gba, ps1 (arcade zips skip the app's zip dialog)")
     s.add_argument("--bulk", action="store_true", help="import without any alerts or dialogs on the phone")
+    s.add_argument("--names", help=NAMES_HELP)
     s = sp.add_parser("remove", help="remove games from the library (dry run without --yes)")
     s.add_argument("games", nargs="+", help="name, file name or id")
     s.add_argument("--platform"); s.add_argument("--yes", action="store_true")
@@ -343,10 +372,12 @@ def main():
     s.add_argument("--platform", help="compare with this platform's games and import uploads as it "
                                       "(required with --delete)")
     s.add_argument("--bulk", action="store_true", help="import without any alerts or dialogs on the phone")
+    s.add_argument("--names", help=NAMES_HELP)
     s.add_argument("--ext", action="append", help="only these extensions, e.g. --ext .zip")
     s.add_argument("--delete", action="store_true", help="also remove library games of --platform that aren't in local_dir")
     s.add_argument("--yes", action="store_true")
     a = ap.parse_args()
+    names = load_names(a.names) if getattr(a, "names", None) else {}
 
     global host_in_use
     h = a.host or find_host(verbose=True)
@@ -369,7 +400,7 @@ def main():
     elif a.cmd == "put":
         for f in a.files:
             print(f"upload {f}", flush=True)
-            upload(h, f, a.platform, a.bulk)
+            upload(h, f, a.platform, a.bulk, names.get(stem(os.path.basename(f))))
     elif a.cmd == "remove":
         return cmd_remove(h, a.games, a.platform, a.yes)
     elif a.cmd == "update":
@@ -387,7 +418,7 @@ def main():
         if a.delete and not a.platform:
             ap.error("--delete needs --platform, so games of other platforms are never removed")
         exts = {x.lower() if x.startswith(".") else "." + x.lower() for x in a.ext} if a.ext else None
-        return cmd_sync(h, a.local_dir, a.platform, exts, a.delete, a.yes, a.bulk)
+        return cmd_sync(h, a.local_dir, a.platform, exts, a.delete, a.yes, a.bulk, names)
     return 0
 
 

@@ -23,9 +23,9 @@ under WiFi (for example `192.168.1.20:6969`) and pass `--host http://192.168.1.2
 | `info GAME` | Details: size, import date, last played, play time, save, save states, cheats |
 | `update GAME [--name N] [--sound on\|off] [--haptic H] [--orientation O]` | Rename a game or change its settings |
 | `find-game QUERY` | Search the library by name |
-| `put FILE... [--platform P] [--bulk]` | Upload files. The app imports them into the library straight away |
+| `put FILE... [--platform P] [--bulk] [--names MAME]` | Upload files. The app imports them into the library straight away |
 | `remove GAME... [--yes]` | Remove games by name, file name or id. Without `--yes` it only shows what would go |
-| `sync DIR [--platform P] [--ext .zip] [--bulk] [--delete] [--yes]` | Upload files in DIR the library doesn't have. Dry run without `--yes` |
+| `sync DIR [--platform P] [--ext .zip] [--bulk] [--names MAME] [--delete] [--yes]` | Upload files in DIR the library doesn't have. Dry run without `--yes` |
 | `pending` / `cancel NAME...` | Uploads not yet imported, and cancelling them |
 | `find` | Print the phone's address |
 
@@ -60,6 +60,15 @@ platform instead of one the app guesses from the extension, and the app doesn't 
 - A file the platform doesn't use is rejected with the reason. That includes zipped ROMs for platforms
   that don't run zips (a `.zip` for `gba`, say): upload the ROM itself, or leave out `--platform`.
 
+## Arcade game names and cover art
+
+Builds made from the public source can't look up MAME titles, so arcade games show their zip name
+(`mslug3`) and cover art search, which looks for the title, mostly finds nothing. Pass
+`--names` with a MAME executable (the script runs its `-listfull`) or a text file of that output.
+New games then get the full title (`Metal Slug 3 (NGM-2560)`) as their name, which matches the
+libretro MAME box art. The sync dry run shows the title each file will get. Names only apply to
+games new to the library; use `update --name` for ones already there.
+
 ## Uploading many files
 
 Pass `--bulk` when uploading more than a handful of files. Without it every file gets its own
@@ -90,8 +99,9 @@ For anything the script doesn't cover:
 - `POST /library/update` form `id=ID` plus any of `name=`, `sound=true|false`,
   `haptic=off|soft|light|medium|heavy|rigid`, `orientation=auto|portrait|landscape`, with the same
   header: returns the updated game. Listings include `sound`, `haptic` and `orientation` too.
-- `POST /library/upload` multipart `files[]` plus optional `platform=ID` and `bulk=1`, with the same
-  header: saves and imports the files as that platform, without alerts when `bulk=1`. Returns
+- `POST /library/upload` multipart `files[]` plus optional `platform=ID`, `bulk=1` and `name=` (one
+  file only, sets the display name of a new game), with the same header: saves and imports the files
+  as that platform, without alerts when `bulk=1`. Returns
   `{accepted: [fileName], rejected: [{fileName, error}]}` before the import finishes. An unknown id
   returns 400 with the list of known ids.
 - From Git Bash, set `MSYS_NO_PATHCONV=1` so `/` paths aren't rewritten.
