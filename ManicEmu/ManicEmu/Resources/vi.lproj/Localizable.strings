@@ -1180,3 +1180,4 @@ Nếu bạn muốn nâng cấp thiết lập của mình, PlayCase là sự kế
 "AesKeysTxtDesc" = "Cần tập tin này để chơi ROM 3DS đã mã hóa.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

@@ -1189,3 +1189,4 @@
 "AesKeysTxtDesc" = "Απαιτείται για να παίξετε κρυπτογραφημένες ROM 3DS.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

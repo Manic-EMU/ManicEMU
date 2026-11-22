@@ -19,6 +19,7 @@ class GameCoverScrapingView: BaseView {
     
     private enum ScrapeRow {
         case skipExisting
+        case normaliseNames
         case scrapeCover
         case scrapeIcon
         case scrapeBanner
@@ -26,6 +27,7 @@ class GameCoverScrapingView: BaseView {
         static func from(_ indexPath: IndexPath) -> ScrapeRow? {
             switch (indexPath.section, indexPath.row) {
             case (0, 0): return .skipExisting
+            case (0, 1): return .normaliseNames
             case (1, 0): return .scrapeCover
             case (1, 1): return .scrapeIcon
             case (1, 2): return .scrapeBanner
@@ -102,6 +104,9 @@ class GameCoverScrapingView: BaseView {
             cells: [
                 .iconTitleDetailSwitchCell(title: R.string.localizable.skipExistingCovers(),
                                            state: skipExisting ? .on : .off,
+                                           enablePressEffect: false),
+                .iconTitleDetailSwitchCell(title: R.string.localizable.coverNormaliseNames(),
+                                           state: OnlineCoverManager.CoverNameNormalizer.isEnabled ? .on : .off,
                                            enablePressEffect: false)
             ],
             header: .texts([.smallText(R.string.localizable.coverScrapingDesc(), numberOfLines: 0)], pin: false)
@@ -160,7 +165,7 @@ class GameCoverScrapingView: BaseView {
             listPageView.updateCellData(cellData.updateNormalSwitch(state: isOn ? .on : .off),
                                         indexPath: indexPath,
                                         reloadView: false)
-            if row != .skipExisting {
+            if row != .skipExisting, row != .normaliseNames {
                 updateBottom()
             }
         } else if action.isBottom {
@@ -171,6 +176,7 @@ class GameCoverScrapingView: BaseView {
     private func applySwitch(row: ScrapeRow, isOn: Bool) {
         switch row {
         case .skipExisting: skipExisting = isOn
+        case .normaliseNames: OnlineCoverManager.CoverNameNormalizer.isEnabled = isOn
         case .scrapeCover: scrapeCover = isOn
         case .scrapeIcon: scrapeIcon = isOn
         case .scrapeBanner: scrapeBanner = isOn
@@ -282,7 +288,8 @@ class GameCoverScrapingView: BaseView {
         let options = GameCoverScraper.Options(skipExisting: skipExisting,
                                                scrapeCover: scrapeCover,
                                                scrapeIcon: scrapeIcon,
-                                               scrapeBanner: scrapeBanner)
+                                               scrapeBanner: scrapeBanner,
+                                               normaliseNames: OnlineCoverManager.CoverNameNormalizer.isEnabled)
         UIView.makeLoading()
         Task { [weak self] in
             let summary = await GameCoverScraper.scrape(snapshots: snapshots, options: options, apiKey: apiKey)
@@ -347,6 +354,8 @@ private enum GameCoverScraper {
         let scrapeCover: Bool
         let scrapeIcon: Bool
         let scrapeBanner: Bool
+        /// Search on the cleaned-up title and pick the result by normalised title match
+        let normaliseNames: Bool
     }
     
     struct AssetCount {
@@ -456,7 +465,9 @@ private enum GameCoverScraper {
         
         guard needCover || needIcon || needBanner else { return outcome }
         
-        let query = snapshot.displayName.trimmed
+        let query = options.normaliseNames
+            ? OnlineCoverManager.CoverNameNormalizer.searchTitle(for: snapshot.displayName.trimmed)
+            : snapshot.displayName.trimmed
         guard !query.isEmpty else {
             if needCover { outcome.cover = .failed }
             if needIcon { outcome.icon = .failed }
@@ -474,7 +485,10 @@ private enum GameCoverScraper {
             return outcome
         }
         
-        guard let sgdbGame = bestMatch(query: query, in: matches) else {
+        let normalisedMatch = options.normaliseNames
+            ? OnlineCoverManager.CoverNameNormalizer.bestItem(query: query, in: matches, name: \.name)
+            : nil
+        guard let sgdbGame = normalisedMatch ?? bestMatch(query: query, in: matches) else {
             if needCover { outcome.cover = .failed }
             if needIcon { outcome.icon = .failed }
             if needBanner { outcome.banner = .failed }

@@ -1187,3 +1187,4 @@ Ak chcete vylepšiť svoje nastavenie, PlayCase je perfektným doplnkom tohto sk
 "AesKeysTxtDesc" = "Vyžaduje sa na hranie šifrovaných ROM 3DS.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

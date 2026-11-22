@@ -1179,3 +1179,4 @@ Jika Anda ingin meningkatkan setup Anda, PlayCase adalah pasangan sempurna untuk
 "AesKeysTxtDesc" = "Diperlukan untuk memainkan ROM 3DS terenkripsi.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

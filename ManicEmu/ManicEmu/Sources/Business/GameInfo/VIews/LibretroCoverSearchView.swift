@@ -50,8 +50,8 @@ class LibretroCoverSearchView: BaseView {
 
     /// Opt-in normalised name matching, remembered between searches
     private var normaliseNames: Bool {
-        get { UserDefaults.standard.bool(forKey: R.DefaultKey.CoverSearchNormaliseNames) }
-        set { UserDefaults.standard.set(newValue, forKey: R.DefaultKey.CoverSearchNormaliseNames) }
+        get { OnlineCoverManager.CoverNameNormalizer.isEnabled }
+        set { OnlineCoverManager.CoverNameNormalizer.isEnabled = newValue }
     }
 
     private static func normaliseNamesIcon(isOn: Bool) -> ASIcon {

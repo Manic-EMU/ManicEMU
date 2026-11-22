@@ -1188,3 +1188,4 @@ Se pretende melhorar a sua configuração, a PlayCase é o complemento perfeito 
 "AesKeysTxtDesc" = "Necessário para jogar ROMs 3DS encriptadas.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

@@ -564,6 +564,8 @@ extension OnlineCoverManager {
         }
 
         private struct Ranked {
+            /// Position in the candidate list
+            let index: Int
             let file: String
             /// 0 exact title + tags, 1 exact title, 2 contains all query words, 3 fuzzy title
             let tier: Int
@@ -587,9 +589,53 @@ extension OnlineCoverManager {
             }
         }
 
+        /// The user's "Normalise Names" choice, shared by the libretro, SteamGridDB and bulk scraping searches.
+        static var isEnabled: Bool {
+            get { UserDefaults.standard.bool(forKey: R.DefaultKey.CoverSearchNormaliseNames) }
+            set { UserDefaults.standard.set(newValue, forKey: R.DefaultKey.CoverSearchNormaliseNames) }
+        }
+
+        /// A readable search string for title-based services such as SteamGridDB: tags removed and
+        /// articles moved back, wording and case kept.
+        /// "Legend of Zelda, The - A Link to the Past (USA) [!]" -> "The Legend of Zelda - A Link to the Past"
+        static func searchTitle(for raw: String) -> String {
+            var base = tagRegex.stringByReplacingMatches(in: raw,
+                                                         range: NSRange(location: 0, length: (raw as NSString).length),
+                                                         withTemplate: " ")
+            base = base.split(whereSeparator: \.isWhitespace).joined(separator: " ")
+            base = articleRegex.stringByReplacingMatches(in: base,
+                                                         range: NSRange(location: 0, length: (base as NSString).length),
+                                                         withTemplate: "$2 $1$3")
+            return base.isEmpty ? raw.trimmingCharacters(in: .whitespaces) : base
+        }
+
         /// Returns candidate file names (unchanged, for building URLs) best match first.
         /// With `fetchOne` only a confident match (tiers 0, 1 or 3) is returned.
         static func rankedMatches(query: String, in candidates: [String], fetchOne: Bool) -> [String] {
+            let ranked = rank(query: query, names: candidates, stripExtension: true)
+            if fetchOne {
+                return ranked.first(where: { $0.tier != 2 }).map { [$0.file] } ?? []
+            }
+            Log.debug("规范化搜索:\(query) -> 结果数:\(ranked.count)")
+            return ranked.prefix(maxResults).map(\.file)
+        }
+
+        /// Ranks items by their title, e.g. SteamGridDB games. Matching items come first, best first;
+        /// items that do not match at all keep their original order after them.
+        static func rankedItems<T>(query: String, in items: [T], name: (T) -> String) -> [T] {
+            let ranked = rank(query: query, names: items.map(name), stripExtension: false)
+            let matched = Set(ranked.map(\.index))
+            return ranked.map { items[$0.index] } + items.indices.filter { !matched.contains($0) }.map { items[$0] }
+        }
+
+        /// The most likely item for `query`, preferring confident matches (tiers 0, 1 or 3) over
+        /// items that merely contain all query words. Nil when nothing matches.
+        static func bestItem<T>(query: String, in items: [T], name: (T) -> String) -> T? {
+            let ranked = rank(query: query, names: items.map(name), stripExtension: false)
+            return (ranked.first(where: { $0.tier != 2 }) ?? ranked.first).map { items[$0.index] }
+        }
+
+        private static func rank(query: String, names candidates: [String], stripExtension: Bool) -> [Ranked] {
             let q = parse(query, stripExtension: false)
             guard !q.words.isEmpty else { return [] }
             let queryWords = Set(q.words)
@@ -597,8 +643,8 @@ extension OnlineCoverManager {
             let pattern = fuse.createPattern(from: fuzzyPattern(for: q.title))
 
             var ranked = [Ranked]()
-            for file in candidates {
-                let c = parse(file, stripExtension: true)
+            for (index, file) in candidates.enumerated() {
+                let c = parse(file, stripExtension: stripExtension)
                 guard !c.words.isEmpty else { continue }
                 let tier: Int
                 var score = 0.0
@@ -612,7 +658,8 @@ extension OnlineCoverManager {
                 } else {
                     continue
                 }
-                ranked.append(Ranked(file: file,
+                ranked.append(Ranked(index: index,
+                                     file: file,
                                      tier: tier,
                                      score: score,
                                      extraWords: max(0, c.words.count - q.words.count),
@@ -622,12 +669,7 @@ extension OnlineCoverManager {
                                      flagged: c.isFlagged ? 1 : 0))
             }
             ranked.sort { $0.isOrderedBefore($1) }
-
-            if fetchOne {
-                return ranked.first(where: { $0.tier != 2 }).map { [$0.file] } ?? []
-            }
-            Log.debug("规范化搜索:\(query) -> \(q.title) 结果数:\(ranked.count)")
-            return ranked.prefix(maxResults).map(\.file)
+            return ranked
         }
     }
 }

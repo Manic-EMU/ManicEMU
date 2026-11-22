@@ -1223,3 +1223,4 @@ Press the controller button to complete mapping...";
 "AesKeysTxtDesc" = "Required to play encrypted 3DS ROMs.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

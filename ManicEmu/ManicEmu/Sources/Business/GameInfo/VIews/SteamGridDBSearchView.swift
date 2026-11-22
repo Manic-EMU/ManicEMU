@@ -81,6 +81,15 @@ class SteamGridDBSearchView: BaseView {
         if let navigationValue = action.navigationValue {
             if navigationValue.isTapClose {
                 self.hide()
+            } else if navigationValue.tapToolsValue == 1 {
+                UIDevice.generateHaptic()
+                typealias Normalizer = OnlineCoverManager.CoverNameNormalizer
+                Normalizer.isEnabled.toggle()
+                var navigation = listPageView.navigation
+                navigation?.tools = Self.navigationTools()
+                listPageView.navigation = navigation
+                UIView.makeToast(message: Normalizer.isEnabled ? R.string.localizable.coverNormaliseNamesOn() : R.string.localizable.coverNormaliseNamesOff())
+                searchGames(text: searchInputView.text)
             } else if let _ = navigationValue.tapToolsValue {
                 LimitedTextInputView.show(icon: .symbolImage(R.image.key_iconSymbols()),
                                           title: "SteamGridDB API Key",
@@ -142,13 +151,16 @@ class SteamGridDBSearchView: BaseView {
         }
     }
     
-    private func performSearch(query: String) {
+    private func performSearch(query rawQuery: String) {
+        typealias Normalizer = OnlineCoverManager.CoverNameNormalizer
+        let normaliseNames = Normalizer.isEnabled
+        let query = normaliseNames ? Normalizer.searchTitle(for: rawQuery) : rawQuery
         Task { @MainActor [weak self] in
             guard let self else { return }
             defer { UIView.hideLoading() }
             do {
                 let results = try await SteamGridDBKit.searchGame(apiKey: self.apiKey, query: query)
-                self.games = results
+                self.games = normaliseNames ? Normalizer.rankedItems(query: query, in: results, name: \.name) : results
                 self.updateContents()
                 self.listPageView.collectionView.scrollToTop()
             } catch {
@@ -168,12 +180,19 @@ class SteamGridDBSearchView: BaseView {
         }
     }
     
+    /// Key (API key) and sparkles (Normalise Names, highlighted when on)
+    private static func navigationTools() -> [ASIcon] {
+        let isOn = OnlineCoverManager.CoverNameNormalizer.isEnabled
+        return [.symbolImage(R.image.key_iconSymbols(), weight: .regular),
+                .symbol(.sparkles, colors: [isOn ? R.Color.Main : R.Color.LabelSecondary])]
+    }
+
     private func getListPage() -> ASListPage {
         return ASListPage(
             navigation: .defaultNavigation(
                 title: "SteamGridDB",
                 titleIcon: .image(R.image.steamGridDB_icon()),
-                tools: [.symbolImage(R.image.key_iconSymbols(), weight: .regular)]
+                tools: Self.navigationTools()
             ),
             top: (topView, .fixedHeight(R.Size.ItemHeightExtraLarge), true),
             sections: games.isEmpty ? [] : getResultsSections(),

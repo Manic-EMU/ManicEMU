@@ -1189,3 +1189,4 @@ Jos haluat parantaa kokoonpanoasi, PlayCase on täydellinen lisä tälle skinill
 "AesKeysTxtDesc" = "Tarvitaan salattujen 3DS-ROM-tiedostojen pelaamiseen.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

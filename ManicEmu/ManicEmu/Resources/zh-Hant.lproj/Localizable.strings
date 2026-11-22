@@ -1192,3 +1192,4 @@ PlayCase 專注於高品質 iPhone 保護殼，設計時充分考慮了配件與
 "AesKeysTxtDesc" = "執行加密 3DS ROM 時需要此檔案。";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

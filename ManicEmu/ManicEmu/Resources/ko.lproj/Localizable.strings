@@ -1190,3 +1190,4 @@ PlayCase는 액세서리 및 스킨 호환성을 고려하여 제작된 고품�
 "AesKeysTxtDesc" = "암호화된 3DS ROM을 실행할 때 필요한 파일입니다.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

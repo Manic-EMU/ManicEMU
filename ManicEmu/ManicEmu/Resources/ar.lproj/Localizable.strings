@@ -1159,3 +1159,4 @@
 "AesKeysTxtDesc" = "مطلوب لتشغيل ROM 3DS المشفّرة.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

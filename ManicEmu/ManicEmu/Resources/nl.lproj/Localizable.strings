@@ -1187,3 +1187,4 @@ Als je je setup naar een hoger niveau wilt tillen, is PlayCase de perfecte match
 "AesKeysTxtDesc" = "Nodig om versleutelde 3DS-ROM's te spelen.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";

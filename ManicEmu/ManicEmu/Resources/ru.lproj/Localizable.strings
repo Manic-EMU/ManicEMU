@@ -1181,3 +1181,4 @@ PlayCase специализируется на высококачественн�
 "AesKeysTxtDesc" = "Нужен, чтобы запускать зашифрованные ROM 3DS.";
 "CoverNormaliseNamesOn" = "Normalise Names: On";
 "CoverNormaliseNamesOff" = "Normalise Names: Off";
+"CoverNormaliseNames" = "Normalise Names";
