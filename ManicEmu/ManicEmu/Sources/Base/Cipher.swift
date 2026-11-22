@@ -21,5 +21,6 @@ extension _R {
         static let ManicKey = ""
         static let DeepSeek = ""
         static let RetroAPI = ""
+        static let CoverTranslate = ""
     }
 }
