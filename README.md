@@ -106,6 +106,17 @@ More platforms are planned upstream.
 | Rewind | Rewind the game progress and keep tweaking the levels. |
 | Landscape Mode | Supports dynamic backgrounds, background music, a wide variety of game cover carousel styles, and full customization. |
 | Global Navigation and Focus | Fully operate the UI using a keyboard or controller. |
+| Wi-Fi library | Upload games and remove them from the library from a browser on the same network. |
+| AI agents | Let an AI agent list, upload and remove games over Wi-Fi with the [manic-emu skill](skills/manic-emu/SKILL.md). |
+
+### Using an AI agent
+
+1. In Manic EMU, open the **Import** tab, turn on **WiFi** and keep the app open.
+2. Give your agent the [`skills/manic-emu`](skills/manic-emu) folder. In Claude Code, copy it into
+   `~/.claude/skills/`, or ask Claude to install the skill from this repository's `skills/manic-emu`.
+3. Ask things like "What games are on my Manic EMU?" or "Remove Pac-Man from Manic EMU".
+
+The browser page at the address shown under WiFi has the same steps.
 
 ## Development Notes
 
@@ -194,6 +205,7 @@ bundled emulator cores, runtime assets, and supporting project documentation:
 | `System.core/` | Runtime system assets used by emulator cores. |
 | `Dependencies/` | App dependencies. |
 | `Scripts/` | Build and maintenance scripts. |
+| `skills/` | Agent skills, such as `manic-emu` for managing the library over Wi-Fi. |
 | `ANTI_PIRACY.md` | Project policy for legal game backups, BIOS files, homebrew, and public-domain content. |
 | `CONTRIBUTING.md` | Contributor setup, issue-reporting, pull-request, and commit-message guidance. |
 | `THIRD_PARTY_NOTICES.md` | Notices for bundled open-source components and dependencies. |

@@ -113,102 +113,7 @@ extension GameOption {
                              detail: R.string.localizable.deleteGameAlertDetail(),
                              confirmTitle: R.string.localizable.confirmDelte(),
                              confirmAction: {
-                let sisUninstallJobs: [(uid: Int, index: Int)] = games.flatMap { game -> [(uid: Int, index: Int)] in
-                    guard game.gameType == .symbian, game.ngageRelativeFiles.isEmpty else { return [] }
-                    return game.symbianInstallPackages
-                }
-                let performDelete = {
-                    Game.change { realm in
-                        for game in games {
-                            // Evict Drive copies even if ROM sync was turned off and the cloud file was kept.
-                            FilesSyncManager.shared.noteGameROMRemoval(for: game)
-                            if game.gameType == .symbian {
-                                // SIS packages were already uninstalled off the main thread.
-                                if !game.ngageRelativeFiles.isEmpty {
-                                    game.uninstallFromSymbianStorage()
-                                }
-                            } else if !game.isUrlGame, game.isRomExtsts {
-                                if game.gameType == ._3ds, game.fileExtension.lowercased() == "app", let range = game.romUrl.path.range(of: "/content/") {
-                                    let gamePath = String(game.romUrl.path[...range.lowerBound])
-                                    try FileManager.safeRemoveItem(at: URL(fileURLWithPath: gamePath))
-                                    SyncManager.delete(localFilePath: gamePath)
-                                    // Remove DLC and update titles.
-                                    let updatePath = gamePath.replacingOccurrences(of: "/00040000/", with: "/0004000e/")
-                                    try FileManager.safeRemoveItem(at: URL(fileURLWithPath: updatePath))
-                                    SyncManager.deletePath(localPath: updatePath)
-                                    let dlcPath = gamePath.replacingOccurrences(of: "/00040000/", with: "/0004008c/")
-                                    try FileManager.safeRemoveItem(at: URL(fileURLWithPath: dlcPath))
-                                    SyncManager.deletePath(localPath: dlcPath)
-                                } else if game.isMultiFileGame {
-                                    let romParentPath = game.romUrl.path.deletingLastPathComponent
-                                    try FileManager.safeRemoveItem(at: URL(fileURLWithPath: romParentPath))
-                                    SyncManager.deletePath(localPath: romParentPath)
-                                } else if game.gameType == .ps1, game.fileExtension.lowercased() == "bin" {
-                                    let binUrl = URL(fileURLWithPath: R.Path.Data.appendingPathComponent(game.fileName))
-                                    let cueUrl = binUrl.deletingPathExtension().appendingPathExtension("cue")
-                                    try FileManager.safeRemoveItem(at: binUrl)
-                                    try FileManager.safeRemoveItem(at: cueUrl)
-                                    SyncManager.delete(localFilePath: binUrl.path)
-                                    SyncManager.delete(localFilePath: cueUrl.path)
-                                } else {
-                                    try FileManager.safeRemoveItem(at: game.romUrl)
-                                    SyncManager.delete(localFilePath: game.romUrl.path)
-                                }
-                            }
-                            
-                            if game.gameType == .j2me {
-                                game.deleteJ2meSaves()
-                            } else if game.gameType == .dos {
-                                game.deleteDosFiles()
-                            } else {
-                                if game.isSaveExtsts {
-                                    if game.gameType == .psp, let code = game.gameCodeForPSP {
-                                        // PSP saves may span multiple folders.
-                                        try? FileManager.default.contentsOfDirectory(atPath: R.Path.PSPSave).filter({ $0.hasPrefix(code)}).forEach { savePath in
-                                            let deletePath = R.Path.PSPSave.appendingPathComponent(savePath)
-                                            try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: deletePath))
-                                            SyncManager.deletePath(localPath: deletePath)
-                                        }
-                                    } else {
-                                        try FileManager.safeRemoveItem(at: game.gameSaveUrl)
-                                        SyncManager.delete(localFilePath: game.gameSaveUrl.path)
-                                    }
-                                }
-                            }
-                            
-                            if let coverData = game.gameCover {
-                                coverData.deleteAndClean(realm: realm)
-                            }
-                            CreamAsset.batchDeleteAndClean(assets: game.gameSaveStates.compactMap({ $0.stateCover }), realm: realm)
-                            CreamAsset.batchDeleteAndClean(assets: game.gameSaveStates.compactMap({ $0.stateData }), realm: realm)
-                            if Settings.defalut.iCloudSyncEnable {
-                                // Soft-delete while iCloud sync is on.
-                                game.gameCheats.forEach { $0.isDeleted = true }
-                                game.gameSaveStates.forEach { $0.isDeleted = true }
-                                game.isDeleted = true
-                            } else {
-                                // Local hard delete.
-                                realm.delete(game.gameCheats)
-                                realm.delete(game.gameSaveStates)
-                                realm.delete(game)
-                            }
-                        }
-                    }
-                }
-                if sisUninstallJobs.isEmpty {
-                    performDelete()
-                    return
-                }
-                UIView.makeLoading()
-                DispatchQueue.global().async {
-                    for job in sisUninstallJobs {
-                        LibretroCore.uninstallSymbianGame(withUid: job.uid, index: job.index)
-                    }
-                    DispatchQueue.main.async {
-                        performDelete()
-                        UIView.hideLoading()
-                    }
-                }
+                Game.deleteFromLibrary(games)
             })
             
         case .platformChange:
@@ -1852,6 +1757,111 @@ extension GameOption {
             if PlayViewController.isGaming {
                 PlayViewController.updateSlowMotion(speed: speed)
                 UIView.makeToast(message: speed == .off ? R.string.localizable.gameSettingFastForwardResume() : speed.title, identifier: "gameSpeed")
+            }
+        }
+    }
+}
+
+extension Game {
+    /// Removes games from the library the same way the in-app Delete action does: ROM, saves,
+    /// save states and cover, soft-deleting when iCloud sync is on. Call on the main thread.
+    static func deleteFromLibrary(_ games: [Game], completion: (() -> Void)? = nil) {
+        let sisUninstallJobs: [(uid: Int, index: Int)] = games.flatMap { game -> [(uid: Int, index: Int)] in
+            guard game.gameType == .symbian, game.ngageRelativeFiles.isEmpty else { return [] }
+            return game.symbianInstallPackages
+        }
+        let performDelete = {
+            Game.change { realm in
+                for game in games {
+                    // Evict Drive copies even if ROM sync was turned off and the cloud file was kept.
+                    FilesSyncManager.shared.noteGameROMRemoval(for: game)
+                    if game.gameType == .symbian {
+                        // SIS packages were already uninstalled off the main thread.
+                        if !game.ngageRelativeFiles.isEmpty {
+                            game.uninstallFromSymbianStorage()
+                        }
+                    } else if !game.isUrlGame, game.isRomExtsts {
+                        if game.gameType == ._3ds, game.fileExtension.lowercased() == "app", let range = game.romUrl.path.range(of: "/content/") {
+                            let gamePath = String(game.romUrl.path[...range.lowerBound])
+                            try FileManager.safeRemoveItem(at: URL(fileURLWithPath: gamePath))
+                            SyncManager.delete(localFilePath: gamePath)
+                            // Remove DLC and update titles.
+                            let updatePath = gamePath.replacingOccurrences(of: "/00040000/", with: "/0004000e/")
+                            try FileManager.safeRemoveItem(at: URL(fileURLWithPath: updatePath))
+                            SyncManager.deletePath(localPath: updatePath)
+                            let dlcPath = gamePath.replacingOccurrences(of: "/00040000/", with: "/0004008c/")
+                            try FileManager.safeRemoveItem(at: URL(fileURLWithPath: dlcPath))
+                            SyncManager.deletePath(localPath: dlcPath)
+                        } else if game.isMultiFileGame {
+                            let romParentPath = game.romUrl.path.deletingLastPathComponent
+                            try FileManager.safeRemoveItem(at: URL(fileURLWithPath: romParentPath))
+                            SyncManager.deletePath(localPath: romParentPath)
+                        } else if game.gameType == .ps1, game.fileExtension.lowercased() == "bin" {
+                            let binUrl = URL(fileURLWithPath: R.Path.Data.appendingPathComponent(game.fileName))
+                            let cueUrl = binUrl.deletingPathExtension().appendingPathExtension("cue")
+                            try FileManager.safeRemoveItem(at: binUrl)
+                            try FileManager.safeRemoveItem(at: cueUrl)
+                            SyncManager.delete(localFilePath: binUrl.path)
+                            SyncManager.delete(localFilePath: cueUrl.path)
+                        } else {
+                            try FileManager.safeRemoveItem(at: game.romUrl)
+                            SyncManager.delete(localFilePath: game.romUrl.path)
+                        }
+                    }
+                    
+                    if game.gameType == .j2me {
+                        game.deleteJ2meSaves()
+                    } else if game.gameType == .dos {
+                        game.deleteDosFiles()
+                    } else {
+                        if game.isSaveExtsts {
+                            if game.gameType == .psp, let code = game.gameCodeForPSP {
+                                // PSP saves may span multiple folders.
+                                try? FileManager.default.contentsOfDirectory(atPath: R.Path.PSPSave).filter({ $0.hasPrefix(code)}).forEach { savePath in
+                                    let deletePath = R.Path.PSPSave.appendingPathComponent(savePath)
+                                    try? FileManager.safeRemoveItem(at: URL(fileURLWithPath: deletePath))
+                                    SyncManager.deletePath(localPath: deletePath)
+                                }
+                            } else {
+                                try FileManager.safeRemoveItem(at: game.gameSaveUrl)
+                                SyncManager.delete(localFilePath: game.gameSaveUrl.path)
+                            }
+                        }
+                    }
+                    
+                    if let coverData = game.gameCover {
+                        coverData.deleteAndClean(realm: realm)
+                    }
+                    CreamAsset.batchDeleteAndClean(assets: game.gameSaveStates.compactMap({ $0.stateCover }), realm: realm)
+                    CreamAsset.batchDeleteAndClean(assets: game.gameSaveStates.compactMap({ $0.stateData }), realm: realm)
+                    if Settings.defalut.iCloudSyncEnable {
+                        // Soft-delete while iCloud sync is on.
+                        game.gameCheats.forEach { $0.isDeleted = true }
+                        game.gameSaveStates.forEach { $0.isDeleted = true }
+                        game.isDeleted = true
+                    } else {
+                        // Local hard delete.
+                        realm.delete(game.gameCheats)
+                        realm.delete(game.gameSaveStates)
+                        realm.delete(game)
+                    }
+                }
+            }
+        }
+        if sisUninstallJobs.isEmpty {
+            performDelete()
+            completion?()
+            return
+        }
+        UIView.makeLoading()
+        DispatchQueue.global().async {
+            for job in sisUninstallJobs {
+                LibretroCore.uninstallSymbianGame(withUid: job.uid, index: job.index)
+            }
+            DispatchQueue.main.async {
+                performDelete()
+                UIView.hideLoading()
+                completion?()
             }
         }
     }
